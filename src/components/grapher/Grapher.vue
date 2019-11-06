@@ -4,72 +4,80 @@
     class="grapher-svg"
     width="100%"
     height="100%"
-  >
-    <!-- Inside svg, 1px = 1 eight-to-five step -->
+  ><g> <!-- Note: we wrap the entire svg in a g so that svgPanZoom doesn't
+            have to create a new g and Vue loses track of the DOM elements. -->
+    <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
     <g stroke="white" stroke-width="0.5">
       <rect
+        class="grapher--field-rect"
         fill="green"
         v-bind:width="fieldWidth"
         v-bind:height="fieldHeight"
       />
       <line
-        v-for="yardLine in yardLines"
-        v-bind:key="yardLine + '-yardLine'"
-        v-bind:x1="yardLine"
+        class="grapher--yard-line"
+        v-for="offsetX in yardLineOffsetsX"
+        v-bind:key="offsetX + '-yardLine'"
+        v-bind:x1="offsetX"
         y1="0"
-        v-bind:x2="yardLine"
+        v-bind:x2="offsetX"
         v-bind:y2="fieldHeight"
       />
-      <template v-for="hashMark in hashMarks">
+      <template v-for="offsetY in hashMarkOffsetsY">
         <line
-          v-for="yardLine in yardLines"
-          v-bind:key="hashMark + yardLine + '-hashMark'"
-          v-bind:x1="yardLine - 0.75"
-          v-bind:y1="hashMark"
-          v-bind:x2="yardLine + 0.75"
-          v-bind:y2="hashMark"
+          class="grapher--hash-mark"
+          v-for="offsetX in yardLineOffsetsX"
+          v-bind:key="offsetY + offsetX + '-hashMark'"
+          v-bind:x1="offsetX - 0.75"
+          v-bind:y1="offsetY"
+          v-bind:x2="offsetX + 0.75"
+          v-bind:y2="offsetY"
         />
       </template>
     </g>
-    <g stroke="white" stroke-width="0.125" stroke-dasharray="0.25 0.75">
+    <g v-if="enableFourStepGrid" stroke="white" stroke-width="0.125" stroke-dasharray="0.25 0.75">
       <line
-        v-for="x in dashedLinesVertical"
-        v-bind:key="x + '-vertical'"
-        v-bind:x1="x"
+        class="grapher--grid-vertical"
+        v-for="offsetX in fourStepGridOffsetsX"
+        v-bind:key="offsetX + '-vertical'"
+        v-bind:x1="offsetX"
         y1="-0.125"
-        v-bind:x2="x"
+        v-bind:x2="offsetX"
         v-bind:y2="fieldHeight"
       />
       <line
-        v-for="y in dashedLinesHorizontal"
-        v-bind:key="y + '-horizontal'"
+        class="grapher--grid-horizontal"
+        v-for="offsetY in fourStepGridOffsetsY"
+        v-bind:key="offsetY + '-horizontal'"
         x1="-0.125"
-        v-bind:y1="y"
+        v-bind:y1="offsetY"
         v-bind:x2="fieldWidth"
-        v-bind:y2="y"
+        v-bind:y2="offsetY"
       />
     </g>
     <g fill=white font-size="3" text-anchor="middle">
       <!-- Bottom of the yard line numbers is approximately 11 steps from the sideline -->
       <text
-        v-for="(yardLineNumber, index) in yardLineNumbers"
+        class="grapher--yard-number"
+        v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
         v-bind:key="index + '-yardNum'"
-        v-bind:x="yardLineNumber[0]"
+        v-bind:x="numberAndOffsetX[1]"
         v-bind:y="fieldHeight - 11"
       >
-        {{ yardLineNumber[1] }}
+        {{ numberAndOffsetX[0] }}
       </text>
       <text
-        v-for="(yardLineNumber, index) in yardLineNumbers"
+        class="grapher--yard-number"
+        v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
         v-bind:key="index + '-yardNumRotated'"
-        v-bind:x="yardLineNumber[0]"
+        v-bind:x="numberAndOffsetX[1]"
         v-bind:y="11"
-        v-bind:transform="'rotate(180 ' + yardLineNumber[0] + ' 11)'"
+        v-bind:transform="'rotate(180 ' + numberAndOffsetX[1] + ' 11)'"
       >
-        {{ yardLineNumber[1] }}
+        {{ numberAndOffsetX[0] }}
       </text>
     </g>
-  </svg>
+  </g></svg>
 </div>
 </template>
 
@@ -80,46 +88,71 @@ import svgPanZoom from 'svg-pan-zoom';
 export default Vue.extend({
   name: 'Grapher',
   computed: {
-    yardLines(): number[] {
-      return this.$store.state.yardLines;
+    hashMarkOffsetsY(): number[] {
+      return this.$store.state.hashMarkOffsetsY;
     },
-    hashMarks(): number[] {
-      return this.$store.state.hashMarks;
+    yardLineOffsetsX(): number[] {
+      const { middleOfField } = this.$store.state;
+      const yardLineOffsetsX: number[] = [];
+      let x = 16;
+      for (let lineNum = 0; lineNum < middleOfField; lineNum += 5) {
+        yardLineOffsetsX.push(x);
+        x += 8;
+      }
+      for (let lineNum = middleOfField; lineNum >= 0; lineNum -= 5) {
+        yardLineOffsetsX.push(x);
+        x += 8;
+      }
+      return yardLineOffsetsX;
+    },
+    enableFourStepGrid(): boolean {
+      return this.$store.state.enableFourStepGrid;
     },
     fieldWidth(): number {
       // Account for endzones + area between yard lines
-      return 16 + 8 * (this.yardLines.length - 1) + 16;
+      return 16 + 8 * (this.yardLineOffsetsX.length - 1) + 16;
     },
     fieldHeight(): number {
-      return this.hashMarks[1] + this.hashMarks[0];
+      return this.hashMarkOffsetsY[1] + this.hashMarkOffsetsY[0];
     },
-    dashedLinesVertical(): number[] {
-      const increments: number[] = [];
-      for (let x = 4; x < this.fieldWidth; x += 4) {
-        increments.push(x);
+    fourStepGridOffsetsX(): number[] {
+      // Do not render a vertical line if there is a yard line
+      const retVal: number[] = [
+        4,
+        8,
+        12,
+        this.fieldWidth - 12,
+        this.fieldWidth - 8,
+        this.fieldWidth - 4,
+      ];
+      for (let offsetX = 20; offsetX < this.fieldWidth - 16; offsetX += 8) {
+        retVal.push(offsetX);
       }
-      return increments;
+      return retVal;
     },
-    dashedLinesHorizontal(): number[] {
-      const increments: number[] = [];
-      for (let y = 4; y < this.fieldHeight; y += 4) {
-        increments.push(y);
+    fourStepGridOffsetsY(): number[] {
+      const retVal: number[] = [];
+      for (let offsetY = 4; offsetY < this.fieldHeight; offsetY += 4) {
+        retVal.push(offsetY);
       }
-      return increments;
+      return retVal;
     },
-    /**
-     * @return [x offset, yard line number]
-     */
-    yardLineNumbers(): [number, string][] {
-      const retVal: [number, string][] = [];
-      let lineNumber: number = 1;
-      for (let lineIndex = 2; lineIndex < this.yardLines.length / 2; lineIndex += 2) {
-        retVal.push([this.yardLines[lineIndex], `${lineNumber.toString()} 0`]);
-        const oppositeLineIndex = this.yardLines.length - 1 - lineIndex;
+    yardLineNumberAndOffsetX(): [string, number][] {
+      const retVal: [string, number][] = [];
+      let yardLineNumber: number = 1;
+      for (let lineIndex = 2; lineIndex < this.yardLineOffsetsX.length / 2; lineIndex += 2) {
+        retVal.push([
+          `${yardLineNumber.toString()} 0`,
+          this.yardLineOffsetsX[lineIndex],
+        ]);
+        const oppositeLineIndex = this.yardLineOffsetsX.length - 1 - lineIndex;
         if (oppositeLineIndex !== lineIndex) {
-          retVal.push([this.yardLines[oppositeLineIndex], `${lineNumber.toString()} 0`]);
+          retVal.push([
+            `${yardLineNumber.toString()} 0`,
+            this.yardLineOffsetsX[oppositeLineIndex],
+          ]);
         }
-        lineNumber += 1;
+        yardLineNumber += 1;
       }
       return retVal;
     },
