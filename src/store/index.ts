@@ -5,6 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    hashMarkOffsetsY: [32, 52],
+    middleOfField: 50,
+    enableFourStepGrid: true,
   },
   mutations: {
   },
