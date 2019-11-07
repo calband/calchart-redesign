@@ -1,0 +1,16 @@
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+// https://brand.berkeley.edu/colors/
+$berkeley-blue: #003262;
+$founders-rock: #3B7EA1;
+$california-gold: #FDB515;
+$medalist: #C4820E;
+$stone-pine: #584F29; // Outside football field 
+$soybean: #859438; // Football field
+
+$blue: $berkeley-blue;
+$cyan: $founders-rock;
+$yellow: $california-gold;
+
+$primary: $blue;

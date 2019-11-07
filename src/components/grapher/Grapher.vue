@@ -1,16 +1,11 @@
 <template>
 <div class="grapher">
-  <svg
-    class="grapher-svg"
-    width="100%"
-    height="100%"
-  ><g> <!-- Note: we wrap the entire svg in a g so that svgPanZoom doesn't
+  <svg class="grapher-svg"><g> <!-- Note: we wrap the entire svg in a g so that svgPanZoom doesn't
             have to create a new g and Vue loses track of the DOM elements. -->
     <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
-    <g stroke="white" stroke-width="0.5">
+    <g class="grapher--line-container">
       <rect
         class="grapher--field-rect"
-        fill="green"
         v-bind:width="fieldWidth"
         v-bind:height="fieldHeight"
       />
@@ -35,7 +30,7 @@
         />
       </template>
     </g>
-    <g v-if="enableFourStepGrid" stroke="white" stroke-width="0.125" stroke-dasharray="0.25 0.75">
+    <g v-if="enableFourStepGrid" class="grapher--grid-container">
       <line
         class="grapher--grid-vertical"
         v-for="offsetX in fourStepGridOffsetsX"
@@ -55,7 +50,7 @@
         v-bind:y2="offsetY"
       />
     </g>
-    <g fill=white font-size="3" text-anchor="middle">
+    <g class="grapher--number-container">
       <!-- Bottom of the yard line numbers is approximately 11 steps from the sideline -->
       <text
         class="grapher--yard-number"
@@ -168,8 +163,33 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .grapher {
+  flex: 1 1;
+  background: $stone-pine;
+}
+
+.grapher-svg {
   width: 100%;
   height: 100%;
-  background: burlywood;
+}
+
+.grapher--line-container {
+  stroke: $white;
+  stroke-width: 0.5;
+}
+
+.grapher--grid-container {
+  stroke: $white;
+  stroke-width: 0.125;
+  stroke-dasharray: 0.25 0.75;
+}
+
+.grapher--number-container {
+  fill: $white;
+  font-size: 4px;
+  text-anchor: middle;
+}
+
+.grapher--field-rect {
+  fill: $soybean;
 }
 </style>

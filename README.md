@@ -1,4 +1,10 @@
-# calchart-redesign
+# Calchart
+
+Calchart 4.0 for the web!
+
+See this [Figma link](https://www.figma.com/file/XIkyioLzRlGlpmNiEu47glkQ/Calchart) for the design.
+
+Project created from [Vue CLI](https://cli.vuejs.org/).
 
 ## Project setup
 ```
@@ -29,6 +35,3 @@ npm run test:e2e
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
