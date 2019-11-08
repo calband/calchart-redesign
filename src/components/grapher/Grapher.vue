@@ -30,7 +30,7 @@
         />
       </template>
     </g>
-    <g v-if="enableFourStepGrid" class="grapher--grid-container">
+    <g v-if="fourStepGrid" class="grapher--grid-container">
       <line
         class="grapher--grid-vertical"
         v-for="offsetX in fourStepGridOffsetsX"
@@ -100,8 +100,8 @@ export default Vue.extend({
       }
       return yardLineOffsetsX;
     },
-    enableFourStepGrid(): boolean {
-      return this.$store.state.enableFourStepGrid;
+    fourStepGrid(): boolean {
+      return this.$store.state.fourStepGrid;
     },
     fieldWidth(): number {
       // Account for endzones + area between yard lines

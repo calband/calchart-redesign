@@ -1,6 +1,3 @@
-// Import Bulma's core
-@import "~bulma/sass/utilities/_all";
-
 // https://brand.berkeley.edu/colors/
 $berkeley-blue: #003262;
 $founders-rock: #3B7EA1;
@@ -14,3 +11,6 @@ $cyan: $founders-rock;
 $yellow: $california-gold;
 
 $primary: $blue;
+
+// Import Bulma's core for all Vue components to use
+@import "~bulma/sass/utilities/_all";
