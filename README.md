@@ -22,32 +22,39 @@ npm run build
 ```
 
 ### Run your unit tests
-```bash
+```sh
 # Run all tests
 npm run test:unit
-# Run specific tests named Grapher
+# Run specific tests that match regex "Grapher"
 npm run test:unit Grapher
 # Watch all tests
 npm run test:unit -- --watchAll
 ```
 
-See [Jest CLI docs](https://jestjs.io/docs/en/cli.html#running-from-the-command-line) for all jest options, just replace `jest` with `npm run test:unit`, and before writing the flags, insert `--`.
+See [this](https://cli.vuejs.org/core-plugins/unit-jest.html#injected-commands) for more information. To run with flags for jest, insert `--` before the flags.
 
 ### Debug your unit tests
-```bash
-# On Mac/Linux
-node --inspect-brk node_modules/.bin/jest --runInBand
-# On Windows
-node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand
+```sh
+# macOS or linux
+node --inspect-brk ./node_modules/.bin/vue-cli-service test:unit
+# Windows
+node --inspect-brk ./node_modules/@vue/cli-service/bin/vue-cli-service.js test:unit
 ```
-See [Jest docs](https://jestjs.io/docs/en/troubleshooting#tests-are-failing-and-you-dont-know-why) for more information on how to debug.
+See [this](https://cli.vuejs.org/core-plugins/unit-jest.html#debugging-tests) for more information on how to debug.
 
 ### Run your end-to-end tests
-```
+```sh
+# Run normally (opens Chrome)
 npm run test:e2e
+# Run in headless mode (generates videos)
+npm run test:e2e -- --headless
 ```
+
+See [this](https://cli.vuejs.org/core-plugins/e2e-cypress.html) for more information.
 
 ### Lints and fixes files
 ```
 npm run lint
 ```
+
+See [this](https://cli.vuejs.org/core-plugins/eslint.html#injected-commands) for more information.
