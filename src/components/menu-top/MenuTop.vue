@@ -1,30 +1,29 @@
 <template>
   <div class="menu-top">
     <b-navbar type="is-primary">
-      <template slot="end">
-        <b-navbar-item v-on:click="enableSettingsModal">
-          Settings
-        </b-navbar-item>
+      <template slot="start">
+        <FileDropdown/>
+        <ViewDropdown/>
       </template>
     </b-navbar>
-    <SettingsModal/>
+
+    <FileModal/>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import SettingsModal from './SettingsModal.vue';
+import FileDropdown from './FileDropdown.vue';
+import FileModal from './FileModal.vue';
+import ViewDropdown from './ViewDropdown.vue';
 
 export default Vue.extend({
   name: 'MenuTop',
   components: {
-    SettingsModal
+    FileDropdown,
+    FileModal,
+    ViewDropdown,
   },
-  methods: {
-    enableSettingsModal (): void {
-      this.$store.commit('setSettingsModal', true);
-    }
-  }
 });
 </script>
 

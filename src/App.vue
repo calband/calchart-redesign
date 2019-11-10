@@ -36,6 +36,8 @@ export default Vue.extend({
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+$mdi-font-path: "~@mdi/font/fonts";
+@import "~@mdi/font/scss/materialdesignicons";
 
 html {
   overflow-y: hidden;
