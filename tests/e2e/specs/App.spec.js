@@ -1,6 +1,4 @@
-// https://docs.cypress.io/api/introduction/api.html
-
-describe('Update these tests!', () => {
+describe('App.vue', () => {
   it('Menus and grapher exists', () => {
     cy.visit('/')
       .get('#app')

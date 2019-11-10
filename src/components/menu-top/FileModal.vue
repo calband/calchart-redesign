@@ -3,6 +3,7 @@
 v-bind:active.sync="fileModal"
 has-modal-card
 trap-focus
+data-test="file-modal"
 >
   <div class="modal-card">
     <header class="modal-card-head">
@@ -14,34 +15,40 @@ trap-focus
 
       <b-field label="Front hash Y offset">
         <b-numberinput
-        name="frontHashOffsetY"
         v-model="frontHashOffsetY"
         min="0"
-        v-bind:max="backHashOffsetY - 1"
+        max="256"
+        data-test="file-modal--frontHashOffsetY"
         />
       </b-field>
 
       <b-field label="Back hash Y offset">
         <b-numberinput
-        name="backHashOffsetY"
         v-model="backHashOffsetY"
-        v-bind:min="frontHashOffsetY + 1"
+        min="0"
         max="256"
+        data-test="file-modal--backHashOffsetY"
         />
       </b-field>
 
       <b-field label="Middle of field">
         <b-numberinput
-        name="middleOfField"
         v-model="middleOfField"
-        v-bind:min="0"
+        min="0"
         max="200"
+        data-test="file-modal--middleOfField"
         />
       </b-field>
     </section>
 
     <footer class="modal-card-foot">
-      <b-button type="is-primary" v-on:click="$parent.close()">Close</b-button>
+      <b-button
+      type="is-primary"
+      v-on:click="fileModal = false"
+      data-test="file-modal--close"
+      >
+        Close
+      </b-button>
     </footer>
   </div>
 </b-modal>

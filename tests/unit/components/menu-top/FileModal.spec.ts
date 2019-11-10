@@ -36,7 +36,7 @@ describe('components/menu-top/FileModal', () => {
     });
 
     it('setting: frontHashOffsetY', async () => {
-      const frontHashOffsetY = wrapper.find('[name="frontHashOffsetY"]');
+      const frontHashOffsetY = wrapper.find('[data-test="file-modal--frontHashOffsetY"]');
       expect(frontHashOffsetY.exists()).toBeTruthy();
       const frontHashOffsetYElement = <HTMLInputElement>(frontHashOffsetY.element);
       expect(frontHashOffsetYElement.value).toBe('32');
@@ -49,7 +49,7 @@ describe('components/menu-top/FileModal', () => {
     });
 
     it('setting: backHashOffsetY', async () => {
-      const backHashOffsetY = wrapper.find('[name="backHashOffsetY"]');
+      const backHashOffsetY = wrapper.find('[data-test="file-modal--backHashOffsetY"]');
       expect(backHashOffsetY.exists()).toBeTruthy();
       const backHashOffsetYElement = <HTMLInputElement>(backHashOffsetY.element);
       expect(backHashOffsetYElement.value).toBe('52');
@@ -62,7 +62,7 @@ describe('components/menu-top/FileModal', () => {
     });
 
     it('setting: middleOfField', async () => {
-      const middleOfField = wrapper.find('[name="middleOfField"]');
+      const middleOfField = wrapper.find('[data-test="file-modal--middleOfField"]');
       expect(middleOfField.exists()).toBeTruthy();
       const middleOfFieldElement = <HTMLInputElement>(middleOfField.element);
       expect(middleOfFieldElement.value).toBe('50');

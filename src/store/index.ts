@@ -8,7 +8,7 @@ export interface stateType {
   middleOfField: number,
   fourStepGrid: boolean,
   fileModal: boolean
-};
+}
 
 // TODO: Is there a better way to do defaults?
 interface assignedStateType {

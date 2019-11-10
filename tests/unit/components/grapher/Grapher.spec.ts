@@ -23,9 +23,9 @@ describe('components/grapher/Grapher.vue', () => {
       store = new Vuex.Store({
         state: initialState({
           hashMarkOffsetsY: [8, 16],
-          middleOfField: 0
+          middleOfField: 0,
         }),
-        mutations: mutations
+        mutations,
       });
       wrapper = mount(Grapher, {
         store,
@@ -34,13 +34,13 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('generates one yard line', () => {
-      expect(wrapper.contains('.grapher--yard-line')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--yard-line')).toHaveLength(1);
+      expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--yard-line"]')).toHaveLength(1);
     });
 
     it('generates two hash marks', () => {
-      expect(wrapper.contains('.grapher--hash-mark')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--hash-mark')).toHaveLength(2);
+      expect(wrapper.contains('[data-test="grapher--hash-mark"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--hash-mark"]')).toHaveLength(2);
     });
 
     it('field has width 32 and height 24', () => {
@@ -50,20 +50,20 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('four step grid: generates 6 vertical lines and 5 horizontal lines', () => {
-      expect(wrapper.contains('.grapher--grid-vertical')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--grid-vertical')).toHaveLength(6);
-      expect(wrapper.contains('.grapher--grid-horizontal')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--grid-horizontal')).toHaveLength(5);
+      expect(wrapper.contains('[data-test="grapher--grid-vertical"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--grid-vertical"]')).toHaveLength(6);
+      expect(wrapper.contains('[data-test="grapher--grid-horizontal"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--grid-horizontal"]')).toHaveLength(5);
     });
 
     it('generates no field numbers', () => {
-      expect(wrapper.contains('.grapher--yard-number')).toBeFalsy();
+      expect(wrapper.contains('[data-test="grapher--yard-number"]')).toBeFalsy();
     });
 
     it('does not render four step grid if fourStepGrid is false', () => {
       store.commit('setFourStepGrid', false);
-      expect(wrapper.contains('.grapher--grid-vertical')).toBeFalsy();
-      expect(wrapper.contains('.grapher--grid-horizontal')).toBeFalsy();
+      expect(wrapper.contains('[data-test="grapher--grid-vertical"]')).toBeFalsy();
+      expect(wrapper.contains('[data-test="grapher--grid-horizontal"]')).toBeFalsy();
     });
   });
 
@@ -73,7 +73,7 @@ describe('components/grapher/Grapher.vue', () => {
     beforeAll(() => {
       store = new Vuex.Store({
         state: initialState(),
-        mutations: mutations
+        mutations,
       });
       wrapper = mount(Grapher, {
         store,
@@ -82,13 +82,13 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('generates 21 yard lines', () => {
-      expect(wrapper.contains('.grapher--yard-line')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--yard-line')).toHaveLength(21);
+      expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--yard-line"]')).toHaveLength(21);
     });
 
     it('generates 42 hash marks', () => {
-      expect(wrapper.contains('.grapher--hash-mark')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--hash-mark')).toHaveLength(42);
+      expect(wrapper.contains('[data-test="grapher--hash-mark"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--hash-mark"]')).toHaveLength(42);
     });
 
     it('field has width 192 and height 84', () => {
@@ -98,21 +98,21 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('four step grid: generates 26 vertical lines and 20 horizontal lines', () => {
-      expect(wrapper.contains('.grapher--grid-vertical')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--grid-vertical')).toHaveLength(26);
-      expect(wrapper.contains('.grapher--grid-horizontal')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--grid-horizontal')).toHaveLength(20);
+      expect(wrapper.contains('[data-test="grapher--grid-vertical"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--grid-vertical"]')).toHaveLength(26);
+      expect(wrapper.contains('[data-test="grapher--grid-horizontal"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--grid-horizontal"]')).toHaveLength(20);
     });
 
     it('generates 18 field numbers', () => {
-      expect(wrapper.contains('.grapher--yard-number')).toBeTruthy();
-      expect(wrapper.findAll('.grapher--yard-number')).toHaveLength(18);
+      expect(wrapper.contains('[data-test="grapher--yard-number"]')).toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--yard-number"]')).toHaveLength(18);
     });
 
     it('does not render four step grid if fourStepGrid is false', () => {
       store.commit('setFourStepGrid', false);
-      expect(wrapper.contains('.grapher--grid-vertical')).toBeFalsy();
-      expect(wrapper.contains('.grapher--grid-horizontal')).toBeFalsy();
+      expect(wrapper.contains('[data-test="grapher--grid-vertical"]')).toBeFalsy();
+      expect(wrapper.contains('[data-test="grapher--grid-horizontal"]')).toBeFalsy();
     });
   });
 });

@@ -10,64 +10,64 @@
         v-bind:height="fieldHeight"
       />
       <line
-        class="grapher--yard-line"
         v-for="offsetX in yardLineOffsetsX"
         v-bind:key="offsetX + '-yardLine'"
         v-bind:x1="offsetX"
         y1="0"
         v-bind:x2="offsetX"
         v-bind:y2="fieldHeight"
+        data-test="grapher--yard-line"
       />
       <template v-for="offsetY in hashMarkOffsetsY">
         <line
-          class="grapher--hash-mark"
           v-for="offsetX in yardLineOffsetsX"
-          v-bind:key="offsetY + offsetX + '-hashMark'"
+          v-bind:key="offsetX + '-' + offsetY + '-hashMark'"
           v-bind:x1="offsetX - 0.75"
           v-bind:y1="offsetY"
           v-bind:x2="offsetX + 0.75"
           v-bind:y2="offsetY"
+          data-test="grapher--hash-mark"
         />
       </template>
     </g>
     <g v-if="fourStepGrid" class="grapher--grid-container">
       <line
-        class="grapher--grid-vertical"
         v-for="offsetX in fourStepGridOffsetsX"
         v-bind:key="offsetX + '-vertical'"
         v-bind:x1="offsetX"
         y1="-0.125"
         v-bind:x2="offsetX"
         v-bind:y2="fieldHeight"
+        data-test="grapher--grid-vertical"
       />
       <line
-        class="grapher--grid-horizontal"
         v-for="offsetY in fourStepGridOffsetsY"
         v-bind:key="offsetY + '-horizontal'"
         x1="-0.125"
         v-bind:y1="offsetY"
         v-bind:x2="fieldWidth"
         v-bind:y2="offsetY"
+        data-test="grapher--grid-horizontal"
       />
     </g>
     <g class="grapher--number-container">
       <!-- Bottom of the yard line numbers is approximately 11 steps from the sideline -->
       <text
-        class="grapher--yard-number"
         v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
         v-bind:key="index + '-yardNum'"
         v-bind:x="numberAndOffsetX[1]"
         v-bind:y="fieldHeight - 11"
+        data-test="grapher--yard-number"
       >
         {{ numberAndOffsetX[0] }}
       </text>
       <text
-        class="grapher--yard-number"
         v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
         v-bind:key="index + '-yardNumRotated'"
         v-bind:x="numberAndOffsetX[1]"
         v-bind:y="11"
         v-bind:transform="'rotate(180 ' + numberAndOffsetX[1] + ' 11)'"
+        data-test="grapher--yard-number"
       >
         {{ numberAndOffsetX[0] }}
       </text>
