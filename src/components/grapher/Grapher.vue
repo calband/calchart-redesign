@@ -1,78 +1,73 @@
 <template>
 <div class="grapher">
-  <svg
-    class="grapher-svg"
-    width="100%"
-    height="100%"
-  ><g> <!-- Note: we wrap the entire svg in a g so that svgPanZoom doesn't
+  <svg class="grapher-svg"><g> <!-- Note: we wrap the entire svg in a g so that svgPanZoom doesn't
             have to create a new g and Vue loses track of the DOM elements. -->
     <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
-    <g stroke="white" stroke-width="0.5">
+    <g class="grapher--line-container">
       <rect
         class="grapher--field-rect"
-        fill="green"
         v-bind:width="fieldWidth"
         v-bind:height="fieldHeight"
       />
       <line
-        class="grapher--yard-line"
         v-for="offsetX in yardLineOffsetsX"
         v-bind:key="offsetX + '-yardLine'"
         v-bind:x1="offsetX"
         y1="0"
         v-bind:x2="offsetX"
         v-bind:y2="fieldHeight"
+        data-test="grapher--yard-line"
       />
       <template v-for="offsetY in hashMarkOffsetsY">
         <line
-          class="grapher--hash-mark"
           v-for="offsetX in yardLineOffsetsX"
-          v-bind:key="offsetY + offsetX + '-hashMark'"
+          v-bind:key="offsetX + '-' + offsetY + '-hashMark'"
           v-bind:x1="offsetX - 0.75"
           v-bind:y1="offsetY"
           v-bind:x2="offsetX + 0.75"
           v-bind:y2="offsetY"
+          data-test="grapher--hash-mark"
         />
       </template>
     </g>
-    <g v-if="enableFourStepGrid" stroke="white" stroke-width="0.125" stroke-dasharray="0.25 0.75">
+    <g v-if="fourStepGrid" class="grapher--grid-container">
       <line
-        class="grapher--grid-vertical"
         v-for="offsetX in fourStepGridOffsetsX"
         v-bind:key="offsetX + '-vertical'"
         v-bind:x1="offsetX"
         y1="-0.125"
         v-bind:x2="offsetX"
         v-bind:y2="fieldHeight"
+        data-test="grapher--grid-vertical"
       />
       <line
-        class="grapher--grid-horizontal"
         v-for="offsetY in fourStepGridOffsetsY"
         v-bind:key="offsetY + '-horizontal'"
         x1="-0.125"
         v-bind:y1="offsetY"
         v-bind:x2="fieldWidth"
         v-bind:y2="offsetY"
+        data-test="grapher--grid-horizontal"
       />
     </g>
-    <g fill=white font-size="3" text-anchor="middle">
+    <g class="grapher--number-container">
       <!-- Bottom of the yard line numbers is approximately 11 steps from the sideline -->
       <text
-        class="grapher--yard-number"
         v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
         v-bind:key="index + '-yardNum'"
         v-bind:x="numberAndOffsetX[1]"
         v-bind:y="fieldHeight - 11"
+        data-test="grapher--yard-number"
       >
         {{ numberAndOffsetX[0] }}
       </text>
       <text
-        class="grapher--yard-number"
         v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
         v-bind:key="index + '-yardNumRotated'"
         v-bind:x="numberAndOffsetX[1]"
         v-bind:y="11"
         v-bind:transform="'rotate(180 ' + numberAndOffsetX[1] + ' 11)'"
+        data-test="grapher--yard-number"
       >
         {{ numberAndOffsetX[0] }}
       </text>
@@ -105,8 +100,8 @@ export default Vue.extend({
       }
       return yardLineOffsetsX;
     },
-    enableFourStepGrid(): boolean {
-      return this.$store.state.enableFourStepGrid;
+    fourStepGrid(): boolean {
+      return this.$store.state.fourStepGrid;
     },
     fieldWidth(): number {
       // Account for endzones + area between yard lines
@@ -168,8 +163,33 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .grapher {
+  flex: 1 1;
+  background: $stone-pine;
+}
+
+.grapher-svg {
   width: 100%;
   height: 100%;
-  background: burlywood;
+}
+
+.grapher--line-container {
+  stroke: $white;
+  stroke-width: 0.5;
+}
+
+.grapher--grid-container {
+  stroke: $white;
+  stroke-width: 0.125;
+  stroke-dasharray: 0.25 0.75;
+}
+
+.grapher--number-container {
+  fill: $white;
+  font-size: 4px;
+  text-anchor: middle;
+}
+
+.grapher--field-rect {
+  fill: $soybean;
 }
 </style>
