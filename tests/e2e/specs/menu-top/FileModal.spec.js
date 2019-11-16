@@ -13,13 +13,13 @@ describe('components/menu-top/FileModal', () => {
   });
 
   it('renders with the defaults', () => {
-    cy.get('[data-test="file-modal--frontHashOffsetY"]')
+    cy.get('[data-test="file-modal--front-hash-offset-y"]')
       .should('have.value', '32');
 
-    cy.get('[data-test="file-modal--backHashOffsetY"]')
+    cy.get('[data-test="file-modal--back-hash-offset-y"]')
       .should('have.value', '52');
 
-    cy.get('[data-test="file-modal--middleOfField"]')
+    cy.get('[data-test="file-modal--middle-of-field"]')
       .should('have.value', '50');
   });
 
@@ -48,15 +48,15 @@ describe('components/menu-top/FileModal', () => {
   });
 
   it('field changes shape upon adjusting hashes and middle of field', () => {
-    cy.get('[data-test="file-modal--frontHashOffsetY"]')
+    cy.get('[data-test="file-modal--front-hash-offset-y"]')
       .clear()
       .type('8');
 
-    cy.get('[data-test="file-modal--backHashOffsetY"]')
+    cy.get('[data-test="file-modal--back-hash-offset-y"]')
       .clear()
       .type('16');
 
-    cy.get('[data-test="file-modal--middleOfField"]')
+    cy.get('[data-test="file-modal--middle-of-field"]')
       .clear();
 
     cy.get('[data-test="file-modal--close"]')

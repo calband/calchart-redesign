@@ -23,7 +23,7 @@
           v-model="frontHashOffsetY"
           min="0"
           max="256"
-          data-test="file-modal--frontHashOffsetY"
+          data-test="file-modal--front-hash-offset-y"
         />
       </b-field>
 
@@ -32,7 +32,7 @@
           v-model="backHashOffsetY"
           min="0"
           max="256"
-          data-test="file-modal--backHashOffsetY"
+          data-test="file-modal--back-hash-offset-y"
         />
       </b-field>
 
@@ -41,7 +41,7 @@
           v-model="middleOfField"
           min="0"
           max="200"
-          data-test="file-modal--middleOfField"
+          data-test="file-modal--middle-of-field"
         />
       </b-field>
     </section>
