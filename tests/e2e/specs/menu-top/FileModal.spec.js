@@ -8,7 +8,7 @@ describe('components/menu-top/FileModal', () => {
     cy.get('[data-test="menu-top--file-edit"]')
       .click();
 
-    cy.get('[data-test="file-modal"]')
+    cy.get('[data-test="menu-top--file-modal"]')
       .should('be.visible');
   });
 
@@ -29,6 +29,22 @@ describe('components/menu-top/FileModal', () => {
 
     cy.get('[data-test="file-modal"]')
       .should('not.be.visible');
+  });
+
+  it('show title changes correctly', () => {
+    cy.get('[data-test="file-modal--show-title"]')
+      .should('have.value', 'Example Show')
+      .clear()
+      .type('Ariana Grande Show');
+
+    cy.get('[data-test="file-modal--close"]')
+      .click();
+
+    cy.get('[data-test="menu-top--file"]')
+      .click();
+
+    cy.get('[data-test="menu-top--selected-show"]')
+      .contains('Ariana Grande Show');
   });
 
   it('field changes shape upon adjusting hashes and middle of field', () => {

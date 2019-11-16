@@ -2,7 +2,8 @@ import { createLocalVue, mount, Wrapper } from '@vue/test-utils';
 import Vue, { VueConstructor } from 'vue';
 import Vuex, { Store } from 'vuex';
 import Buefy from 'buefy';
-import { initialState, mutations, stateType } from '@/store';
+import { generateStore } from '@/store';
+import { stateType } from '@/store/types';
 import MenuTop from '@/components/menu-top/MenuTop.vue';
 
 describe('components/menu-top/MenuTop', () => {
@@ -14,10 +15,7 @@ describe('components/menu-top/MenuTop', () => {
     localVue = createLocalVue();
     localVue.use(Vuex);
     localVue.use(Buefy);
-    store = new Vuex.Store({
-      state: initialState(),
-      mutations,
-    });
+    store = generateStore();
     wrapper = mount(MenuTop, {
       store,
       localVue,
@@ -25,11 +23,17 @@ describe('components/menu-top/MenuTop', () => {
   });
 
   describe('file dropdown', () => {
+    it('shows the show title', () => {
+      expect(wrapper.contains('[data-test="menu-top--selected-show"]')).toBeTruthy();
+      expect(wrapper.find('[data-test="menu-top--selected-show"]').text())
+        .toBe('Selected: Example Show');
+    });
+
     it('sets fileModal to true upon clicking "Edit Show Details"', () => {
-      expect(store.state.fileModal).toBeFalsy();
+      expect(wrapper.contains('[data-test="menu-top--file-modal"]')).toBeFalsy();
       expect(wrapper.contains('[data-test="menu-top--file-edit"]')).toBeTruthy();
       wrapper.find('[data-test="menu-top--file-edit"]').trigger('click');
-      expect(store.state.fileModal).toBeTruthy();
+      expect(wrapper.contains('[data-test="menu-top--file-modal"]')).toBeTruthy();
     });
   });
 

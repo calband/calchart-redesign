@@ -5,7 +5,8 @@ module.exports = {
   },
   extends: [
     'plugin:vue/essential',
-    '@vue/airbnb',
+    'plugin:vue/strongly-recommended',
+    'plugin:vue/recommended',
     '@vue/typescript',
   ],
   rules: {

@@ -23,14 +23,19 @@ describe('components/menu-top/MenuTop', () => {
         .should('be.visible');
     });
 
+    it('shows selected show title', () => {
+      cy.get('[data-test="menu-top--selected-show"]')
+        .contains('Example Show');
+    });
+
     it('clicking "Edit Show Details" opens show modal', () => {
-      cy.get('[data-test="file-modal"]')
+      cy.get('[data-test="menu-top--file-modal"]')
         .should('not.be.visible');
 
       cy.get('[data-test="menu-top--file-edit"]')
         .click();
 
-      cy.get('[data-test="file-modal"]')
+      cy.get('[data-test="menu-top--file-modal"]')
         .should('be.visible');
     });
   });

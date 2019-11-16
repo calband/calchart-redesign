@@ -2,25 +2,48 @@
   <div class="menu-top">
     <b-navbar type="is-primary">
       <template slot="start">
+        <b-navbar-dropdown
+          label="File"
+          data-test="menu-top--file"
+        >
+          <b-navbar-item data-test="menu-top--selected-show">
+            Selected: {{ showTitle }}
+          </b-navbar-item>
 
-        <b-navbar-dropdown label="File" data-test="menu-top--file">
-          <b-navbar-item v-on:click="enableFileModal" data-test="menu-top--file-edit">
+          <hr class="navbar-divider">
+
+          <b-navbar-item
+            data-test="menu-top--file-edit"
+            @click="fileModalActive = true"
+          >
             Edit Show Details
           </b-navbar-item>
         </b-navbar-dropdown>
 
-        <b-navbar-dropdown label="View" data-test="menu-top--view">
+        <b-navbar-dropdown
+          label="View"
+          data-test="menu-top--view"
+        >
           <b-navbar-item>
-            <b-checkbox v-model="fourStepGrid" data-test="menu-top--view-grid">
+            <b-checkbox
+              v-model="fourStepGrid"
+              data-test="menu-top--view-grid"
+            >
               Four step grid
             </b-checkbox>
           </b-navbar-item>
         </b-navbar-dropdown>
-
       </template>
     </b-navbar>
 
-    <FileModal/>
+    <b-modal
+      :active.sync="fileModalActive"
+      has-modal-card
+      trap-focus
+      data-test="menu-top--file-modal"
+    >
+      <FileModal />
+    </b-modal>
   </div>
 </template>
 
@@ -33,7 +56,14 @@ export default Vue.extend({
   components: {
     FileModal,
   },
+  data: () => ({
+    fileModalActive: false,
+  }),
   computed: {
+    showTitle(): string {
+      return this.$store.getters.getShowTitle;
+    },
+
     fourStepGrid: {
       get(): boolean {
         return this.$store.state.fourStepGrid;
@@ -41,11 +71,6 @@ export default Vue.extend({
       set(enabled: boolean): void {
         this.$store.commit('setFourStepGrid', enabled);
       },
-    },
-  },
-  methods: {
-    enableFileModal(): void {
-      this.$store.commit('setFileModal', true);
     },
   },
 });

@@ -3,7 +3,9 @@ import Vue, { VueConstructor } from 'vue';
 import Vuex, { Store } from 'vuex';
 import svgPanZoom from 'svg-pan-zoom';
 import Grapher from '@/components/grapher/Grapher.vue';
-import { initialState, stateType, mutations } from '@/store';
+import { generateStore } from '@/store';
+import { stateType } from '@/store/types';
+import Show from '@/models/Show';
 
 // Mock out svgPanZoom to avoid TypeError: (0 , _svgPanZoom.default) is not a function
 // https://github.com/facebook/jest/issues/5023#issuecomment-497120576
@@ -20,13 +22,11 @@ describe('components/grapher/Grapher.vue', () => {
     let store: Store<stateType>;
     let wrapper: Wrapper<Vue>;
     beforeAll(() => {
-      store = new Vuex.Store({
-        state: initialState({
-          hashMarkOffsetsY: [8, 16],
-          middleOfField: 0,
-        }),
-        mutations,
-      });
+      const show: Show = new Show();
+      show.field.frontHashOffsetY = 8;
+      show.field.backHashOffsetY = 16;
+      show.field.middleOfField = 0;
+      store = generateStore({ show });
       wrapper = mount(Grapher, {
         store,
         localVue,
@@ -71,10 +71,7 @@ describe('components/grapher/Grapher.vue', () => {
     let store: Store<stateType>;
     let wrapper: Wrapper<Vue>;
     beforeAll(() => {
-      store = new Vuex.Store({
-        state: initialState(),
-        mutations,
-      });
+      store = generateStore();
       wrapper = mount(Grapher, {
         store,
         localVue,
