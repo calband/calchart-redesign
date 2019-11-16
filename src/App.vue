@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <MenuTop/>
+    <MenuTop />
     <div class="columns is-gapless app--bottom">
-      <MenuLeft/>
+      <MenuLeft />
       <div class="column app--middle-col">
-        <Grapher/>
-        <MenuBottom/>
+        <Grapher />
+        <MenuBottom />
       </div>
-      <MenuRight/>
+      <MenuRight />
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ import MenuRight from './components/menu-right/MenuRight.vue';
 import MenuBottom from './components/menu-bottom/MenuBottom.vue';
 
 export default Vue.extend({
-  name: 'app',
+  name: 'App',
   components: {
     MenuTop,
     MenuLeft,

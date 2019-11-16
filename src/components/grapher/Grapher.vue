@@ -1,79 +1,82 @@
 <template>
-<div class="grapher">
-  <svg class="grapher-svg"><g> <!-- Note: we wrap the entire svg in a g so that svgPanZoom doesn't
+  <div class="grapher">
+    <svg class="grapher-svg"><g> <!-- Note: we wrap the entire svg in a g so that svgPanZoom doesn't
             have to create a new g and Vue loses track of the DOM elements. -->
-    <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
-    <g class="grapher--line-container">
-      <rect
-        class="grapher--field-rect"
-        v-bind:width="fieldWidth"
-        v-bind:height="fieldHeight"
-      />
-      <line
-        v-for="offsetX in yardLineOffsetsX"
-        v-bind:key="offsetX + '-yardLine'"
-        v-bind:x1="offsetX"
-        y1="0"
-        v-bind:x2="offsetX"
-        v-bind:y2="fieldHeight"
-        data-test="grapher--yard-line"
-      />
-      <template v-for="offsetY in hashMarkOffsetsY">
+      <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
+      <g class="grapher--line-container">
+        <rect
+          class="grapher--field-rect"
+          :width="fieldWidth"
+          :height="fieldHeight"
+        />
         <line
           v-for="offsetX in yardLineOffsetsX"
-          v-bind:key="offsetX + '-' + offsetY + '-hashMark'"
-          v-bind:x1="offsetX - 0.75"
-          v-bind:y1="offsetY"
-          v-bind:x2="offsetX + 0.75"
-          v-bind:y2="offsetY"
-          data-test="grapher--hash-mark"
+          :key="offsetX + '-yardLine'"
+          :x1="offsetX"
+          y1="0"
+          :x2="offsetX"
+          :y2="fieldHeight"
+          data-test="grapher--yard-line"
         />
-      </template>
-    </g>
-    <g v-if="fourStepGrid" class="grapher--grid-container">
-      <line
-        v-for="offsetX in fourStepGridOffsetsX"
-        v-bind:key="offsetX + '-vertical'"
-        v-bind:x1="offsetX"
-        y1="-0.125"
-        v-bind:x2="offsetX"
-        v-bind:y2="fieldHeight"
-        data-test="grapher--grid-vertical"
-      />
-      <line
-        v-for="offsetY in fourStepGridOffsetsY"
-        v-bind:key="offsetY + '-horizontal'"
-        x1="-0.125"
-        v-bind:y1="offsetY"
-        v-bind:x2="fieldWidth"
-        v-bind:y2="offsetY"
-        data-test="grapher--grid-horizontal"
-      />
-    </g>
-    <g class="grapher--number-container">
-      <!-- Bottom of the yard line numbers is approximately 11 steps from the sideline -->
-      <text
-        v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
-        v-bind:key="index + '-yardNum'"
-        v-bind:x="numberAndOffsetX[1]"
-        v-bind:y="fieldHeight - 11"
-        data-test="grapher--yard-number"
+        <template v-for="offsetY in hashMarkOffsetsY">
+          <line
+            v-for="offsetX in yardLineOffsetsX"
+            :key="offsetX + '-' + offsetY + '-hashMark'"
+            :x1="offsetX - 0.75"
+            :y1="offsetY"
+            :x2="offsetX + 0.75"
+            :y2="offsetY"
+            data-test="grapher--hash-mark"
+          />
+        </template>
+      </g>
+      <g
+        v-if="fourStepGrid"
+        class="grapher--grid-container"
       >
-        {{ numberAndOffsetX[0] }}
-      </text>
-      <text
-        v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
-        v-bind:key="index + '-yardNumRotated'"
-        v-bind:x="numberAndOffsetX[1]"
-        v-bind:y="11"
-        v-bind:transform="'rotate(180 ' + numberAndOffsetX[1] + ' 11)'"
-        data-test="grapher--yard-number"
-      >
-        {{ numberAndOffsetX[0] }}
-      </text>
-    </g>
-  </g></svg>
-</div>
+        <line
+          v-for="offsetX in fourStepGridOffsetsX"
+          :key="offsetX + '-vertical'"
+          :x1="offsetX"
+          y1="-0.125"
+          :x2="offsetX"
+          :y2="fieldHeight"
+          data-test="grapher--grid-vertical"
+        />
+        <line
+          v-for="offsetY in fourStepGridOffsetsY"
+          :key="offsetY + '-horizontal'"
+          x1="-0.125"
+          :y1="offsetY"
+          :x2="fieldWidth"
+          :y2="offsetY"
+          data-test="grapher--grid-horizontal"
+        />
+      </g>
+      <g class="grapher--number-container">
+        <!-- Bottom of the yard line numbers is approximately 11 steps from the sideline -->
+        <text
+          v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
+          :key="index + '-yardNum'"
+          :x="numberAndOffsetX[1]"
+          :y="fieldHeight - 11"
+          data-test="grapher--yard-number"
+        >
+          {{ numberAndOffsetX[0] }}
+        </text>
+        <text
+          v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
+          :key="index + '-yardNumRotated'"
+          :x="numberAndOffsetX[1]"
+          :y="11"
+          :transform="'rotate(180 ' + numberAndOffsetX[1] + ' 11)'"
+          data-test="grapher--yard-number"
+        >
+          {{ numberAndOffsetX[0] }}
+        </text>
+      </g>
+    </g></svg>
+  </div>
 </template>
 
 <script lang="ts">
@@ -83,11 +86,11 @@ import svgPanZoom from 'svg-pan-zoom';
 export default Vue.extend({
   name: 'Grapher',
   computed: {
-    hashMarkOffsetsY(): number[] {
-      return this.$store.state.hashMarkOffsetsY;
+    hashMarkOffsetsY(): [number, number] {
+      return [this.$store.getters.getFrontHashOffsetY, this.$store.getters.getBackHashOffsetY];
     },
     yardLineOffsetsX(): number[] {
-      const { middleOfField } = this.$store.state;
+      const middleOfField = this.$store.getters.getMiddleOfField;
       const yardLineOffsetsX: number[] = [];
       let x = 16;
       for (let lineNum = 0; lineNum < middleOfField; lineNum += 5) {
@@ -108,7 +111,7 @@ export default Vue.extend({
       return 16 + 8 * (this.yardLineOffsetsX.length - 1) + 16;
     },
     fieldHeight(): number {
-      return this.hashMarkOffsetsY[1] + this.hashMarkOffsetsY[0];
+      return this.$store.getters.getBackHashOffsetY + this.$store.getters.getFrontHashOffsetY;
     },
     fourStepGridOffsetsX(): number[] {
       // Do not render a vertical line if there is a yard line
