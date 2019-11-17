@@ -2,7 +2,6 @@
  * Defines landmarks needed to determine the size of the field.
  * Defaults to college field measurements.
  */
-
 export default class Field {
   frontHashOffsetY: number;
 
