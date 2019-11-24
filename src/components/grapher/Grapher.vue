@@ -168,11 +168,16 @@ export default Vue.extend({
 .grapher {
   flex: 1 1;
   background: $stone-pine;
+  position: relative;
 }
 
 .grapher-svg {
+  // https://stackoverflow.com/questions/7570917/svg-height-incorrectly-calculated-in-webkit-browsers
   width: 100%;
   height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .grapher--line-container {
