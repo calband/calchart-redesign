@@ -1,7 +1,7 @@
 /**
  * Helper for direction name to degrees.
  */
-export enum DIRECTIONS {
+export enum DIRECTION_TO_DEGREES {
   N = 0,
   NE = 45,
   E = 90,

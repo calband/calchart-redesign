@@ -2,6 +2,13 @@ import { FlowBeat } from './util/types';
 
 /**
  * Defines the position and direction of a marcher for a specific StuntSheet.
+ * 
+ * @property x             - EW position
+ * @property y             - NS position
+ * @property dotLabelIndex - Which label to use in Show.dotLabels
+ * @property dotTypeIndex  - Which set of continuities to use in StuntSheet.dotTypes
+ * @property 
+ * @property cachedFlow    - Cached so that the flow does not need to be recalculated again
  */
 export default class StuntSheetDot {
   x: number;
@@ -9,8 +16,6 @@ export default class StuntSheetDot {
   y: number;
 
   dotLabelIndex: number|null;
-
-  direction: number;
 
   dotTypeIndex: number;
 
@@ -20,7 +25,6 @@ export default class StuntSheetDot {
     this.x = x;
     this.y = y;
     this.dotLabelIndex = dotLabelIndex !== undefined ? dotLabelIndex : null;
-    this.direction = 0;
     this.dotTypeIndex = 0;
     this.cachedFlow = null;
   }

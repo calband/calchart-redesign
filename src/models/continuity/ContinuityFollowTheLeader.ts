@@ -1,29 +1,30 @@
 import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
+import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
-import StuntSheetDot from '../StuntSheetDot';
 
 /**
- * Moves in even steps for the entirety of the specified duration to the end position.
- * Accepts HS, MM, and Military.
+ * Defines the path that the leader takes, which the other bandsmen follow.
  * 
- * - Even HS 16
- * - Even MM 8
+ * @property leaderPath - Defines the flow that the leader will take
  */
-export default class ContinuityEven implements BaseContinuity {
+export default class ContinuityFollowTheLeader implements BaseContinuity {
   continuityId: CONTINUITY_IDS;
 
   duration: number;
 
-  marchType: MARCH_TYPES;
+  leaderPath: FlowBeat[];
 
   humanReadableText: string;
 
-  constructor(duration: number, marchType: MARCH_TYPES) {
-    this.continuityId = CONTINUITY_IDS.EVEN;
-    this.duration = duration;
-    this.marchType = marchType;
+  marchType: MARCH_TYPES;
+
+  constructor(marchType: MARCH_TYPES) {
+    this.continuityId = CONTINUITY_IDS.FOLLOW_THE_LEADER;
+    this.duration = 0;
+    this.leaderPath = [];
     this.humanReadableText = '';
+    this.marchType = marchType;
   }
 
   getHumanReadableText(): string {

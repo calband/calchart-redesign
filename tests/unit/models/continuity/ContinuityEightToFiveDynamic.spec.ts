@@ -1,6 +1,6 @@
 import StuntSheetDot from '@/models/StuntSheetDot';
 import ContinuityEightToFiveDynamic, { EIGHT_TO_FIVE_DYNAMIC_TYPES } from '@/models/continuity/ContinuityEightToFiveDynamic';
-import { MARCH_TYPES, DIRECTIONS } from '@/models/util/constants';
+import { MARCH_TYPES, DIRECTION_TO_DEGREES } from '@/models/util/constants';
 import { FlowBeat } from '@/models/util/types';
 
 describe('models/continuity/ContinuityEightToFiveDynamic', () => {
@@ -65,25 +65,25 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
           {
             x: 2,
             y: 3,
-            direction: DIRECTIONS.E,
+            direction: DIRECTION_TO_DEGREES.E,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 2,
             y: 4,
-            direction: DIRECTIONS.E,
+            direction: DIRECTION_TO_DEGREES.E,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 3,
             y: 4,
-            direction: DIRECTIONS.N,
+            direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 4,
             y: 4,
-            direction: DIRECTIONS.N,
+            direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
           }
         ]);
@@ -100,25 +100,25 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
           {
             x: 3,
             y: 2,
-            direction: DIRECTIONS.N,
+            direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 4,
             y: 2,
-            direction: DIRECTIONS.N,
+            direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 4,
             y: 3,
-            direction: DIRECTIONS.E,
+            direction: DIRECTION_TO_DEGREES.E,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 4,
             y: 4,
-            direction: DIRECTIONS.E,
+            direction: DIRECTION_TO_DEGREES.E,
             marchType: MARCH_TYPES.HS,
           }
         ]);
@@ -140,25 +140,25 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
           {
             x: 3,
             y: 3,
-            direction: DIRECTIONS.NE,
+            direction: DIRECTION_TO_DEGREES.NE,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 4,
             y: 4,
-            direction: DIRECTIONS.NE,
+            direction: DIRECTION_TO_DEGREES.NE,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 5,
             y: 4,
-            direction: DIRECTIONS.N,
+            direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 6,
             y: 4,
-            direction: DIRECTIONS.N,
+            direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
           }
         ]);
@@ -175,25 +175,25 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
           {
             x: 3,
             y: 2,
-            direction: DIRECTIONS.N,
+            direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 4,
             y: 2,
-            direction: DIRECTIONS.N,
+            direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 5,
             y: 3,
-            direction: DIRECTIONS.NE,
+            direction: DIRECTION_TO_DEGREES.NE,
             marchType: MARCH_TYPES.HS,
           },
           {
             x: 6,
             y: 4,
-            direction: DIRECTIONS.NE,
+            direction: DIRECTION_TO_DEGREES.NE,
             marchType: MARCH_TYPES.HS,
           }
         ]);

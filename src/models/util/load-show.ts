@@ -6,6 +6,11 @@ import StuntSheetDot from '../StuntSheetDot';
 import ContinuityInPlace from '../continuity/ContinuityInPlace';
 import ContinuityEightToFiveDynamic from '../continuity/ContinuityEightToFiveDynamic';
 import ContinuityEven from '../continuity/ContinuityEven';
+import ContinuityEightToFiveStatic from '../continuity/ContinuityEightToFiveStatic';
+import ContinuityFollowTheLeader from '../continuity/ContinuityFollowTheLeader';
+import ContinuityCounterMarch from '../continuity/ContinuityCounterMarch';
+import ContinuityGateTurn from '../continuity/ContinuityGateTurn';
+import ContinuityStepTwo from '../continuity/ContinuityStepTwo';
 
 /**
  * Helper that creates a new object with Typescript class defined in proto.
@@ -26,21 +31,39 @@ export const typeArrayHelper = (array: any[], proto: any): Object[] => {
 /**
  * Helper function to get the class prototype of a continuity.
  */
-const getContinuityProto = (continuity: BaseContinuity) => {
+export const getContinuityProto = (continuity: BaseContinuity) => {
   switch (continuity.continuityId) {
     case CONTINUITY_IDS.IN_PLACE:
       return ContinuityInPlace.prototype;
+
+    case CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC:
+      return ContinuityEightToFiveStatic.prototype;
     
     case CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC:
       return ContinuityEightToFiveDynamic.prototype;
     
     case CONTINUITY_IDS.EVEN:
       return ContinuityEven.prototype;
+
+    case CONTINUITY_IDS.FOLLOW_THE_LEADER:
+      return ContinuityFollowTheLeader.prototype;
+    
+    case CONTINUITY_IDS.COUNTER_MARCH:
+      return ContinuityCounterMarch.prototype;
+
+    case CONTINUITY_IDS.GATE_TURN:
+      return ContinuityGateTurn.prototype;
+
+    case CONTINUITY_IDS.STEP_TWO:
+      return ContinuityStepTwo.prototype;
+
+    default:
+      return Object.prototype;
   }
 }
 
 /**
- * reviver function to be used in JSON.parse. Makes sure that parsed objects have the correct Typescript class.
+ * The reviver function to be used in JSON.parse. Makes sure that parsed objects have the correct Typescript class.
  * See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
  * 
  * This must be done in for any field that is not a primitive type.

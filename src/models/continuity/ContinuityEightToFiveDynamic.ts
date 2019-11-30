@@ -18,6 +18,8 @@ export enum EIGHT_TO_FIVE_DYNAMIC_TYPES {
  * - NS/EW FMHS
  * - DHS/FMHS
  * - FMHS/DHS
+ * 
+ * @property eightToFiveType - Determines the order of directions to move in
  */
 export default class ContinuityEightToFiveDynamic implements BaseContinuity {
   continuityId: CONTINUITY_IDS;

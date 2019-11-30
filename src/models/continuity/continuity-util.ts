@@ -2,10 +2,10 @@ import { FlowBeat } from "../util/types";
 
 import StuntSheetDot from "../StuntSheetDot";
 
-import { MARCH_TYPES, DIRECTIONS } from "../util/constants";
+import { MARCH_TYPES, DIRECTION_TO_DEGREES } from "../util/constants";
 
 /**
- * Decides where the next continuity starts from, either the end of the flow or the position of the dot.
+ * Decides the starting position for the upcoming continuity
  * @returns [x, y]
  */
 export const startPositionHelper = (flow: FlowBeat[], startDot: StuntSheetDot): [number, number] => {
@@ -24,13 +24,14 @@ export const startPositionHelper = (flow: FlowBeat[], startDot: StuntSheetDot): 
 
 /**
  * Helper function to march in either north or south (eight to five)
+ * 
  * @param offsetX    - How many steps to march. Positive is north, negative is south.
  * @param direction? - To enforce a direction to face, set this parameter. If undefined, the marcher will face the direction they are marching.
  * @returns [x, y] ending coordinates
  */
 export const nsHelper = (flow: FlowBeat[], startX: number, startY: number, offsetX: number, marchType: MARCH_TYPES, direction?: number): [number, number] => {
   if (direction === undefined) {
-    direction = Math.sign(offsetX) ? DIRECTIONS.N : DIRECTIONS.S;
+    direction = Math.sign(offsetX) ? DIRECTION_TO_DEGREES.N : DIRECTION_TO_DEGREES.S;
   }
 
   for (let step = 1; step <= Math.abs(offsetX); step += 1) {
@@ -47,13 +48,14 @@ export const nsHelper = (flow: FlowBeat[], startX: number, startY: number, offse
 
 /**
  * Helper function to march in either north or south (eight to five)
+ * 
  * @param offsetY    - How many steps to march. Positive is east, negative is west.
  * @param direction? - To enforce a direction to face, set this parameter. If undefined, the marcher will face the direction they are marching.
  * @returns [x, y] ending coordinates
  */
 export const ewHelper = (flow: FlowBeat[], startX: number, startY: number, offsetY: number, marchType: MARCH_TYPES, direction?: number): [number, number] => {
   if (direction === undefined) {
-    direction = Math.sign(offsetY) ? DIRECTIONS.E : DIRECTIONS.W;
+    direction = Math.sign(offsetY) ? DIRECTION_TO_DEGREES.E : DIRECTION_TO_DEGREES.W;
   }
 
   for (let step = 1; step <= Math.abs(offsetY); step += 1) {
@@ -70,9 +72,10 @@ export const ewHelper = (flow: FlowBeat[], startX: number, startY: number, offse
 
 /**
  * Helper function to march in a diagonal (eight to five)
+ * 
  * @param offsetX    - Positive is north, negative is south.
  * @param offsetY    - Positive is east, negative is west.
- * @param direction? - To enforce a direction to face, set this parameter. If undefined, the marcher will face the direction they are marching.
+ * @param direction  - To enforce a direction to face, set this parameter. If undefined, the marcher will face the direction they are marching.
  * @returns [x, y] ending coordinates
  */
 export const diagonalHelper = (flow: FlowBeat[], startX: number, startY: number, offsetX: number, offsetY: number, marchType: MARCH_TYPES, direction?: number): [number, number] => {
@@ -82,9 +85,9 @@ export const diagonalHelper = (flow: FlowBeat[], startX: number, startY: number,
 
   if (direction === undefined) {
     if (Math.sign(offsetX) > 0) {
-      direction = Math.sign(offsetY) ? DIRECTIONS.NE : DIRECTIONS.NW;
+      direction = Math.sign(offsetY) ? DIRECTION_TO_DEGREES.NE : DIRECTION_TO_DEGREES.NW;
     } else {
-      direction = Math.sign(offsetY) ? DIRECTIONS.SE : DIRECTIONS.SW;
+      direction = Math.sign(offsetY) ? DIRECTION_TO_DEGREES.SE : DIRECTION_TO_DEGREES.SW;
     }
   }
 
