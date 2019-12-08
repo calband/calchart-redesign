@@ -1,5 +1,6 @@
 module.exports = {
   lintOnSave: process.env.NODE_ENV !== 'production',
+  publicPath: '',
   css: {
     loaderOptions: {
       scss: {

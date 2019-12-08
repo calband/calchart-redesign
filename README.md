@@ -2,26 +2,30 @@
 
 Calchart 4.0 for the web!
 
-See this [Figma link](https://www.figma.com/file/XIkyioLzRlGlpmNiEu47glkQ/Calchart) for the design.
+See this [Figma link](https://www.figma.com/file/XIkyioLzRlGlpmNiEu47glkQ/Calchart) for the design. Also see [calchart-redesign-old](https://github.com/calband/calchart-redesign-old) for the prototype.
 
-Project created from [Vue CLI](https://cli.vuejs.org/).
+Project bootstrapped from [Vue CLI](https://cli.vuejs.org/).
 
 ## Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+Please use the LTS version of [NodeJS/npm](https://nodejs.org/en/) for this project.
+
+We recommend using [Visual Studio Code](https://code.visualstudio.com/) as your IDE. This integrates well with Typescript. We recommend installing the following extensions: ESLint, and Vetur.
+
+## Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+## Compiles and minifies for production
 ```
 npm run build
 ```
 
-### Run your unit tests
+## Run your unit tests
 ```sh
 # Run all tests
 npm run test:unit
@@ -31,18 +35,22 @@ npm run test:unit Grapher
 npm run test:unit -- --watchAll
 ```
 
-See [this](https://cli.vuejs.org/core-plugins/unit-jest.html#injected-commands) for more information. To run with flags for jest, insert `--` before the flags.
+We are using [Jest](https://jestjs.io/) for the unit test framework.
 
-### Debug your unit tests
+[Vue CLI docs](https://cli.vuejs.org/core-plugins/unit-jest.html#injected-commands).
+
+## Debug your unit tests
 ```sh
 # macOS or linux
 node --inspect-brk ./node_modules/.bin/vue-cli-service test:unit
 # Windows
 node --inspect-brk ./node_modules/@vue/cli-service/bin/vue-cli-service.js test:unit
 ```
-See [this](https://cli.vuejs.org/core-plugins/unit-jest.html#debugging-tests) for more information on how to debug.
+See [this](https://jestjs.io/docs/en/troubleshooting.html#tests-are-failing-and-you-dont-know-why) for instructions on how to attach Google Chrome or VSCode to the tests.
 
-### Run your end-to-end tests
+[Vue CLI docs](https://cli.vuejs.org/core-plugins/unit-jest.html#debugging-tests)
+
+## Run your end-to-end tests
 ```sh
 # Run normally (opens Chrome)
 npm run test:e2e
@@ -50,11 +58,13 @@ npm run test:e2e
 npm run test:e2e -- --headless
 ```
 
-See [this](https://cli.vuejs.org/core-plugins/e2e-cypress.html) for more information.
+We are using [Cypress](https://www.cypress.io/) for the end to end test framework.
 
-### Lints and fixes files
+[Vue CLI docs](https://cli.vuejs.org/core-plugins/e2e-cypress.html)
+
+## Lints and fixes files
 ```
 npm run lint
 ```
 
-See [this](https://cli.vuejs.org/core-plugins/eslint.html#injected-commands) for more information.
+[Vue CLI docs](https://cli.vuejs.org/core-plugins/eslint.html#injected-commands)

@@ -7,13 +7,7 @@ import Show from '@/models/Show';
 
 Vue.use(Vuex);
 
-// TODO: Is there a better way to do defaults?
-interface assignedStateType {
-  show?: Show;
-  fourStepGrid?: boolean;
-}
-
-const initialState = (assignedState?: assignedStateType): stateType => {
+const initialState = (assignedState: Partial<stateType>): stateType => {
   const defaultState: stateType = {
     show: new Show(),
     fourStepGrid: true,
@@ -22,11 +16,11 @@ const initialState = (assignedState?: assignedStateType): stateType => {
 };
 
 export const generateStore = (
-  assignedState?: assignedStateType,
+  assignedState: Partial<stateType>,
 ): Store<stateType> => new Vuex.Store({
   state: initialState(assignedState),
   mutations,
   getters,
 });
 
-export default generateStore();
+export default generateStore({});

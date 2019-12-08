@@ -15,7 +15,7 @@ describe('components/menu-top/MenuTop', () => {
     localVue = createLocalVue();
     localVue.use(Vuex);
     localVue.use(Buefy);
-    store = generateStore();
+    store = generateStore({});
     wrapper = mount(MenuTop, {
       store,
       localVue,

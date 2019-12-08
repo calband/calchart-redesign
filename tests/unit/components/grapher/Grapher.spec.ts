@@ -71,7 +71,7 @@ describe('components/grapher/Grapher.vue', () => {
     let store: Store<stateType>;
     let wrapper: Wrapper<Vue>;
     beforeAll(() => {
-      store = generateStore();
+      store = generateStore({});
       wrapper = mount(Grapher, {
         store,
         localVue,

@@ -15,7 +15,7 @@ describe('components/menu-top/FileModal', () => {
     localVue = createLocalVue();
     localVue.use(Vuex);
     localVue.use(Buefy);
-    store = generateStore();
+    store = generateStore({});
     wrapper = mount(FileModal, {
       store,
       localVue,
