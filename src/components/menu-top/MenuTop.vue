@@ -1,6 +1,14 @@
 <template>
   <div class="menu-top">
     <b-navbar type="is-primary">
+      <template slot="brand">
+        <b-navbar-item>
+          <img
+            src="/images/highstepper-gold.png"
+            alt="Calchart"
+          >
+        </b-navbar-item>
+      </template>
       <template slot="start">
         <b-navbar-dropdown
           label="File"
