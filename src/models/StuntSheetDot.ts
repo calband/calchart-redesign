@@ -7,7 +7,6 @@ import { FlowBeat } from './util/types';
  * @property y             - NS position
  * @property dotLabelIndex - Which label to use in Show.dotLabels
  * @property dotTypeIndex  - Which set of continuities to use in StuntSheet.dotTypes
- * @property 
  * @property cachedFlow    - Cached so that the flow does not need to be recalculated again
  */
 export default class StuntSheetDot {
