@@ -23,15 +23,4 @@ export default class StuntSheet {
     this.dotTypes = [[new ContinuityInPlace(0, DIRECTION_TO_DEGREES.E, MARCH_TYPES.HS)]];
     this.beats = 16;
   }
-
-  /**
-   * Helper function to separate dots by their dot types
-   */
-  organizeDotsByDotType(): StuntSheetDot[][] {
-    return this.dotTypes.map((_, dotTypeIndex: number) => {
-      return this.stuntSheetDots.filter((dot: StuntSheetDot) => {
-        return dot.dotTypeIndex === dotTypeIndex;
-      });
-    });
-  }
 }
