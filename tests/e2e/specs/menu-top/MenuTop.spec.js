@@ -67,5 +67,23 @@ describe('components/menu-top/MenuTop', () => {
       cy.get('[data-test="grapher--grid-horizontal"]')
         .should('not.exist');
     });
+
+    it('can toggle yardlines', () => {
+      cy.get('[data-test="grapher--yard-line"]').should('be.visible');
+
+      cy.get('[data-test="menu-top--view-yardlines"]').click();
+
+      cy.get('[data-test="grapher--yard-line"]').should('not.exist');
+
+      cy.get('[data-test="grapher--grid-vertical"]').should('have.length', 47);
+    });
+
+    it('can toggle yardline numbers', () => {
+      cy.get('[data-test="grapher--yard-number"]') .should('be.visible');
+
+      cy.get('[data-test="menu-top--view-yardline-numbers"]').click();
+
+      cy.get('[data-test="grapher--yard-number"]').should('not.exist');
+    });
   });
 });

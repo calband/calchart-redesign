@@ -47,11 +47,12 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('field has width 32 and height 24', () => {
-      expect(wrapper.contains('.grapher--field-rect')).toBeTruthy();
-      expect(wrapper.find('.grapher--field-rect').attributes('width'))
-        .toBe('32');
-      expect(wrapper.find('.grapher--field-rect').attributes('height'))
-        .toBe('24');
+      expect(wrapper.contains('[data-test="grapher--field-rect"]'))
+        .toBeTruthy();
+      expect(wrapper.find('[data-test="grapher--field-rect"]')
+        .attributes('width')).toBe('32');
+      expect(wrapper.find('[data-test="grapher--field-rect"]')
+        .attributes('height')).toBe('24');
     });
 
     it('four step grid: generates 6 vert lines and 5 horiz lines', () => {
@@ -75,6 +76,22 @@ describe('components/grapher/Grapher.vue', () => {
       expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
         .toBeFalsy();
       expect(wrapper.contains('[data-test="grapher--grid-horizontal"]'))
+        .toBeFalsy();
+    });
+
+    it('replaces yardlines with gridlines if yardlines is false', () => {
+      store.commit('setYardlines', false);
+      expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
+      store.commit('setFourStepGrid', true);
+      expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
+        .toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
+        .toHaveLength(7);
+    });
+
+    it('does not render yardline numbers if yardlineNumbers is false', () => {
+      store.commit('setYardlineNumbers', false);
+      expect(wrapper.contains('[data-test="grapher--yard-number"]'))
         .toBeFalsy();
     });
   });
@@ -105,11 +122,12 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('field has width 192 and height 84', () => {
-      expect(wrapper.contains('.grapher--field-rect')).toBeTruthy();
-      expect(wrapper.find('.grapher--field-rect').attributes('width'))
-        .toBe('192');
-      expect(wrapper.find('.grapher--field-rect').attributes('height'))
-        .toBe('84');
+      expect(wrapper.contains('[data-test="grapher--field-rect"]'))
+        .toBeTruthy();
+      expect(wrapper.find('[data-test="grapher--field-rect"]')
+        .attributes('width')).toBe('192');
+      expect(wrapper.find('[data-test="grapher--field-rect"]')
+        .attributes('height')).toBe('84');
     });
 
     it('four step grid: generates 26 vert lines and 20 horiz lines', () => {
@@ -136,6 +154,21 @@ describe('components/grapher/Grapher.vue', () => {
         .toBeFalsy();
       expect(wrapper.contains('[data-test="grapher--grid-horizontal"]'))
         .toBeFalsy();
+    });
+
+    it('does not render yardlines if yardlines is false', () => {
+      store.commit('setYardlines', false);
+      expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
+    });
+
+    it('replaces yardlines with gridlines if yardlines is false', () => {
+      store.commit('setYardlines', false);
+      expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
+      store.commit('setFourStepGrid', true);
+      expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
+        .toBeTruthy();
+      expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
+        .toHaveLength(47);
     });
   });
 });
