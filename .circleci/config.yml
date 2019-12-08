@@ -31,4 +31,3 @@ jobs:
           path: tests/e2e/videos
       - store_artifacts:
           path: calchart.zip
-      
