@@ -24,7 +24,7 @@ jobs:
       - run: npm run test:unit
       - run: npm run test:e2e -- --headless
       - run: npm run build
-      - run: sudo apt-get install -y zip
+      - run: apt-get install -y zip
       - run: zip -r calchart.zip calchart
       - store_artifacts:
           path: tests/e2e/videos
