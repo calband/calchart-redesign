@@ -4,7 +4,7 @@
       <template slot="brand">
         <b-navbar-item>
           <img
-            src="/images/highstepper-gold.png"
+            src="@/assets/highstepper-gold.png"
             alt="Calchart"
           >
         </b-navbar-item>
