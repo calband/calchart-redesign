@@ -180,4 +180,21 @@ describe('models/Show', () => {
     });
 
   });
+  describe('currentSheet', () => {
+    let show: Show;
+
+    beforeAll(() => {
+      show = new Show();
+      show.stuntSheets = [new StuntSheet(), new StuntSheet()];
+    });
+
+    test('Test current Sheet', () => {
+      expect(show.currentSheet).toEqual(0);
+      show.currentSheet = 1;
+      expect(show.currentSheet).toEqual(1);
+      expect(() => { show.currentSheet = 2 }).toThrow('trying to set to a stunt sheet that does not exist');
+      expect(() => { show.currentSheet = -1 }).toThrow('trying to set to a stunt sheet that does not exist');
+    });
+  });
+
 });

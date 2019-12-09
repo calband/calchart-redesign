@@ -21,4 +21,19 @@ export default {
   setFourStepGrid(state: stateType, enabled: boolean) {
     state.fourStepGrid = enabled;
   },
+
+  // Which sheet to view
+  setCurrentEditSheet(state: stateType, which: number) {
+    state.show.currentSheet = which;
+  },
+  setCurrentEditSheetNext(state: stateType) {
+    if (state.show.currentSheet < (state.show.stuntSheets.length-1)) {
+      ++state.show.currentSheet;
+    }
+  },
+  setCurrentEditSheetPrevious(state: stateType) {
+    if (state.show.currentSheet > 0) {
+      --state.show.currentSheet;
+    }
+  },
 };

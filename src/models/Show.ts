@@ -15,6 +15,7 @@ const METADATA_VERSION: number = 1;
  * @property dotLabels       - A list of names used for each dot. Ex. ['A0', 'A1', ...]
  * @property field           - Defines the sizing of the field that is being marched on
  * @property stuntSheets     - The set of all StuntSheet objects
+ * @property currentSheet    - Which sheet is currently being viewed/edited
  */
 export default class Show {
   metadataVersion: number;
@@ -27,12 +28,15 @@ export default class Show {
 
   stuntSheets: StuntSheet[];
 
+  private _currentSheet: number;
+
   constructor() {
     this.metadataVersion = METADATA_VERSION;
     this.title = 'Example Show';
     this.dotLabels = [];
     this.field = new Field();
     this.stuntSheets = [new StuntSheet()];
+    this._currentSheet = 0;
   }
 
   /**
@@ -60,5 +64,15 @@ export default class Show {
 
       startDot.cachedFlow = flow;
     });
+  }
+
+  get currentSheet() {
+    return this._currentSheet;
+  }
+  set currentSheet(which : number) {
+    if (which < 0 || which >= this.stuntSheets.length) {
+      throw 'trying to set to a stunt sheet that does not exist';
+    }
+    this._currentSheet = which;
   }
 }
