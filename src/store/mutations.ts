@@ -6,6 +6,10 @@ export default {
     state.show.title = title;
   },
 
+  setAddSheetAsCopyOf(state: stateType, copyWhich: number) {
+   state.show.addSheetAsCopyOf(copyWhich);
+  },
+
   // Show -> Field
   setFrontHashOffsetY(state: stateType, offsetY: number) {
     state.show.field.frontHashOffsetY = offsetY;

@@ -61,4 +61,16 @@ export default class Show {
       startDot.cachedFlow = flow;
     });
   }
+
+  /**
+   * Copy the target sheet and insert it after it.
+   */
+  addSheetAsCopyOf(stuntSheetIndex: number): void {
+    if (stuntSheetIndex < 0 || stuntSheetIndex + 1 >= this.stuntSheets.length) {
+      throw `stuntSheetIndex (${stuntSheetIndex}) is invalid`;
+    }
+    this.stuntSheets.splice(stuntSheetIndex, 0, this.stuntSheets[stuntSheetIndex]);
+  }
+  testFunc(): void {
+  }
 }
