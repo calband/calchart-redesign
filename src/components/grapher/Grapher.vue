@@ -1,7 +1,10 @@
 <template>
   <div class="grapher">
-    <svg class="grapher-svg">
-      <g>
+    <svg
+      class="grapher--svg"
+      @click.prevent="onClick"
+    >
+      <g class="grapher--wrapper">
         <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
         <rect
           class="grapher--field-rect"
@@ -87,6 +90,16 @@
             {{ numberAndOffsetX[0] }}
           </text>
         </g>
+        <g class="grapher--dots-container">
+          <circle
+            v-for="(dot, index) in stuntSheetDots"
+            :key="index + '-dot'"
+            :cx="dot.x"
+            :cy="dot.y"
+            r="0.8"
+            data-test="grapher--dot"
+          />
+        </g>
       </g>
     </svg>
   </div>
@@ -95,6 +108,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import svgPanZoom from 'svg-pan-zoom';
+import BaseTool from '@/tools/BaseTool';
+import StuntSheetDot from '../../models/StuntSheetDot';
+import StuntSheet from '../../models/StuntSheet';
 
 export default Vue.extend({
   name: 'Grapher',
@@ -183,12 +199,31 @@ export default Vue.extend({
       }
       return retVal;
     },
+    stuntSheetDots(): StuntSheetDot[] {
+      const currentSS: StuntSheet
+        = this.$store.getters.getSelectedStuntSheet;
+      return currentSS.stuntSheetDots;
+    },
   },
-  mounted: () => {
-    svgPanZoom('.grapher-svg', {
+  mounted() {
+    const svgPanZoomInstance = svgPanZoom('.grapher--svg', {
+      viewportSelector: '.grapher--wrapper',
+      panEnabled: true,
+      zoomEnabled: true,
       controlIconsEnabled: true,
       dblClickZoomEnabled: false,
     });
+    this.$store.commit('setGrapherSvgPanZoom', svgPanZoomInstance);
+
+    window.addEventListener('resize', function() {
+      svgPanZoomInstance.resize();
+    });
+  },
+  methods: {
+    onClick(event: MouseEvent): void {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      toolSelected.onClick(event, this.$store);
+    },
   },
 });
 </script>
@@ -200,7 +235,7 @@ export default Vue.extend({
   position: relative;
 }
 
-.grapher-svg {
+.grapher--svg {
   width: 100%;
   height: 100%;
   // See PR#9

@@ -13,7 +13,9 @@ npm install
 
 Please use the LTS version of [NodeJS/npm](https://nodejs.org/en/) for this project.
 
-We recommend using [Visual Studio Code](https://code.visualstudio.com/) as your IDE. This integrates well with Typescript. We recommend installing the following extensions: ESLint, and Vetur.
+We recommend using [Visual Studio Code](https://code.visualstudio.com/) as your IDE. This integrates well with Typescript. We recommend installing the following extensions: ESLint, Vetur, Debugger for Chrome, Debugger for Firefox.
+
+To set up debugging in vscode, please see [Vue CLI docs](https://vuejs.org/v2/cookbook/debugging-in-vscode.html).
 
 ## Compiles and hot-reloads for development
 ```

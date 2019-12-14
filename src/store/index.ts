@@ -4,21 +4,34 @@ import mutations from './mutations';
 import getters from './getters';
 import Show from '@/models/Show';
 import Serializable from '@/models/util/Serializable';
+import BaseTool from '@/tools/BaseTool';
 
 Vue.use(Vuex);
 
 /**
  * Defines the global state for the application
  *
- * @property show         - The currently selected show data
- * @property fourStepGrid - View setting to toggle the grapher grid
+ * @property show              - The currently selected show data
+ * @property selectedSS        - Index of stuntsheet currently in view
+ * @property fourStepGrid      - View setting to toggle the grapher grid
+ * @property grapherSvgPanZoom - Initialized upon mounting Grapher
+ * @property invertedCTMMatrix - Used to calculate clientX/Y to SVG X/Y
+ * @property toolSelected      - See BaseTool
  */
 export class CalChartState extends Serializable<CalChartState> {
   show: Show = new Show();
 
+  selectedSS: number = 0;
+
   fourStepGrid: boolean = true;
   yardlines: boolean = true;
   yardlineNumbers: boolean = true;
+
+  grapherSvgPanZoom?: SvgPanZoom.Instance;
+
+  invertedCTMMatrix?: DOMMatrix;
+
+  toolSelected?: BaseTool;
 
   constructor(json: Partial<CalChartState> = {}) {
     super();

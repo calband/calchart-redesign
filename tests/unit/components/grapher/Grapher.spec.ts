@@ -5,14 +5,35 @@ import Grapher from '@/components/grapher/Grapher.vue';
 import { CalChartState, generateStore } from '@/store';
 import Show from '@/models/Show';
 import Field from '@/models/Field';
+import svgPanZoom from 'svg-pan-zoom';
+import StuntSheet from '@/models/StuntSheet';
+import StuntSheetDot from '@/models/StuntSheetDot';
 
-jest.mock('svg-pan-zoom', () => jest.fn(() => {}));
+jest.mock('svg-pan-zoom', () => {
+  return {
+    __esModule: true,
+    default: jest.fn().mockReturnValue({}),
+  };
+});
 
 describe('components/grapher/Grapher.vue', () => {
   let localVue: VueConstructor<Vue>;
   beforeAll(() => {
     localVue = createLocalVue();
     localVue.use(Vuex);
+  });
+
+  it('on mount, initialize grapherSvgPanZoom in store', () => {
+    const store = generateStore({});
+    expect(store.state.grapherSvgPanZoom).toBeUndefined();
+    expect(svgPanZoom).not.toHaveBeenCalled();
+    mount(Grapher, {
+      store,
+      localVue,
+    });
+    expect(svgPanZoom).toHaveBeenCalled();
+    expect(store.state.grapherSvgPanZoom).not.toBeUndefined();
+    expect(store.state.grapherSvgPanZoom);
   });
 
   describe('small field', () => {
@@ -169,6 +190,43 @@ describe('components/grapher/Grapher.vue', () => {
         .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
         .toHaveLength(47);
+    });
+
+    describe('stuntSheetDots', () => {
+      it('does not render any dots if no dots exist', () => {
+        expect(wrapper.contains('[data-test="grapher--dot"]')).toBeFalsy();
+      });
+
+      const generateShowWithDots = (numDots: number): void => {
+        const stuntSheetDots = [];
+        for (let i = 0; i < numDots; i++) {
+          stuntSheetDots.push(new StuntSheetDot({
+            x: i * 2,
+            y: i * 2,
+          }));
+        }
+        store = generateStore({
+          show: new Show({
+            stuntSheets: [new StuntSheet({ stuntSheetDots })],
+          }),
+        });
+        wrapper = mount(Grapher, {
+          store,
+          localVue,
+        });
+      };
+
+      it('renders 1 dot if exists', () => {
+        generateShowWithDots(1);
+        expect(wrapper.contains('[data-test="grapher--dot"]')).toBeTruthy();
+        expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(1);
+      });
+
+      it('renders 2 dots if exists', () => {
+        generateShowWithDots(2);
+        expect(wrapper.contains('[data-test="grapher--dot"]')).toBeTruthy();
+        expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(2);
+      });
     });
   });
 });

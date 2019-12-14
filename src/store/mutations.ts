@@ -1,40 +1,63 @@
 import { CalChartState } from '.';
 import Show from '@/models/Show';
+import getters from './getters';
+import BaseTool from '@/tools/BaseTool';
+import StuntSheetDot from '@/models/StuntSheetDot';
+import { MutationTree } from 'vuex';
 
-/**
- * To access the class methods of any property in state, initialize it again.
- * See Serializable.
- */
-
-export default {
+const mutations: MutationTree<CalChartState> = {
   // Show
-  setShow(state: CalChartState, show: Show): void {
+  setShow(state, show: Show): void {
     state.show = show;
   },
-
-  setShowTitle(state: CalChartState, title: string): void {
+  setShowTitle(state, title: string): void {
     state.show.title = title;
   },
 
   // Show -> Field
-  setFrontHashOffsetY(state: CalChartState, offsetY: number): void {
+  setFrontHashOffsetY(state, offsetY: number): void {
     state.show.field.frontHashOffsetY = offsetY;
   },
-  setBackHashOffsetY(state: CalChartState, offsetY: number): void {
+  setBackHashOffsetY(state, offsetY: number): void {
     state.show.field.backHashOffsetY = offsetY;
   },
-  setMiddleOfField(state: CalChartState, middle: number): void {
+  setMiddleOfField(state, middle: number): void {
     state.show.field.middleOfField = middle;
   },
 
+  // Show -> StuntSheet
+  removeDot(state, dotIndex: number): void {
+    const getSelectedStuntSheet: Function = getters.getSelectedStuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.removeDot(dotIndex);
+  },
+  addDot(state, dot: StuntSheetDot): void {
+    const getSelectedStuntSheet: Function = getters.getSelectedStuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.addDot(dot);
+  },
+
   // View Settings
-  setFourStepGrid(state: CalChartState, enabled: boolean): void {
+  setFourStepGrid(state, enabled: boolean): void {
     state.fourStepGrid = enabled;
   },
-  setYardlines(state: CalChartState, enabled: boolean): void {
+  setYardlines(state, enabled: boolean): void {
     state.yardlines = enabled;
   },
-  setYardlineNumbers(state: CalChartState, enabled: boolean): void {
+  setYardlineNumbers(state, enabled: boolean): void {
     state.yardlineNumbers = enabled;
   },
+
+  // Tools
+  setGrapherSvgPanZoom(state, svgPanZoomInstance: SvgPanZoom.Instance): void {
+    state.grapherSvgPanZoom = svgPanZoomInstance;
+  },
+  setInvertedCTMMatrix(state, matrix: DOMMatrix): void {
+    state.invertedCTMMatrix = matrix;
+  },
+  setToolSelected(state, toolSelected: BaseTool): void {
+    state.toolSelected = toolSelected;
+  },
 };
+
+export default mutations;
