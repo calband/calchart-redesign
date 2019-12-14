@@ -16,6 +16,7 @@
 import Vue from 'vue';
 import MenuTop from './components/menu-top/MenuTop.vue';
 import MenuLeft from './components/menu-left/MenuLeft.vue';
+import PerSheePreview from './components/grapher/PerSheePreview.vue';
 import Grapher from './components/grapher/Grapher.vue';
 import MenuRight from './components/menu-right/MenuRight.vue';
 import MenuBottom from './components/menu-bottom/MenuBottom.vue';
