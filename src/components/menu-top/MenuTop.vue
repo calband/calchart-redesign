@@ -40,6 +40,13 @@
               Four step grid
             </b-checkbox>
           </b-navbar-item>
+          <b-navbar-item>
+            <b-button
+              @click="generateFlows"
+            >
+              TEST GENERATE FLOWS
+            </b-button>
+          </b-navbar-item>
         </b-navbar-dropdown>
       </template>
     </b-navbar>
@@ -81,6 +88,11 @@ export default Vue.extend({
       },
     },
   },
+  methods: {
+    generateFlows() {
+      this.$store.commit('showGenerateFlows', 0);
+    }
+  }
 });
 </script>
 
