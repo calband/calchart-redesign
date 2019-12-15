@@ -2,6 +2,7 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import StuntSheetDot from '../StuntSheetDot';
+import Deserializable from '../util/Deserializable';
 
 /**
  * Moves in even steps for the entirety of the specified duration to the end position.
@@ -10,20 +11,18 @@ import StuntSheetDot from '../StuntSheetDot';
  * - Even HS 16
  * - Even MM 8
  */
-export default class ContinuityEven implements BaseContinuity {
-  continuityId: CONTINUITY_IDS;
+export default class ContinuityEven extends Deserializable<ContinuityEven> implements BaseContinuity {
+  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.EVEN;
 
-  duration: number;
+  duration: number = 8;
 
-  marchType: MARCH_TYPES;
+  marchType: MARCH_TYPES = MARCH_TYPES.MINI_MILITARY;
 
-  humanReadableText: string;
+  humanReadableText: string = '';
 
-  constructor(duration: number, marchType: MARCH_TYPES) {
-    this.continuityId = CONTINUITY_IDS.EVEN;
-    this.duration = duration;
-    this.marchType = marchType;
-    this.humanReadableText = '';
+  constructor(json: Partial<ContinuityEven> = {}) {
+    super();
+    this.fromJson(json);
   }
 
   getHumanReadableText(): string {

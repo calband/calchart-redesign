@@ -2,29 +2,27 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
+import Deserializable from '../util/Deserializable';
 
 /**
  * Defines a gate turn continuity.
  * 
  * @property centerPoints - [x, y] values for the center of each gate turn group
  */
-export default class ContinuityGateTurn implements BaseContinuity {
-  continuityId: CONTINUITY_IDS;
+export default class ContinuityGateTurn extends Deserializable<ContinuityGateTurn> implements BaseContinuity {
+  continuityId: CONTINUITY_IDS = CONTINUITY_IDS.GATE_TURN;
 
-  duration: number;
+  duration: number = 8;
 
-  centerPoints: [number, number][];
+  centerPoints: [number, number][] = [];
 
-  humanReadableText: string;
+  humanReadableText: string = '';
 
-  marchType: MARCH_TYPES;
+  marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(duration: number, marchType: MARCH_TYPES) {
-    this.continuityId = CONTINUITY_IDS.FOLLOW_THE_LEADER;
-    this.duration = duration;
-    this.centerPoints = [];
-    this.humanReadableText = '';
-    this.marchType = marchType;
+  constructor(json: Partial<ContinuityGateTurn> = {}) {
+    super();
+    this.fromJson(json);
   }
 
   getHumanReadableText(): string {

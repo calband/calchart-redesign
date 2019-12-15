@@ -1,11 +1,11 @@
-import { stateType } from './types';
+import { CalChartState } from '.';
 
 export default {
   // Show
-  getShowTitle: (state: stateType) => state.show.title,
+  getShowTitle: (state: CalChartState) => state.show.title,
 
   // Show -> Field
-  getFrontHashOffsetY: (state: stateType) => state.show.field.frontHashOffsetY,
-  getBackHashOffsetY: (state: stateType) => state.show.field.backHashOffsetY,
-  getMiddleOfField: (state: stateType) => state.show.field.middleOfField,
+  getFrontHashOffsetY: (state: CalChartState) => state.show.field.frontHashOffsetY,
+  getBackHashOffsetY: (state: CalChartState) => state.show.field.backHashOffsetY,
+  getMiddleOfField: (state: CalChartState) => state.show.field.middleOfField,
 };

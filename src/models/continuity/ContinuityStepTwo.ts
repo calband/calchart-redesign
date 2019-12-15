@@ -2,6 +2,7 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
+import Deserializable from '../util/Deserializable';
 
 /**
  * Defines the path that the leader takes, which the other bandsmen follow.
@@ -12,23 +13,20 @@ import { FlowBeat } from '../util/types';
  * 
  * @property continuities - Execute this list of continuities after waiting a certain amount of time
  */
-export default class ContinuityStepTwo implements BaseContinuity {
-  continuityId: CONTINUITY_IDS;
+export default class ContinuityStepTwo extends Deserializable<ContinuityStepTwo> implements BaseContinuity {
+  continuityId: CONTINUITY_IDS = CONTINUITY_IDS.STEP_TWO;
 
-  duration: number;
+  duration: number = 8;
 
-  continuities: BaseContinuity[];
+  continuities: BaseContinuity[] = [];
 
-  humanReadableText: string;
+  humanReadableText: string = '';
 
-  marchType: MARCH_TYPES;
+  marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(marchType: MARCH_TYPES) {
-    this.continuityId = CONTINUITY_IDS.FOLLOW_THE_LEADER;
-    this.duration = 0;
-    this.continuities = [];
-    this.humanReadableText = '';
-    this.marchType = marchType;
+  constructor(json: Partial<ContinuityStepTwo> = {}) {
+    super();
+    this.fromJson(json);
   }
 
   getHumanReadableText(): string {

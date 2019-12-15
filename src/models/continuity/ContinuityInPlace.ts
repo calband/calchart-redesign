@@ -3,6 +3,7 @@ import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES, DIRECTION_TO_DEGREES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import { startPositionHelper } from './continuity-util';
+import Deserializable from '../util/Deserializable';
 
 /**
  * Stay in the same position for the specified duration, direction, and march type.
@@ -11,23 +12,20 @@ import { startPositionHelper } from './continuity-util';
  *  - [Close N]
  *  - Vamp E
  */
-export default class ContinuityInPlace implements BaseContinuity {
-  continuityId: CONTINUITY_IDS;
+export default class ContinuityInPlace extends Deserializable<ContinuityInPlace> implements BaseContinuity {
+  continuityId: CONTINUITY_IDS = CONTINUITY_IDS.IN_PLACE;
 
-  duration: number;
+  duration: number = 0;
 
-  direction: DIRECTION_TO_DEGREES;
+  direction: DIRECTION_TO_DEGREES = DIRECTION_TO_DEGREES.E;
 
-  marchType: MARCH_TYPES;
+  marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  humanReadableText: string;
+  humanReadableText: string = '';
 
-  constructor(duration: number, direction: DIRECTION_TO_DEGREES, marchType: MARCH_TYPES) {
-    this.continuityId = CONTINUITY_IDS.IN_PLACE;
-    this.duration = duration;
-    this.direction = direction;
-    this.marchType = marchType;
-    this.humanReadableText = '';
+  constructor(json: Partial<ContinuityInPlace> = {}) {
+    super();
+    this.fromJson(json);
   }
 
   getHumanReadableText(): string {

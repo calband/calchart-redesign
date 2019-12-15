@@ -1,24 +1,34 @@
-import { stateType } from './types';
+import Show from '@/models/Show';
+import { CalChartState } from '.';
+
+/**
+ * To access the class methods of any property in state, initialize it again. See Serializable.
+ */
 
 export default {
   // Show
-  setShowTitle(state: stateType, title: string) {
+  setShowTitle(state: CalChartState, title: string) {
     state.show.title = title;
+  },
+  showGenerateFlows(state: CalChartState, stuntSheetIndex: number) {
+    const modifiedShow: Show = new Show(state.show);
+    modifiedShow.generateFlows(stuntSheetIndex);
+    state.show = modifiedShow;
   },
 
   // Show -> Field
-  setFrontHashOffsetY(state: stateType, offsetY: number) {
+  setFrontHashOffsetY(state: CalChartState, offsetY: number) {
     state.show.field.frontHashOffsetY = offsetY;
   },
-  setBackHashOffsetY(state: stateType, offsetY: number) {
+  setBackHashOffsetY(state: CalChartState, offsetY: number) {
     state.show.field.backHashOffsetY = offsetY;
   },
-  setMiddleOfField(state: stateType, middle: number) {
+  setMiddleOfField(state: CalChartState, middle: number) {
     state.show.field.middleOfField = middle;
   },
 
   // View Settings
-  setFourStepGrid(state: stateType, enabled: boolean) {
+  setFourStepGrid(state: CalChartState, enabled: boolean) {
     state.fourStepGrid = enabled;
   },
 };

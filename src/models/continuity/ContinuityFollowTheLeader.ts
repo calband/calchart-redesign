@@ -2,29 +2,27 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
+import Deserializable from '../util/Deserializable';
 
 /**
  * Defines the path that the leader takes, which the other bandsmen follow.
  * 
  * @property leaderPath - Defines the flow that the leader will take
  */
-export default class ContinuityFollowTheLeader implements BaseContinuity {
-  continuityId: CONTINUITY_IDS;
+export default class ContinuityFollowTheLeader extends Deserializable<ContinuityFollowTheLeader> implements BaseContinuity {
+  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.FOLLOW_THE_LEADER;
 
-  duration: number;
+  duration: number = 8;
 
-  leaderPath: FlowBeat[];
+  leaderPath: FlowBeat[] = [];
 
-  humanReadableText: string;
+  humanReadableText: string = '';
 
-  marchType: MARCH_TYPES;
+  marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(marchType: MARCH_TYPES) {
-    this.continuityId = CONTINUITY_IDS.FOLLOW_THE_LEADER;
-    this.duration = 0;
-    this.leaderPath = [];
-    this.humanReadableText = '';
-    this.marchType = marchType;
+  constructor(json: Partial<ContinuityFollowTheLeader> = {}) {
+    super();
+    this.fromJson(json);
   }
 
   getHumanReadableText(): string {

@@ -1,4 +1,5 @@
 import { FlowBeat } from './util/types';
+import Deserializable from './util/Deserializable';
 
 /**
  * Defines the position and direction of a marcher for a specific StuntSheet.
@@ -9,22 +10,19 @@ import { FlowBeat } from './util/types';
  * @property dotTypeIndex  - Which set of continuities to use in StuntSheet.dotTypes
  * @property cachedFlow    - Cached so that the flow does not need to be recalculated again
  */
-export default class StuntSheetDot {
-  x: number;
+export default class StuntSheetDot extends Deserializable<StuntSheetDot> {
+  x: number = 0;
 
-  y: number;
+  y: number = 0;
 
-  dotLabelIndex: number|null;
+  dotLabelIndex: number | null = null;
 
-  dotTypeIndex: number;
+  dotTypeIndex: number = 0;
 
-  cachedFlow: FlowBeat[]|null;
+  cachedFlow: FlowBeat[] | null = null;
 
-  constructor(x: number, y: number, dotLabelIndex?: number) {
-    this.x = x;
-    this.y = y;
-    this.dotLabelIndex = dotLabelIndex !== undefined ? dotLabelIndex : null;
-    this.dotTypeIndex = 0;
-    this.cachedFlow = null;
+  constructor(dotJson: Partial<StuntSheetDot> = {}) {
+    super();
+    this.fromJson(dotJson);
   }
 }

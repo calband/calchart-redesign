@@ -27,7 +27,7 @@ export enum CONTINUITY_IDS {
  * @property humanReadableText - User defined text to be used to describe the continuity to bandsmen. Leave blank to use the computer generated text.
  */
 export default interface BaseContinuity {
-  continuityId: CONTINUITY_IDS;
+  readonly continuityId: CONTINUITY_IDS;
 
   duration: number;
 
