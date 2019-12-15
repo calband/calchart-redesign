@@ -10,7 +10,7 @@ import Deserializable from '../util/Deserializable';
  * @property centerPoints - [x, y] values for the center of each gate turn group
  */
 export default class ContinuityGateTurn extends Deserializable<ContinuityGateTurn> implements BaseContinuity {
-  continuityId: CONTINUITY_IDS = CONTINUITY_IDS.GATE_TURN;
+  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.GATE_TURN;
 
   duration: number = 8;
 

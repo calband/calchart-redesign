@@ -14,7 +14,7 @@ import Deserializable from '../util/Deserializable';
  * @property continuities - Execute this list of continuities after waiting a certain amount of time
  */
 export default class ContinuityStepTwo extends Deserializable<ContinuityStepTwo> implements BaseContinuity {
-  continuityId: CONTINUITY_IDS = CONTINUITY_IDS.STEP_TWO;
+  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.STEP_TWO;
 
   duration: number = 8;
 

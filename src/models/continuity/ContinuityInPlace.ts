@@ -13,7 +13,7 @@ import Deserializable from '../util/Deserializable';
  *  - Vamp E
  */
 export default class ContinuityInPlace extends Deserializable<ContinuityInPlace> implements BaseContinuity {
-  continuityId: CONTINUITY_IDS = CONTINUITY_IDS.IN_PLACE;
+  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.IN_PLACE;
 
   duration: number = 0;
 

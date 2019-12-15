@@ -20,21 +20,19 @@ export default class StuntSheet extends Deserializable<StuntSheet> {
 
   beats: number = 16;
 
-  constructor(json?: Partial<StuntSheet>) {
+  constructor(json: Partial<StuntSheet> = {}) {
     super();
-    if (json !== undefined) {
-      if (json.stuntSheetDots !== undefined) {
-        json.stuntSheetDots = json.stuntSheetDots.map((dot: StuntSheetDot) => {
-          return new StuntSheetDot(dot);
-        });
-      }
-      if (json.dotTypes !== undefined) {
-        json.dotTypes = json.dotTypes.map((dotType: BaseContinuity[]) => {
-          return dotType.map((continuity: BaseContinuity) => {
-            return loadContinuity(continuity);
-          })
-        });
-      }
+    if (json.stuntSheetDots !== undefined) {
+      json.stuntSheetDots = json.stuntSheetDots.map((dot: StuntSheetDot) => {
+        return new StuntSheetDot(dot);
+      });
+    }
+    if (json.dotTypes !== undefined) {
+      json.dotTypes = json.dotTypes.map((dotType: BaseContinuity[]) => {
+        return dotType.map((continuity: BaseContinuity) => {
+          return loadContinuity(continuity);
+        })
+      });
     }
     this.fromJson(json);
   }

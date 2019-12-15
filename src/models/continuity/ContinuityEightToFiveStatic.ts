@@ -14,7 +14,7 @@ import Deserializable from '../util/Deserializable';
  * @property facingDirection   - Which direction the marcher is facing during the movement. If undefined, will be marchingDirection.
  */
 export default class ContinuityEightToFiveStatic extends Deserializable<ContinuityEightToFiveStatic> implements BaseContinuity {
-  continuityId: CONTINUITY_IDS = CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC;
+  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC;
 
   duration: number = 8;
 
@@ -26,12 +26,10 @@ export default class ContinuityEightToFiveStatic extends Deserializable<Continui
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(json?: Partial<ContinuityEightToFiveStatic>) {
+  constructor(json: Partial<ContinuityEightToFiveStatic> = {}) {
     super();
-    if (json !== undefined) {
-      if (json.facingDirection === undefined) {
-        json.facingDirection = json.marchingDirection;
-      }
+    if (json.facingDirection === undefined) {
+      json.facingDirection = json.marchingDirection;
     }
     this.fromJson(json);
   }

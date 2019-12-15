@@ -28,17 +28,15 @@ export default class Show extends Deserializable<Show> {
 
   stuntSheets: StuntSheet[] = [new StuntSheet()];
 
-  constructor(showJson?: Partial<Show>) {
+  constructor(showJson: Partial<Show> = {}) {
     super();
-    if (showJson !== undefined) {
-      if (showJson.field !== undefined) {
-        showJson.field = new Field(showJson.field);
-      }
-      if (showJson.stuntSheets !== undefined) {
-        showJson.stuntSheets = showJson.stuntSheets.map((stuntSheet: StuntSheet) => {
-          return new StuntSheet(stuntSheet);
-        });
-      }
+    if (showJson.field !== undefined) {
+      showJson.field = new Field(showJson.field);
+    }
+    if (showJson.stuntSheets !== undefined) {
+      showJson.stuntSheets = showJson.stuntSheets.map((stuntSheet: StuntSheet) => {
+        return new StuntSheet(stuntSheet);
+      });
     }
     this.fromJson(showJson);
   }
