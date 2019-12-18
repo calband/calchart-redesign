@@ -9,7 +9,7 @@ import ContinuityGateTurn from './ContinuityGateTurn';
 import ContinuityStepTwo from './ContinuityStepTwo';
 
 /**
- * Helper function to get the class prototype of a continuity.
+ * Helper function to initialize a continuity based off it's id
  */
 export const loadContinuity = (continuityJson: BaseContinuity): BaseContinuity => {
   switch (continuityJson.continuityId) {
