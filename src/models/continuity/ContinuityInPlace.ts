@@ -3,7 +3,7 @@ import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES, DIRECTION_TO_DEGREES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import { startPositionHelper } from './continuity-util';
-import Deserializable from '../util/Deserializable';
+import Serializable from '../util/Serializable';
 
 /**
  * Stay in the same position for the specified duration, direction, and march type.
@@ -12,7 +12,7 @@ import Deserializable from '../util/Deserializable';
  *  - [Close N]
  *  - Vamp E
  */
-export default class ContinuityInPlace extends Deserializable<ContinuityInPlace> implements BaseContinuity {
+export default class ContinuityInPlace extends Serializable<ContinuityInPlace> implements BaseContinuity {
   readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.IN_PLACE;
 
   duration: number = 0;

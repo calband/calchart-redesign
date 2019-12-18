@@ -10,11 +10,6 @@ export default {
   setShowTitle(state: CalChartState, title: string) {
     state.show.title = title;
   },
-  showGenerateFlows(state: CalChartState, stuntSheetIndex: number) {
-    const modifiedShow: Show = new Show(state.show);
-    modifiedShow.generateFlows(stuntSheetIndex);
-    state.show = modifiedShow;
-  },
 
   // Show -> Field
   setFrontHashOffsetY(state: CalChartState, offsetY: number) {

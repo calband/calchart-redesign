@@ -1,4 +1,4 @@
-import Deserializable from './util/Deserializable';
+import Serializable from './util/Serializable';
 
 /**
  * Defines landmarks needed to determine the size of the field.
@@ -8,7 +8,7 @@ import Deserializable from './util/Deserializable';
  * @property backHashOffsetY  - How many steps from the West sideline the back hash is (used to calculate the field height)
  * @property middleOfField    - Defines the yard line in the middle (used to calculate the field width)
  */
-export default class Field extends Deserializable<Field> {
+export default class Field extends Serializable<Field> {
   frontHashOffsetY: number = 32;
 
   backHashOffsetY: number = 52;

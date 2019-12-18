@@ -3,7 +3,7 @@ import StuntSheet from './StuntSheet';
 import StuntSheetDot from './StuntSheetDot';
 import BaseContinuity from './continuity/BaseContinuity';
 import { FlowBeat } from './util/types';
-import Deserializable from './util/Deserializable';
+import Serializable from './util/Serializable';
 
 // Upon making show metadata changes that break previous versions, please increment.
 const METADATA_VERSION: number = 1;
@@ -17,7 +17,7 @@ const METADATA_VERSION: number = 1;
  * @property field           - Defines the sizing of the field that is being marched on
  * @property stuntSheets     - The set of all StuntSheet objects
  */
-export default class Show extends Deserializable<Show> {
+export default class Show extends Serializable<Show> {
   metadataVersion: number = METADATA_VERSION;
 
   title: string = 'Example Show';

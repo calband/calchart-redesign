@@ -2,14 +2,14 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
-import Deserializable from '../util/Deserializable';
+import Serializable from '../util/Serializable';
 
 /**
  * Defines the path that the leader takes, which the other bandsmen follow.
  * 
  * @property leaderPath - Defines the flow that the leader will take
  */
-export default class ContinuityFollowTheLeader extends Deserializable<ContinuityFollowTheLeader> implements BaseContinuity {
+export default class ContinuityFollowTheLeader extends Serializable<ContinuityFollowTheLeader> implements BaseContinuity {
   readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.FOLLOW_THE_LEADER;
 
   duration: number = 8;

@@ -2,7 +2,7 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
-import Deserializable from '../util/Deserializable';
+import Serializable from '../util/Serializable';
 
 /**
  * Defines the path that the leader takes, which the other bandsmen follow.
@@ -13,7 +13,7 @@ import Deserializable from '../util/Deserializable';
  * 
  * @property continuities - Execute this list of continuities after waiting a certain amount of time
  */
-export default class ContinuityStepTwo extends Deserializable<ContinuityStepTwo> implements BaseContinuity {
+export default class ContinuityStepTwo extends Serializable<ContinuityStepTwo> implements BaseContinuity {
   readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.STEP_TWO;
 
   duration: number = 8;

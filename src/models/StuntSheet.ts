@@ -2,7 +2,7 @@ import StuntSheetDot from './StuntSheetDot';
 import BaseContinuity from './continuity/BaseContinuity';
 import ContinuityInPlace from './continuity/ContinuityInPlace';
 import { DIRECTION_TO_DEGREES, MARCH_TYPES } from './util/constants';
-import Deserializable from './util/Deserializable';
+import Serializable from './util/Serializable';
 import { loadContinuity } from './continuity/load-continuity';
 
 /**
@@ -13,7 +13,7 @@ import { loadContinuity } from './continuity/load-continuity';
  * @property dotTypes       - The set of continuities used to describe the movements to get to the next StuntSheet
  * @property beats          - How many beats to execute the continuities to the next StuntSheet
  */
-export default class StuntSheet extends Deserializable<StuntSheet> {
+export default class StuntSheet extends Serializable<StuntSheet> {
   stuntSheetDots: StuntSheetDot[] = [];
 
   dotTypes: BaseContinuity[][] = [[new ContinuityInPlace()]];

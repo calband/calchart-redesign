@@ -2,14 +2,14 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
-import Deserializable from '../util/Deserializable';
+import Serializable from '../util/Serializable';
 
 /**
  * Defines a gate turn continuity.
  * 
  * @property centerPoints - [x, y] values for the center of each gate turn group
  */
-export default class ContinuityGateTurn extends Deserializable<ContinuityGateTurn> implements BaseContinuity {
+export default class ContinuityGateTurn extends Serializable<ContinuityGateTurn> implements BaseContinuity {
   readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.GATE_TURN;
 
   duration: number = 8;

@@ -2,7 +2,7 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import StuntSheetDot from '../StuntSheetDot';
-import Deserializable from '../util/Deserializable';
+import Serializable from '../util/Serializable';
 
 /**
  * Moves in even steps for the entirety of the specified duration to the end position.
@@ -11,7 +11,7 @@ import Deserializable from '../util/Deserializable';
  * - Even HS 16
  * - Even MM 8
  */
-export default class ContinuityEven extends Deserializable<ContinuityEven> implements BaseContinuity {
+export default class ContinuityEven extends Serializable<ContinuityEven> implements BaseContinuity {
   readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.EVEN;
 
   duration: number = 8;

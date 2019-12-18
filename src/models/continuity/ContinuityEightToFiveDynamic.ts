@@ -3,7 +3,7 @@ import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import { startPositionHelper, ewHelper, nsHelper, diagonalHelper } from './continuity-util';
-import Deserializable from '../util/Deserializable';
+import Serializable from '../util/Serializable';
 
 export enum EIGHT_TO_FIVE_DYNAMIC_TYPES {
   EWNS,
@@ -22,7 +22,7 @@ export enum EIGHT_TO_FIVE_DYNAMIC_TYPES {
  * 
  * @property eightToFiveType - Determines the order of directions to move in
  */
-export default class ContinuityEightToFiveDynamic extends Deserializable<ContinuityEightToFiveDynamic> implements BaseContinuity {
+export default class ContinuityEightToFiveDynamic extends Serializable<ContinuityEightToFiveDynamic> implements BaseContinuity {
   readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC;
 
   duration: number = 0;

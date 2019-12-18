@@ -2,7 +2,7 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES, DIRECTION_TO_DEGREES } from '../util/constants';
 import { FlowBeat } from '../util/types';
-import Deserializable from '../util/Deserializable';
+import Serializable from '../util/Serializable';
 
 /**
  * Move in a specified direction for a duration. Can only move in an eight-to-five step.
@@ -13,7 +13,7 @@ import Deserializable from '../util/Deserializable';
  * @property marchingDirection - Which direction the marcher is moving
  * @property facingDirection   - Which direction the marcher is facing during the movement. If undefined, will be marchingDirection.
  */
-export default class ContinuityEightToFiveStatic extends Deserializable<ContinuityEightToFiveStatic> implements BaseContinuity {
+export default class ContinuityEightToFiveStatic extends Serializable<ContinuityEightToFiveStatic> implements BaseContinuity {
   readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC;
 
   duration: number = 8;

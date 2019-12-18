@@ -2,12 +2,12 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
-import Deserializable from '../util/Deserializable';
+import Serializable from '../util/Serializable';
 
 /**
  * Similar to follow the leader, but the leader also follows the tail.
  */
-export default class ContinuityCounterMarch extends Deserializable<ContinuityCounterMarch> implements BaseContinuity {
+export default class ContinuityCounterMarch extends Serializable<ContinuityCounterMarch> implements BaseContinuity {
   readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.COUNTER_MARCH;
 
   duration: number = 0;
