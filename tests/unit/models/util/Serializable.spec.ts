@@ -66,12 +66,14 @@ describe('models/util/Serializable', () => {
     it('uses defaults when json is undefined', () => {
       const parent = new ExampleParentSerializable();
       expect(parent.children).toHaveLength(1);
+      expect(parent.children[0] instanceof ExampleChildSerializable).toBeTruthy();
       expect(parent.children[0].getTitle()).toBe(DEFAULT_TITLE);
     });
 
     it('uses default if field is not provided', () => {
       const parent = new ExampleParentSerializable({});
       expect(parent.children).toHaveLength(1);
+      expect(parent.children[0] instanceof ExampleChildSerializable).toBeTruthy();
       expect(parent.children[0].getTitle()).toBe(DEFAULT_TITLE);
     });
 
@@ -82,8 +84,10 @@ describe('models/util/Serializable', () => {
       ];
       const parent = new ExampleParentSerializable({ children });
       expect(parent.children).toHaveLength(2);
+      expect(parent.children[0] instanceof ExampleChildSerializable).toBeTruthy();
       expect(parent.children[0].getTitle instanceof Function).toBeTruthy();
       expect(parent.children[0].getTitle()).toBe('one');
+      expect(parent.children[1] instanceof ExampleChildSerializable).toBeTruthy();
       expect(parent.children[1].getTitle instanceof Function).toBeTruthy();
       expect(parent.children[1].getTitle()).toBe('two');
     });
@@ -95,8 +99,10 @@ describe('models/util/Serializable', () => {
       ]));
       const parent = new ExampleParentSerializable({ children });
       expect(parent.children).toHaveLength(2);
+      expect(parent.children[0] instanceof ExampleChildSerializable).toBeTruthy();
       expect(parent.children[0].getTitle instanceof Function).toBeTruthy();
       expect(parent.children[0].getTitle()).toBe('one');
+      expect(parent.children[1] instanceof ExampleChildSerializable).toBeTruthy();
       expect(parent.children[1].getTitle instanceof Function).toBeTruthy();
       expect(parent.children[1].getTitle()).toBe('two');
     });
