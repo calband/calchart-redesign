@@ -3,9 +3,9 @@ import Vue, { VueConstructor } from 'vue';
 import Vuex, { Store } from 'vuex';
 import svgPanZoom from 'svg-pan-zoom';
 import Grapher from '@/components/grapher/Grapher.vue';
-import { generateStore } from '@/store';
-import { stateType } from '@/store/types';
+import { generateStore, CalChartState } from '@/store';
 import Show from '@/models/Show';
+import Field from '@/models/Field';
 
 // Mock out svgPanZoom to avoid TypeError: (0 , _svgPanZoom.default) is not a function
 // https://github.com/facebook/jest/issues/5023#issuecomment-497120576
@@ -19,13 +19,15 @@ describe('components/grapher/Grapher.vue', () => {
   });
 
   describe('small field (middleOfField is 0 and hashMarkOffsetsY is [8, 16]', () => {
-    let store: Store<stateType>;
+    let store: Store<CalChartState>;
     let wrapper: Wrapper<Vue>;
     beforeAll(() => {
-      const show: Show = new Show();
-      show.field.frontHashOffsetY = 8;
-      show.field.backHashOffsetY = 16;
-      show.field.middleOfField = 0;
+      const field: Field = new Field({
+        frontHashOffsetY: 8,
+        backHashOffsetY: 16,
+        middleOfField: 0,
+      });
+      const show: Show = new Show({ field });
       store = generateStore({ show });
       wrapper = mount(Grapher, {
         store,
@@ -68,10 +70,10 @@ describe('components/grapher/Grapher.vue', () => {
   });
 
   describe('default field (college field)', () => {
-    let store: Store<stateType>;
+    let store: Store<CalChartState>;
     let wrapper: Wrapper<Vue>;
     beforeAll(() => {
-      store = generateStore({});
+      store = generateStore();
       wrapper = mount(Grapher, {
         store,
         localVue,

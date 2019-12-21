@@ -2,6 +2,7 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES, DIRECTION_TO_DEGREES } from '../util/constants';
 import { FlowBeat } from '../util/types';
+import Serializable from '../util/Serializable';
 
 /**
  * Move in a specified direction for a duration. Can only move in an eight-to-five step.
@@ -12,26 +13,25 @@ import { FlowBeat } from '../util/types';
  * @property marchingDirection - Which direction the marcher is moving
  * @property facingDirection   - Which direction the marcher is facing during the movement. If undefined, will be marchingDirection.
  */
-export default class ContinuityEightToFiveStatic implements BaseContinuity {
-  continuityId: CONTINUITY_IDS;
+export default class ContinuityEightToFiveStatic extends Serializable<ContinuityEightToFiveStatic> implements BaseContinuity {
+  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC;
 
-  duration: number;
+  duration: number = 8;
 
-  marchingDirection: DIRECTION_TO_DEGREES;
+  marchingDirection: DIRECTION_TO_DEGREES = DIRECTION_TO_DEGREES.E;
 
-  facingDirection: DIRECTION_TO_DEGREES;
+  facingDirection: DIRECTION_TO_DEGREES = DIRECTION_TO_DEGREES.E;
 
-  humanReadableText: string;
+  humanReadableText: string = '';
 
-  marchType: MARCH_TYPES;
+  marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(duration: number, marchType: MARCH_TYPES, marchingDirection: DIRECTION_TO_DEGREES, facingDirection?: DIRECTION_TO_DEGREES) {
-    this.continuityId = CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC;
-    this.duration = duration;
-    this.marchingDirection = marchingDirection;
-    this.facingDirection = facingDirection === undefined ? marchingDirection : facingDirection;
-    this.humanReadableText = '';
-    this.marchType = marchType;
+  constructor(json: Partial<ContinuityEightToFiveStatic> = {}) {
+    super();
+    if (json.facingDirection === undefined) {
+      json.facingDirection = json.marchingDirection;
+    }
+    this.fromJson(json);
   }
 
   getHumanReadableText(): string {

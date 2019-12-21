@@ -2,20 +2,19 @@ import { createLocalVue, mount, Wrapper } from '@vue/test-utils';
 import Vue, { VueConstructor } from 'vue';
 import Vuex, { Store } from 'vuex';
 import Buefy from 'buefy';
-import { generateStore } from '@/store';
-import { stateType } from '@/store/types';
+import { generateStore, CalChartState } from '@/store';
 import MenuTop from '@/components/menu-top/MenuTop.vue';
 
 describe('components/menu-top/MenuTop', () => {
   let localVue: VueConstructor<Vue>;
   let wrapper: Wrapper<Vue>;
-  let store: Store<stateType>;
+  let store: Store<CalChartState>;
 
   beforeEach(() => {
     localVue = createLocalVue();
     localVue.use(Vuex);
     localVue.use(Buefy);
-    store = generateStore({});
+    store = generateStore();
     wrapper = mount(MenuTop, {
       store,
       localVue,

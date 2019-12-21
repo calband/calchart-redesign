@@ -3,6 +3,7 @@ import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import { startPositionHelper, ewHelper, nsHelper, diagonalHelper } from './continuity-util';
+import Serializable from '../util/Serializable';
 
 export enum EIGHT_TO_FIVE_DYNAMIC_TYPES {
   EWNS,
@@ -21,23 +22,20 @@ export enum EIGHT_TO_FIVE_DYNAMIC_TYPES {
  * 
  * @property eightToFiveType - Determines the order of directions to move in
  */
-export default class ContinuityEightToFiveDynamic implements BaseContinuity {
-  continuityId: CONTINUITY_IDS;
+export default class ContinuityEightToFiveDynamic extends Serializable<ContinuityEightToFiveDynamic> implements BaseContinuity {
+  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC;
 
-  duration: number;
+  duration: number = 0;
 
-  humanReadableText: string;
+  humanReadableText: string = '';
 
-  eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES;
+  eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES = EIGHT_TO_FIVE_DYNAMIC_TYPES.EWNS;
 
-  marchType: MARCH_TYPES;
+  marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES, marchType: MARCH_TYPES) {
-    this.continuityId = CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC;
-    this.duration = 0;
-    this.humanReadableText = '';
-    this.eightToFiveType = eightToFiveType;
-    this.marchType = marchType;
+  constructor(json: Partial<ContinuityEightToFiveDynamic> = {}) {
+    super();
+    this.fromJson(json);
   }
 
   getHumanReadableText(): string {

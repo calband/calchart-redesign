@@ -3,6 +3,7 @@ import StuntSheet from './StuntSheet';
 import StuntSheetDot from './StuntSheetDot';
 import BaseContinuity from './continuity/BaseContinuity';
 import { FlowBeat } from './util/types';
+import Serializable from './util/Serializable';
 
 // Upon making show metadata changes that break previous versions, please increment.
 const METADATA_VERSION: number = 1;
@@ -16,23 +17,28 @@ const METADATA_VERSION: number = 1;
  * @property field           - Defines the sizing of the field that is being marched on
  * @property stuntSheets     - The set of all StuntSheet objects
  */
-export default class Show {
-  metadataVersion: number;
+export default class Show extends Serializable<Show> {
+  metadataVersion: number = METADATA_VERSION;
 
-  title: string;
+  title: string = 'Example Show';
 
-  dotLabels: string[];
+  dotLabels: string[] = [];
 
-  field: Field;
+  field: Field = new Field();
 
-  stuntSheets: StuntSheet[];
+  stuntSheets: StuntSheet[] = [new StuntSheet()];
 
-  constructor() {
-    this.metadataVersion = METADATA_VERSION;
-    this.title = 'Example Show';
-    this.dotLabels = [];
-    this.field = new Field();
-    this.stuntSheets = [new StuntSheet()];
+  constructor(showJson: Partial<Show> = {}) {
+    super();
+    if (showJson.field !== undefined) {
+      showJson.field = new Field(showJson.field);
+    }
+    if (showJson.stuntSheets !== undefined) {
+      showJson.stuntSheets = showJson.stuntSheets.map((stuntSheet: StuntSheet) => {
+        return new StuntSheet(stuntSheet);
+      });
+    }
+    this.fromJson(showJson);
   }
 
   /**
@@ -40,7 +46,7 @@ export default class Show {
    */
   generateFlows(stuntSheetIndex: number): void {
     if (stuntSheetIndex < 0 || stuntSheetIndex + 1 >= this.stuntSheets.length) {
-      throw `stuntSheetIndex (${stuntSheetIndex}) is invalid`;
+      throw `stuntSheetIndex (${stuntSheetIndex}) is invalid with stuntsheet length ${this.stuntSheets.length}`;
     }
 
     const startSS: StuntSheet = this.stuntSheets[stuntSheetIndex];
