@@ -15,14 +15,22 @@ const METADATA_VERSION = 1;
  *                             migrations are needed to make the show
  *                             compatible with future CalChart versions
  * @property title           - Used to categorize saved shows
+<<<<<<< HEAD
  * @property dotLabels       - A list of names used for each dot
  * @property field           - Defines the sizing of the field
+=======
+ * @property numberDots      - How many marchers are in the show
+ * @property dotLabels       - A list of names used for each dot. Ex. ['A0', 'A1', ...]
+ * @property field           - Defines the sizing of the field that is being marched on
+>>>>>>> adding ability to Import CalChart3 shows.
  * @property stuntSheets     - The set of all StuntSheet objects
  */
 export default class Show extends Serializable<Show> {
   metadataVersion: number = METADATA_VERSION;
 
   title: string = 'Example Show';
+
+  numberDots: number = 0;
 
   dotLabels: string[] = [];
 
@@ -78,3 +86,4 @@ export default class Show extends Serializable<Show> {
     });
   }
 }
+

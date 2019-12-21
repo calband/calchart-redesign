@@ -8,6 +8,7 @@ import { loadContinuity } from './continuity/load-continuity';
  * Defines the positions/directions in a formation and the continuities
  * used to reach the next position.
  *
+ * @property title          - Title of this StuntSheet
  * @property stuntSheetDots - The collection of positions that make up a
  *                            formation
  * @property dotTypes       - The set of continuities used to describe the
@@ -16,6 +17,8 @@ import { loadContinuity } from './continuity/load-continuity';
  *                            next StuntSheet
  */
 export default class StuntSheet extends Serializable<StuntSheet> {
+  title: string = '';
+
   stuntSheetDots: StuntSheetDot[] = [];
 
   dotTypes: BaseCont[][] = [[new ContInPlace()]];

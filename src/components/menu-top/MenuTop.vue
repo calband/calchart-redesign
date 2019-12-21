@@ -26,6 +26,13 @@
           >
             Edit Show Details
           </b-navbar-item>
+
+          <b-navbar-item
+            data-test="menu-top--import-calchart3"
+            @click="importCalChart3Active = true">
+            Import show...
+          </b-navbar-item>
+
         </b-navbar-dropdown>
 
         <b-navbar-dropdown
@@ -52,20 +59,31 @@
     >
       <FileModal />
     </b-modal>
+    <b-modal
+      :active.sync="importCalChart3Active"
+      has-modal-card
+      trap-focus
+      data-test="menu-top--file-modal"
+    >
+      <ImportCalChart3 />
+    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import FileModal from './FileModal.vue';
+import ImportCalChart3 from './ImportCalChart3.vue';
 
 export default Vue.extend({
   name: 'MenuTop',
   components: {
     FileModal,
+    ImportCalChart3,
   },
   data: () => ({
     fileModalActive: false,
+    importCalChart3Active: false,
   }),
   computed: {
     showTitle(): string {
