@@ -14,6 +14,13 @@ const mutations: MutationTree<CalChartState> = {
     state.show.title = title;
   },
 
+  setCurrentSheet(state, which: number): void {
+    if (which < 0 || which >= state.show.stuntSheets.length) {
+      throw 'trying to set to a stunt sheet that does not exist';
+    }
+    state.show.currentSheet = which;
+  },
+
   // Show -> Field
   setFrontHashOffsetY(state, offsetY: number): void {
     state.show.field.frontHashOffsetY = offsetY;

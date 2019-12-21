@@ -87,10 +87,10 @@ splitDataViewIntoChunks(buffer: DataView): [string, DataView][] {
 }
 
 export function calChart3To4ConvertX(x: number): number {
-  return 160 + x/8;
+  return 96 + x/16;
 }
 
 export function calChart3To4ConvertY(y: number): number {
-  return 84 + y/8;
+  return 42 + y/16;
 }
 

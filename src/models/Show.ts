@@ -18,6 +18,7 @@ const METADATA_VERSION = 1;
  * @property dotLabels       - A list of names used for each dot
  * @property field           - Defines the sizing of the field
  * @property stuntSheets     - The set of all StuntSheet objects
+ * @property currentSheet    - Which sheet is currently being viewed/edited
  */
 export default class Show extends Serializable<Show> {
   metadataVersion: number = METADATA_VERSION;
@@ -29,6 +30,8 @@ export default class Show extends Serializable<Show> {
   field: Field = new Field();
 
   stuntSheets: StuntSheet[] = [new StuntSheet()];
+
+  currentSheet: number = 0;
 
   constructor(showJson: Partial<Show> = {}) {
     super();
@@ -78,3 +81,4 @@ export default class Show extends Serializable<Show> {
     });
   }
 }
+

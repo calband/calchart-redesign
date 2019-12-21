@@ -80,5 +80,10 @@ describe('models/Show', () => {
         undefined
       );
     });
+
+    it('currentSheet should be 0', () => {
+      expect(show.currentSheet).toBe(0);
+    });
+
   });
 });

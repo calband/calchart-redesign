@@ -115,6 +115,18 @@
           />
         </g>
       </g>
+      <g class="grapher--dot-drawer">
+        <circle
+          v-for="dot in dotsPosition"
+          :key="dot.x"
+          :cx="dot.x"
+          :cy="dot.y"
+          r="1"
+          stroke="green"
+          stroke-width="0.5"
+          fill="yellow"
+        />
+      </g>
     </svg>
   </div>
 </template>
@@ -223,6 +235,9 @@ export default Vue.extend({
     },
     grapherToolDots(): StuntSheetDot[] {
       return this.$store.state.grapherToolDots;
+    },
+    dotsPosition(): StuntSheetDot[] {
+      return this.$store.getters.getDots;
     },
   },
   mounted() {
