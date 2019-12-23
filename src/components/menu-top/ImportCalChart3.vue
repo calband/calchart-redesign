@@ -48,13 +48,11 @@ export default Vue.extend({
       set(file) {
         const reader = new FileReader();
         let myStore = this.$store;
-        reader.onload = function(e) {
+        reader.onload = function() {
           // The file's text will be printed here
-          if (e.target) {
-            if (e.target.result instanceof ArrayBuffer) {
-              let show = LoadShow(e.target.result);
-              myStore.commit('setShow', show);
-            }
+          if (reader.result && reader.result instanceof ArrayBuffer) {
+            let show = LoadShow(reader.result);
+            myStore.commit('setShow', show);
           }
         };
         if (file instanceof Blob) {
