@@ -18,8 +18,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     '@typescript-eslint/array-type': 'warn',
     'brace-style': 'warn',
     'comma-dangle': ['warn', 'always-multiline'],
@@ -64,6 +64,7 @@ module.exports = {
   },
   overrides: [
     {
+      // Overrides for jest unit tests
       files: [
         '**/__tests__/*.{j,t}s?(x)',
         '**/tests/unit/**/*.spec.{j,t}s?(x)',
@@ -76,6 +77,7 @@ module.exports = {
       },
     },
     {
+      // Ignore vue cli generated shims
       files: [
         'src/main.ts',
         'src/shims-tsx.d.ts',
