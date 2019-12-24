@@ -12,7 +12,7 @@ export const startPositionHelper = (flow: FlowBeat[], startDot: StuntSheetDot): 
   let startX: number;
   let startY: number;
   if (flow.length === 0) {
-    startX = startDot.x;
+    startX = startDot.x;     
     startY = startDot.y;
   } else {
     const lastFlowBeat: FlowBeat = flow[flow.length - 1];
