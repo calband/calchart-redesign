@@ -1,29 +1,31 @@
-import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
+import BaseCont, { CONT_IDS } from './BaseCont';
 import StuntSheetDot from '../StuntSheetDot';
-import { DIRECTION_TO_DEGREES, MARCH_TYPES } from '../util/constants';
+import { DIRECTIONS, MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import { startPositionHelper } from './continuity-util';
 import Serializable from '../util/Serializable';
 
 /**
- * Stay in the same position for the specified duration, direction, and march type.
+ * Stay in the same position for the specified duration, direction, and march
+ * type.
  *  - MTHS 8 E
  *  - MTMM 4 SW
  *  - [Close N]
  *  - Vamp E
  */
-export default class ContinuityInPlace extends Serializable<ContinuityInPlace> implements BaseContinuity {
-  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.IN_PLACE;
+export default class ContInPlace extends Serializable<ContInPlace>
+  implements BaseCont {
+  readonly continuityId: CONT_IDS = CONT_IDS.IN_PLACE;
 
   duration: number = 0;
 
-  direction: DIRECTION_TO_DEGREES = DIRECTION_TO_DEGREES.E;
+  direction: DIRECTIONS = DIRECTIONS.E;
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
   humanReadableText: string = '';
 
-  constructor(json: Partial<ContinuityInPlace> = {}) {
+  constructor(json: Partial<ContInPlace> = {}) {
     super();
     this.fromJson(json);
   }
@@ -31,14 +33,17 @@ export default class ContinuityInPlace extends Serializable<ContinuityInPlace> i
   getHumanReadableText(): string {
     if (this.humanReadableText !== '') return this.humanReadableText;
 
-    const directionText: string = DIRECTION_TO_DEGREES[this.direction];
+    const directionText: string = DIRECTIONS[this.direction];
 
     let prefix = '';
-    if (this.marchType === MARCH_TYPES.HS || this.marchType === MARCH_TYPES.MINI_MILITARY) {
+    if (this.marchType === MARCH_TYPES.HS
+      || this.marchType === MARCH_TYPES.MINI_MILITARY) {
       prefix = 'MT';
     }
 
-    return this.duration === 0 ? `[${prefix}${this.marchType} ${directionText}]` : `${prefix}${this.marchType} ${this.duration} ${directionText}`;
+    return this.duration === 0
+      ? `[${prefix}${this.marchType} ${directionText}]`
+      : `${prefix}${this.marchType} ${this.duration} ${directionText}`;
   }
 
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot): void {

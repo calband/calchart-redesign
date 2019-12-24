@@ -1,7 +1,8 @@
 import { CalChartState } from '.';
 
 /**
- * To access the class methods of any property in state, initialize it again. See Serializable.
+ * To access the class methods of any property in state, initialize it again.
+ * See Serializable.
  */
 
 export default {

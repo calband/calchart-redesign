@@ -2,8 +2,8 @@
 /**
  * Extending this class allows it to be constructed from JSON
  *
- * Note that when loaded from JSON, all class properties that have a class as the type
- * must be initialized again to use it's class methods.
+ * Note that when loaded from JSON, all class properties that have a class as
+ * the type must be initialized again to use it's class methods.
  *
  * See the unit tests for an example of how to use this.
  */

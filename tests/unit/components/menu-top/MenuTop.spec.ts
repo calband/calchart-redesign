@@ -23,23 +23,28 @@ describe('components/menu-top/MenuTop', () => {
 
   describe('file dropdown', () => {
     it('shows the show title', () => {
-      expect(wrapper.contains('[data-test="menu-top--selected-show"]')).toBeTruthy();
+      expect(wrapper.contains('[data-test="menu-top--selected-show"]'))
+        .toBeTruthy();
       expect(wrapper.find('[data-test="menu-top--selected-show"]').text())
         .toBe('Selected: Example Show');
     });
 
     it('sets fileModal to true upon clicking "Edit Show Details"', () => {
-      expect(wrapper.contains('[data-test="menu-top--file-modal"]')).toBeFalsy();
-      expect(wrapper.contains('[data-test="menu-top--file-edit"]')).toBeTruthy();
+      expect(wrapper.contains('[data-test="menu-top--file-modal"]'))
+        .toBeFalsy();
+      expect(wrapper.contains('[data-test="menu-top--file-edit"]'))
+        .toBeTruthy();
       wrapper.find('[data-test="menu-top--file-edit"]').trigger('click');
-      expect(wrapper.contains('[data-test="menu-top--file-modal"]')).toBeTruthy();
+      expect(wrapper.contains('[data-test="menu-top--file-modal"]'))
+        .toBeTruthy();
     });
   });
 
   describe('view dropdown', () => {
     it('four step grid checkbox', () => {
       expect(store.state.fourStepGrid).toBeTruthy();
-      expect(wrapper.contains('[data-test="menu-top--view-grid"]')).toBeTruthy();
+      expect(wrapper.contains('[data-test="menu-top--view-grid"]'))
+        .toBeTruthy();
       wrapper.find('[data-test="menu-top--view-grid"]').trigger('click');
       expect(store.state.fourStepGrid).toBeFalsy();
     });
