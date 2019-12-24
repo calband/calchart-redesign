@@ -1,16 +1,15 @@
-import Show from "@/models/Show";
+import Show from '@/models/Show';
 import StuntSheet from '@/models/StuntSheet';
 import ContinuityInPlace from '@/models/continuity/ContinuityInPlace';
 import StuntSheetDot from '@/models/StuntSheetDot';
-import { loadContinuity } from '@/models/continuity/load-continuity';
 
 const mockAddToFlow = jest.fn();
 jest.mock('@/models/continuity/load-continuity', () => ({
   loadContinuity: jest.fn().mockImplementation(() => {
     return {
-      addToFlow: mockAddToFlow
-    }
-  })
+      addToFlow: mockAddToFlow,
+    };
+  }),
 }));
 
 describe('models/Show', () => {
@@ -26,8 +25,8 @@ describe('models/Show', () => {
         ],
         dotTypes: [
           [new ContinuityInPlace()],
-          [new ContinuityInPlace(), new ContinuityInPlace()]
-        ]
+          [new ContinuityInPlace(), new ContinuityInPlace()],
+        ],
       });
 
       show = new Show({
@@ -37,7 +36,7 @@ describe('models/Show', () => {
 
     afterEach(() => {
       jest.clearAllMocks();
-    })
+    });
 
     it('addToFlow is called 4 times, and on all dots', () => {
       expect(mockAddToFlow).toHaveBeenCalledTimes(0);
@@ -56,6 +55,6 @@ describe('models/Show', () => {
       expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[0], undefined);
       expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[1], undefined);
       expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[2], undefined);
-    })
+    });
   });
 });

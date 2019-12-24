@@ -27,8 +27,8 @@ export default class ContinuityCounterMarch extends Serializable<ContinuityCount
     return '';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot, endDot?: StuntSheetDot): void {
-    if (endDot === undefined) return;
     // TODO: Implement
   }
 }

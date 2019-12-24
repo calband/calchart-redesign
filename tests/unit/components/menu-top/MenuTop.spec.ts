@@ -1,8 +1,8 @@
-import { createLocalVue, mount, Wrapper } from '@vue/test-utils';
+import { Wrapper, createLocalVue, mount } from '@vue/test-utils';
 import Vue, { VueConstructor } from 'vue';
 import Vuex, { Store } from 'vuex';
 import Buefy from 'buefy';
-import { generateStore, CalChartState } from '@/store';
+import { CalChartState, generateStore } from '@/store';
 import MenuTop from '@/components/menu-top/MenuTop.vue';
 
 describe('components/menu-top/MenuTop', () => {

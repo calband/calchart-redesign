@@ -1,6 +1,6 @@
 import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
-import { MARCH_TYPES, DIRECTION_TO_DEGREES } from '../util/constants';
+import { DIRECTION_TO_DEGREES, MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import Serializable from '../util/Serializable';
 
@@ -9,7 +9,7 @@ import Serializable from '../util/Serializable';
  * Accepts HS, MM, and Military.
  * - FMHS 8 E
  * - FMMM 4 SW
- * 
+ *
  * @property marchingDirection - Which direction the marcher is moving
  * @property facingDirection   - Which direction the marcher is facing during the movement. If undefined, will be marchingDirection.
  */
@@ -40,8 +40,8 @@ export default class ContinuityEightToFiveStatic extends Serializable<Continuity
     return '';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot, endDot?: StuntSheetDot): void {
-    if (endDot === undefined) return;
     // TODO: Implement
   }
 }

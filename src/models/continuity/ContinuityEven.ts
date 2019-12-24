@@ -7,7 +7,7 @@ import Serializable from '../util/Serializable';
 /**
  * Moves in even steps for the entirety of the specified duration to the end position.
  * Accepts HS, MM, and Military.
- * 
+ *
  * - Even HS 16
  * - Even MM 8
  */
@@ -31,8 +31,8 @@ export default class ContinuityEven extends Serializable<ContinuityEven> impleme
     return '';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot, endDot?: StuntSheetDot): void {
-    if (endDot === undefined) return;
     // TODO: Implement
   }
 }

@@ -6,7 +6,7 @@ import Serializable from '../util/Serializable';
 
 /**
  * Defines the path that the leader takes, which the other bandsmen follow.
- * 
+ *
  * @property leaderPath - Defines the flow that the leader will take
  */
 export default class ContinuityFollowTheLeader extends Serializable<ContinuityFollowTheLeader> implements BaseContinuity {
@@ -31,8 +31,8 @@ export default class ContinuityFollowTheLeader extends Serializable<ContinuityFo
     return '';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot, endDot?: StuntSheetDot): void {
-    if (endDot === undefined) return;
     // TODO: Implement
   }
 }

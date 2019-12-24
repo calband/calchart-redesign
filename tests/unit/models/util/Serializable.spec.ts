@@ -1,4 +1,4 @@
-import Serializable from "@/models/util/Serializable";
+import Serializable from '@/models/util/Serializable';
 import Show from '@/models/Show';
 import ContinuityInPlace from '@/models/continuity/ContinuityInPlace';
 import ContinuityEightToFiveDynamic from '@/models/continuity/ContinuityEightToFiveDynamic';

@@ -1,6 +1,6 @@
 import StuntSheetDot from '@/models/StuntSheetDot';
 import ContinuityEightToFiveDynamic, { EIGHT_TO_FIVE_DYNAMIC_TYPES } from '@/models/continuity/ContinuityEightToFiveDynamic';
-import { MARCH_TYPES, DIRECTION_TO_DEGREES } from '@/models/util/constants';
+import { DIRECTION_TO_DEGREES, MARCH_TYPES } from '@/models/util/constants';
 import { FlowBeat } from '@/models/util/types';
 import { CONTINUITY_IDS } from '@/models/continuity/BaseContinuity';
 
@@ -14,7 +14,7 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
     it('generates EW/NS FMHS', () => {
       const continuity = new ContinuityEightToFiveDynamic({
         eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.EWNS,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       expect(continuity.getHumanReadableText()).toBe('EW/NS FMHS');
     });
@@ -22,7 +22,7 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
     it('after stringifying and parsing, generates EW/NS FMHS', () => {
       const originalContinuity = new ContinuityEightToFiveDynamic({
         eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.EWNS,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       const parsedContinuity = new ContinuityEightToFiveDynamic(
         JSON.parse(JSON.stringify(originalContinuity))
@@ -33,7 +33,7 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
     it('generates NS/EW FMMM', () => {
       const continuity = new ContinuityEightToFiveDynamic({
         eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.NSEW,
-        marchType: MARCH_TYPES.MINI_MILITARY
+        marchType: MARCH_TYPES.MINI_MILITARY,
       });
       expect(continuity.getHumanReadableText()).toBe('NS/EW FMMM');
     });
@@ -41,7 +41,7 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
     it('generates DHS/FMHS', () => {
       const continuity = new ContinuityEightToFiveDynamic({
         eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.DFM,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       expect(continuity.getHumanReadableText()).toBe('DHS/FMHS');
     });
@@ -49,7 +49,7 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
     it('generates FMMM/DMM', () => {
       const continuity = new ContinuityEightToFiveDynamic({
         eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.FMD,
-        marchType: MARCH_TYPES.MINI_MILITARY
+        marchType: MARCH_TYPES.MINI_MILITARY,
       });
       expect(continuity.getHumanReadableText()).toBe('FMMM/DMM');
     });
@@ -59,10 +59,10 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
     it('does not generate flow if endDot is undefined', () => {
       const continuity = new ContinuityEightToFiveDynamic({
         eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.EWNS,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       const startDot = new StuntSheetDot({ x: 2, y: 2 });
-      let flow: FlowBeat[] = [];
+      const flow: FlowBeat[] = [];
       continuity.addToFlow(flow, startDot, undefined);
       expect(flow).toStrictEqual([]);
     });
@@ -70,13 +70,13 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
     it('after stringifying and parsing, does not generate flow if endDot is undefined', () => {
       const originalContinuity = new ContinuityEightToFiveDynamic({
         eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.EWNS,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       const parsedContinuity = new ContinuityEightToFiveDynamic(
         JSON.parse(JSON.stringify(originalContinuity))
       );
       const startDot = new StuntSheetDot({ x: 2, y: 2 });
-      let flow: FlowBeat[] = [];
+      const flow: FlowBeat[] = [];
       parsedContinuity.addToFlow(flow, startDot, undefined);
       expect(flow).toStrictEqual([]);
     });
@@ -88,9 +88,9 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
       it('generates flow for EW/NS', () => {
         const continuity = new ContinuityEightToFiveDynamic({
           eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.EWNS,
-          marchType: MARCH_TYPES.HS
+          marchType: MARCH_TYPES.HS,
         });
-        let flow: FlowBeat[] = [];
+        const flow: FlowBeat[] = [];
         continuity.addToFlow(flow, startDot, endDot);
         expect(flow).toStrictEqual([
           {
@@ -116,16 +116,16 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
             y: 4,
             direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
-          }
+          },
         ]);
       });
 
       it('generates flow for NS/EW', () => {
         const continuity = new ContinuityEightToFiveDynamic({
           eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.NSEW,
-          marchType: MARCH_TYPES.HS
+          marchType: MARCH_TYPES.HS,
         });
-        let flow: FlowBeat[] = [];
+        const flow: FlowBeat[] = [];
         continuity.addToFlow(flow, startDot, endDot);
         expect(flow).toStrictEqual([
           {
@@ -151,7 +151,7 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
             y: 4,
             direction: DIRECTION_TO_DEGREES.E,
             marchType: MARCH_TYPES.HS,
-          }
+          },
         ]);
       });
     });
@@ -163,9 +163,9 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
       it('generates flow for DHS/FMHS', () => {
         const continuity = new ContinuityEightToFiveDynamic({
           eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.DFM,
-          marchType: MARCH_TYPES.HS
+          marchType: MARCH_TYPES.HS,
         });
-        let flow: FlowBeat[] = [];
+        const flow: FlowBeat[] = [];
         continuity.addToFlow(flow, startDot, endDot);
         expect(flow).toStrictEqual([
           {
@@ -191,16 +191,16 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
             y: 4,
             direction: DIRECTION_TO_DEGREES.N,
             marchType: MARCH_TYPES.HS,
-          }
+          },
         ]);
       });
 
       it('generates flow for FMHS/DHS', () => {
         const continuity = new ContinuityEightToFiveDynamic({
           eightToFiveType: EIGHT_TO_FIVE_DYNAMIC_TYPES.FMD,
-          marchType: MARCH_TYPES.HS
+          marchType: MARCH_TYPES.HS,
         });
-        let flow: FlowBeat[] = [];
+        const flow: FlowBeat[] = [];
         continuity.addToFlow(flow, startDot, endDot);
         expect(flow).toStrictEqual([
           {
@@ -226,7 +226,7 @@ describe('models/continuity/ContinuityEightToFiveDynamic', () => {
             y: 4,
             direction: DIRECTION_TO_DEGREES.NE,
             marchType: MARCH_TYPES.HS,
-          }
+          },
         ]);
       });
     });

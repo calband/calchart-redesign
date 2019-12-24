@@ -20,7 +20,7 @@ export enum CONTINUITY_IDS {
 /**
  * Defines a specific movement that is used by a group of marchers
  * to get to their next positions.
- * 
+ *
  * @property continuityId      - Identifier for deserializer.
  * @property duration          - How many beats to execute. If 0, it indicates to do the continuity until reached the end position or for the rest of the stunt sheet.
  * @property marchType         - Marks each generated FlowBeat with this type.
@@ -42,7 +42,7 @@ export default interface BaseContinuity {
 
   /**
    * Execute the continuity for the specified dot and flow. Directly concats to flow.
-   * 
+   *
    * @param flow     - The flow to concat
    * @param startDot - The dot in the start stuntsheet
    * @param endDot   - The dot in the next stuntsheet

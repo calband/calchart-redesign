@@ -1,4 +1,4 @@
-import StuntSheetDot from "@/models/StuntSheetDot";
+import StuntSheetDot from '@/models/StuntSheetDot';
 import ContinuityInPlace from '@/models/continuity/ContinuityInPlace';
 import { DIRECTION_TO_DEGREES, MARCH_TYPES } from '@/models/util/constants';
 import { FlowBeat } from '@/models/util/types';
@@ -17,7 +17,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const continuity = new ContinuityInPlace({
         duration: 0,
         direction: DIRECTION_TO_DEGREES.E,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       expect(continuity.getHumanReadableText()).toBe('[MTHS E]');
     });
@@ -26,7 +26,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const originalContinuity = new ContinuityInPlace({
         duration: 0,
         direction: DIRECTION_TO_DEGREES.E,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       const parsedContinuity = new ContinuityInPlace(
         JSON.parse(JSON.stringify(originalContinuity))
@@ -38,7 +38,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const continuity = new ContinuityInPlace({
         duration: 0,
         direction: DIRECTION_TO_DEGREES.W,
-        marchType: MARCH_TYPES.MINI_MILITARY
+        marchType: MARCH_TYPES.MINI_MILITARY,
       });
       expect(continuity.getHumanReadableText()).toBe('[MTMM W]');
     });
@@ -47,7 +47,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const continuity = new ContinuityInPlace({
         duration: 8,
         direction: DIRECTION_TO_DEGREES.N,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       expect(continuity.getHumanReadableText()).toBe('MTHS 8 N');
     });
@@ -56,7 +56,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const continuity = new ContinuityInPlace({
         duration: 8,
         direction: DIRECTION_TO_DEGREES.S,
-        marchType: MARCH_TYPES.CLOSE
+        marchType: MARCH_TYPES.CLOSE,
       });
       expect(continuity.getHumanReadableText()).toBe('Close 8 S');
     });
@@ -65,7 +65,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const continuity = new ContinuityInPlace({
         duration: 8,
         direction: DIRECTION_TO_DEGREES.S,
-        marchType: MARCH_TYPES.CLOSE
+        marchType: MARCH_TYPES.CLOSE,
       });
       continuity.humanReadableText = 'Kneel 8 E';
       expect(continuity.getHumanReadableText()).toBe('Kneel 8 E');
@@ -77,7 +77,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const continuity = new ContinuityInPlace({
         duration: 0,
         direction: DIRECTION_TO_DEGREES.E,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       const flow: FlowBeat[] = [];
       continuity.addToFlow(flow, startDot);
@@ -85,7 +85,7 @@ describe('models/continuity/ContinuityInPlace', () => {
         x: 2,
         y: 4,
         direction: DIRECTION_TO_DEGREES.E,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       }]);
     });
 
@@ -93,7 +93,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const originalContinuity = new ContinuityInPlace({
         duration: 0,
         direction: DIRECTION_TO_DEGREES.E,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       const parsedContinuity = new ContinuityInPlace(
         JSON.parse(JSON.stringify(originalContinuity))
@@ -104,7 +104,7 @@ describe('models/continuity/ContinuityInPlace', () => {
         x: 2,
         y: 4,
         direction: DIRECTION_TO_DEGREES.E,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       }]);
     });
 
@@ -112,7 +112,7 @@ describe('models/continuity/ContinuityInPlace', () => {
       const continuity = new ContinuityInPlace({
         duration: 2,
         direction: DIRECTION_TO_DEGREES.E,
-        marchType: MARCH_TYPES.HS
+        marchType: MARCH_TYPES.HS,
       });
       const flow: FlowBeat[] = [];
       continuity.addToFlow(flow, startDot);
@@ -121,14 +121,14 @@ describe('models/continuity/ContinuityInPlace', () => {
           x: 2,
           y: 4,
           direction: DIRECTION_TO_DEGREES.E,
-          marchType: MARCH_TYPES.HS
+          marchType: MARCH_TYPES.HS,
         },
         {
           x: 2,
           y: 4,
           direction: DIRECTION_TO_DEGREES.E,
-          marchType: MARCH_TYPES.HS
-        }
+          marchType: MARCH_TYPES.HS,
+        },
       ]);
     });
   });

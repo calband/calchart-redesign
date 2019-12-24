@@ -10,7 +10,7 @@ import Serializable from '../util/Serializable';
  *   - FMHS 4 E
  *   - FMHS 4 W
  *   - [MTHS E]
- * 
+ *
  * @property continuities - Execute this list of continuities after waiting a certain amount of time
  */
 export default class ContinuityStepTwo extends Serializable<ContinuityStepTwo> implements BaseContinuity {
@@ -35,8 +35,8 @@ export default class ContinuityStepTwo extends Serializable<ContinuityStepTwo> i
     return '';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot, endDot?: StuntSheetDot): void {
-    if (endDot === undefined) return;
     // TODO: Implement
   }
 }

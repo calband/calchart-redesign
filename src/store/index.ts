@@ -9,7 +9,7 @@ Vue.use(Vuex);
 
 /**
  * Defines the global state for the application
- * 
+ *
  * @property show         - The currently selected show data
  * @property fourStepGrid - View setting to toggle the grapher grid
  */

@@ -1,6 +1,6 @@
 import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
-import { MARCH_TYPES, DIRECTION_TO_DEGREES } from '../util/constants';
+import { DIRECTION_TO_DEGREES, MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
 import { startPositionHelper } from './continuity-util';
 import Serializable from '../util/Serializable';
@@ -33,12 +33,12 @@ export default class ContinuityInPlace extends Serializable<ContinuityInPlace> i
 
     const directionText: string = DIRECTION_TO_DEGREES[this.direction];
 
-    let prefix: string = '';
+    let prefix = '';
     if (this.marchType === MARCH_TYPES.HS || this.marchType === MARCH_TYPES.MINI_MILITARY) {
       prefix = 'MT';
     }
 
-    return this.duration === 0 ? `[${prefix}${this.marchType} ${directionText}]` : `${prefix}${this.marchType} ${this.duration} ${directionText}`
+    return this.duration === 0 ? `[${prefix}${this.marchType} ${directionText}]` : `${prefix}${this.marchType} ${this.duration} ${directionText}`;
   }
 
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot): void {
@@ -47,7 +47,7 @@ export default class ContinuityInPlace extends Serializable<ContinuityInPlace> i
       x,
       y,
       direction: this.direction,
-      marchType: this.marchType
+      marchType: this.marchType,
     };
 
     for (let beat = 1; beat <= Math.max(this.duration, 1); beat += 1) {

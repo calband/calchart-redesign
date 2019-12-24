@@ -1,8 +1,8 @@
-import { createLocalVue, mount, Wrapper } from '@vue/test-utils';
+import { Wrapper, createLocalVue, mount } from '@vue/test-utils';
 import Vue, { VueConstructor } from 'vue';
 import Vuex, { Store } from 'vuex';
 import Buefy from 'buefy';
-import { generateStore, CalChartState } from '@/store';
+import { CalChartState, generateStore } from '@/store';
 import FileModal from '@/components/menu-top/FileModal.vue';
 
 describe('components/menu-top/FileModal', () => {
@@ -24,7 +24,7 @@ describe('components/menu-top/FileModal', () => {
   it('setting: frontHashOffsetY', async () => {
     const frontHashOffsetY = wrapper.find('[data-test="file-modal--front-hash-offset-y"]');
     expect(frontHashOffsetY.exists()).toBeTruthy();
-    const frontHashOffsetYElement = <HTMLInputElement>(frontHashOffsetY.element);
+    const frontHashOffsetYElement = frontHashOffsetY.element as HTMLInputElement;
     expect(frontHashOffsetYElement.value).toBe('32');
     expect(store.getters.getFrontHashOffsetY).toEqual(32);
     frontHashOffsetY.setValue(28);
@@ -37,7 +37,7 @@ describe('components/menu-top/FileModal', () => {
   it('setting: backHashOffsetY', async () => {
     const backHashOffsetY = wrapper.find('[data-test="file-modal--back-hash-offset-y"]');
     expect(backHashOffsetY.exists()).toBeTruthy();
-    const backHashOffsetYElement = <HTMLInputElement>(backHashOffsetY.element);
+    const backHashOffsetYElement = backHashOffsetY.element as HTMLInputElement;
     expect(backHashOffsetYElement.value).toBe('52');
     expect(store.getters.getBackHashOffsetY).toEqual(52);
     backHashOffsetY.setValue(56);
@@ -50,7 +50,7 @@ describe('components/menu-top/FileModal', () => {
   it('setting: middleOfField', async () => {
     const middleOfField = wrapper.find('[data-test="file-modal--middle-of-field"]');
     expect(middleOfField.exists()).toBeTruthy();
-    const middleOfFieldElement = <HTMLInputElement>(middleOfField.element);
+    const middleOfFieldElement = middleOfField.element as HTMLInputElement;
     expect(middleOfFieldElement.value).toBe('50');
     expect(store.getters.getMiddleOfField).toEqual(50);
     middleOfField.setValue(40);

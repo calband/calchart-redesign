@@ -2,7 +2,7 @@ import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
-import { startPositionHelper, ewHelper, nsHelper, diagonalHelper } from './continuity-util';
+import { diagonalHelper, ewHelper, nsHelper, startPositionHelper } from './continuity-util';
 import Serializable from '../util/Serializable';
 
 export enum EIGHT_TO_FIVE_DYNAMIC_TYPES {
@@ -19,7 +19,7 @@ export enum EIGHT_TO_FIVE_DYNAMIC_TYPES {
  * - NS/EW FMHS
  * - DHS/FMHS
  * - FMHS/DHS
- * 
+ *
  * @property eightToFiveType - Determines the order of directions to move in
  */
 export default class ContinuityEightToFiveDynamic extends Serializable<ContinuityEightToFiveDynamic> implements BaseContinuity {
@@ -52,7 +52,7 @@ export default class ContinuityEightToFiveDynamic extends Serializable<Continuit
         return `D${this.marchType}/FM${this.marchType}`;
 
       case EIGHT_TO_FIVE_DYNAMIC_TYPES.FMD:
-        return `FM${this.marchType}/D${this.marchType}`
+        return `FM${this.marchType}/D${this.marchType}`;
 
       default:
         return 'Unknown';
@@ -68,7 +68,7 @@ export default class ContinuityEightToFiveDynamic extends Serializable<Continuit
     let offsetY: number = endY - startY;
     let diagOffsetX: number;
     let diagOffsetY: number;
-    
+
     if (this.eightToFiveType === EIGHT_TO_FIVE_DYNAMIC_TYPES.DFM || this.eightToFiveType === EIGHT_TO_FIVE_DYNAMIC_TYPES.FMD) {
       const absOffsetX: number = Math.abs(offsetX);
       const absOffsetY: number = Math.abs(offsetY);

@@ -1,4 +1,3 @@
-import Show from '@/models/Show';
 import { CalChartState } from '.';
 
 /**
@@ -7,23 +6,23 @@ import { CalChartState } from '.';
 
 export default {
   // Show
-  setShowTitle(state: CalChartState, title: string) {
+  setShowTitle(state: CalChartState, title: string): void {
     state.show.title = title;
   },
 
   // Show -> Field
-  setFrontHashOffsetY(state: CalChartState, offsetY: number) {
+  setFrontHashOffsetY(state: CalChartState, offsetY: number): void {
     state.show.field.frontHashOffsetY = offsetY;
   },
-  setBackHashOffsetY(state: CalChartState, offsetY: number) {
+  setBackHashOffsetY(state: CalChartState, offsetY: number): void {
     state.show.field.backHashOffsetY = offsetY;
   },
-  setMiddleOfField(state: CalChartState, middle: number) {
+  setMiddleOfField(state: CalChartState, middle: number): void {
     state.show.field.middleOfField = middle;
   },
 
   // View Settings
-  setFourStepGrid(state: CalChartState, enabled: boolean) {
+  setFourStepGrid(state: CalChartState, enabled: boolean): void {
     state.fourStepGrid = enabled;
   },
 };

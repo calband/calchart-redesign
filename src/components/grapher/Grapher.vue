@@ -137,7 +137,7 @@ export default Vue.extend({
     },
     yardLineNumberAndOffsetX(): [string, number][] {
       const retVal: [string, number][] = [];
-      let yardLineNumber: number = 1;
+      let yardLineNumber = 1;
       for (let lineIndex = 2; lineIndex < this.yardLineOffsetsX.length / 2; lineIndex += 2) {
         retVal.push([
           `${yardLineNumber.toString()} 0`,

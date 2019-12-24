@@ -6,7 +6,7 @@ import Serializable from '../util/Serializable';
 
 /**
  * Defines a gate turn continuity.
- * 
+ *
  * @property centerPoints - [x, y] values for the center of each gate turn group
  */
 export default class ContinuityGateTurn extends Serializable<ContinuityGateTurn> implements BaseContinuity {
@@ -31,8 +31,8 @@ export default class ContinuityGateTurn extends Serializable<ContinuityGateTurn>
     return '';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot, endDot?: StuntSheetDot): void {
-    if (endDot === undefined) return;
     // TODO: Implement
   }
 }

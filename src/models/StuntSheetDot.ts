@@ -3,7 +3,7 @@ import Serializable from './util/Serializable';
 
 /**
  * Defines the position and direction of a marcher for a specific StuntSheet.
- * 
+ *
  * @property x             - EW position of the first beat
  * @property y             - NS position of the first beat
  * @property dotLabelIndex - Which label to use in Show.dotLabels

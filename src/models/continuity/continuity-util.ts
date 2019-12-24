@@ -1,8 +1,8 @@
-import { FlowBeat } from "../util/types";
+import { FlowBeat } from '../util/types';
 
-import StuntSheetDot from "../StuntSheetDot";
+import StuntSheetDot from '../StuntSheetDot';
 
-import { MARCH_TYPES, DIRECTION_TO_DEGREES } from "../util/constants";
+import { DIRECTION_TO_DEGREES, MARCH_TYPES } from '../util/constants';
 
 /**
  * Decides the starting position for the upcoming continuity
@@ -20,11 +20,11 @@ export const startPositionHelper = (flow: FlowBeat[], startDot: StuntSheetDot): 
     startY = lastFlowBeat.y;
   }
   return [startX, startY];
-}
+};
 
 /**
  * Helper function to march in either north or south (eight to five)
- * 
+ *
  * @param offsetX    - How many steps to march. Positive is north, negative is south.
  * @param direction? - To enforce a direction to face, set this parameter. If undefined, the marcher will face the direction they are marching.
  * @returns [x, y] ending coordinates
@@ -39,16 +39,16 @@ export const nsHelper = (flow: FlowBeat[], startX: number, startY: number, offse
       x: startX + Math.sign(offsetX) * step,
       y: startY,
       direction: direction,
-      marchType: marchType
+      marchType: marchType,
     });
   }
 
   return [startX + offsetX, startY];
-}
+};
 
 /**
  * Helper function to march in either north or south (eight to five)
- * 
+ *
  * @param offsetY    - How many steps to march. Positive is east, negative is west.
  * @param direction? - To enforce a direction to face, set this parameter. If undefined, the marcher will face the direction they are marching.
  * @returns [x, y] ending coordinates
@@ -63,16 +63,16 @@ export const ewHelper = (flow: FlowBeat[], startX: number, startY: number, offse
       x: startX,
       y: startY + Math.sign(offsetY) * step,
       direction: direction,
-      marchType: marchType
+      marchType: marchType,
     });
   }
 
   return [startX, startY + offsetY];
-}
+};
 
 /**
  * Helper function to march in a diagonal (eight to five)
- * 
+ *
  * @param offsetX    - Positive is north, negative is south.
  * @param offsetY    - Positive is east, negative is west.
  * @param direction  - To enforce a direction to face, set this parameter. If undefined, the marcher will face the direction they are marching.
@@ -80,7 +80,7 @@ export const ewHelper = (flow: FlowBeat[], startX: number, startY: number, offse
  */
 export const diagonalHelper = (flow: FlowBeat[], startX: number, startY: number, offsetX: number, offsetY: number, marchType: MARCH_TYPES, direction?: number): [number, number] => {
   if (Math.abs(offsetX) !== Math.abs(offsetY)) {
-    throw `offsetX (${offsetX}) and offsetY (${offsetY}) are not equal!`
+    throw `offsetX (${offsetX}) and offsetY (${offsetY}) are not equal!`;
   }
 
   if (direction === undefined) {
@@ -96,9 +96,9 @@ export const diagonalHelper = (flow: FlowBeat[], startX: number, startY: number,
       x: startX + Math.sign(offsetX) * step,
       y: startY + Math.sign(offsetY) * step,
       direction: direction,
-      marchType: marchType
+      marchType: marchType,
     });
   }
 
   return [startX + offsetX, startY + offsetY];
-}
+};

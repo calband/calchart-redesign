@@ -18,16 +18,16 @@ export const loadContinuity = (continuityJson: BaseContinuity): BaseContinuity =
 
     case CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC:
       return new ContinuityEightToFiveStatic(continuityJson);
-    
+
     case CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC:
       return new ContinuityEightToFiveDynamic(continuityJson);
-    
+
     case CONTINUITY_IDS.EVEN:
       return new ContinuityEven(continuityJson);
 
     case CONTINUITY_IDS.FOLLOW_THE_LEADER:
       return new ContinuityFollowTheLeader(continuityJson);
-    
+
     case CONTINUITY_IDS.COUNTER_MARCH:
       return new ContinuityCounterMarch(continuityJson);
 
@@ -38,6 +38,6 @@ export const loadContinuity = (continuityJson: BaseContinuity): BaseContinuity =
       return new ContinuityStepTwo(continuityJson);
 
     default:
-      throw `Continuity id ${continuityJson.continuityId} is not recognized`
+      throw `Continuity id ${continuityJson.continuityId} is not recognized`;
   }
-}
+};

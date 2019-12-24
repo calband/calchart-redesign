@@ -6,7 +6,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cypress/base:12.13.0 # Update based on NodeJS LTS version
+      - image: cypress/included:3.8.0 # Update based on Cypress version
     working_directory: ~/project
     steps:
       - checkout
@@ -22,9 +22,9 @@ jobs:
           paths:
             - node_modules
           key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run: npm run lint
+      - run: npm run lint:ci
       - run: npm run test:unit
-      - run: npm run test:e2e -- --headless
+      - run: npm run test:e2e:ci
       - run: npm run build
       - run: zip -r calchart.zip calchart
       - store_artifacts:
