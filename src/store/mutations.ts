@@ -9,6 +9,7 @@ export default {
   // Show
   setShow(state: CalChartState, show: Show): void {
     state.show = show;
+    console.log('setting show with numSheets', show.stuntSheets.length);
   },
 
   setShowTitle(state: CalChartState, title: string): void {
