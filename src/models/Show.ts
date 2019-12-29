@@ -53,8 +53,8 @@ export default class Show extends Serializable<Show> {
    */
   generateFlows(stuntSheetIndex: number): void {
     if (stuntSheetIndex < 0 || stuntSheetIndex + 1 >= this.stuntSheets.length) {
-      throw `stuntSheetIndex (${stuntSheetIndex}) is invalid with stuntsheet
-      length ${this.stuntSheets.length}`;
+      throw `stuntSheetIndex (${stuntSheetIndex}) is invalid with stuntsheet`
+      + ` length ${this.stuntSheets.length}`;
     }
 
     const startSS: StuntSheet = this.stuntSheets[stuntSheetIndex];
