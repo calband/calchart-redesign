@@ -1,4 +1,4 @@
-import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
+import BaseCont, { CONT_IDS } from './BaseCont';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
@@ -10,21 +10,23 @@ import Serializable from '../util/Serializable';
  *   - FMHS 4 E
  *   - FMHS 4 W
  *   - [MTHS E]
- * 
- * @property continuities - Execute this list of continuities after waiting a certain amount of time
+ *
+ * @property continuities - Execute this list of continuities after waiting a
+ *                          certain amount of time
  */
-export default class ContinuityStepTwo extends Serializable<ContinuityStepTwo> implements BaseContinuity {
-  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.STEP_TWO;
+export default class ContStepTwo extends Serializable<ContStepTwo>
+  implements BaseCont {
+  readonly continuityId: CONT_IDS = CONT_IDS.STEP_TWO;
 
   duration: number = 8;
 
-  continuities: BaseContinuity[] = [];
+  continuities: BaseCont[] = [];
 
   humanReadableText: string = '';
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(json: Partial<ContinuityStepTwo> = {}) {
+  constructor(json: Partial<ContStepTwo> = {}) {
     super();
     this.fromJson(json);
   }
@@ -35,8 +37,13 @@ export default class ContinuityStepTwo extends Serializable<ContinuityStepTwo> i
     return '';
   }
 
-  addToFlow(flow: FlowBeat[], startDot: StuntSheetDot, endDot?: StuntSheetDot): void {
-    if (endDot === undefined) return;
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  addToFlow(
+    flow: FlowBeat[],
+    startDot: StuntSheetDot,
+    endDot?: StuntSheetDot
+  ): void {
     // TODO: Implement
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 }

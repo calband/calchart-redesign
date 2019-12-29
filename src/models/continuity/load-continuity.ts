@@ -1,43 +1,43 @@
-import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
-import ContinuityInPlace from './ContinuityInPlace';
-import ContinuityEightToFiveDynamic from './ContinuityEightToFiveDynamic';
-import ContinuityEven from './ContinuityEven';
-import ContinuityEightToFiveStatic from './ContinuityEightToFiveStatic';
-import ContinuityFollowTheLeader from './ContinuityFollowTheLeader';
-import ContinuityCounterMarch from './ContinuityCounterMarch';
-import ContinuityGateTurn from './ContinuityGateTurn';
-import ContinuityStepTwo from './ContinuityStepTwo';
+import BaseCont, { CONT_IDS } from './BaseCont';
+import ContInPlace from './ContInPlace';
+import ContETFDynamic from './ContETFDynamic';
+import ContEven from './ContEven';
+import ContETFStatic from './ContETFStatic';
+import ContFollowLeader from './ContFollowLeader';
+import ContCounterMarch from './ContCounterMarch';
+import ContGateTurn from './ContGateTurn';
+import ContStepTwo from './ContStepTwo';
 
 /**
  * Helper function to initialize a continuity based off it's id
  */
-export const loadContinuity = (continuityJson: BaseContinuity): BaseContinuity => {
+export const loadContinuity = (continuityJson: BaseCont): BaseCont => {
   switch (continuityJson.continuityId) {
-    case CONTINUITY_IDS.IN_PLACE:
-      return new ContinuityInPlace(continuityJson);
+    case CONT_IDS.IN_PLACE:
+      return new ContInPlace(continuityJson);
 
-    case CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC:
-      return new ContinuityEightToFiveStatic(continuityJson);
-    
-    case CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC:
-      return new ContinuityEightToFiveDynamic(continuityJson);
-    
-    case CONTINUITY_IDS.EVEN:
-      return new ContinuityEven(continuityJson);
+    case CONT_IDS.ETF_STATIC:
+      return new ContETFStatic(continuityJson);
 
-    case CONTINUITY_IDS.FOLLOW_THE_LEADER:
-      return new ContinuityFollowTheLeader(continuityJson);
-    
-    case CONTINUITY_IDS.COUNTER_MARCH:
-      return new ContinuityCounterMarch(continuityJson);
+    case CONT_IDS.ETF_DYNAMIC:
+      return new ContETFDynamic(continuityJson);
 
-    case CONTINUITY_IDS.GATE_TURN:
-      return new ContinuityGateTurn(continuityJson);
+    case CONT_IDS.EVEN:
+      return new ContEven(continuityJson);
 
-    case CONTINUITY_IDS.STEP_TWO:
-      return new ContinuityStepTwo(continuityJson);
+    case CONT_IDS.FOLLOW_LEADER:
+      return new ContFollowLeader(continuityJson);
+
+    case CONT_IDS.COUNTER_MARCH:
+      return new ContCounterMarch(continuityJson);
+
+    case CONT_IDS.GATE_TURN:
+      return new ContGateTurn(continuityJson);
+
+    case CONT_IDS.STEP_TWO:
+      return new ContStepTwo(continuityJson);
 
     default:
-      throw `Continuity id ${continuityJson.continuityId} is not recognized`
+      throw `Continuity id ${continuityJson.continuityId} is not recognized`;
   }
-}
+};

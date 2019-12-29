@@ -1,16 +1,15 @@
-import Show from "@/models/Show";
+import Show from '@/models/Show';
 import StuntSheet from '@/models/StuntSheet';
-import ContinuityInPlace from '@/models/continuity/ContinuityInPlace';
+import ContInPlace from '@/models/continuity/ContInPlace';
 import StuntSheetDot from '@/models/StuntSheetDot';
-import { loadContinuity } from '@/models/continuity/load-continuity';
 
 const mockAddToFlow = jest.fn();
 jest.mock('@/models/continuity/load-continuity', () => ({
   loadContinuity: jest.fn().mockImplementation(() => {
     return {
-      addToFlow: mockAddToFlow
-    }
-  })
+      addToFlow: mockAddToFlow,
+    };
+  }),
 }));
 
 describe('models/Show', () => {
@@ -25,9 +24,9 @@ describe('models/Show', () => {
           new StuntSheetDot({ dotTypeIndex: 1 }),
         ],
         dotTypes: [
-          [new ContinuityInPlace()],
-          [new ContinuityInPlace(), new ContinuityInPlace()]
-        ]
+          [new ContInPlace()],
+          [new ContInPlace(), new ContInPlace()],
+        ],
       });
 
       show = new Show({
@@ -37,15 +36,27 @@ describe('models/Show', () => {
 
     afterEach(() => {
       jest.clearAllMocks();
-    })
+    });
 
     it('addToFlow is called 4 times, and on all dots', () => {
       expect(mockAddToFlow).toHaveBeenCalledTimes(0);
       show.generateFlows(0);
       expect(mockAddToFlow).toHaveBeenCalledTimes(4);
-      expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[0], undefined);
-      expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[1], undefined);
-      expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[2], undefined);
+      expect(mockAddToFlow).toHaveBeenCalledWith(
+        [],
+        show.stuntSheets[0].stuntSheetDots[0],
+        undefined
+      );
+      expect(mockAddToFlow).toHaveBeenCalledWith(
+        [],
+        show.stuntSheets[0].stuntSheetDots[1],
+        undefined
+      );
+      expect(mockAddToFlow).toHaveBeenCalledWith(
+        [],
+        show.stuntSheets[0].stuntSheetDots[2],
+        undefined
+      );
     });
 
     it('works correctly after stringifying and parsing', () => {
@@ -53,9 +64,21 @@ describe('models/Show', () => {
       expect(mockAddToFlow).toHaveBeenCalledTimes(0);
       show.generateFlows(0);
       expect(mockAddToFlow).toHaveBeenCalledTimes(4);
-      expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[0], undefined);
-      expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[1], undefined);
-      expect(mockAddToFlow).toHaveBeenCalledWith([], show.stuntSheets[0].stuntSheetDots[2], undefined);
-    })
+      expect(mockAddToFlow).toHaveBeenCalledWith(
+        [],
+        show.stuntSheets[0].stuntSheetDots[0],
+        undefined
+      );
+      expect(mockAddToFlow).toHaveBeenCalledWith(
+        [],
+        show.stuntSheets[0].stuntSheetDots[1],
+        undefined
+      );
+      expect(mockAddToFlow).toHaveBeenCalledWith(
+        [],
+        show.stuntSheets[0].stuntSheetDots[2],
+        undefined
+      );
+    });
   });
 });

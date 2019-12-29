@@ -68,3 +68,5 @@ npm run lint
 ```
 
 [Vue CLI docs](https://cli.vuejs.org/core-plugins/eslint.html#injected-commands)
+
+Integrate ESLint with your text editor! See [this](https://eslint.vuejs.org/user-guide/#editor-integrations).

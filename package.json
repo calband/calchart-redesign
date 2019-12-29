@@ -1,32 +1,33 @@
 {
   "name": "calchart-redesign",
-  "version": "0.1.2",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "test:e2e:ci": "vue-cli-service test:e2e --headless",
+    "lint": "vue-cli-service lint",
+    "lint:ci": "vue-cli-service lint --no-fix --max-warnings 0"
   },
   "dependencies": {
-    "@mdi/font": "^4.5.95",
-    "buefy": "^0.8.6",
-    "core-js": "^3.3.2",
+    "@mdi/font": "^4.7.95",
+    "buefy": "^0.8.8",
+    "core-js": "^3.6.1",
     "svg-pan-zoom": "^3.6.1",
-    "vue": "^2.6.10",
-    "vuex": "^3.0.1"
+    "vue": "^2.6.11",
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.11",
-    "@vue/cli-plugin-babel": "^4.0.0",
-    "@vue/cli-plugin-e2e-cypress": "^4.0.0",
-    "@vue/cli-plugin-eslint": "^4.0.0",
-    "@vue/cli-plugin-typescript": "^4.0.0",
-    "@vue/cli-plugin-unit-jest": "^4.0.0",
-    "@vue/cli-plugin-vuex": "^4.0.0",
-    "@vue/cli-service": "^4.0.0",
-    "@vue/eslint-config-airbnb": "^4.0.0",
+    "@types/jest": "^24.0.25",
+    "@vue/cli-plugin-babel": "^4.1.2",
+    "@vue/cli-plugin-e2e-cypress": "^4.1.2",
+    "@vue/cli-plugin-eslint": "^4.1.2",
+    "@vue/cli-plugin-typescript": "^4.1.2",
+    "@vue/cli-plugin-unit-jest": "^4.1.2",
+    "@vue/cli-plugin-vuex": "^4.1.2",
+    "@vue/cli-service": "^4.1.2",
     "@vue/eslint-config-typescript": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "eslint": "^5.16.0",
@@ -34,6 +35,9 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
     "typescript": "~3.5.3",
-    "vue-template-compiler": "^2.6.10"
-  }
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

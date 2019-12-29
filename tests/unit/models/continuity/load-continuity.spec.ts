@@ -1,17 +1,17 @@
-import ContinuityInPlace from '@/models/continuity/ContinuityInPlace';
+import ContInPlace from '@/models/continuity/ContInPlace';
 import { MARCH_TYPES } from '@/models/util/constants';
-import ContinuityEightToFiveDynamic, { EIGHT_TO_FIVE_DYNAMIC_TYPES } from '@/models/continuity/ContinuityEightToFiveDynamic';
-import ContinuityEven from '@/models/continuity/ContinuityEven';
-import BaseContinuity, { CONTINUITY_IDS } from '@/models/continuity/BaseContinuity';
-import ContinuityEightToFiveStatic from '@/models/continuity/ContinuityEightToFiveStatic';
-import ContinuityFollowTheLeader from '@/models/continuity/ContinuityFollowTheLeader';
-import ContinuityCounterMarch from '@/models/continuity/ContinuityCounterMarch';
-import ContinuityGateTurn from '@/models/continuity/ContinuityGateTurn';
-import ContinuityStepTwo from '@/models/continuity/ContinuityStepTwo';
+import ContETFDynamic from '@/models/continuity/ContETFDynamic';
+import ContEven from '@/models/continuity/ContEven';
+import BaseCont, { CONT_IDS } from '@/models/continuity/BaseCont';
+import ContETFStatic from '@/models/continuity/ContETFStatic';
+import ContFollowLeader from '@/models/continuity/ContFollowLeader';
+import ContCounterMarch from '@/models/continuity/ContCounterMarch';
+import ContGateTurn from '@/models/continuity/ContGateTurn';
+import ContStepTwo from '@/models/continuity/ContStepTwo';
 import { loadContinuity } from '@/models/continuity/load-continuity';
 
 describe('models/util/load-continuity', () => {
-  const mockContinuity = (continuityId: CONTINUITY_IDS): BaseContinuity => {
+  const mockContinuity = (continuityId: CONT_IDS): BaseCont => {
     return {
       continuityId,
       duration: 0,
@@ -19,54 +19,54 @@ describe('models/util/load-continuity', () => {
       humanReadableText: '',
       getHumanReadableText: () => '',
       addToFlow: () => {},
-    }
-  }
+    };
+  };
 
   it('IN_PLACE', () => {
-    const continuity = loadContinuity(mockContinuity(CONTINUITY_IDS.IN_PLACE))
-    expect(continuity instanceof ContinuityInPlace).toBeTruthy();
-    expect(continuity.continuityId).toBe(CONTINUITY_IDS.IN_PLACE);
+    const continuity = loadContinuity(mockContinuity(CONT_IDS.IN_PLACE));
+    expect(continuity instanceof ContInPlace).toBeTruthy();
+    expect(continuity.continuityId).toBe(CONT_IDS.IN_PLACE);
   });
 
-  it('EIGHT_TO_FIVE_STATIC', () => {
-    const continuity = loadContinuity(mockContinuity(CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC))
-    expect(loadContinuity(mockContinuity(CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC)) instanceof ContinuityEightToFiveStatic).toBeTruthy();
-    expect(continuity.continuityId).toBe(CONTINUITY_IDS.EIGHT_TO_FIVE_STATIC);
+  it('ETF_STATIC', () => {
+    const continuity = loadContinuity(mockContinuity(CONT_IDS.ETF_STATIC));
+    expect(continuity instanceof ContETFStatic).toBeTruthy();
+    expect(continuity.continuityId).toBe(CONT_IDS.ETF_STATIC);
   });
 
-  it('EIGHT_TO_FIVE_DYNAMIC', () => {
-    const continuity = loadContinuity(mockContinuity(CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC))
-    expect(loadContinuity(mockContinuity(CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC)) instanceof ContinuityEightToFiveDynamic).toBeTruthy();
-    expect(continuity.continuityId).toBe(CONTINUITY_IDS.EIGHT_TO_FIVE_DYNAMIC);
+  it('ETF_DYNAMIC', () => {
+    const continuity = loadContinuity(mockContinuity(CONT_IDS.ETF_DYNAMIC));
+    expect(continuity instanceof ContETFDynamic).toBeTruthy();
+    expect(continuity.continuityId).toBe(CONT_IDS.ETF_DYNAMIC);
   });
 
   it('EVEN', () => {
-    const continuity = loadContinuity(mockContinuity(CONTINUITY_IDS.EVEN))
-    expect(loadContinuity(mockContinuity(CONTINUITY_IDS.EVEN)) instanceof ContinuityEven).toBeTruthy();
-    expect(continuity.continuityId).toBe(CONTINUITY_IDS.EVEN);
+    const continuity = loadContinuity(mockContinuity(CONT_IDS.EVEN));
+    expect(continuity instanceof ContEven).toBeTruthy();
+    expect(continuity.continuityId).toBe(CONT_IDS.EVEN);
   });
 
-  it('FOLLOW_THE_LEADER', () => {
-    const continuity = loadContinuity(mockContinuity(CONTINUITY_IDS.FOLLOW_THE_LEADER))
-    expect(loadContinuity(mockContinuity(CONTINUITY_IDS.FOLLOW_THE_LEADER)) instanceof ContinuityFollowTheLeader).toBeTruthy();
-    expect(continuity.continuityId).toBe(CONTINUITY_IDS.FOLLOW_THE_LEADER);
+  it('FOLLOW_LEADER', () => {
+    const continuity = loadContinuity(mockContinuity(CONT_IDS.FOLLOW_LEADER));
+    expect(continuity instanceof ContFollowLeader).toBeTruthy();
+    expect(continuity.continuityId).toBe(CONT_IDS.FOLLOW_LEADER);
   });
 
   it('COUNTER_MARCH', () => {
-    const continuity = loadContinuity(mockContinuity(CONTINUITY_IDS.COUNTER_MARCH))
-    expect(loadContinuity(mockContinuity(CONTINUITY_IDS.COUNTER_MARCH)) instanceof ContinuityCounterMarch).toBeTruthy();
-    expect(continuity.continuityId).toBe(CONTINUITY_IDS.COUNTER_MARCH);
+    const continuity = loadContinuity(mockContinuity(CONT_IDS.COUNTER_MARCH));
+    expect(continuity instanceof ContCounterMarch).toBeTruthy();
+    expect(continuity.continuityId).toBe(CONT_IDS.COUNTER_MARCH);
   });
 
   it('GATE_TURN', () => {
-    const continuity = loadContinuity(mockContinuity(CONTINUITY_IDS.GATE_TURN))
-    expect(loadContinuity(mockContinuity(CONTINUITY_IDS.GATE_TURN)) instanceof ContinuityGateTurn).toBeTruthy();
-    expect(continuity.continuityId).toBe(CONTINUITY_IDS.GATE_TURN);
+    const continuity = loadContinuity(mockContinuity(CONT_IDS.GATE_TURN));
+    expect(continuity instanceof ContGateTurn).toBeTruthy();
+    expect(continuity.continuityId).toBe(CONT_IDS.GATE_TURN);
   });
 
   it('STEP_TWO', () => {
-    const continuity = loadContinuity(mockContinuity(CONTINUITY_IDS.STEP_TWO))
-    expect(loadContinuity(mockContinuity(CONTINUITY_IDS.STEP_TWO)) instanceof ContinuityStepTwo).toBeTruthy();
-    expect(continuity.continuityId).toBe(CONTINUITY_IDS.STEP_TWO);
+    const continuity = loadContinuity(mockContinuity(CONT_IDS.STEP_TWO));
+    expect(continuity instanceof ContStepTwo).toBeTruthy();
+    expect(continuity.continuityId).toBe(CONT_IDS.STEP_TWO);
   });
 });

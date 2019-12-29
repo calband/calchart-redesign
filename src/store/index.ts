@@ -9,7 +9,7 @@ Vue.use(Vuex);
 
 /**
  * Defines the global state for the application
- * 
+ *
  * @property show         - The currently selected show data
  * @property fourStepGrid - View setting to toggle the grapher grid
  */
@@ -24,7 +24,8 @@ export class CalChartState extends Serializable<CalChartState> {
   }
 }
 
-export const generateStore = (json: Partial<CalChartState> = {}): Store<CalChartState> => new Vuex.Store({
+export const generateStore
+= (json: Partial<CalChartState> = {}): Store<CalChartState> => new Vuex.Store({
   state: new CalChartState(json),
   mutations,
   getters,

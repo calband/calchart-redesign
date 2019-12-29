@@ -1,4 +1,4 @@
-import BaseContinuity, { CONTINUITY_IDS } from './BaseContinuity';
+import BaseCont, { CONT_IDS } from './BaseCont';
 import StuntSheetDot from '../StuntSheetDot';
 import { MARCH_TYPES } from '../util/constants';
 import { FlowBeat } from '../util/types';
@@ -6,11 +6,12 @@ import Serializable from '../util/Serializable';
 
 /**
  * Defines the path that the leader takes, which the other bandsmen follow.
- * 
+ *
  * @property leaderPath - Defines the flow that the leader will take
  */
-export default class ContinuityFollowTheLeader extends Serializable<ContinuityFollowTheLeader> implements BaseContinuity {
-  readonly continuityId: CONTINUITY_IDS = CONTINUITY_IDS.FOLLOW_THE_LEADER;
+export default class ContFollowLeader extends Serializable<ContFollowLeader>
+  implements BaseCont {
+  readonly continuityId: CONT_IDS = CONT_IDS.FOLLOW_LEADER;
 
   duration: number = 8;
 
@@ -20,7 +21,7 @@ export default class ContinuityFollowTheLeader extends Serializable<ContinuityFo
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(json: Partial<ContinuityFollowTheLeader> = {}) {
+  constructor(json: Partial<ContFollowLeader> = {}) {
     super();
     this.fromJson(json);
   }
@@ -31,8 +32,13 @@ export default class ContinuityFollowTheLeader extends Serializable<ContinuityFo
     return '';
   }
 
-  addToFlow(flow: FlowBeat[], startDot: StuntSheetDot, endDot?: StuntSheetDot): void {
-    if (endDot === undefined) return;
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  addToFlow(
+    flow: FlowBeat[],
+    startDot: StuntSheetDot,
+    endDot?: StuntSheetDot
+  ): void {
     // TODO: Implement
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 }

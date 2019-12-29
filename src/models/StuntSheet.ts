@@ -1,37 +1,38 @@
 import StuntSheetDot from './StuntSheetDot';
-import BaseContinuity from './continuity/BaseContinuity';
-import ContinuityInPlace from './continuity/ContinuityInPlace';
-import { DIRECTION_TO_DEGREES, MARCH_TYPES } from './util/constants';
+import BaseCont from './continuity/BaseCont';
+import ContInPlace from './continuity/ContInPlace';
 import Serializable from './util/Serializable';
 import { loadContinuity } from './continuity/load-continuity';
 
 /**
  * Defines the positions/directions in a formation and the continuities
  * used to reach the next position.
- * 
- * @property stuntSheetDots - The collection of positions that make up a formation
- * @property dotTypes       - The set of continuities used to describe the movements to get to the next StuntSheet
- * @property beats          - How many beats to execute the continuities to the next StuntSheet
+ *
+ * @property stuntSheetDots - The collection of positions that make up a
+ *                            formation
+ * @property dotTypes       - The set of continuities used to describe the
+ *                            movements to get to the next StuntSheet
+ * @property beats          - How many beats to execute the continuities to the
+ *                            next StuntSheet
  */
 export default class StuntSheet extends Serializable<StuntSheet> {
   stuntSheetDots: StuntSheetDot[] = [];
 
-  dotTypes: BaseContinuity[][] = [[new ContinuityInPlace()]];
+  dotTypes: BaseCont[][] = [[new ContInPlace()]];
 
   beats: number = 16;
 
   constructor(json: Partial<StuntSheet> = {}) {
     super();
     if (json.stuntSheetDots !== undefined) {
-      json.stuntSheetDots = json.stuntSheetDots.map((dot: StuntSheetDot) => {
-        return new StuntSheetDot(dot);
-      });
+      json.stuntSheetDots = json.stuntSheetDots
+        .map((dot: StuntSheetDot): StuntSheetDot => new StuntSheetDot(dot));
     }
     if (json.dotTypes !== undefined) {
-      json.dotTypes = json.dotTypes.map((dotType: BaseContinuity[]) => {
-        return dotType.map((continuity: BaseContinuity) => {
+      json.dotTypes = json.dotTypes.map((dotType: BaseCont[]): BaseCont[] => {
+        return dotType.map((continuity: BaseCont): BaseCont => {
           return loadContinuity(continuity);
-        })
+        });
       });
     }
     this.fromJson(json);
