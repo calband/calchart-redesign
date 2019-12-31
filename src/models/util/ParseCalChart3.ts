@@ -30,17 +30,11 @@ export class ParseCalChart3 implements ParseCalChart {
   ParseShow(inputBuffer: ArrayBuffer): Show {
     // we know the header for a CalChart3.5 show is 8 bytes.  Remove it.
     const buffer = new DataView(inputBuffer, 8, inputBuffer.byteLength-8);
-    let show = new Show({
-      title: '',
-      stuntSheets: [],
-    });
     const split = SplitDataViewIntoChunks(buffer);
-    for (const block of split) {
-      if (block[0] === 'SHOW') {
-        show = this.ParseCalChart3SHOW(block[1]);
-      }
+    if (split.length !== 1 || split[0][0] !== 'SHOW') {
+      throw 'Cannot find show when parsing CalChart3 file';
     }
-    return show;
+    return this.ParseCalChart3SHOW(split[0][1]);
   }
 
   ParseCalChart3SHOW(block: DataView): Show {
@@ -49,6 +43,7 @@ export class ParseCalChart3 implements ParseCalChart {
       stuntSheets: [],
     });
     const split = SplitDataViewIntoChunks(block);
+
     for (const block of split) {
       if (block[0] === 'SIZE') {
         this.ParseCalChart3SHOWSIZE(show, block[1]);
@@ -68,7 +63,7 @@ export class ParseCalChart3 implements ParseCalChart {
 
   ParseCalChart3SHOWSIZE(show: Show, block: DataView): void {
     if (block.byteLength !== 4) {
-      throw 'Show Size field is incorrect';
+      throw 'Show Size incorrect when parsing CalChart3 file';
     }
     this.numberDots = ReadInt32(block, 0);
   }
@@ -76,7 +71,7 @@ export class ParseCalChart3 implements ParseCalChart {
   ParseCalChart3SHOWLABL(show: Show, block: DataView): void {
     const labels = ReadArrayOfStringsTillEnd(block, 0);
     if (labels.length !== this.numberDots) {
-      throw 'Show Labels is incorrect';
+      throw 'Show Labels is incorrect when parsing CalChart3 file';
     }
     show.dotLabels = labels;
   }
@@ -124,7 +119,7 @@ export class ParseCalChart3 implements ParseCalChart {
       offset += pointSize + 1;
     }
     if (offset !== block.byteLength) {
-      throw 'Show dots is incorrect';
+      throw 'Show dots is incorrect when parsing CalChart3 file';
     }
     stuntSheet.stuntSheetDots = dots;
   }
