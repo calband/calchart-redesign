@@ -8,23 +8,44 @@
 
     <section class="modal-card-body">
       <b-field class="file">
-        <b-upload v-model="file" accept='.shw' v-on:input="loadShow">
+        <b-upload
+          v-model="file"
+          accept=".shw"
+          @input="loadShow"
+        >
           <a class="button is-primary">
-            <b-icon icon="upload"></b-icon>
+            <b-icon icon="upload" />
             <span>Click to load</span>
           </a>
         </b-upload>
-        <span class="file-name" v-if="file">
-            {{ file.name }}
+        <span
+          v-if="file"
+          class="file-name"
+        >
+          {{ file.name }}
         </span>
       </b-field>
-      <b-field>
-        Marchers: {{ numMarchers }}
-      </b-field>
-      <b-field>
-        Sheets: {{ numSheets }}
-      </b-field>
-
+      <span
+        v-if="parseError"
+      >
+        <b-message
+          title="Error"
+          type="is-danger"
+          aria-close-label="Close message"
+        >
+          {{ parseError }}
+        </b-message>
+      </span>
+      <span
+        v-if="show"
+      >
+        <b-field>
+          Marchers: {{ numMarchers }}
+        </b-field>
+        <b-field>
+          Sheets: {{ numSheets }}
+        </b-field>
+      </span>
     </section>
 
     <footer class="modal-card-foot">
@@ -55,34 +76,36 @@ import Show from '@/models/Show';
 export default Vue.extend({
   name: 'LoadShow',
   data: (): {
-    file: Blob | null,
-    show: Show | null,
-    showSet: boolean,
-  } => ({ file: null, show: null, showSet: false}),
+    file: Blob | null;
+    show: Show | null;
+    showSet: boolean;
+    parseError: string;
+  } => ({ file: null, show: null, showSet: false, parseError: '' }),
   computed: {
-    numMarchers():number {
-      return (this.show) ? this.show.dotLabels.length : 0;
+    numMarchers(): number {
+      return this.show ? this.show.dotLabels.length : 0;
     },
-    numSheets():number {
-      return (this.show) ? this.show.stuntSheets.length : 0;
-    }
+    numSheets(): number {
+      return this.show ? this.show.stuntSheets.length : 0;
+    },
   },
   methods: {
     loadShow: function() {
-      console.log('file is ', this.file);
       if (this.file === null) {
-        console.log('file is null');
         return;
       }
       const reader = new FileReader();
-      let myStore = this.$store;
       reader.onload = () => {
         // The file's text will be printed here
         if (reader.result && reader.result instanceof ArrayBuffer) {
-          const show = LoadShow(reader.result);
-          if (show) {
-            this.show = show;
-            this.showSet = true;
+          try {
+            const show = LoadShow(reader.result);
+            if (show) {
+              this.show = show;
+              this.showSet = true;
+            }
+          } catch(e) {
+            this.parseError = e;
           }
         }
       };
@@ -95,10 +118,9 @@ export default Vue.extend({
         return;
       }
       this.$store.commit('setShow', this.show);
-    }
-  }
+    },
+  },
 });
-
 
 
 </script>

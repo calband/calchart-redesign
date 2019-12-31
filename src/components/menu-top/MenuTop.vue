@@ -22,7 +22,8 @@
 
           <b-navbar-item
             data-test="menu-top--import-calchart3"
-            @click="loadShowActive = true">
+            @click="loadShowActive = true"
+          >
             Load Show
           </b-navbar-item>
 
@@ -32,7 +33,6 @@
           >
             Edit Show Details
           </b-navbar-item>
-
         </b-navbar-dropdown>
 
         <b-navbar-dropdown
