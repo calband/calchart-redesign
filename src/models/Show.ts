@@ -78,4 +78,3 @@ export default class Show extends Serializable<Show> {
     });
   }
 }
-

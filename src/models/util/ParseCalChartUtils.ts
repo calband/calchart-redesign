@@ -23,24 +23,23 @@ export function ReadInt16(buffer: DataView, offset: number): number {
 }
 
 export function ReadStringTillEnd(buffer: DataView, offset: number): string {
-  let count = 0;
-  let found = '';
-  while (offset + count < buffer.byteLength) {
-    const value = buffer.getUint8(offset + count++);
+  let retVal = '';
+  while (offset < buffer.byteLength) {
+    const value = buffer.getUint8(offset++);
     if (!value) {
       break;
     }
-    found += String.fromCharCode(value);
+    retVal += String.fromCharCode(value);
   }
-  if (offset + count !== buffer.byteLength) {
+  if (offset !== buffer.byteLength) {
     throw 'String not parsed correctly';
   }
-  return found;
+  return retVal;
 }
 
 export function
 ReadArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
-  const labels: string[] = [];
+  const retVal: string[] = [];
 
   let currentLabel = '';
   while (offset < buffer.byteLength) {
@@ -48,21 +47,25 @@ ReadArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
     if (value) {
       currentLabel += String.fromCharCode(value);
     } else {
-      labels.push(currentLabel);
+      retVal.push(currentLabel);
       currentLabel = '';
     }
   }
   if (offset !== buffer.byteLength) {
     throw 'Error parsing strings from block';
   }
-  return labels;
+  return retVal;
 }
 
-// takes a data view and returns an array of tuples of [string, data]
+/** 
+ * Each chunk is formatted as such:
+ * <4char> <size_of_data> <data...> <"END "> <4char>
+ * The beginning and end 4char describes what the data represents.
+ */
 export function
 SplitDataViewIntoChunks(buffer: DataView): [string, DataView][] {
   // while we haven't reached the end, split
-  const result: [string, DataView][] = [];
+  const retVal: [string, DataView][] = [];
   let offset = 0;
   while (offset !== buffer.byteLength) {
     const fourChar = ReadFourCharCode(buffer, offset);
@@ -73,21 +76,21 @@ SplitDataViewIntoChunks(buffer: DataView): [string, DataView][] {
       throw 'error on parsing.  Section ' + fourChar
             + ' ended with ' + endFourChar + endConfirmFourChar;
     }
-    result.push([fourChar, new DataView(
+    retVal.push([fourChar, new DataView(
       buffer.buffer,
       offset + buffer.byteOffset + 8,
       size
     )]);
     offset += 16 + size;
   }
-  return result;
+  return retVal;
 }
 
-export function CalChart3To4XConvert(x: number): number {
+export function CalChart3To4ConvertX(x: number): number {
   return 160 + x/8;
 }
 
-export function CalChart3To4YConvert(y: number): number {
+export function CalChart3To4ConvertY(y: number): number {
   return 84 + y/8;
 }
 

@@ -18,8 +18,8 @@ import { ReadInt32,
   ReadStringTillEnd,
   ReadArrayOfStringsTillEnd,
   SplitDataViewIntoChunks,
-  CalChart3To4XConvert,
-  CalChart3To4YConvert } from './ParseCalChartUtils';
+  CalChart3To4ConvertX,
+  CalChart3To4ConvertY } from './ParseCalChartUtils';
 import { ParseCalChart } from './ParseCalChart';
 
 // calchart 3.4 is a series of tables, with each one have the format: name_32,
@@ -126,8 +126,8 @@ export class ParseCalChart3 implements ParseCalChart {
 
   ParseCalChart3Point(buffer: DataView): StuntSheetDot {
     return new StuntSheetDot({
-      x: CalChart3To4XConvert(ReadInt16(buffer, 0)),
-      y: CalChart3To4YConvert(ReadInt16(buffer, 2)),
+      x: CalChart3To4ConvertX(ReadInt16(buffer, 0)),
+      y: CalChart3To4ConvertY(ReadInt16(buffer, 2)),
     });
   }
 }

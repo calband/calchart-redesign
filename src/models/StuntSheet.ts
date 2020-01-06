@@ -8,7 +8,7 @@ import { loadContinuity } from './continuity/load-continuity';
  * Defines the positions/directions in a formation and the continuities
  * used to reach the next position.
  *
- * @property title          - Title of this StuntSheet
+ * @property title          - High level description
  * @property stuntSheetDots - The collection of positions that make up a
  *                            formation
  * @property dotTypes       - The set of continuities used to describe the

@@ -21,7 +21,7 @@
           <hr class="navbar-divider">
 
           <b-navbar-item
-            data-test="menu-top--import-calchart3"
+            data-test="menu-top--load-show"
             @click="loadShowActive = true"
           >
             Load Show
@@ -63,7 +63,7 @@
       :active.sync="loadShowActive"
       has-modal-card
       trap-focus
-      data-test="menu-top--file-modal"
+      data-test="menu-top--load-modal"
     >
       <LoadShow />
     </b-modal>

@@ -36,13 +36,13 @@ function IsCalChart3(buffer: ArrayBuffer): ParseCalChart|null {
 }
 
 /**
- * LoadShow
+ * loadShowFromBuffer
  *
  * @param buffer The Byte array of data to load.
  * @returns Returns either a new [Show] or will throw an error that can be
  * displayed to the user
  */
-export const LoadShow = (buffer: ArrayBuffer): Show => {
+export const loadShowFromBuffer = (buffer: ArrayBuffer): Show => {
   let parser = IsCalChart4(buffer);
   if (parser) {
     return parser.ParseShow(buffer);

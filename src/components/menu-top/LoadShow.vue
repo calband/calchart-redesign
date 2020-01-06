@@ -25,40 +25,32 @@
           {{ file.name }}
         </span>
       </b-field>
-      <span
+      <b-message
         v-if="parseError"
+        title="Error"
+        type="is-danger"
       >
-        <b-message
-          title="Error"
-          type="is-danger"
-          aria-close-label="Close message"
-        >
-          {{ parseError }}
-        </b-message>
-      </span>
-      <span
-        v-if="show"
-      >
-        <b-field>
-          Marchers: {{ numMarchers }}
-        </b-field>
-        <b-field>
-          Sheets: {{ numSheets }}
-        </b-field>
-      </span>
+        {{ parseError }}
+      </b-message>
+      <b-field v-if="show">
+        Number of marchers: {{ numMarchers }}
+      </b-field>
+      <b-field v-if="show">
+        Number of sheets: {{ numSheets }}
+      </b-field>
     </section>
 
     <footer class="modal-card-foot">
       <b-button
         type="is-success"
         data-test="file-modal--import"
-        :disabled="!showSet"
+        :disabled="!showPreview"
         @click="setShow();$parent.close()"
       >
         Import
       </b-button>
       <b-button
-        type="is-primary"
+        type="is-secondary"
         data-test="file-modal--close"
         @click="$parent.close()"
       >
@@ -70,23 +62,22 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { LoadShow } from '@/models/util/LoadShow';
+import { loadShowFromBuffer } from '@/models/util/LoadShow';
 import Show from '@/models/Show';
 
 export default Vue.extend({
   name: 'LoadShow',
   data: (): {
     file: Blob | null;
-    show: Show | null;
-    showSet: boolean;
+    showPreview: Show | null;
     parseError: string;
-  } => ({ file: null, show: null, showSet: false, parseError: '' }),
+  } => ({ file: null, showPreview: null, parseError: '' }),
   computed: {
     numMarchers(): number {
-      return this.show ? this.show.dotLabels.length : 0;
+      return this.showPreview ? this.showPreview.dotLabels.length : 0;
     },
     numSheets(): number {
-      return this.show ? this.show.stuntSheets.length : 0;
+      return this.showPreview ? this.showPreview.stuntSheets.length : 0;
     },
   },
   methods: {
@@ -96,28 +87,23 @@ export default Vue.extend({
       }
       const reader = new FileReader();
       reader.onload = () => {
-        // The file's text will be printed here
         if (reader.result && reader.result instanceof ArrayBuffer) {
           try {
-            const show = LoadShow(reader.result);
-            if (show) {
-              this.show = show;
-              this.showSet = true;
-            }
+            this.showPreview = loadShowFromBuffer(reader.result);
           } catch(e) {
             this.parseError = e;
           }
+        } else {
+          this.parseError = 'Could not read file.';
         }
       };
-      if (this.file) {
-        reader.readAsArrayBuffer(this.file);
-      }
+      reader.readAsArrayBuffer(this.file);
     },
     setShow: function() {
-      if (!this.show) {
+      if (!this.showPreview) {
         return;
       }
-      this.$store.commit('setShow', this.show);
+      this.$store.commit('setShow', this.showPreview);
     },
   },
 });
