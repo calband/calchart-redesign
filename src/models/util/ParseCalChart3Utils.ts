@@ -51,7 +51,8 @@ readArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
       currentLabel = '';
     }
   }
-  if (offset !== buffer.byteLength) {
+  if (currentLabel !== '') {
+    // if we have a partial label we did not end with a '\0'.  Error.
     throw 'Error parsing strings from block';
   }
   return retVal;

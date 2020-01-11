@@ -1,6 +1,6 @@
 /**
  * CalChart3.4 was a bytestream with a series of 4 char codes describing the
- * next section. 
+ * next section.
  *
  * Most all blocks are generally in the form:
  * {4-char block name} {4-byte size of block} {BlockData} {'E''N''D'' '} {4-char
@@ -15,67 +15,68 @@
  *
  * show               = START , SHOW ;
  * START              = INGL_INGL , INGL_VERS ;
- * SHOW               = INGL_SHOW , BigEndianInt32(DataTill_SHOW_END) , 
+ * SHOW               = INGL_SHOW , BigEndianInt32(DataTill_SHOW_END) ,
  *                      SHOW_DATA , SHOW_END ;
- * SHOW_DATA          = NUM_MARCH , LABEL , [ DESCRIPTION ] , { SHEET }* , 
+ * SHOW_DATA          = NUM_MARCH , LABEL , [ DESCRIPTION ] , { SHEET }* ,
  *                      [ SELECTION ], CURRENT_SHEET, /ignore/ ;
  * SHOW_END           = INGL_END , INGL_SHOW ;
- * NUM_MARCH          = INGL_SIZE , BigEndianInt32(4) , NUM_MARCH_DATA , 
+ * NUM_MARCH          = INGL_SIZE , BigEndianInt32(4) , NUM_MARCH_DATA ,
  *                      NUM_MARCH_END ;
  * NUM_MARCH_DATA     = BigEndianInt32( number of marchers ) ;
  * NUM_MARCH_END      = INGL_END , INGL_SIZE ;
- * LABEL              = INGL_LABL , BigEndianInt32(DataTill_LABEL_END) , 
+ * LABEL              = INGL_LABL , BigEndianInt32(DataTill_LABEL_END) ,
  *                      LABEL_DATA , LABEL_END ;
  * LABEL_DATA         = { Null-terminated_char* }* ;
  * LABEL_END          = INGL_END , INGL_LABL ;
- * DESCRIPTION        = INGL_DESC , BigEndianInt32(DataTill_DESCRIPTION_END) , 
+ * DESCRIPTION        = INGL_DESC , BigEndianInt32(DataTill_DESCRIPTION_END) ,
  *                      DESCRIPTION_DATA , DESCRIPTION_END ;
  * DESCRIPTION_DATA   = Null-terminated_char* ;
  * DESCRIPTION_END    = INGL_END , INGL_DESC ;
- * SHEET              = INGL_SHET , BigEndianInt32(DataTill_SHEET_END) , 
+ * SHEET              = INGL_SHET , BigEndianInt32(DataTill_SHEET_END) ,
  *                      SHEET_DATA , SHEET_END ;
- * SHEET_DATA         = NAME , DURATION , ALL_POINTS , CONTINUITY , 
+ * SHEET_DATA         = NAME , DURATION , ALL_POINTS , CONTINUITY ,
  *                      PRINT_CONTINUITY , /ignore/ ;
  * SHEET_END          = INGL_END , INGL_SHET ;
- * SELECTION          = INGL_SELE , BigEndianInt32(DataTill_SELECTION_END) , 
+ * SELECTION          = INGL_SELE , BigEndianInt32(DataTill_SELECTION_END) ,
  *                      SELECTION_DATA , SELECTION_END ;
  * SELECTION_DATA     = BigEndianInt32(SelectedPoint)* ;
  * SELECTION_END      = INGL_END , INGL_SELE ;
- * CURRENT_SHEET      = INGL_CURR , BigEndianInt32(4) , CURRENT_SHEET_DATA , 
+ * CURRENT_SHEET      = INGL_CURR , BigEndianInt32(4) , CURRENT_SHEET_DATA ,
  *                      NUM_MARCH_END ;
  * CURRENT_SHEET_DATA = BigEndianInt32( page selected ) ;
  * CURRENT_SHEET_END  = INGL_END , INGL_CURR ;
- * NAME               = INGL_NAME , BigEndianInt32(DataTill_NAME_END) , 
+ * NAME               = INGL_NAME , BigEndianInt32(DataTill_NAME_END) ,
  *                      NAME_DATA , NAME_END ;
  * NAME_DATA          = Null-terminated_char* ;
  * NAME_END           = INGL_END , INGL_NAME ;
- * DURATION           = INGL_DURA , BigEndianInt32(4) , DURATION_DATA , 
+ * DURATION           = INGL_DURA , BigEndianInt32(4) , DURATION_DATA ,
  *                      DURATION_END;
  * DURATION_DATA      = BigEndianInt32(number of beats) ;
  * DURATION_END       = INGL_END , INGL_DURA ;
- * ALL_POINTS         = INGL_PNTS , BigEndianInt32(DataTill_ALL_POINTS_END) , 
+ * ALL_POINTS         = INGL_PNTS , BigEndianInt32(DataTill_ALL_POINTS_END) ,
  *                      ALL_POINTS_DATA , ALL_POINTS_END ;
  * ALL_POINTS_DATA    = { EACH_POINT_DATA }* ;
  * ALL_POINTS_END     = INGL_END , INGL_PNTS ;
- * EACH_POINT_DATA    = BigEndianInt8(Size_rest_of_EACH_POINT_DATA) , 
- *                      POSITION_DATA , REF_POSITION_DATA , POINT_SYMBOL_DATA , POINT_LABEL_FLIP ;
+ * EACH_POINT_DATA    = BigEndianInt8(Size_rest_of_EACH_POINT_DATA) ,
+ *                      POSITION_DATA , REF_POSITION_DATA , POINT_SYMBOL_DATA ,
+ *                      POINT_LABEL_FLIP ;
  * POSITION_DATA      = BigEndianInt16( x ) , BigEndianInt16( y ) ;
- * REF_POSITION_DATA  = BigEndianInt8( num ref pts ) , 
- *                         { BigEndianInt8( which reference point ) , 
+ * REF_POSITION_DATA  = BigEndianInt8( num ref pts ) ,
+ *                         { BigEndianInt8( which reference point ) ,
  *                           BigEndianInt16( x ) , BigEndianInt16( y ) }* ;
  * POINT_SYMBOL_DATA  = BigEndianInt8( which symbol type ) ;
  * POINT_LABEL_FLIP_DATA = BigEndianInt8( label flipped ) ;
- * CONTINUITY         = INGL_CONT , BigEndianInt32(DataTill_CONTINUITY_END)) , 
+ * CONTINUITY         = INGL_CONT , BigEndianInt32(DataTill_CONTINUITY_END)) ,
  *                      CONTINUITY_DATA , CONTINUITY_END ;
  * CONTINUITY_DATA    = { EACH_CONTINUITY }* ;
  * CONTINUITY_END     = INGL_END , INGL_CONT ;
- * EACH_CONTINUITY    = INGL_ECNT , 
- *                      BigEndianInt32(DataTill_EACH_CONTINUITY_END)) , 
+ * EACH_CONTINUITY    = INGL_ECNT ,
+ *                      BigEndianInt32(DataTill_EACH_CONTINUITY_END)) ,
  *                      EACH_CONTINUITY_DATA , EACH_CONTINUITY_END ;
  * EACH_CONTINUITY_DATA = BigEndianInt8( symbol ) , Null-terminated char* ;
  * EACH_CONTINUITY_END  INGL_END , INGL_ECONT ;
- * PRINT_CONTINUITY   = INGL_PCNT , 
- *                      BigEndianInt32(DataTill_PRINT_CONTINUITY_END)) , 
+ * PRINT_CONTINUITY   = INGL_PCNT ,
+ *                      BigEndianInt32(DataTill_PRINT_CONTINUITY_END)) ,
  *                      PRINT_CONTINUITY_DATA , PRINT_CONTINUITY_END ;
  * PRINT_CONTINUITY_DATA = { Null-terminated char* }* ;
  * PRINT_CONTINUITY_END = INGL_END , INGL_PCNT ;
