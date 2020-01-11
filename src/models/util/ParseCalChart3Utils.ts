@@ -1,4 +1,4 @@
-export function ReadFourCharCode(buffer: DataView, offset: number): string {
+export function readFourCharCode(buffer: DataView, offset: number): string {
   return String.fromCharCode(
     buffer.getUint8(offset + 0),
     buffer.getUint8(offset + 1),
@@ -7,22 +7,22 @@ export function ReadFourCharCode(buffer: DataView, offset: number): string {
   );
 }
 
-export function ReadTwoCharCode(buffer: DataView, offset: number): string {
+export function readTwoCharCode(buffer: DataView, offset: number): string {
   return String.fromCharCode(
     buffer.getUint8(offset + 0),
     buffer.getUint8(offset + 1)
   );
 }
 
-export function ReadInt32(buffer: DataView, offset: number): number {
+export function readInt32(buffer: DataView, offset: number): number {
   return buffer.getInt32(offset);
 }
 
-export function ReadInt16(buffer: DataView, offset: number): number {
+export function readInt16(buffer: DataView, offset: number): number {
   return buffer.getInt16(offset);
 }
 
-export function ReadStringTillEnd(buffer: DataView, offset: number): string {
+export function readStringTillEnd(buffer: DataView, offset: number): string {
   let retVal = '';
   while (offset < buffer.byteLength) {
     const value = buffer.getUint8(offset++);
@@ -38,7 +38,7 @@ export function ReadStringTillEnd(buffer: DataView, offset: number): string {
 }
 
 export function
-ReadArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
+readArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
   const retVal: string[] = [];
 
   let currentLabel = '';
@@ -57,24 +57,23 @@ ReadArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
   return retVal;
 }
 
-/** 
+/**
  * Each chunk is formatted as such:
  * <4char> <size_of_data> <data...> <"END "> <4char>
  * The beginning and end 4char describes what the data represents.
  */
 export function
-SplitDataViewIntoChunks(buffer: DataView): [string, DataView][] {
+splitDataViewIntoChunks(buffer: DataView): [string, DataView][] {
   // while we haven't reached the end, split
   const retVal: [string, DataView][] = [];
   let offset = 0;
   while (offset !== buffer.byteLength) {
-    const fourChar = ReadFourCharCode(buffer, offset);
-    const size = ReadInt32(buffer, offset+4);
-    const endConfirmFourChar = ReadFourCharCode(buffer, offset+size+8);
-    const endFourChar = ReadFourCharCode(buffer, offset+size+12);
-    if (fourChar !== endFourChar || endConfirmFourChar !== 'END ') {
-      throw 'error on parsing.  Section ' + fourChar
-            + ' ended with ' + endFourChar + endConfirmFourChar;
+    const fourChar = readFourCharCode(buffer, offset);
+    const size = readInt32(buffer, offset+4);
+    const endCode = readFourCharCode(buffer, offset+size+8);
+    const endFourChar = readFourCharCode(buffer, offset+size+12);
+    if (fourChar !== endFourChar || endCode !== 'END ') {
+      throw `error.  Section ${fourChar} ended with ${endFourChar} ${endCode}`;
     }
     retVal.push([fourChar, new DataView(
       buffer.buffer,
@@ -86,11 +85,11 @@ SplitDataViewIntoChunks(buffer: DataView): [string, DataView][] {
   return retVal;
 }
 
-export function CalChart3To4ConvertX(x: number): number {
+export function calChart3To4ConvertX(x: number): number {
   return 160 + x/8;
 }
 
-export function CalChart3To4ConvertY(y: number): number {
+export function calChart3To4ConvertY(y: number): number {
   return 84 + y/8;
 }
 

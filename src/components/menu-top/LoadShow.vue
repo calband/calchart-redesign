@@ -32,10 +32,10 @@
       >
         {{ parseError }}
       </b-message>
-      <b-field v-if="show">
+      <b-field v-if="showPreview">
         Number of marchers: {{ numMarchers }}
       </b-field>
-      <b-field v-if="show">
+      <b-field v-if="showPreview">
         Number of sheets: {{ numSheets }}
       </b-field>
     </section>
@@ -85,6 +85,8 @@ export default Vue.extend({
       if (this.file === null) {
         return;
       }
+      this.showPreview = null;
+      this.parseError = '';
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result && reader.result instanceof ArrayBuffer) {

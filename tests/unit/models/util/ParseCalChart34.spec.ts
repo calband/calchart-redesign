@@ -1,7 +1,7 @@
 import Show from '@/models/Show';
-import { ParseCalChart3 } from '@/models/util/ParseCalChart3';
+import { ParseCalChart34 } from '@/models/util/ParseCalChart34';
 
-describe('models/util/ParseCalChart3', () => {
+describe('models/util/ParseCalChart34', () => {
 
   describe('testLoad', () => {
 
@@ -12,7 +12,7 @@ describe('models/util/ParseCalChart3', () => {
         atob(base64String),
         c => c.charCodeAt(0)
       );
-      const show = new ParseCalChart3().ParseShow(dataArray.buffer);
+      const show = new ParseCalChart34().ParseShow(dataArray.buffer);
       expect(show).not.toBeNull();
       expect(show instanceof Show).toBeTruthy();
       expect(show.dotLabels.length).toBe(1);
