@@ -5,6 +5,9 @@ describe('components/menu-top/MenuTop', () => {
 
   it('all dropdowns exist but are hidden', () => {
     cy.get('[data-test="menu-top--file"]')
+      .find('[data-test="menu-top--load-show"]')
+      .should('not.be.visible');
+      cy.get('[data-test="menu-top--file"]')
       .find('[data-test="menu-top--file-edit"]')
       .should('not.be.visible');
     cy.get('[data-test="menu-top--view"]')
@@ -19,6 +22,8 @@ describe('components/menu-top/MenuTop', () => {
     });
 
     it('dropdown is visible upon clicking', () => {
+      cy.get('[data-test="menu-top--load-show"]')
+        .should('be.visible');
       cy.get('[data-test="menu-top--file-edit"]')
         .should('be.visible');
     });
@@ -36,6 +41,16 @@ describe('components/menu-top/MenuTop', () => {
         .click();
 
       cy.get('[data-test="menu-top--file-modal"]')
+        .should('be.visible');
+    });
+    it('clicking "Load Show Details" opens load modal', () => {
+      cy.get('[data-test="menu-top--file-modal"]')
+        .should('not.be.visible');
+
+      cy.get('[data-test="menu-top--load-show"]')
+        .click();
+
+      cy.get('[data-test="menu-top--load-modal"]')
         .should('be.visible');
     });
   });

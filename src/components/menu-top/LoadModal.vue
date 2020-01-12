@@ -13,7 +13,9 @@
           accept=".shw"
           @input="loadShow"
         >
-          <a class="button is-primary">
+          <a class="button is-primary"
+            data-test="load-modal--icon"
+          >
             <b-icon icon="upload" />
             <span>Click to load</span>
           </a>
@@ -43,7 +45,7 @@
     <footer class="modal-card-foot">
       <b-button
         type="is-success"
-        data-test="file-modal--import"
+        data-test="load-modal--import"
         :disabled="!showPreview"
         @click="setShow();$parent.close()"
       >
@@ -51,7 +53,7 @@
       </b-button>
       <b-button
         type="is-secondary"
-        data-test="file-modal--close"
+        data-test="load-modal--close"
         @click="$parent.close()"
       >
         Close
@@ -66,7 +68,7 @@ import { loadShowFromBuffer } from '@/models/util/LoadShow';
 import Show from '@/models/Show';
 
 export default Vue.extend({
-  name: 'LoadShow',
+  name: 'LoadModal',
   data: (): {
     file: Blob | null;
     showPreview: Show | null;

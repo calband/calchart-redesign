@@ -22,7 +22,7 @@
 
           <b-navbar-item
             data-test="menu-top--load-show"
-            @click="loadShowActive = true"
+            @click="loadModalActive = true"
           >
             Load Show
           </b-navbar-item>
@@ -60,12 +60,12 @@
       <FileModal />
     </b-modal>
     <b-modal
-      :active.sync="loadShowActive"
+      :active.sync="loadModalActive"
       has-modal-card
       trap-focus
       data-test="menu-top--load-modal"
     >
-      <LoadShow />
+      <LoadModal />
     </b-modal>
   </div>
 </template>
@@ -73,17 +73,17 @@
 <script lang="ts">
 import Vue from 'vue';
 import FileModal from './FileModal.vue';
-import LoadShow from './LoadShow.vue';
+import LoadModal from './LoadModal.vue';
 
 export default Vue.extend({
   name: 'MenuTop',
   components: {
     FileModal,
-    LoadShow,
+    LoadModal,
   },
   data: () => ({
     fileModalActive: false,
-    loadShowActive: false,
+    loadModalActive: false,
   }),
   computed: {
     showTitle(): string {
