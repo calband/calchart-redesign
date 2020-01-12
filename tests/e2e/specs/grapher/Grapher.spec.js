@@ -10,7 +10,7 @@ describe('components/grapher/Grapher', () => {
     cy.get('[data-test="grapher--hash-mark"]')
       .should('have.length', 42);
 
-    cy.get('.grapher--field-rect')
+    cy.get('[data-test="grapher--field-rect"]')
       .should('be.visible');
 
     cy.get('[data-test="grapher--grid-vertical"]')

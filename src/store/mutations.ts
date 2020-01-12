@@ -26,4 +26,10 @@ export default {
   setFourStepGrid(state: CalChartState, enabled: boolean): void {
     state.fourStepGrid = enabled;
   },
+  setYardlines(state: CalChartState, enabled: boolean): void {
+    state.yardlines = enabled;
+  },
+  setYardlineNumbers(state: CalChartState, enabled: boolean): void {
+    state.yardlineNumbers = enabled;
+  },
 };
