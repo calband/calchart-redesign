@@ -7,7 +7,7 @@ describe('components/menu-top/MenuTop', () => {
     cy.get('[data-test="menu-top--file"]')
       .find('[data-test="menu-top--load-show"]')
       .should('not.be.visible');
-      cy.get('[data-test="menu-top--file"]')
+    cy.get('[data-test="menu-top--file"]')
       .find('[data-test="menu-top--file-edit"]')
       .should('not.be.visible');
     cy.get('[data-test="menu-top--view"]')

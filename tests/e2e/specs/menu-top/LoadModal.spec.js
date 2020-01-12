@@ -14,7 +14,7 @@ describe('components/menu-top/LoadModal', () => {
 
   it('renders with the defaults', () => {
     cy.get('[class="modal-card-title"]')
-      .should('have.text', ' Load Show ')
+      .should('have.text', ' Load Show ');
     cy.get('[data-test="load-modal--icon"]')
       .should('have.text', 'Click to load');
     cy.get('[data-test="load-modal--import"]')

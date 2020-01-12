@@ -13,7 +13,8 @@
           accept=".shw"
           @input="loadShow"
         >
-          <a class="button is-primary"
+          <a
+            class="button is-primary"
             data-test="load-modal--icon"
           >
             <b-icon icon="upload" />
