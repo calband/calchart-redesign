@@ -48,22 +48,5 @@ describe('components/menu-top/MenuTop', () => {
       wrapper.find('[data-test="menu-top--view-grid"]').trigger('click');
       expect(store.state.fourStepGrid).toBeFalsy();
     });
-
-    it('yardline checkbox', () => {
-      expect(store.state.yardlines).toBeTruthy();
-      expect(wrapper.contains('[data-test="menu-top--view-yardlines"]'))
-        .toBeTruthy();
-      wrapper.find('[data-test="menu-top--view-yardlines"]').trigger('click');
-      expect(store.state.yardlines).toBeFalsy();
-    });
-
-    it('yardline number checkbox', () => {
-      expect(store.state.yardlineNumbers).toBeTruthy();
-      expect(wrapper.contains('[data-test="menu-top--view-yardline-numbers"]'))
-        .toBeTruthy();
-      wrapper.find('[data-test="menu-top--view-yardline-numbers"]')
-        .trigger('click');
-      expect(store.state.yardlineNumbers).toBeFalsy();
-    });
   });
 });

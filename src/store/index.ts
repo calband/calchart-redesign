@@ -17,8 +17,6 @@ export class CalChartState extends Serializable<CalChartState> {
   show: Show = new Show();
 
   fourStepGrid: boolean = true;
-  yardlines: boolean = true;
-  yardlineNumbers: boolean = true;
 
   constructor(json: Partial<CalChartState> = {}) {
     super();

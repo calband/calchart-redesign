@@ -40,22 +40,6 @@
               Four step grid
             </b-checkbox>
           </b-navbar-item>
-          <b-navbar-item>
-            <b-checkbox
-              v-model="yardlines"
-              data-test="menu-top--view-yardlines"
-            >
-              Yard Lines
-            </b-checkbox>
-          </b-navbar-item>
-          <b-navbar-item>
-            <b-checkbox
-              v-model="yardlineNumbers"
-              data-test="menu-top--view-yardline-numbers"
-            >
-              Yard Line Numbers
-            </b-checkbox>
-          </b-navbar-item>
         </b-navbar-dropdown>
       </template>
     </b-navbar>
@@ -94,24 +78,6 @@ export default Vue.extend({
       },
       set(enabled: boolean): void {
         this.$store.commit('setFourStepGrid', enabled);
-      },
-    },
-
-    yardlines: {
-      get(): boolean {
-        return this.$store.state.yardlines;
-      },
-      set(enabled: boolean): void {
-        this.$store.commit('setYardlines', enabled);
-      },
-    },
-
-    yardlineNumbers: {
-      get(): boolean {
-        return this.$store.state.yardlineNumbers;
-      },
-      set(enabled: boolean): void {
-        this.$store.commit('setYardlineNumbers', enabled);
       },
     },
   },

@@ -3,16 +3,12 @@
     <svg class="grapher-svg">
       <g>
         <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
-        <rect
-          class="grapher--field-rect"
-          :width="fieldWidth"
-          :height="fieldHeight"
-          data-test="grapher--field-rect"
-        />
-        <g
-          v-if="yardlines"
-          class="grapher--line-container"
-        >
+        <g class="grapher--line-container">
+          <rect
+            class="grapher--field-rect"
+            :width="fieldWidth"
+            :height="fieldHeight"
+          />
           <line
             v-for="offsetX in yardLineOffsetsX"
             :key="offsetX + '-yardLine'"
@@ -22,10 +18,6 @@
             :y2="fieldHeight"
             data-test="grapher--yard-line"
           />
-        </g>
-        <g
-          class="grapher--line-container"
-        >
           <template v-for="offsetY in hashMarkOffsetsY">
             <line
               v-for="offsetX in yardLineOffsetsX"
@@ -61,12 +53,7 @@
             data-test="grapher--grid-horizontal"
           />
         </g>
-        <g
-          v-if="yardlineNumbers"
-          class="grapher--number-container"
-        >
-          <!-- Bottom of the yard line numbers is approximately 11 steps from
-              the sideline -->
+        <g class="grapher--number-container">
           <text
             v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
             :key="index + '-yardNum'"
@@ -122,12 +109,6 @@ export default Vue.extend({
     fourStepGrid(): boolean {
       return this.$store.state.fourStepGrid;
     },
-    yardlines(): boolean {
-      return this.$store.state.yardlines;
-    },
-    yardlineNumbers(): boolean {
-      return this.$store.state.yardlineNumbers;
-    },
     fieldWidth(): number {
       // Account for endzones + area between yard lines
       return 16 + 8 * (this.yardLineOffsetsX.length - 1) + 16;
@@ -137,18 +118,16 @@ export default Vue.extend({
         + this.$store.getters.getFrontHashOffsetY;
     },
     fourStepGridOffsetsX(): number[] {
-      const offset: number = this.$store.state.yardlines ? 8 : 4;
+      // Do not render a vertical line if there is a yard line
       const retVal: number[] = [
         4,
         8,
+        12,
+        this.fieldWidth - 12,
         this.fieldWidth - 8,
         this.fieldWidth - 4,
       ];
-      for (
-        let offsetX = 12;
-        offsetX <= this.fieldWidth - 12;
-        offsetX += offset
-      ) {
+      for (let offsetX = 20; offsetX < this.fieldWidth - 16; offsetX += 8) {
         retVal.push(offsetX);
       }
       return retVal;
@@ -209,13 +188,9 @@ export default Vue.extend({
   left: 0;
 }
 
-.grapher--line-container, .grapher--field-rect {
+.grapher--line-container {
   stroke: $white;
   stroke-width: 0.5;
-}
-
-.grapher--field-rect {
-  fill: $soybean;
 }
 
 .grapher--grid-container {
@@ -230,4 +205,7 @@ export default Vue.extend({
   text-anchor: middle;
 }
 
+.grapher--field-rect {
+  fill: $soybean;
+}
 </style>
