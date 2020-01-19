@@ -13,7 +13,7 @@ describe('components/menu-top/LoadModal', () => {
   });
 
   it('renders with the defaults', () => {
-    cy.get('[class="modal-card-title"]')
+    cy.get('[data-test="load-model--title"]')
       .should('have.text', ' Load Show ');
     cy.get('[data-test="load-modal--icon"]')
       .should('have.text', 'Click to load');
@@ -24,6 +24,7 @@ describe('components/menu-top/LoadModal', () => {
   });
 
   // I'm leaving this in as a reference to how we can get this working.
+  // see issue [#50 Figure out how to do LoadShow in e2e testing].
   // it('load a file', () => {
   //     cy.fixture('calchart35-simple.shw', 'hex').as('showdata');
   //     cy.get('input[type=file]').then(function(el) {

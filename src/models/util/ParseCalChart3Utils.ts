@@ -53,7 +53,7 @@ readArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
   }
   if (currentLabel !== '') {
     // if we have a partial label we did not end with a '\0'.  Error.
-    throw 'Error parsing strings from block';
+    throw 'Label did not end with \\0';
   }
   return retVal;
 }

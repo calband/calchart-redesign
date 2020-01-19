@@ -7,7 +7,6 @@ import { ParseCalChart34 } from './ParseCalChart34';
 // Importing calchart4 is not yet supported
 /* eslint-disable @typescript-eslint/no-unused-vars */
 function IsCalChart4(buffer: ArrayBuffer): ParseCalChart|null {
-  // console.log('no support for CalChart4.0 yet');
   return null;
 }
 /* eslint-enable @typescript-eslint/no-unused-vars */

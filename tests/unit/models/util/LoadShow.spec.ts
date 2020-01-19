@@ -2,15 +2,14 @@ import Show from '@/models/Show';
 import { loadShowFromBuffer } from '@/models/util/LoadShow';
 
 describe('models/util/LoadShow', () => {
-
-  describe('testLoad', () => {
-
-    it('loading show', () => {
+  describe('Testing loadShowFromBuffer', () => {
+    it('loading empty data', () => {
       expect(() => {
         loadShowFromBuffer(new ArrayBuffer(8));
       }).toThrow('file is not a CalChart show file.');
     });
-    it('simple show', () => {
+
+    it('loading simple show', () => {
       // eslint-disable-next-line max-len
       const base64String = 'SU5HTEdVMzVTSE9XAAABgFNJWkUAAAAEAAAAAUVORCBTSVpFTEFCTAAAAANBMABFTkQgTEFCTFNIRVQAAACGTkFNRQAAAAIxAEVORCBOQU1FRFVSQQAAAAQAAAAIRU5EIERVUkFQTlRTAAAACAf7AP1gAAAARU5EIFBOVFNDT05UAAAAEkVDTlQAAAACAABFTkQgRUNOVEVORCBDT05UUENOVAAAAAIAAEVORCBQQ05UQkFDSwAAAAQAAAAARU5EIEJBQ0tFTkQgU0hFVFNIRVQAAACLTkFNRQAAAAdzaGVldDIARU5EIE5BTUVEVVJBAAAABAAAAARFTkQgRFVSQVBOVFMAAAAIB/tA/aAAAQBFTkQgUE5UU0NPTlQAAAASRUNOVAAAAAIBAEVORCBFQ05URU5EIENPTlRQQ05UAAAAAgAARU5EIFBDTlRCQUNLAAAABAAAAABFTkQgQkFDS0VORCBTSEVUU0VMRQAAAAQAAAAARU5EIFNFTEVDVVJSAAAABAAAAAFFTkQgQ1VSUkVORCBTSE9X';
       const dataArray = Uint8Array.from(
@@ -35,6 +34,5 @@ describe('models/util/LoadShow', () => {
       expect(show.stuntSheets[1].stuntSheetDots[0].x).toBe(8);
       expect(show.stuntSheets[1].stuntSheetDots[0].y).toBe(8);
     });
-
   });
 });

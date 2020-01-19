@@ -103,11 +103,10 @@ export class ParseCalChart31 implements ParseCalChart {
     // CalChart3.1 is more complicated a format so we parse the blocks inline.
     let offset = 8;
     if (readFourCharCode(buffer, offset) !== 'SHOW') {
-      throw 'Not a valid CalChart3.3.5 show';
+      throw 'Did not find SHOW block';
     }
     offset += 4;
 
-    // now parse out the size
     const show = new Show({
       title: '',
       stuntSheets: [],
@@ -122,11 +121,11 @@ export class ParseCalChart31 implements ParseCalChart {
 
   ParseSHOWSIZE(show: Show, buffer: DataView, offset: number): number {
     if (readFourCharCode(buffer, offset) !== 'SIZE') {
-      throw 'Not a valid CalChart3.3.5 show';
+      throw 'Did not find SIZE block';
     }
     offset += 4;
     if (readInt32(buffer, offset) !== 4) {
-      throw 'Not a valid CalChart3.3.5 show';
+      throw 'SIZE block incorrect size';
     }
     offset += 4;
     this.numberDots = readInt32(buffer, offset);
@@ -179,7 +178,7 @@ export class ParseCalChart31 implements ParseCalChart {
 
   ParseSHOWSHET(show: Show, buffer: DataView, offset: number): number {
     if (readFourCharCode(buffer, offset) !== 'SHET') {
-      throw 'Not a valid CalChart3.3.5 show';
+      throw 'Did not find SHET block';
     }
     offset += 4;
     const stuntSheet = new StuntSheet();
@@ -193,11 +192,11 @@ export class ParseCalChart31 implements ParseCalChart {
     offset = this.ParseSHETCONTs(stuntSheet, buffer, offset);
 
     if (readFourCharCode(buffer, offset) !== 'END ') {
-      throw 'Did not find the sheet END.';
+      throw 'Did not find the sheet END';
     }
     offset += 4;
     if (readFourCharCode(buffer, offset) !== 'SHET') {
-      throw 'Did not find the sheet END.';
+      throw 'Did not find the sheet END';
     }
     offset += 4;
 
@@ -209,7 +208,7 @@ export class ParseCalChart31 implements ParseCalChart {
   number {
     const nextSection = readFourCharCode(buffer, offset);
     if (nextSection !== 'NAME') {
-      throw 'Not a valid CalChart3.3.5 show.  Sheet missing name.';
+      throw 'Did not find Sheet NAME block';
     }
     offset += 4;
     const size = readInt32(buffer, offset);
@@ -226,11 +225,11 @@ export class ParseCalChart31 implements ParseCalChart {
   ParseSHETDURA(stuntSheet: StuntSheet, buffer: DataView, offset: number):
   number {
     if (readFourCharCode(buffer, offset) !== 'DURA') {
-      throw 'Not a valid CalChart3.3.5 show.  Sheet missing Duration.';
+      throw 'Did not find Sheet DURA block';
     }
     offset += 4;
     if (readInt32(buffer, offset) !== 4) {
-      throw 'Not a valid CalChart3.3.5 show';
+      throw 'DURA block not correct size';
     }
     offset += 4;
     stuntSheet.beats = readInt32(buffer, offset);
@@ -240,7 +239,7 @@ export class ParseCalChart31 implements ParseCalChart {
   ParseSHETPOS(stuntSheet: StuntSheet, buffer: DataView, offset: number):
   number {
     if (readFourCharCode(buffer, offset) !== 'POS ') {
-      throw 'Not a valid CalChart3.3.5 show.  Sheet missing Duration.';
+      throw 'Did not find Sheet POS block';
     }
     offset += 4;
     let numPoints = readInt32(buffer, offset)/4;
@@ -278,6 +277,7 @@ export class ParseCalChart31 implements ParseCalChart {
     }
     offset += 4;
     // references points not implemented.  Just skip for now
+    // [#51 Handle ReferencePoints from CalChart3]
     return offset + readInt32(buffer, offset) + 4;
   }
 
@@ -296,6 +296,7 @@ export class ParseCalChart31 implements ParseCalChart {
     }
     offset += 4;
     // Symbols not implemented.  Just skip for now
+    // [#52 Handle Symbols from CalChart3]
     return offset + readInt32(buffer, offset) + 4;
   }
 
@@ -314,6 +315,7 @@ export class ParseCalChart31 implements ParseCalChart {
     }
     offset += 4;
     // Continuity index not implemented.  Just skip for now
+    // [#53 Handle Continuity and Continuity Index from CalChart3 files]
     return offset + readInt32(buffer, offset) + 4;
   }
 
@@ -332,6 +334,7 @@ export class ParseCalChart31 implements ParseCalChart {
     }
     offset += 4;
     // Label flip not implemented.  Just skip for now
+    // [#54 Handle LabelFlip from CalChart3 files]
     return offset + readInt32(buffer, offset) + 4;
   }
 
@@ -350,6 +353,7 @@ export class ParseCalChart31 implements ParseCalChart {
     }
     offset += 4;
     // Continuity translation not implemented.  Just skip for now
+    // [#53 Handle Continuity and Continuity Index from CalChart3 files]
     return offset + readInt32(buffer, offset) + 4;
   }
 }

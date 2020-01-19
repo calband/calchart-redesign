@@ -33,6 +33,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 // leaving this in as clues on how to get file uploading working in the future
+// see issue [#50 Figure out how to do LoadShow in e2e testing].
 // Cypress.Commands.add('upload_file', (fileName, fileType, selector) => {
 //     cy.get(selector).then(subject => {
 //         cy.fixture(fileName, 'hex').then((fileHex) => {

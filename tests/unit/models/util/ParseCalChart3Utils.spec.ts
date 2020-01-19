@@ -9,10 +9,8 @@ import { readInt32,
   calChart3To4ConvertY } from '@/models/util/ParseCalChart3Utils';
 
 describe('models/util/ParseCalChart3Utils', () => {
-
-  describe('testLoad', () => {
-
-    it('read int', () => {
+  describe('Testing ParseCalChart3Utils', () => {
+    it('read ints', () => {
       const rawArray = Uint8Array.from([ 1, 2, 3, 4, 5]);
       const data = new DataView(rawArray.buffer);
       expect(readInt16(data, 0)).toBe(258);
@@ -21,7 +19,7 @@ describe('models/util/ParseCalChart3Utils', () => {
       expect(readInt32(data, 1)).toBe(33752069);
     });
 
-    it('read chars', () => {
+    it('read CharCode', () => {
       const rawArray = Uint8Array.from([ 65, 66, 67, 68, 69]);
       const data = new DataView(rawArray.buffer);
       expect(readFourCharCode(data, 0)).toBe('ABCD');
@@ -37,7 +35,7 @@ describe('models/util/ParseCalChart3Utils', () => {
       expect(readStringTillEnd(data, 1)).toBe('BCD');
     });
 
-    it('read String error', () => {
+    it('read String with error', () => {
       const rawArray = Uint8Array.from([ 65, 66, 67, 0, 69]);
       const data = new DataView(rawArray.buffer);
       expect(() => {
@@ -65,12 +63,12 @@ describe('models/util/ParseCalChart3Utils', () => {
       expect(array4[0]).toBe('DE');
     });
 
-    it('read array of Strings errors', () => {
+    it('read array of Strings with errors', () => {
       const rawArray = Uint8Array.from([ 65, 66, 0, 68, 69, 0, 71]);
       const data = new DataView(rawArray.buffer);
       expect(() => {
         readArrayOfStringsTillEnd(data, 0);
-      }).toThrow('Error parsing strings from block');
+      }).toThrow('Label did not end with \\0');
     });
 
     it('test splitter', () => {
@@ -90,7 +88,7 @@ describe('models/util/ParseCalChart3Utils', () => {
       expect(array1[1][1].getUint8(1)).toBe(220);
     });
 
-    it('test splitter errors', () => {
+    it('test splitter with errors', () => {
       // change END  to FND
       // eslint-disable-next-line max-len
       const rawArray1 = Uint8Array.from([ 65, 66, 67, 68, 0, 0, 0, 1, 100, 70, 78, 68, 32, 65, 66, 67, 68, 69, 70, 71, 72, 0, 0, 0, 2, 5, 220, 69, 78, 68, 32, 69, 70, 71, 72 ]);
@@ -116,7 +114,7 @@ describe('models/util/ParseCalChart3Utils', () => {
       }).toThrow('Offset is outside the bounds of the DataView');
     });
 
-    it('read converts', () => {
+    it('testing CalChart3 to 4 position convertions', () => {
       expect(calChart3To4ConvertX(128)).toBe(176);
       expect(calChart3To4ConvertX(-256)).toBe(128);
       expect(calChart3To4ConvertX(0)).toBe(160);

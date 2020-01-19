@@ -43,6 +43,7 @@ describe('components/menu-top/MenuTop', () => {
       cy.get('[data-test="menu-top--file-modal"]')
         .should('be.visible');
     });
+
     it('clicking "Load Show Details" opens load modal', () => {
       cy.get('[data-test="menu-top--file-modal"]')
         .should('not.be.visible');
