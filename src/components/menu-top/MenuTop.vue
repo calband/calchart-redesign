@@ -21,6 +21,13 @@
           <hr class="navbar-divider">
 
           <b-navbar-item
+            data-test="menu-top--load-show"
+            @click="loadModalActive = true"
+          >
+            Load Show
+          </b-navbar-item>
+
+          <b-navbar-item
             data-test="menu-top--file-edit"
             @click="fileModalActive = true"
           >
@@ -68,20 +75,31 @@
     >
       <FileModal />
     </b-modal>
+    <b-modal
+      :active.sync="loadModalActive"
+      has-modal-card
+      trap-focus
+      data-test="menu-top--load-modal"
+    >
+      <LoadModal />
+    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import FileModal from './FileModal.vue';
+import LoadModal from './LoadModal.vue';
 
 export default Vue.extend({
   name: 'MenuTop',
   components: {
     FileModal,
+    LoadModal,
   },
   data: () => ({
     fileModalActive: false,
+    loadModalActive: false,
   }),
   computed: {
     showTitle(): string {

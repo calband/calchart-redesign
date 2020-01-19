@@ -1,4 +1,5 @@
 import { CalChartState } from '.';
+import Show from '@/models/Show';
 
 /**
  * To access the class methods of any property in state, initialize it again.
@@ -7,6 +8,10 @@ import { CalChartState } from '.';
 
 export default {
   // Show
+  setShow(state: CalChartState, show: Show): void {
+    state.show = show;
+  },
+
   setShowTitle(state: CalChartState, title: string): void {
     state.show.title = title;
   },
