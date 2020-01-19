@@ -1,8 +1,10 @@
 <template>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title"
-          data-test="load-model--title">
+      <p
+        class="modal-card-title"
+        data-test="load-model--title"
+      >
         Load Show
       </p>
     </header>

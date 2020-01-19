@@ -3,10 +3,10 @@
  * next section.
  *
  * Most all blocks are generally in the form:
- * 
+ *
  * {4-char block name} {4-byte size of block} {BlockData} {'E''N''D'' '} {4-char
  * block name}
- * 
+ *
  * This allows a parser to quickly jump to the end of a block it doesn't know
  * about, to allow for future improvements.
  *
