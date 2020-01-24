@@ -2,7 +2,9 @@
   <div class="grapher">
     <svg
       class="grapher--svg"
+      data-test="grapher--svg"
       @click.prevent="onClick"
+      @mouseover.prevent="onMouseover"
     >
       <g class="grapher--wrapper">
         <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
@@ -100,6 +102,17 @@
             data-test="grapher--dot"
           />
         </g>
+        <g class="grapher--tool-dots-container">
+          <circle
+            v-for="(dot, index) in grapherToolDots"
+            :key="index + '-dot'"
+            :cx="dot.x"
+            :cy="dot.y"
+            r="0.8"
+            data-test="grapher--tool-dot"
+            :style="{ opacity: '0.5' }"
+          />
+        </g>
       </g>
     </svg>
   </div>
@@ -112,6 +125,10 @@ import BaseTool from '@/tools/BaseTool';
 import StuntSheetDot from '../../models/StuntSheetDot';
 import StuntSheet from '../../models/StuntSheet';
 
+/**
+ * Renders the field, the dots of the current stunt sheet, and pending dots
+ * generated from the tool in use
+ */
 export default Vue.extend({
   name: 'Grapher',
   computed: {
@@ -204,6 +221,9 @@ export default Vue.extend({
         = this.$store.getters.getSelectedStuntSheet;
       return currentSS.stuntSheetDots;
     },
+    grapherToolDots(): StuntSheetDot[] {
+      return this.$store.state.grapherToolDots;
+    },
   },
   mounted() {
     const svgPanZoomInstance = svgPanZoom('.grapher--svg', {
@@ -223,6 +243,10 @@ export default Vue.extend({
     onClick(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
       toolSelected.onClick(event, this.$store);
+    },
+    onMouseover(event: MouseEvent): void {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      toolSelected.onMouseover(event, this.$store);
     },
   },
 });

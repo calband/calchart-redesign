@@ -7,7 +7,12 @@ Vue.config.productionTip = false;
 
 Vue.use(Buefy);
 
-new Vue({
+const app = new Vue({
   store,
   render: h => h(App),
 }).$mount('#app');
+
+if ((window as any).Cypress) {
+  // Make Vue instance accesible to Cypress tests
+  (window as any).app = app;
+}

@@ -5,6 +5,7 @@ import getters from './getters';
 import Show from '@/models/Show';
 import Serializable from '@/models/util/Serializable';
 import BaseTool from '@/tools/BaseTool';
+import StuntSheetDot from '@/models/StuntSheetDot';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ Vue.use(Vuex);
  * @property grapherSvgPanZoom - Initialized upon mounting Grapher
  * @property invertedCTMMatrix - Used to calculate clientX/Y to SVG X/Y
  * @property toolSelected      - See BaseTool
+ * @property grapherToolDots   - Helper dots to help visualize tools
  */
 export class CalChartState extends Serializable<CalChartState> {
   show: Show = new Show();
@@ -32,6 +34,8 @@ export class CalChartState extends Serializable<CalChartState> {
   invertedCTMMatrix?: DOMMatrix;
 
   toolSelected?: BaseTool;
+
+  grapherToolDots: StuntSheetDot[] = [];
 
   constructor(json: Partial<CalChartState> = {}) {
     super();

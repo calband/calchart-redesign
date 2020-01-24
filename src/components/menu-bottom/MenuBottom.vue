@@ -19,6 +19,9 @@
 </template>
 
 <script lang="ts">
+/**
+ * Handles setting and modifying the tools used in Grapher
+ */
 import Vue from 'vue';
 import BaseTool, { ToolConstructor } from '@/tools/BaseTool';
 import ToolPanZoom from '../../tools/ToolPanZoom';
@@ -35,10 +38,11 @@ export default Vue.extend({
   data: (): {
     toolDataList: ToolData[];
     toolSelectedIndex: number;
+    temporaryTool: BaseTool | null;
   } => ({
     toolDataList: [
       {
-        label: 'Pan and Zoom',
+        label: 'Pan and Zoom (Hold Ctrl/Meta to toggle)',
         icon: 'hand-right',
         tool: ToolPanZoom,
       },
@@ -49,6 +53,7 @@ export default Vue.extend({
       },
     ],
     toolSelectedIndex: 0, // Assume that 0 is the pan/zoom tool
+    temporaryTool: null, // Used to hold last tool when ctrl/meta is held
   }),
   watch: {
     toolSelectedIndex(newIndex: number, oldIndex: number) {
@@ -83,6 +88,13 @@ export default Vue.extend({
   },
   mounted () {
     this.setTool(this.$data.toolSelectedIndex);
+
+    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('keyup', this.onKeyUp);
+  },
+  beforeDestroy () {
+    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('keyup', this.onKeyUp);
   },
   methods: {
     setTool(toolIndex: number): void {
@@ -92,6 +104,37 @@ export default Vue.extend({
       const tool: BaseTool
         = new ToolConstructor(this.$store);
       this.$store.commit('setToolSelected', tool);
+    },
+    isCtrl(event: KeyboardEvent): boolean {
+      /* eslint-disable max-len */
+      /**
+       * Capture both Ctrl and Meta key (Cmd on Mac or Windows logo key)
+       * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+       * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+       */
+      /* eslint-enable max-len */
+      return event.key === 'Control'
+        || event.key === 'Meta'
+        || event.keyCode === 17
+        || event.keyCode === 91;
+    },
+    onKeyDown(event: KeyboardEvent): void {
+      if (event.repeat || !this.isCtrl(event)) return;
+
+      this.$data.temporaryTool = this.$store.state.toolSelected;
+      this.setTool(0);
+    },
+    onKeyUp(event: KeyboardEvent): void {
+      if (!this.isCtrl(event) || this.$data.temporaryTool === null) return;
+
+      // We do not use this.setTool to avoid reinitializing the previous tool
+      const temporaryTool: BaseTool = this.$data.temporaryTool;
+      this.$store.commit('setToolSelected', temporaryTool);
+      this.$data.toolSelectedIndex
+        = this.$data.toolDataList.findIndex((toolData: ToolData): boolean => {
+          return toolData.tool === temporaryTool.constructor;
+        });
+      this.$data.temporaryTool = null;
     },
   },
 });

@@ -24,40 +24,62 @@ jest.mock('svg-pan-zoom', () => {
 jest.mock('@/tools/ToolSingleDot');
 jest.mock('@/tools/ToolPanZoom');
 
+const setupHelper = () => {
+  // Mock inverse matrix calculations
+  const inverseMock = jest.fn().mockReturnValue({});
+  const getScreenCTMMock = jest.fn().mockReturnValue({
+    inverse: inverseMock,
+  });
+  const getElementsByClassNameMock = jest.fn().mockReturnValue([{
+    getScreenCTM: getScreenCTMMock,
+  }]);
+  Object.defineProperty(document, 'getElementsByClassName', {
+    configurable: true,
+    value: getElementsByClassNameMock,
+  });
+
+  // Mock out store and mount
+  const localVue = createLocalVue();
+  localVue.use(Vuex);
+  localVue.use(Buefy);
+  const grapherSvgPanZoom = svgPanZoom('');
+  const store = generateStore({
+    grapherSvgPanZoom,
+  });
+  const menu = mount(MenuBottom, {
+    store,
+    localVue,
+  });
+
+  return {
+    inverseMock,
+    getScreenCTMMock,
+    getElementsByClassNameMock,
+    grapherSvgPanZoom,
+    store,
+    menu,
+  };
+};
+
 describe('components/menu-bottom/MenuBottom', () => {
   describe('tool buttons', () => {
     let inverseMock: jest.Mock;
     let getScreenCTMMock: jest.Mock;
     let getElementsByClassNameMock: jest.Mock;
-    let menu: Wrapper<Vue>;
     let grapherSvgPanZoom: SvgPanZoom.Instance;
     let store: Store<CalChartState>;
-    beforeAll(() => {
-      // Mock out inverse matrix calculations
-      inverseMock = jest.fn().mockReturnValue({});
-      getScreenCTMMock = jest.fn().mockReturnValue({
-        inverse: inverseMock,
-      });
-      getElementsByClassNameMock = jest.fn().mockReturnValue([{
-        getScreenCTM: getScreenCTMMock,
-      }]);
-      Object.defineProperty(document, 'getElementsByClassName', {
-        configurable: true,
-        value: getElementsByClassNameMock,
-      });
+    let menu: Wrapper<Vue>;
 
-      // Mock out store and mount
-      const localVue = createLocalVue();
-      localVue.use(Vuex);
-      localVue.use(Buefy);
-      grapherSvgPanZoom = svgPanZoom('');
-      store = generateStore({
+    beforeAll(() => {
+      jest.clearAllMocks();
+      ({
+        inverseMock,
+        getScreenCTMMock,
+        getElementsByClassNameMock,
         grapherSvgPanZoom,
-      });
-      menu = mount(MenuBottom, {
         store,
-        localVue,
-      });
+        menu,
+      } = setupHelper());
     });
 
     it('renders the correct amount of tools', () => {
@@ -146,6 +168,112 @@ describe('components/menu-bottom/MenuBottom', () => {
       expect(grapherSvgPanZoom.enablePan).toHaveBeenCalled();
       expect(grapherSvgPanZoom.enableZoom).toHaveBeenCalled();
       expect(grapherSvgPanZoom.enableControlIcons).toHaveBeenCalled();
+    });
+  });
+
+  describe('onKeyDown', () => {
+    let store: Store<CalChartState>;
+    let menu: Wrapper<Vue>;
+    let setToolMock: jest.Mock;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      ({ store, menu } = setupHelper());
+
+      store.commit('setToolSelected', new ToolSingleDot(store));
+
+      setToolMock = jest.fn();
+      menu.setMethods({ setTool: setToolMock });
+    });
+
+    it('If ctrl key, enable pan/zoom and store old tool', () => {
+      expect(menu.vm.$data.temporaryTool).toBeNull();
+      expect(setToolMock).not.toHaveBeenCalled();
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Control' }));
+
+      expect(menu.vm.$data.temporaryTool).not.toBeNull();
+      expect(setToolMock).toHaveBeenCalledWith(0);
+    });
+
+    it('If meta key, enable pan/zoom and store old tool', () => {
+      expect(menu.vm.$data.temporaryTool).toBeNull();
+      expect(setToolMock).not.toHaveBeenCalled();
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Meta' }));
+
+      expect(menu.vm.$data.temporaryTool).not.toBeNull();
+      expect(setToolMock).toHaveBeenCalledWith(0);
+    });
+
+    it('If repeat event, do not do anything', () => {
+      document.dispatchEvent(new KeyboardEvent('keydown', {
+        key: 'Control',
+        repeat: true,
+      }));
+
+      expect(menu.vm.$data.temporaryTool).toBeNull();
+      expect(setToolMock).not.toHaveBeenCalled();
+    });
+
+    it('If not ctrl key, do not do anything', () => {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'KeyA' }));
+
+      expect(menu.vm.$data.temporaryTool).toBeNull();
+      expect(setToolMock).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onKeyUp', () => {
+    let store: Store<CalChartState>;
+    let menu: Wrapper<Vue>;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      ({ store, menu } = setupHelper());
+
+      menu.vm.$data.temporaryTool = new ToolSingleDot(store);
+    });
+
+    it('If ctrl key, enable pan/zoom and store old tool', () => {
+      expect(menu.vm.$data.temporaryTool).not.toBeNull();
+      if (store.state.toolSelected === undefined) {
+        throw 'toolSelected is undefined';
+      }
+      expect(store.state.toolSelected.constructor === ToolSingleDot)
+        .toBeFalsy();
+
+      document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Control' }));
+
+      expect(menu.vm.$data.temporaryTool).toBeNull();
+      expect(store.state.toolSelected.constructor === ToolSingleDot)
+        .toBeTruthy();
+    });
+
+    it('If meta key, enable pan/zoom and store old tool', () => {
+      expect(menu.vm.$data.temporaryTool).not.toBeNull();
+      if (store.state.toolSelected === undefined) {
+        throw 'toolSelected is undefined';
+      }
+      expect(store.state.toolSelected.constructor === ToolSingleDot)
+        .toBeFalsy();
+
+      document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Meta' }));
+
+      expect(menu.vm.$data.temporaryTool).toBeNull();
+      expect(store.state.toolSelected.constructor === ToolSingleDot)
+        .toBeTruthy();
+    });
+
+    it('If not ctrl key, do not do anything', () => {
+      document.dispatchEvent(new KeyboardEvent('keyup', { key: 'KeyA' }));
+
+      expect(menu.vm.$data.temporaryTool).not.toBeNull();
+      if (store.state.toolSelected === undefined) {
+        throw 'toolSelected is undefined';
+      }
+      expect(store.state.toolSelected.constructor === ToolSingleDot)
+        .toBeFalsy();
     });
   });
 });

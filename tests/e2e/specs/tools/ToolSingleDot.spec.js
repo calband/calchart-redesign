@@ -5,4 +5,48 @@ describe('tools/ToolSingleDot', () => {
       .click();
   });
 
+  it('clicking adds, then removes a dot', () => {
+    cy.get('[data-test="grapher--dot"]')
+      .should('not.exist');
+
+    cy.clickGrapher(12, 8);
+
+    cy.get('[data-test="grapher--dot"]')
+      .should('have.length', 1)
+      .should('have.attr', 'cx', '12')
+      .should('have.attr', 'cy', '8');
+
+    cy.clickGrapher(12, 8);
+
+    cy.get('[data-test="grapher--dot"]')
+      .should('not.exist');
+  });
+
+  it('clicking multiple dots', () => {
+    cy.get('[data-test="grapher--dot"]')
+      .should('not.exist');
+
+    cy.clickGrapher(2, 0);
+    cy.clickGrapher(2, 2);
+    cy.clickGrapher(2, 4);
+    cy.clickGrapher(2, 6);
+    cy.clickGrapher(2, 8);
+
+    cy.get('[data-test="grapher--dot"]')
+      .should('have.length', 5)
+      .each((dot, index) => {
+        expect(dot).to.have.attr('cx', '2');
+        expect(dot).to.have.attr('cy', (index * 2).toString());
+      });
+
+    cy.clickGrapher(2, 0);
+    cy.clickGrapher(2, 8);
+
+    cy.get('[data-test="grapher--dot"]')
+      .should('have.length', 3)
+      .each((dot, index) => {
+        expect(dot).to.have.attr('cx', '2');
+        expect(dot).to.have.attr('cy', ((index + 1) * 2).toString());
+      });
+  });
 });

@@ -57,6 +57,10 @@ const mutations: MutationTree<CalChartState> = {
   },
   setToolSelected(state, toolSelected: BaseTool): void {
     state.toolSelected = toolSelected;
+    state.grapherToolDots = [];
+  },
+  setGrapherToolDots(state, grapherToolDots: StuntSheetDot[]): void {
+    state.grapherToolDots = grapherToolDots;
   },
 };
 

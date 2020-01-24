@@ -47,4 +47,42 @@ describe('components/menu-bottom/MenuBottom', () => {
     cy.get('#svg-pan-zoom-controls')
       .should('be.visible');
   });
+
+  it('control key enables pan/zoom', () => {
+    // Starting tool is add/remove single dot
+    cy.get('[data-test="menu-bottom--tool-button"] .mdi-plus-minus')
+      .click();
+
+    cy.get('[data-test="menu-bottom--tool-button"].is-primary')
+      .should('have.length', 1)
+      .find('.mdi-plus-minus')
+      .should('exist');
+
+    cy.get('#svg-pan-zoom-controls')
+      .should('not.be.visible');
+
+    // Upon keydown, the selected tool is pan/zoom
+    cy.document()
+      .trigger('keydown', { key: 'Control' });
+
+    cy.get('[data-test="menu-bottom--tool-button"].is-primary')
+      .should('have.length', 1)
+      .find('.mdi-hand-right')
+      .should('exist');
+
+    cy.get('#svg-pan-zoom-controls')
+      .should('be.visible');
+
+    // Upon keyup, the selected tool returns to add/remove single dot
+    cy.document()
+      .trigger('keyup', { key: 'Control' });
+
+    cy.get('[data-test="menu-bottom--tool-button"].is-primary')
+      .should('have.length', 1)
+      .find('.mdi-plus-minus')
+      .should('exist');
+
+    cy.get('#svg-pan-zoom-controls')
+      .should('not.be.visible');
+  });
 });

@@ -60,3 +60,25 @@
 //     }
 //     return new Uint8Array(a);
 // }
+
+/**
+ * Converts the field X/Y into the click X/Y coordinates
+ */
+Cypress.Commands.add('clickGrapher', (x, y) => {
+  return cy.get('.grapher--wrapper')
+    .then((wrapper) => {
+      const matrix = wrapper[0].getCTM();
+
+      return cy.get('[data-test="grapher--svg"]')
+        .then((svg) => {
+          const point = svg[0].createSVGPoint();
+          point.x = x;
+          point.y = y;
+
+          const convertedPoint = point.matrixTransform(matrix);
+
+          cy.get('[data-test="grapher--svg"]')
+            .click(convertedPoint.x, convertedPoint.y);
+        });
+    });
+});

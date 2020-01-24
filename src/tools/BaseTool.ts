@@ -47,6 +47,9 @@ export default abstract class BaseTool {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onClick(event: MouseEvent, store: Store<CalChartState>): void {}
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onMouseover(event: MouseEvent, store: Store<CalChartState>): void {}
 }
 
 export interface ToolConstructor {
