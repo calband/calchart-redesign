@@ -12,6 +12,7 @@ Fixes issue __
 - [ ] Ran `npm run lint`
 - [ ] Ran `npm run test:unit`
 - [ ] Ran `npm run test:e2e` and ran relevant tests
+- [ ] Attached reviewers to PR and pinged on Slack/email
 
 ## Screenshots/GIFs
 
