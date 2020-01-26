@@ -49,4 +49,23 @@ describe('tools/ToolSingleDot', () => {
         expect(dot).to.have.attr('cy', ((index + 1) * 2).toString());
       });
   });
+
+  it('mousemove sets tool dots', () => {
+    cy.get('[data-test="grapher--tool-dot"]')
+      .should('not.exist');
+
+    cy.mousemoveGrapher(4, 6);
+
+    cy.get('[data-test="grapher--tool-dot"]')
+      .should('have.length', 1)
+      .should('have.attr', 'cx', '4')
+      .should('have.attr', 'cy', '6');
+
+    cy.mousemoveGrapher(6, 8);
+
+    cy.get('[data-test="grapher--tool-dot"]')
+      .should('have.length', 1)
+      .should('have.attr', 'cx', '6')
+      .should('have.attr', 'cy', '8');
+  });
 });

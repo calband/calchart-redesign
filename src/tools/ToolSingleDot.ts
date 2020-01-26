@@ -22,7 +22,7 @@ const ToolSingleDot: ToolConstructor = class ToolSingleDot extends BaseTool {
     }
   }
 
-  onMouseover(event: MouseEvent, store: Store<CalChartState>): void {
+  onMousemove(event: MouseEvent, store: Store<CalChartState>): void {
     const [x, y] = BaseTool.convertClientCoordinates(event, store);
     store.commit('setGrapherToolDots', [new StuntSheetDot({ x, y })]);
   }

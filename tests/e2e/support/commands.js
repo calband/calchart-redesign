@@ -82,3 +82,25 @@ Cypress.Commands.add('clickGrapher', (x, y) => {
         });
     });
 });
+
+/**
+ * Converts the field X/Y into the mousemove X/Y coordinates
+ */
+Cypress.Commands.add('mousemoveGrapher', (x, y) => {
+  return cy.get('.grapher--wrapper')
+    .then((wrapper) => {
+      const matrix = wrapper[0].getCTM();
+
+      return cy.get('[data-test="grapher--svg"]')
+        .then((svg) => {
+          const point = svg[0].createSVGPoint();
+          point.x = x;
+          point.y = y;
+
+          const convertedPoint = point.matrixTransform(matrix);
+
+          cy.get('[data-test="grapher--svg"]')
+            .trigger('mousemove', convertedPoint.x, convertedPoint.y);
+        });
+    });
+});

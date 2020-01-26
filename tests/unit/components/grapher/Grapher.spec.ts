@@ -197,7 +197,8 @@ describe('components/grapher/Grapher.vue', () => {
         expect(wrapper.contains('[data-test="grapher--dot"]')).toBeFalsy();
       });
 
-      const generateShowWithDots = (numDots: number): void => {
+      const generateShowWithDots
+      = (numDots: number, numToolDots: number): void => {
         const stuntSheetDots = [];
         for (let i = 0; i < numDots; i++) {
           stuntSheetDots.push(new StuntSheetDot({
@@ -205,10 +206,20 @@ describe('components/grapher/Grapher.vue', () => {
             y: i * 2,
           }));
         }
+
+        const grapherToolDots = [];
+        for (let j = 0; j < numToolDots; j++) {
+          grapherToolDots.push(new StuntSheetDot({
+            x: j * 2 + 2,
+            y: j * 2 + 2,
+          }));
+        }
+
         store = generateStore({
           show: new Show({
             stuntSheets: [new StuntSheet({ stuntSheetDots })],
           }),
+          grapherToolDots,
         });
         wrapper = mount(Grapher, {
           store,
@@ -216,16 +227,39 @@ describe('components/grapher/Grapher.vue', () => {
         });
       };
 
-      it('renders 1 dot if exists', () => {
-        generateShowWithDots(1);
+      it('renders 1 dot', () => {
+        generateShowWithDots(1, 0);
         expect(wrapper.contains('[data-test="grapher--dot"]')).toBeTruthy();
         expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(1);
+        expect(wrapper.contains('[data-test="grapher--tool-dot"]'))
+          .toBeFalsy();
       });
 
-      it('renders 2 dots if exists', () => {
-        generateShowWithDots(2);
+      it('renders 2 dots', () => {
+        generateShowWithDots(2, 0);
         expect(wrapper.contains('[data-test="grapher--dot"]')).toBeTruthy();
         expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(2);
+        expect(wrapper.contains('[data-test="grapher--tool-dot"]'))
+          .toBeFalsy();
+      });
+
+      it('renders 1 tool dots', () => {
+        generateShowWithDots(0, 1);
+        expect(wrapper.contains('[data-test="grapher--dot"]')).toBeFalsy();
+        expect(wrapper.contains('[data-test="grapher--tool-dot"]'))
+          .toBeTruthy();
+        expect(wrapper.findAll('[data-test="grapher--tool-dot"]'))
+          .toHaveLength(1);
+      });
+
+      it('renders 1 dot and 1 tool dots', () => {
+        generateShowWithDots(1, 1);
+        expect(wrapper.contains('[data-test="grapher--dot"]')).toBeTruthy();
+        expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(1);
+        expect(wrapper.contains('[data-test="grapher--tool-dot"]'))
+          .toBeTruthy();
+        expect(wrapper.findAll('[data-test="grapher--tool-dot"]'))
+          .toHaveLength(1);
       });
     });
   });

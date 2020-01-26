@@ -46,4 +46,28 @@ describe('tools/ToolSingleDot', () => {
       expect(store.commit).toHaveBeenCalledWith('removeDot', 0);
     });
   });
+
+  describe('onMousemove', () => {
+    it('sets grapher tool dot', () => {
+      expect(BaseTool.convertClientCoordinates).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
+
+      tool.onMousemove(
+        new MouseEvent('mousemove', { clientX: 0, clientY: 2 }),
+        store
+      );
+
+      expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
+      expect(store.commit).toHaveBeenCalledTimes(1);
+      expect(store.commit).toHaveBeenCalledWith(
+        'setGrapherToolDots',
+        expect.anything()
+      );
+      const grapherToolDots: StuntSheetDot[]
+        = (store.commit as jest.Mock).mock.calls[0][1];
+      expect(grapherToolDots).toHaveLength(1);
+      expect(grapherToolDots[0].x).toBe(0);
+      expect(grapherToolDots[0].y).toBe(2);
+    });
+  });
 });

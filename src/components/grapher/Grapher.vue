@@ -4,7 +4,7 @@
       class="grapher--svg"
       data-test="grapher--svg"
       @click.prevent="onClick"
-      @mouseover.prevent="onMouseover"
+      @mousemove="onMousemove"
     >
       <g class="grapher--wrapper">
         <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
@@ -235,18 +235,22 @@ export default Vue.extend({
     });
     this.$store.commit('setGrapherSvgPanZoom', svgPanZoomInstance);
 
-    window.addEventListener('resize', function() {
-      svgPanZoomInstance.resize();
-    });
+    window.addEventListener('resize', this.onResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
   },
   methods: {
+    onResize(): void {
+      this.$store.state.grapherSvgPanZoom.resize();
+    },
     onClick(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
       toolSelected.onClick(event, this.$store);
     },
-    onMouseover(event: MouseEvent): void {
+    onMousemove(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
-      toolSelected.onMouseover(event, this.$store);
+      toolSelected.onMousemove(event, this.$store);
     },
   },
 });
