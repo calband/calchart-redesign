@@ -83,9 +83,9 @@ describe('components/menu-bottom/MenuBottom', () => {
     });
 
     it('renders the correct amount of tools', () => {
-      expect(menu.contains('[data-test="menu-bottom--tool-button"]'))
+      expect(menu.contains('[data-test="menu-bottom--tooltip"]'))
         .toBeTruthy();
-      expect(menu.findAll('[data-test="menu-bottom--tool-button"]'))
+      expect(menu.findAll('[data-test="menu-bottom--tooltip"]'))
         .toHaveLength(2);
     });
 
@@ -96,18 +96,15 @@ describe('components/menu-bottom/MenuBottom', () => {
       }
       expect(ToolPanZoom).toHaveBeenCalled();
       expect(store.state.toolSelected.constructor === ToolPanZoom).toBeTruthy();
-      const firstToolBtn = menu
-        .findAll('[data-test="menu-bottom--tool-button"]')
-        .at(0);
-      expect(firstToolBtn.props('type')).toBe('is-primary');
+      const panZoomBtn = menu
+        .find('[data-test="menu-bottom-tool--pan-zoom"]');
+      expect(panZoomBtn.exists()).toBeTruthy();
+      expect(panZoomBtn.props('type')).toBe('is-primary');
     });
 
-    it('unselected tools have type is-light', () => {
-      const toolBtns = menu.findAll('[data-test="menu-bottom--tool-button"]');
-      const lightToolBtns = toolBtns.filter((btn: Wrapper<Vue>) => {
-        return btn.props('type') === 'is-light';
-      });
-      expect(lightToolBtns).toHaveLength(1);
+    it('add/remove single dot has type is-light when it is unselected', () => {
+      const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
+      expect(addRmBtn.props('type')).toBe('is-light');
     });
 
     it('clicking add/remove single dot disables panning/zooming and '
@@ -120,10 +117,8 @@ describe('components/menu-bottom/MenuBottom', () => {
       expect(getScreenCTMMock).not.toHaveBeenCalled();
       expect(getElementsByClassNameMock).not.toHaveBeenCalled();
 
-      const secondToolBtn = menu
-        .findAll('[data-test="menu-bottom--tool-button"]')
-        .at(1);
-      secondToolBtn.trigger('click');
+      const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
+      addRmBtn.trigger('click');
 
       expect(ToolSingleDot).toHaveBeenCalled();
       expect(store.state.toolSelected).not.toBeUndefined();
@@ -132,7 +127,7 @@ describe('components/menu-bottom/MenuBottom', () => {
       }
       expect(store.state.toolSelected.constructor === ToolSingleDot)
         .toBeTruthy();
-      expect(secondToolBtn.props('type')).toBe('is-primary');
+      expect(addRmBtn.props('type')).toBe('is-primary');
       expect(grapherSvgPanZoom.disablePan).toHaveBeenCalled();
       expect(grapherSvgPanZoom.disableZoom).toHaveBeenCalled();
       expect(grapherSvgPanZoom.disableControlIcons).toHaveBeenCalled();
@@ -142,10 +137,9 @@ describe('components/menu-bottom/MenuBottom', () => {
     });
 
     it('pan and zoom is no longer selected', () => {
-      const firstToolBtn = menu
-        .findAll('[data-test="menu-bottom--tool-button"]')
-        .at(0);
-      expect(firstToolBtn.props('type')).toBe('is-light');
+      const panZoomBtn = menu
+        .find('[data-test="menu-bottom-tool--pan-zoom"]');
+      expect(panZoomBtn.props('type')).toBe('is-light');
     });
 
     it('clicking pan and zoom enables panning/zooming', () => {
@@ -153,10 +147,9 @@ describe('components/menu-bottom/MenuBottom', () => {
       expect(grapherSvgPanZoom.enableZoom).not.toHaveBeenCalled();
       expect(grapherSvgPanZoom.enableControlIcons).not.toHaveBeenCalled();
 
-      const firstToolBtn = menu
-        .findAll('[data-test="menu-bottom--tool-button"]')
-        .at(0);
-      firstToolBtn.trigger('click');
+      const panZoomBtn = menu
+        .find('[data-test="menu-bottom-tool--pan-zoom"]');
+      panZoomBtn.trigger('click');
 
       expect(store.state.toolSelected).not.toBeUndefined();
       if (store.state.toolSelected === undefined) {
@@ -164,7 +157,7 @@ describe('components/menu-bottom/MenuBottom', () => {
       }
       expect(store.state.toolSelected.constructor === ToolPanZoom)
         .toBeTruthy();
-      expect(firstToolBtn.props('type')).toBe('is-primary');
+      expect(panZoomBtn.props('type')).toBe('is-primary');
       expect(grapherSvgPanZoom.enablePan).toHaveBeenCalled();
       expect(grapherSvgPanZoom.enableZoom).toHaveBeenCalled();
       expect(grapherSvgPanZoom.enableControlIcons).toHaveBeenCalled();

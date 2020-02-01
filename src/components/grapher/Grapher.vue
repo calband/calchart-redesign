@@ -73,8 +73,8 @@
           <!-- Bottom of the yard line numbers is approximately 11 steps from
               the sideline -->
           <text
-            v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
-            :key="index + '-yardNum'"
+            v-for="numberAndOffsetX in yardLineNumberAndOffsetX"
+            :key="`${numberAndOffsetX}-yardNum`"
             :x="numberAndOffsetX[1]"
             :y="fieldHeight - 11"
             data-test="grapher--yard-number"
@@ -82,8 +82,8 @@
             {{ numberAndOffsetX[0] }}
           </text>
           <text
-            v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
-            :key="index + '-yardNumRotated'"
+            v-for="numberAndOffsetX in yardLineNumberAndOffsetX"
+            :key="`${numberAndOffsetX[1]}-yardNumRotated`"
             :x="numberAndOffsetX[1]"
             :y="11"
             :transform="'rotate(180 ' + numberAndOffsetX[1] + ' 11)'"
@@ -94,21 +94,21 @@
         </g>
         <g class="grapher--dots-container">
           <circle
-            v-for="(dot, index) in stuntSheetDots"
-            :key="index + '-dot'"
+            v-for="dot in stuntSheetDots"
+            :key="`${dot.x}-${dot.y}-tool-dot`"
             :cx="dot.x"
             :cy="dot.y"
-            r="0.8"
+            r="0.7"
             data-test="grapher--dot"
           />
         </g>
         <g class="grapher--tool-dots-container">
           <circle
-            v-for="(dot, index) in grapherToolDots"
-            :key="index + '-dot'"
+            v-for="dot in grapherToolDots"
+            :key="`${dot.x}-${dot.y}-tool-dot`"
             :cx="dot.x"
             :cy="dot.y"
-            r="0.8"
+            r="0.7"
             data-test="grapher--tool-dot"
             :style="{ opacity: '0.5' }"
           />
@@ -122,8 +122,8 @@
 import Vue from 'vue';
 import svgPanZoom from 'svg-pan-zoom';
 import BaseTool from '@/tools/BaseTool';
-import StuntSheetDot from '../../models/StuntSheetDot';
-import StuntSheet from '../../models/StuntSheet';
+import StuntSheetDot from '@/models/StuntSheetDot';
+import StuntSheet from '@/models/StuntSheet';
 
 /**
  * Renders the field, the dots of the current stunt sheet, and pending dots

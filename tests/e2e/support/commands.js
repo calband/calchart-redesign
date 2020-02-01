@@ -62,45 +62,51 @@
 // }
 
 /**
- * Converts the field X/Y into the click X/Y coordinates
+ * Helper command for mouse events on the grapher
  */
-Cypress.Commands.add('clickGrapher', (x, y) => {
+const grapherMouseCommand = (eventName, x, y) => {
   return cy.get('.grapher--wrapper')
     .then((wrapper) => {
-      const matrix = wrapper[0].getCTM();
+      const matrix = wrapper.get(0).getCTM();
 
       return cy.get('[data-test="grapher--svg"]')
         .then((svg) => {
-          const point = svg[0].createSVGPoint();
+          const point = svg.get(0).createSVGPoint();
           point.x = x;
           point.y = y;
 
           const convertedPoint = point.matrixTransform(matrix);
 
           cy.get('[data-test="grapher--svg"]')
-            .click(convertedPoint.x, convertedPoint.y);
+            .trigger(eventName, convertedPoint.x, convertedPoint.y);
         });
     });
+};
+
+/**
+ * Converts the field X/Y into the click X/Y coordinates
+ */
+Cypress.Commands.add('clickGrapher', (x, y) => {
+  return grapherMouseCommand('click', x, y);
 });
 
 /**
  * Converts the field X/Y into the mousemove X/Y coordinates
  */
 Cypress.Commands.add('mousemoveGrapher', (x, y) => {
-  return cy.get('.grapher--wrapper')
-    .then((wrapper) => {
-      const matrix = wrapper[0].getCTM();
+  return grapherMouseCommand('mousemove', x, y);
+});
 
-      return cy.get('[data-test="grapher--svg"]')
-        .then((svg) => {
-          const point = svg[0].createSVGPoint();
-          point.x = x;
-          point.y = y;
+/**
+ * Converts the field X/Y into the mousedown X/Y coordinates
+ */
+Cypress.Commands.add('mousedownGrapher', (x, y) => {
+  return grapherMouseCommand('mousedown', x, y);
+});
 
-          const convertedPoint = point.matrixTransform(matrix);
-
-          cy.get('[data-test="grapher--svg"]')
-            .trigger('mousemove', convertedPoint.x, convertedPoint.y);
-        });
-    });
+/**
+ * Converts the field X/Y into the mousedown X/Y coordinates
+ */
+Cypress.Commands.add('mouseupGrapher', (x, y) => {
+  return grapherMouseCommand('mouseup', x, y);
 });

@@ -4,25 +4,23 @@ describe('components/menu-bottom/MenuBottom', () => {
   });
 
   it('all buttons are rendered and pan/zoom is selected', () => {
-    cy.get('[data-test="menu-bottom--tool-button"]')
+    cy.get('[data-test="menu-bottom--tooltip"]')
       .should('have.length', 2);
 
-    cy.get('[data-test="menu-bottom--tool-button"]')
-      .eq(0)
+    cy.get('[data-test="menu-bottom-tool--pan-zoom"]')
       .should('have.class', 'is-primary');
 
-    cy.get('[data-test="menu-bottom--tool-button"].is-light')
+    cy.get('[data-test="menu-bottom--tooltip"] .is-light')
       .should('have.length', 1);
   });
 
   it('clicking on add/remove single dot disables pan/zoom', () => {
-    cy.get('[data-test="menu-bottom--tool-button"]')
-      .eq(1)
+    cy.get('[data-test="menu-bottom-tool--add-rm"]')
       .should('not.have.class', 'is-primary')
       .click()
       .should('have.class', 'is-primary');
 
-    cy.get('[data-test="menu-bottom--tool-button"].is-light')
+    cy.get('[data-test="menu-bottom--tooltip"] .is-light')
       .should('have.length', 1);
 
     cy.get('#svg-pan-zoom-controls')
@@ -30,12 +28,10 @@ describe('components/menu-bottom/MenuBottom', () => {
   });
 
   it('clicking from and to pan/zoom enables pan/zoom', () => {
-    cy.get('[data-test="menu-bottom--tool-button"]')
-      .eq(1)
+    cy.get('[data-test="menu-bottom-tool--add-rm"]')
       .click();
 
-    cy.get('[data-test="menu-bottom--tool-button"]')
-      .eq(0)
+    cy.get('[data-test="menu-bottom-tool--pan-zoom"]')
       .should('not.have.class', 'is-primary')
       .click()
       .should('have.class', 'is-primary');
@@ -46,8 +42,7 @@ describe('components/menu-bottom/MenuBottom', () => {
 
   it('control key enables pan/zoom', () => {
     // Starting tool is add/remove single dot
-    cy.get('[data-test="menu-bottom--tool-button"]')
-      .eq(1)
+    cy.get('[data-test="menu-bottom-tool--add-rm"]')
       .click()
       .should('have.class', 'is-primary');
 
@@ -58,8 +53,7 @@ describe('components/menu-bottom/MenuBottom', () => {
     cy.document()
       .trigger('keydown', { key: 'Control' });
 
-    cy.get('[data-test="menu-bottom--tool-button"]')
-      .eq(0)
+    cy.get('[data-test="menu-bottom-tool--pan-zoom"]')
       .should('have.class', 'is-primary');
 
     cy.get('#svg-pan-zoom-controls')
@@ -69,8 +63,7 @@ describe('components/menu-bottom/MenuBottom', () => {
     cy.document()
       .trigger('keyup', { key: 'Control' });
 
-    cy.get('[data-test="menu-bottom--tool-button"]')
-      .eq(1)
+    cy.get('[data-test="menu-bottom-tool--add-rm"]')
       .should('have.class', 'is-primary');
 
     cy.get('#svg-pan-zoom-controls')

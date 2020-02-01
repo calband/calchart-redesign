@@ -1,7 +1,7 @@
 describe('tools/ToolSingleDot', () => {
   beforeEach(() => {
     cy.visit('/')
-      .get('[data-test="menu-bottom--tool-button"] .mdi-plus-minus')
+      .get('[data-test="menu-bottom-tool--add-rm"]')
       .click();
   });
 
@@ -20,6 +20,29 @@ describe('tools/ToolSingleDot', () => {
 
     cy.get('[data-test="grapher--dot"]')
       .should('not.exist');
+  });
+
+  it('After panning and zooming, adding a dot is still accurate', () => {
+    cy.get('[data-test="menu-bottom-tool--pan-zoom')
+      .click();
+
+    cy.get('#svg-pan-zoom-zoom-out')
+      .click()
+      .click();
+
+    cy.mousedownGrapher(8, 2);
+    cy.mousemoveGrapher(24, 2);
+    cy.mouseupGrapher(24, 2);
+
+    cy.get('[data-test="menu-bottom-tool--add-rm"]')
+      .click();
+
+    cy.clickGrapher(12, 8);
+
+    cy.get('[data-test="grapher--dot"]')
+      .should('have.length', 1)
+      .should('have.attr', 'cx', '12')
+      .should('have.attr', 'cy', '8');
   });
 
   it('clicking multiple dots', () => {

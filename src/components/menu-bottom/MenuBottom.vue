@@ -3,14 +3,14 @@
     <div class="buttons">
       <b-tooltip
         v-for="(toolData, index) in toolDataList"
-        :key="index + 'toolData'"
+        :key="`${toolData.icon}-toolData`"
         :label="toolData.label"
-        :delay="500"
+        data-test="menu-bottom--tooltip"
       >
         <b-button
           :type="toolSelectedIndex === index ? 'is-primary' : 'is-light'"
           :icon-left="toolData.icon"
-          data-test="menu-bottom--tool-button"
+          :data-test="`menu-bottom-tool--${toolData['data-test']}`"
           @click="setTool(index)"
         />
       </b-tooltip>
@@ -24,13 +24,14 @@
  */
 import Vue from 'vue';
 import BaseTool, { ToolConstructor } from '@/tools/BaseTool';
-import ToolPanZoom from '../../tools/ToolPanZoom';
-import ToolSingleDot from '../../tools/ToolSingleDot';
+import ToolPanZoom from '@/tools/ToolPanZoom';
+import ToolSingleDot from '@/tools/ToolSingleDot';
 
 interface ToolData {
   label: string;
   icon: string;
   tool: ToolConstructor;
+  'data-test': string;
 }
 
 export default Vue.extend({
@@ -42,14 +43,16 @@ export default Vue.extend({
   } => ({
     toolDataList: [
       {
-        label: 'Pan and Zoom (Hold Ctrl/Meta to toggle)',
+        label: 'Pan and Zoom (Hold Ctrl/Meta to turn on)',
         icon: 'hand-right',
         tool: ToolPanZoom,
+        'data-test': 'pan-zoom',
       },
       {
         label: 'Add and Remove Single Dot',
         icon: 'plus-minus',
         tool: ToolSingleDot,
+        'data-test': 'add-rm',
       },
     ],
     toolSelectedIndex: 0, // Assume that 0 is the pan/zoom tool
@@ -73,8 +76,10 @@ export default Vue.extend({
         grapherSvgPanZoom.disableZoom();
         grapherSvgPanZoom.disableControlIcons();
 
-        // Calculate inverted CTM matrix that is used to convert ClientX/Y to
-        // X/Y of the SVG
+        /**
+         * Calculate inverted CTM matrix that is used to convert ClientX/Y to
+         * X/Y of the SVG
+         */
         const wrapper = document
           .getElementsByClassName('grapher--wrapper')[0] as SVGGElement;
         const ctm = wrapper.getScreenCTM();
@@ -86,13 +91,13 @@ export default Vue.extend({
       }
     },
   },
-  mounted () {
+  mounted() {
     this.setTool(this.$data.toolSelectedIndex);
 
     document.addEventListener('keydown', this.onKeyDown);
     document.addEventListener('keyup', this.onKeyUp);
   },
-  beforeDestroy () {
+  beforeDestroy() {
     document.removeEventListener('keydown', this.onKeyDown);
     document.removeEventListener('keyup', this.onKeyUp);
   },
