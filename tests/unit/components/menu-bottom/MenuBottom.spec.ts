@@ -6,6 +6,7 @@ import Vuex, { Store } from 'vuex';
 import MenuBottom from '@/components/menu-bottom/MenuBottom.vue';
 import ToolSingleDot from '@/tools/ToolSingleDot';
 import ToolPanZoom from '@/tools/ToolPanZoom';
+import BaseTool from '@/tools/BaseTool';
 
 jest.mock('svg-pan-zoom', () => {
   return {
@@ -90,12 +91,10 @@ describe('components/menu-bottom/MenuBottom', () => {
     });
 
     it('on mount, selects the pan and zoom tool', () => {
-      expect(store.state.toolSelected).not.toBeUndefined();
-      if (store.state.toolSelected === undefined) {
-        throw 'toolSelected is undefined';
-      }
+      const toolSelected = store.state.toolSelected as BaseTool;
+      expect(toolSelected).not.toBeUndefined();
       expect(ToolPanZoom).toHaveBeenCalled();
-      expect(store.state.toolSelected.constructor === ToolPanZoom).toBeTruthy();
+      expect(toolSelected.constructor === ToolPanZoom).toBeTruthy();
       const panZoomBtn = menu
         .find('[data-test="menu-bottom-tool--pan-zoom"]');
       expect(panZoomBtn.exists()).toBeTruthy();
@@ -121,12 +120,9 @@ describe('components/menu-bottom/MenuBottom', () => {
       addRmBtn.trigger('click');
 
       expect(ToolSingleDot).toHaveBeenCalled();
-      expect(store.state.toolSelected).not.toBeUndefined();
-      if (store.state.toolSelected === undefined) {
-        throw 'toolSelected is undefined';
-      }
-      expect(store.state.toolSelected.constructor === ToolSingleDot)
-        .toBeTruthy();
+      const toolSelected = store.state.toolSelected as BaseTool;
+      expect(toolSelected).not.toBeUndefined();
+      expect(toolSelected.constructor === ToolSingleDot).toBeTruthy();
       expect(addRmBtn.props('type')).toBe('is-primary');
       expect(grapherSvgPanZoom.disablePan).toHaveBeenCalled();
       expect(grapherSvgPanZoom.disableZoom).toHaveBeenCalled();
@@ -151,11 +147,9 @@ describe('components/menu-bottom/MenuBottom', () => {
         .find('[data-test="menu-bottom-tool--pan-zoom"]');
       panZoomBtn.trigger('click');
 
-      expect(store.state.toolSelected).not.toBeUndefined();
-      if (store.state.toolSelected === undefined) {
-        throw 'toolSelected is undefined';
-      }
-      expect(store.state.toolSelected.constructor === ToolPanZoom)
+      const toolSelected = store.state.toolSelected as BaseTool;
+      expect(toolSelected).not.toBeUndefined();
+      expect(toolSelected.constructor === ToolPanZoom)
         .toBeTruthy();
       expect(panZoomBtn.props('type')).toBe('is-primary');
       expect(grapherSvgPanZoom.enablePan).toHaveBeenCalled();
@@ -173,7 +167,7 @@ describe('components/menu-bottom/MenuBottom', () => {
       jest.clearAllMocks();
       ({ store, menu } = setupHelper());
 
-      store.commit('setToolSelected', new ToolSingleDot(store));
+      store.commit('setToolSelected', new ToolSingleDot());
 
       setToolMock = jest.fn();
       menu.setMethods({ setTool: setToolMock });
@@ -225,48 +219,42 @@ describe('components/menu-bottom/MenuBottom', () => {
       jest.clearAllMocks();
       ({ store, menu } = setupHelper());
 
-      menu.vm.$data.temporaryTool = new ToolSingleDot(store);
+      menu.vm.$data.temporaryTool = new ToolSingleDot();
     });
 
     it('If ctrl key, enable pan/zoom and store old tool', () => {
       expect(menu.vm.$data.temporaryTool).not.toBeNull();
-      if (store.state.toolSelected === undefined) {
-        throw 'toolSelected is undefined';
-      }
-      expect(store.state.toolSelected.constructor === ToolSingleDot)
-        .toBeFalsy();
+      const toolSelected = store.state.toolSelected as BaseTool;
+      expect(toolSelected).not.toBeUndefined();
+      expect(toolSelected.constructor === ToolSingleDot).toBeFalsy();
 
       document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Control' }));
 
       expect(menu.vm.$data.temporaryTool).toBeNull();
-      expect(store.state.toolSelected.constructor === ToolSingleDot)
-        .toBeTruthy();
+      const nextToolSelected = store.state.toolSelected as BaseTool;
+      expect(nextToolSelected.constructor === ToolSingleDot).toBeTruthy();
     });
 
-    it('If meta key, enable pan/zoom and store old tool', () => {
+    it('If meta key, enable pan/zoom and store old tool', async () => {
       expect(menu.vm.$data.temporaryTool).not.toBeNull();
-      if (store.state.toolSelected === undefined) {
-        throw 'toolSelected is undefined';
-      }
-      expect(store.state.toolSelected.constructor === ToolSingleDot)
-        .toBeFalsy();
+      const toolSelected = store.state.toolSelected as BaseTool;
+      expect(toolSelected).not.toBeUndefined();
+      expect(toolSelected.constructor === ToolSingleDot).toBeFalsy();
 
       document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Meta' }));
 
       expect(menu.vm.$data.temporaryTool).toBeNull();
-      expect(store.state.toolSelected.constructor === ToolSingleDot)
-        .toBeTruthy();
+      const nextToolSelected = store.state.toolSelected as BaseTool;
+      expect(nextToolSelected.constructor === ToolSingleDot).toBeTruthy();
     });
 
     it('If not ctrl key, do not do anything', () => {
       document.dispatchEvent(new KeyboardEvent('keyup', { key: 'KeyA' }));
 
       expect(menu.vm.$data.temporaryTool).not.toBeNull();
-      if (store.state.toolSelected === undefined) {
-        throw 'toolSelected is undefined';
-      }
-      expect(store.state.toolSelected.constructor === ToolSingleDot)
-        .toBeFalsy();
+      const toolSelected = store.state.toolSelected as BaseTool;
+      expect(toolSelected).not.toBeUndefined();
+      expect(toolSelected.constructor === ToolSingleDot).toBeFalsy();
     });
   });
 });

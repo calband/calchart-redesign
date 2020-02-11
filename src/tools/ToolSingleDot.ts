@@ -1,6 +1,5 @@
 import BaseTool, { ToolConstructor } from './BaseTool';
-import { Store } from 'vuex';
-import { CalChartState } from '@/store';
+import { GlobalStore } from '@/store';
 import StuntSheetDot from '@/models/StuntSheetDot';
 import StuntSheet from '@/models/StuntSheet';
 
@@ -8,23 +7,23 @@ import StuntSheet from '@/models/StuntSheet';
  * Add or remove a single dot on click.
  */
 const ToolSingleDot: ToolConstructor = class ToolSingleDot extends BaseTool {
-  onClick(event: MouseEvent, store: Store<CalChartState>): void {
-    const [x, y] = BaseTool.convertClientCoordinates(event, store);
-    const stuntSheet: StuntSheet = store.getters.getSelectedStuntSheet;
+  onClick(event: MouseEvent): void {
+    const [x, y] = BaseTool.convertClientCoordinates(event);
+    const stuntSheet: StuntSheet = GlobalStore.getters.getSelectedStuntSheet;
     const existingDotIndex = stuntSheet.stuntSheetDots
       .findIndex((dot: StuntSheetDot): boolean => {
         return x === dot.x && y === dot.y;
       });
     if (existingDotIndex !== -1) {
-      store.commit('removeDot', existingDotIndex);
+      GlobalStore.commit('removeDot', existingDotIndex);
     } else {
-      store.commit('addDot', new StuntSheetDot({ x, y }));
+      GlobalStore.commit('addDot', new StuntSheetDot({ x, y }));
     }
   }
 
-  onMousemove(event: MouseEvent, store: Store<CalChartState>): void {
-    const [x, y] = BaseTool.convertClientCoordinates(event, store);
-    store.commit('setGrapherToolDots', [new StuntSheetDot({ x, y })]);
+  onMousemove(event: MouseEvent): void {
+    const [x, y] = BaseTool.convertClientCoordinates(event);
+    GlobalStore.commit('setGrapherToolDots', [new StuntSheetDot({ x, y })]);
   }
 };
 

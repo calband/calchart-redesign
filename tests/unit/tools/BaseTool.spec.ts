@@ -1,12 +1,10 @@
 import BaseTool from '@/tools/BaseTool';
-import { generateStore, CalChartState } from '@/store';
-import { Store } from 'vuex';
+import { GlobalStore } from '@/store';
 
 describe('tools/BaseTool', () => {
   let matrixTransformMock: jest.Mock;
   let createSVGPointMock: jest.Mock;
   let getElementsByTagNameMock: jest.Mock;
-  let store: Store<CalChartState>;
 
   beforeAll(() => {
     // Mock out inverse matrix calculations
@@ -25,22 +23,20 @@ describe('tools/BaseTool', () => {
       value: getElementsByTagNameMock,
     });
 
-    // Mock out store
-    store = generateStore();
-    store.commit('setInvertedCTMMatrix', {});
+    GlobalStore.state.invertedCTMMatrix = new Object() as DOMMatrix;
   });
 
   it('convertClientCoordinates calls the correct functions', () => {
-    const [x, y] = BaseTool.convertClientCoordinates(
-      new MouseEvent('click', { clientX: 0, clientY: 0 }),
-      store,
-    );
+    const [x, y] = BaseTool.convertClientCoordinates(new MouseEvent(
+      'click',
+      { clientX: 0, clientY: 0 }
+    ));
 
     expect(getElementsByTagNameMock).toHaveBeenCalled();
     expect(createSVGPointMock).toHaveBeenCalled();
     expect(matrixTransformMock).toHaveBeenCalled();
     expect(matrixTransformMock)
-      .toHaveBeenCalledWith(store.state.invertedCTMMatrix);
+      .toHaveBeenCalledWith(GlobalStore.state.invertedCTMMatrix);
 
     expect(x).toBe(2);
     expect(y).toBe(0);

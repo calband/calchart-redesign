@@ -12,12 +12,4 @@ describe('App.vue', () => {
     cy.get('#app')
       .find('.menu-bottom');
   });
-
-  it('window.app exists for e2e tests', () => {
-    cy.visit('/');
-
-    cy.window()
-      .its('app.$store')
-      .should('not.to.be.undefined');
-  });
 });

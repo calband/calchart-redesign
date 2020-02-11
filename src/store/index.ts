@@ -50,4 +50,4 @@ export const generateStore
   getters,
 });
 
-export default generateStore();
+export const GlobalStore = generateStore();

@@ -60,6 +60,19 @@ export default Vue.extend({
   }),
   watch: {
     toolSelectedIndex(newIndex: number, oldIndex: number) {
+      /**
+       * Calculate inverted CTM matrix that is used to convert ClientX/Y to
+       * X/Y of the SVG
+       */
+      const wrapper = document
+        .getElementsByClassName('grapher--wrapper')[0] as SVGGElement;
+      const ctm = wrapper.getScreenCTM();
+      if (!ctm) {
+        throw 'Unable to retrieve wrapper CTM';
+      }
+      const invertedMatrix = ctm.inverse();
+      this.$store.commit('setInvertedCTMMatrix', invertedMatrix);
+
       // Enable or disable pan/zoom depending on tool selected
       const grapherSvgPanZoom: SvgPanZoom.Instance | undefined
         = this.$store.state.grapherSvgPanZoom;
@@ -75,19 +88,6 @@ export default Vue.extend({
         grapherSvgPanZoom.disablePan();
         grapherSvgPanZoom.disableZoom();
         grapherSvgPanZoom.disableControlIcons();
-
-        /**
-         * Calculate inverted CTM matrix that is used to convert ClientX/Y to
-         * X/Y of the SVG
-         */
-        const wrapper = document
-          .getElementsByClassName('grapher--wrapper')[0] as SVGGElement;
-        const ctm = wrapper.getScreenCTM();
-        if (!ctm) {
-          throw 'Unable to retrieve wrapper CTM';
-        }
-        const invertedMatrix = ctm.inverse();
-        this.$store.commit('setInvertedCTMMatrix', invertedMatrix);
       }
     },
   },
@@ -106,8 +106,7 @@ export default Vue.extend({
       this.$data.toolSelectedIndex = toolIndex;
       const ToolConstructor: ToolConstructor
         = this.$data.toolDataList[toolIndex].tool;
-      const tool: BaseTool
-        = new ToolConstructor(this.$store);
+      const tool: BaseTool = new ToolConstructor();
       this.$store.commit('setToolSelected', tool);
     },
     isCtrl(event: KeyboardEvent): boolean {

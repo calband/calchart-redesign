@@ -74,7 +74,7 @@
               the sideline -->
           <text
             v-for="numberAndOffsetX in yardLineNumberAndOffsetX"
-            :key="`${numberAndOffsetX}-yardNum`"
+            :key="`${numberAndOffsetX[1]}-yardNum`"
             :x="numberAndOffsetX[1]"
             :y="fieldHeight - 11"
             data-test="grapher--yard-number"
@@ -95,7 +95,8 @@
         <g class="grapher--dots-container">
           <circle
             v-for="dot in stuntSheetDots"
-            :key="`${dot.x}-${dot.y}-tool-dot`"
+            :key="`${dot.x}-${dot.y}-dot`"
+            class="grapher--dot"
             :cx="dot.x"
             :cy="dot.y"
             r="0.7"
@@ -106,11 +107,11 @@
           <circle
             v-for="dot in grapherToolDots"
             :key="`${dot.x}-${dot.y}-tool-dot`"
+            class="grapher--dot grapher--tool-dot"
             :cx="dot.x"
             :cy="dot.y"
             r="0.7"
             data-test="grapher--tool-dot"
-            :style="{ opacity: '0.5' }"
           />
         </g>
       </g>
@@ -246,11 +247,11 @@ export default Vue.extend({
     },
     onClick(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
-      toolSelected.onClick(event, this.$store);
+      toolSelected.onClick(event);
     },
     onMousemove(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
-      toolSelected.onMousemove(event, this.$store);
+      toolSelected.onMousemove(event);
     },
   },
 });
@@ -291,6 +292,12 @@ export default Vue.extend({
   fill: $white;
   font-size: 4px;
   text-anchor: middle;
+}
+
+.grapher--dot {
+  &.grapher--tool-dot {
+    opacity: 0.5;
+  }
 }
 
 </style>

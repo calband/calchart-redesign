@@ -1,5 +1,4 @@
-import { CalChartState } from '@/store';
-import { Store } from 'vuex';
+import { GlobalStore } from '@/store';
 
 /* eslint-disable max-len */
 /**
@@ -24,16 +23,13 @@ export default abstract class BaseTool {
   /**
    * Convert clientX/Y to the X/Y coordinates on the SVG rectangle.
    **/
-  static convertClientCoordinates(
-    event: MouseEvent,
-    store: Store<CalChartState>
-  ): [number, number] {
+  static convertClientCoordinates(event: MouseEvent): [number, number] {
     const svg = document.getElementsByTagName('svg')[0];
     const point = svg.createSVGPoint();
     point.x = event.clientX;
     point.y = event.clientY;
 
-    const invertedCTMMatrix = store.state.invertedCTMMatrix;
+    const invertedCTMMatrix = GlobalStore.state.invertedCTMMatrix;
     if (invertedCTMMatrix === undefined) {
       throw 'No inverted ctm matrix';
     }
@@ -46,12 +42,12 @@ export default abstract class BaseTool {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onClick(event: MouseEvent, store: Store<CalChartState>): void {}
+  onClick(event: MouseEvent): void {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onMousemove(event: MouseEvent, store: Store<CalChartState>): void {}
+  onMousemove(event: MouseEvent): void {}
 }
 
 export interface ToolConstructor {
-  new (store: Store<CalChartState>): BaseTool;
+  new (): BaseTool;
 }
