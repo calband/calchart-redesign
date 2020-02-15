@@ -84,29 +84,21 @@ const grapherMouseCommand = (eventName, x, y) => {
 };
 
 /**
- * Converts the field X/Y into the click X/Y coordinates
+ * Generate the commands:
+ *  - clickGrapher
+ *  - mousemoveGrapher
+ *  - mousedownGrapher
+ *  - mouseupGrapher
  */
-Cypress.Commands.add('clickGrapher', (x, y) => {
-  return grapherMouseCommand('click', x, y);
-});
+const grapherCommands = [
+  'click',
+  'mousemove',
+  'mousedown',
+  'mouseup',
+];
 
-/**
- * Converts the field X/Y into the mousemove X/Y coordinates
- */
-Cypress.Commands.add('mousemoveGrapher', (x, y) => {
-  return grapherMouseCommand('mousemove', x, y);
-});
-
-/**
- * Converts the field X/Y into the mousedown X/Y coordinates
- */
-Cypress.Commands.add('mousedownGrapher', (x, y) => {
-  return grapherMouseCommand('mousedown', x, y);
-});
-
-/**
- * Converts the field X/Y into the mousedown X/Y coordinates
- */
-Cypress.Commands.add('mouseupGrapher', (x, y) => {
-  return grapherMouseCommand('mouseup', x, y);
+grapherCommands.forEach(command => {
+  Cypress.Commands.add(`${command}Grapher`, (x, y) => {
+    return grapherMouseCommand(command, x, y);
+  });
 });

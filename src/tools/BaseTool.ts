@@ -24,7 +24,8 @@ export default abstract class BaseTool {
    * Convert clientX/Y to the X/Y coordinates on the SVG rectangle.
    **/
   static convertClientCoordinates(event: MouseEvent): [number, number] {
-    const svg = document.getElementsByTagName('svg')[0];
+    const svg = document
+      .getElementsByClassName('grapher--svg')[0] as SVGSVGElement;
     const point = svg.createSVGPoint();
     point.x = event.clientX;
     point.y = event.clientY;

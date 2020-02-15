@@ -58,8 +58,9 @@ describe('tools/ToolSingleDot', () => {
     cy.get('[data-test="grapher--dot"]')
       .should('have.length', 5)
       .each((dot, index) => {
-        expect(dot).to.have.attr('cx', '2');
-        expect(dot).to.have.attr('cy', (index * 2).toString());
+        cy.wrap(dot)
+          .should('have.attr', 'cx', '2')
+          .should('have.attr', 'cy', `${index * 2}`);
       });
 
     cy.clickGrapher(2, 0);
@@ -68,8 +69,9 @@ describe('tools/ToolSingleDot', () => {
     cy.get('[data-test="grapher--dot"]')
       .should('have.length', 3)
       .each((dot, index) => {
-        expect(dot).to.have.attr('cx', '2');
-        expect(dot).to.have.attr('cy', ((index + 1) * 2).toString());
+        cy.wrap(dot)
+          .should('have.attr', 'cx', '2')
+          .should('have.attr', 'cy', `${(index + 1) * 2}`);
       });
   });
 

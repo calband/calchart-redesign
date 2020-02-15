@@ -4,7 +4,7 @@ import { GlobalStore } from '@/store';
 describe('tools/BaseTool', () => {
   let matrixTransformMock: jest.Mock;
   let createSVGPointMock: jest.Mock;
-  let getElementsByTagNameMock: jest.Mock;
+  let getElementsByClassNameMock: jest.Mock;
 
   beforeAll(() => {
     // Mock out inverse matrix calculations
@@ -15,12 +15,12 @@ describe('tools/BaseTool', () => {
     createSVGPointMock = jest.fn().mockReturnValue({
       matrixTransform: matrixTransformMock,
     });
-    getElementsByTagNameMock = jest.fn().mockReturnValue([{
+    getElementsByClassNameMock = jest.fn().mockReturnValue([{
       createSVGPoint: createSVGPointMock,
     }]);
-    Object.defineProperty(document, 'getElementsByTagName', {
+    Object.defineProperty(document, 'getElementsByClassName', {
       configurable: true,
-      value: getElementsByTagNameMock,
+      value: getElementsByClassNameMock,
     });
 
     GlobalStore.state.invertedCTMMatrix = new Object() as DOMMatrix;
@@ -32,7 +32,7 @@ describe('tools/BaseTool', () => {
       { clientX: 0, clientY: 0 }
     ));
 
-    expect(getElementsByTagNameMock).toHaveBeenCalled();
+    expect(getElementsByClassNameMock).toHaveBeenCalled();
     expect(createSVGPointMock).toHaveBeenCalled();
     expect(matrixTransformMock).toHaveBeenCalled();
     expect(matrixTransformMock)
@@ -43,16 +43,13 @@ describe('tools/BaseTool', () => {
   });
 
   describe('roundCoordinateToGrid', () => {
-    it('0.5 goes to 0', () => {
-      expect(BaseTool.roundCoordinateToGrid(0.5)).toBe(0);
-    });
-
-    it('1.1 rounds to 2', () => {
-      expect(BaseTool.roundCoordinateToGrid(1.1)).toBe(2);
-    });
-
-    it('3.0 rounds to 4', () => {
-      expect(BaseTool.roundCoordinateToGrid(3.0)).toBe(4);
+    it.each([
+      [0.5, 0],
+      [1.1, 2],
+      [3.0, 4],
+      [-1.5, -2],
+    ])('%f rounds to %i', (input, output) => {
+      expect(BaseTool.roundCoordinateToGrid(input)).toBe(output);
     });
   });
 });
