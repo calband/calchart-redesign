@@ -90,3 +90,9 @@ vue upgrade
 npm outdated # Lists available package versions
 npm update # Updates packages within the specified range in package.json
 ```
+
+To update a package at a specified version:
+
+```
+npm install package@version
+```
