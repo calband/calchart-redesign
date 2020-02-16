@@ -91,6 +91,9 @@ import Vue from 'vue';
 import FileModal from './FileModal.vue';
 import LoadModal from './LoadModal.vue';
 
+/**
+ * Contains menus and options that control the application's state
+ */
 export default Vue.extend({
   name: 'MenuTop',
   components: {

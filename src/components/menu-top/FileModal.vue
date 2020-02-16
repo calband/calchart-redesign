@@ -61,6 +61,9 @@
 <script lang="ts">
 import Vue from 'vue';
 
+/**
+ * Show and modify values in the current Show model
+ */
 export default Vue.extend({
   name: 'FileModal',
   computed: {

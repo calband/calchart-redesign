@@ -1,7 +1,12 @@
 <template>
   <div class="grapher">
-    <svg class="grapher-svg">
-      <g>
+    <svg
+      class="grapher--svg"
+      data-test="grapher--svg"
+      @click.prevent="onClick"
+      @mousemove="onMousemove"
+    >
+      <g class="grapher--wrapper">
         <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
         <rect
           class="grapher--field-rect"
@@ -68,8 +73,8 @@
           <!-- Bottom of the yard line numbers is approximately 11 steps from
               the sideline -->
           <text
-            v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
-            :key="index + '-yardNum'"
+            v-for="numberAndOffsetX in yardLineNumberAndOffsetX"
+            :key="`${numberAndOffsetX[1]}-yardNum`"
             :x="numberAndOffsetX[1]"
             :y="fieldHeight - 11"
             data-test="grapher--yard-number"
@@ -77,8 +82,8 @@
             {{ numberAndOffsetX[0] }}
           </text>
           <text
-            v-for="(numberAndOffsetX, index) in yardLineNumberAndOffsetX"
-            :key="index + '-yardNumRotated'"
+            v-for="numberAndOffsetX in yardLineNumberAndOffsetX"
+            :key="`${numberAndOffsetX[1]}-yardNumRotated`"
             :x="numberAndOffsetX[1]"
             :y="11"
             :transform="'rotate(180 ' + numberAndOffsetX[1] + ' 11)'"
@@ -86,6 +91,28 @@
           >
             {{ numberAndOffsetX[0] }}
           </text>
+        </g>
+        <g class="grapher--dots-container">
+          <circle
+            v-for="dot in stuntSheetDots"
+            :key="`${dot.x}-${dot.y}-dot`"
+            class="grapher--dot"
+            :cx="dot.x"
+            :cy="dot.y"
+            r="0.7"
+            data-test="grapher--dot"
+          />
+        </g>
+        <g class="grapher--tool-dots-container">
+          <circle
+            v-for="dot in grapherToolDots"
+            :key="`${dot.x}-${dot.y}-tool-dot`"
+            class="grapher--dot grapher--tool-dot"
+            :cx="dot.x"
+            :cy="dot.y"
+            r="0.7"
+            data-test="grapher--tool-dot"
+          />
         </g>
       </g>
     </svg>
@@ -95,7 +122,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import svgPanZoom from 'svg-pan-zoom';
+import BaseTool from '@/tools/BaseTool';
+import StuntSheetDot from '@/models/StuntSheetDot';
+import StuntSheet from '@/models/StuntSheet';
 
+/**
+ * Renders the field, the dots of the current stunt sheet, and pending dots
+ * generated from the tool in use
+ */
 export default Vue.extend({
   name: 'Grapher',
   computed: {
@@ -183,12 +217,41 @@ export default Vue.extend({
       }
       return retVal;
     },
+    stuntSheetDots(): StuntSheetDot[] {
+      const currentSS: StuntSheet = this.$store.getters.getSelectedStuntSheet;
+      return currentSS.stuntSheetDots;
+    },
+    grapherToolDots(): StuntSheetDot[] {
+      return this.$store.state.grapherToolDots;
+    },
   },
-  mounted: () => {
-    svgPanZoom('.grapher-svg', {
+  mounted() {
+    const svgPanZoomInstance = svgPanZoom('.grapher--svg', {
+      viewportSelector: '.grapher--wrapper',
+      panEnabled: true,
+      zoomEnabled: true,
       controlIconsEnabled: true,
       dblClickZoomEnabled: false,
     });
+    this.$store.commit('setGrapherSvgPanZoom', svgPanZoomInstance);
+
+    window.addEventListener('resize', this.onResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
+  },
+  methods: {
+    onResize(): void {
+      this.$store.state.grapherSvgPanZoom.resize();
+    },
+    onClick(event: MouseEvent): void {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      toolSelected.onClick(event);
+    },
+    onMousemove(event: MouseEvent): void {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      toolSelected.onMousemove(event);
+    },
   },
 });
 </script>
@@ -200,7 +263,7 @@ export default Vue.extend({
   position: relative;
 }
 
-.grapher-svg {
+.grapher--svg {
   width: 100%;
   height: 100%;
   // See PR#9
@@ -228,6 +291,12 @@ export default Vue.extend({
   fill: $white;
   font-size: 4px;
   text-anchor: middle;
+}
+
+.grapher--dot {
+  &.grapher--tool-dot {
+    opacity: 0.5;
+  }
 }
 
 </style>

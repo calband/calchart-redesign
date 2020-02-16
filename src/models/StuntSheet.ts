@@ -40,4 +40,12 @@ export default class StuntSheet extends Serializable<StuntSheet> {
     }
     this.fromJson(json);
   }
+
+  addDot(dot: StuntSheetDot): void {
+    this.stuntSheetDots.push(dot);
+  }
+
+  removeDot(index: number): void {
+    this.stuntSheetDots.splice(index, 1);
+  }
 }

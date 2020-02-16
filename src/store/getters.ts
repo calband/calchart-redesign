@@ -1,14 +1,22 @@
 import { CalChartState } from '.';
+import StuntSheet from '@/models/StuntSheet';
+import { GetterTree } from 'vuex';
 
-export default {
+const getters: GetterTree<CalChartState, CalChartState> = {
   // Show
-  getShowTitle: (state: CalChartState): string => state.show.title,
+  getShowTitle: (state): string => state.show.title,
 
   // Show -> Field
-  getFrontHashOffsetY: (state: CalChartState): number =>
+  getFrontHashOffsetY: (state): number =>
     state.show.field.frontHashOffsetY,
-  getBackHashOffsetY: (state: CalChartState): number =>
+  getBackHashOffsetY: (state): number =>
     state.show.field.backHashOffsetY,
-  getMiddleOfField: (state: CalChartState): number =>
+  getMiddleOfField: (state): number =>
     state.show.field.middleOfField,
+
+  // Show -> StuntSheet
+  getSelectedStuntSheet: (state): StuntSheet =>
+    state.show.stuntSheets[state.selectedSS],
 };
+
+export default getters;
