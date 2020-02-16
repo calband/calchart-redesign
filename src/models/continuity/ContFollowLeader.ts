@@ -13,11 +13,11 @@ export default class ContFollowLeader extends Serializable<ContFollowLeader>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.FOLLOW_LEADER;
 
-  duration: number = 8;
+  duration = 8;
 
   leaderPath: FlowBeat[] = [];
 
-  humanReadableText: string = '';
+  humanReadableText = '';
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
@@ -36,7 +36,7 @@ export default class ContFollowLeader extends Serializable<ContFollowLeader>
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
+    endDot?: StuntSheetDot,
   ): void {
     // TODO: Implement
   }

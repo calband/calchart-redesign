@@ -106,7 +106,7 @@ describe('models/continuity/ContInPlace', () => {
           direction: DIRECTIONS.E,
           marchType: MARCH_TYPES.HS,
         }]);
-      }
+      },
     );
 
     it('if duration is 2 adds two FlowBeats', () => {

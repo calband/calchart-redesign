@@ -51,14 +51,14 @@ describe('tools/ToolSingleDot', () => {
 
       tool.onMousemove(new MouseEvent(
         'mousemove',
-        { clientX: 0, clientY: 2 }
+        { clientX: 0, clientY: 2 },
       ));
 
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
       expect(GlobalStore.commit).toHaveBeenCalledWith(
         'setGrapherToolDots',
-        expect.anything()
+        expect.anything(),
       );
       const grapherToolDots: StuntSheetDot[]
         = (GlobalStore.commit as jest.Mock).mock.calls[0][1];

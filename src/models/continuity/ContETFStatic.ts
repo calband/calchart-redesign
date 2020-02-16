@@ -19,13 +19,13 @@ export default class ContETFStatic extends Serializable<ContETFStatic>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.ETF_STATIC;
 
-  duration: number = 8;
+  duration = 8;
 
   marchingDirection: DIRECTIONS = DIRECTIONS.E;
 
   facingDirection: DIRECTIONS = DIRECTIONS.E;
 
-  humanReadableText: string = '';
+  humanReadableText = '';
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
@@ -47,7 +47,7 @@ export default class ContETFStatic extends Serializable<ContETFStatic>
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
+    endDot?: StuntSheetDot,
   ): void {
     // TODO: Implement
   }

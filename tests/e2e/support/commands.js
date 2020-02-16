@@ -65,7 +65,7 @@
  * Helper command for mouse events on the grapher
  */
 const grapherMouseCommand = (eventName, x, y) => {
-  return cy.get('.grapher--wrapper')
+  return cy.get('[data-test="grapher--wrapper"]')
     .then((wrapper) => {
       const matrix = wrapper.get(0).getCTM();
 

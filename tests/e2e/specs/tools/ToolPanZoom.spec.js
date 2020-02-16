@@ -10,6 +10,7 @@ describe('tools/ToolPanZoom', () => {
       .then((field) => {
         const oldWidth = field.get(0).getBoundingClientRect().width;
 
+        // eslint-disable-next-line cypress/require-data-selectors
         cy.get('#svg-pan-zoom-zoom-in')
           .click()
           .click();

@@ -116,7 +116,7 @@ import { readInt32,
 import { ParseCalChart } from './ParseCalChart';
 
 export class ParseCalChart34 implements ParseCalChart {
-  private numberDots: number = 0;
+  private numberDots = 0;
 
   ParseShow(inputBuffer: ArrayBuffer): Show {
     // we know the header for a CalChart3.5 show is 8 bytes.  Remove it.
@@ -207,7 +207,7 @@ export class ParseCalChart34 implements ParseCalChart {
       const pointSize = block.getUint8(offset);
       dots.push(this.ParsePoint(new DataView(
         block.buffer,
-        block.byteOffset + offset + 1, pointSize
+        block.byteOffset + offset + 1, pointSize,
       )));
       offset += pointSize + 1;
     }

@@ -18,11 +18,11 @@ export default class ContStepTwo extends Serializable<ContStepTwo>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.STEP_TWO;
 
-  duration: number = 8;
+  duration = 8;
 
   continuities: BaseCont[] = [];
 
-  humanReadableText: string = '';
+  humanReadableText = '';
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
@@ -41,7 +41,7 @@ export default class ContStepTwo extends Serializable<ContStepTwo>
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
+    endDot?: StuntSheetDot,
   ): void {
     // TODO: Implement
   }

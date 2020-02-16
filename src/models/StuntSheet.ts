@@ -17,13 +17,13 @@ import { loadContinuity } from './continuity/load-continuity';
  *                            next StuntSheet
  */
 export default class StuntSheet extends Serializable<StuntSheet> {
-  title: string = '';
+  title = '';
 
   stuntSheetDots: StuntSheetDot[] = [];
 
   dotTypes: BaseCont[][] = [[new ContInPlace()]];
 
-  beats: number = 16;
+  beats = 16;
 
   constructor(json: Partial<StuntSheet> = {}) {
     super();

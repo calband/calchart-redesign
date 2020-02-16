@@ -6,7 +6,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cypress/included:3.8.1 # Update based on Cypress version
+      - image: cypress/included:3.8.3 # Update based on Cypress version
     working_directory: ~/project
     steps:
       - checkout

@@ -31,9 +31,9 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.ETF_DYNAMIC;
 
-  duration: number = 0;
+  duration = 0;
 
-  humanReadableText: string = '';
+  humanReadableText = '';
 
   eightToFiveType: ETF_DYNAMIC_TYPES = ETF_DYNAMIC_TYPES.EWNS;
 
@@ -68,7 +68,7 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
+    endDot?: StuntSheetDot,
   ): void {
     if (endDot === undefined) return;
 
@@ -99,7 +99,7 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
           startY,
           diagOffsetX,
           diagOffsetY,
-          this.marchType
+          this.marchType,
         );
         [startX, startY] = offsetX > 0
           ? nsHelper(flow, startX, startY, offsetX, this.marchType)
@@ -114,7 +114,7 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
           startY,
           diagOffsetX,
           diagOffsetY,
-          this.marchType
+          this.marchType,
         );
       }
 
@@ -124,13 +124,13 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
         startX,
         startY,
         offsetY,
-        this.marchType
+        this.marchType,
       );
       [startX, startY] = nsHelper(
         flow,
         startX,
         startY,
-        offsetX, this.marchType
+        offsetX, this.marchType,
       );
     } else if (this.eightToFiveType === ETF_DYNAMIC_TYPES.NSEW) {
       [startX, startY] = nsHelper(
@@ -138,14 +138,14 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
         startX,
         startY,
         offsetX,
-        this.marchType
+        this.marchType,
       );
       [startX, startY] = ewHelper(
         flow,
         startX,
         startY,
         offsetY,
-        this.marchType
+        this.marchType,
       );
     }
   }

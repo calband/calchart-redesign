@@ -72,3 +72,21 @@ npm run lint
 [Vue CLI docs](https://cli.vuejs.org/core-plugins/eslint.html#injected-commands)
 
 Integrate ESLint with your text editor! See [this](https://eslint.vuejs.org/user-guide/#editor-integrations).
+
+## Update dependencies
+
+To update the dependencies in `package.json` and `package-lock.json`, first try updating the Vue CLI plugins, then any other package.
+
+### Update Vue CLI Plugins
+
+```
+npm install -g @vue/cli # Install globally if not already
+vue upgrade
+```
+
+### Identify and update other packages
+
+```
+npm outdated # Lists available package versions
+npm update # Updates packages within the specified range in package.json
+```

@@ -22,7 +22,7 @@ const METADATA_VERSION = 1;
 export default class Show extends Serializable<Show> {
   metadataVersion: number = METADATA_VERSION;
 
-  title: string = 'Example Show';
+  title = 'Example Show';
 
   dotLabels: string[] = [];
 
@@ -39,7 +39,7 @@ export default class Show extends Serializable<Show> {
       showJson.stuntSheets.forEach((
         stuntSheet: StuntSheet,
         index: number,
-        array: StuntSheet[]
+        array: StuntSheet[],
       ): void => {
         array[index] = new StuntSheet(stuntSheet);
       });

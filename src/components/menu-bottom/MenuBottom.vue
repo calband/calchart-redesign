@@ -59,7 +59,7 @@ export default Vue.extend({
     temporaryTool: null, // Used to hold last tool when ctrl/meta is held
   }),
   watch: {
-    toolSelectedIndex(newIndex: number, oldIndex: number) {
+    toolSelectedIndex(newIndex: number, oldIndex: number): void {
       /**
        * Calculate inverted CTM matrix that is used to convert ClientX/Y to
        * X/Y of the SVG

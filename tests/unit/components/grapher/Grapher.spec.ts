@@ -195,7 +195,7 @@ describe('components/grapher/Grapher.vue', () => {
   describe('stuntSheetDots', () => {
     const generateShowWithDots = (
       numDots: number,
-      numToolDots: number
+      numToolDots: number,
     ): void => {
       const stuntSheetDots = [];
       for (let i = 0; i < numDots; i++) {
