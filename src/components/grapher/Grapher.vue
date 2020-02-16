@@ -218,8 +218,7 @@ export default Vue.extend({
       return retVal;
     },
     stuntSheetDots(): StuntSheetDot[] {
-      const currentSS: StuntSheet
-        = this.$store.getters.getSelectedStuntSheet;
+      const currentSS: StuntSheet = this.$store.getters.getSelectedStuntSheet;
       return currentSS.stuntSheetDots;
     },
     grapherToolDots(): StuntSheetDot[] {

@@ -77,7 +77,7 @@ export default Vue.extend({
       const grapherSvgPanZoom: SvgPanZoom.Instance | undefined
         = this.$store.state.grapherSvgPanZoom;
       if (grapherSvgPanZoom === undefined) {
-        return;
+        throw 'There is no grapher pan zoom instance';
       }
 
       if (newIndex === 0 && oldIndex !== 0) {
