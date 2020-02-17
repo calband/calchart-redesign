@@ -14,6 +14,16 @@ const mutations: MutationTree<CalChartState> = {
   setShowTitle(state, title: string): void {
     state.show.title = title;
   },
+  addStuntSheet(state, stuntSheet: StuntSheet): void {
+    state.show.stuntSheets.push(stuntSheet);
+    state.selectedSS = state.show.stuntSheets.length - 1;
+    state.beat = 1;
+  },
+  deleteStuntSheet(state): void {
+    state.show.stuntSheets.splice(state.selectedSS, 1);
+    state.selectedSS = Math.max(0, state.selectedSS - 1);
+    state.beat = 1;
+  },
 
   // Show -> Field
   setFrontHashOffsetY(state, offsetY: number): void {
@@ -40,6 +50,54 @@ const mutations: MutationTree<CalChartState> = {
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.addDot(dot);
+  },
+  setStuntSheetTitle(state, title: string): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.title = title;
+  },
+  setStuntSheetBeats(state, beats: number): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.beats = beats;
+  },
+
+  // Show controls
+  setSelectedSS(state, selectedSS: number): void {
+    state.selectedSS = selectedSS;
+  },
+  setBeat(state, beat: number): void {
+    state.beat = beat;
+  },
+  incrementBeat(state): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS: StuntSheet = getSelectedStuntSheet(state);
+    if (state.beat < currentSS.beats) {
+      state.beat += 1;
+    } else if (state.selectedSS + 1 < state.show.stuntSheets.length) {
+      // Go to next stuntsheet's first beat
+      state.selectedSS += 1;
+      state.beat = 1;
+    }
+  },
+  decrementBeat(state): void {
+    if (state.beat > 1) {
+      state.beat -= 1;
+    } else if (state.selectedSS > 0) {
+      // Go to previous stuntsheet's last beat
+      state.selectedSS -= 1;
+      const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+        state: CalChartState
+      ) => StuntSheet;
+      const currentSS: StuntSheet = getSelectedStuntSheet(state);
+      state.beat = currentSS.beats;
+    }
   },
 
   // View Settings

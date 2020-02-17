@@ -1,14 +1,10 @@
 <template>
   <div id="app" data-test="app">
     <MenuTop />
-    <div class="columns is-gapless app--bottom">
-      <MenuLeft />
-      <div class="column app--middle-col">
-        <Grapher />
-        <MenuBottom />
-      </div>
-      <MenuRight />
-    </div>
+    <MenuLeft />
+    <Grapher />
+    <MenuBottom />
+    <MenuRight />
   </div>
 </template>
 
@@ -51,17 +47,12 @@ body,
 
 #app {
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.app--bottom {
-  flex: 1 1;
-}
-
-.app--middle-col {
-  flex: 1 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 200px auto 200px;
+  grid-template-rows: $navbar-height auto 36px; // See Bulma for navbar-height
+  grid-template-areas:
+    "menu-top menu-top menu-top"
+    "menu-left grapher menu-right"
+    "menu-left menu-bottom menu-right";
 }
 </style>

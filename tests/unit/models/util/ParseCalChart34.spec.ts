@@ -22,10 +22,10 @@ describe("models/util/ParseCalChart34", () => {
       expect(show.stuntSheets[1].beats).toBe(4);
       expect(show.stuntSheets[0].stuntSheetDots.length).toBe(1);
       expect(show.stuntSheets[1].stuntSheetDots.length).toBe(1);
-      expect(show.stuntSheets[0].stuntSheetDots[0].x).toBe(0);
+      expect(show.stuntSheets[0].stuntSheetDots[0].x).toBe(16);
       expect(show.stuntSheets[0].stuntSheetDots[0].y).toBe(0);
-      expect(show.stuntSheets[1].stuntSheetDots[0].x).toBe(8);
-      expect(show.stuntSheets[1].stuntSheetDots[0].y).toBe(8);
+      expect(show.stuntSheets[1].stuntSheetDots[0].x).toBe(20);
+      expect(show.stuntSheets[1].stuntSheetDots[0].y).toBe(4);
     });
   });
 });
