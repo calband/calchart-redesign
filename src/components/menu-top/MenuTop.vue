@@ -141,6 +141,6 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .menu-top {
-  flex: 0 0;
+  grid-area: menu-top;
 }
 </style>

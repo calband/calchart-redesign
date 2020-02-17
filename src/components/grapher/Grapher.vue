@@ -261,7 +261,7 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .grapher {
-  flex: 1 1;
+  grid-area: grapher;
   background: $stone-pine;
   position: relative;
 }

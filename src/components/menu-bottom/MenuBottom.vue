@@ -145,5 +145,7 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-
+.menu-bottom {
+  grid-area: menu-bottom;
+}
 </style>

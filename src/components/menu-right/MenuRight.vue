@@ -1,5 +1,5 @@
 <template>
-  <div class="column is-narrow menu-right">
+  <div class="menu-right">
     <h3>Menu right</h3>
   </div>
 </template>
@@ -14,6 +14,6 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .menu-right {
-  width: 250px;
+  grid-area: menu-right;
 }
 </style>
