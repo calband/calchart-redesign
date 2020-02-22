@@ -1,4 +1,5 @@
-# Calchart
+# Calchart 
+[![calband](https://circleci.com/gh/calband/calchart-redesign.svg?style=shield)](https://circleci.com/gh/calband/calchart-redesign)
 
 Calchart 4.0 for the web!
 
