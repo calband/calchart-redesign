@@ -21,6 +21,13 @@
           <hr class="navbar-divider">
 
           <b-navbar-item
+            data-test="menu-top--save-show"
+            @click="saveFile()"
+          >
+            Save Show
+          </b-navbar-item>
+
+          <b-navbar-item
             data-test="menu-top--load-show"
             @click="loadModalActive = true"
           >
@@ -103,6 +110,7 @@ export default Vue.extend({
   data: () => ({
     fileModalActive: false,
     loadModalActive: false,
+    saveModalActive: false,
   }),
   computed: {
     showTitle(): string {
@@ -134,6 +142,28 @@ export default Vue.extend({
       set(enabled: boolean): void {
         this.$store.commit('setYardlineNumbers', enabled);
       },
+    },
+  },
+  methods: {
+    saveFile(): void {
+      const filename = this.$store.getters.getShowTitle + '.shw';
+      const jsonData = JSON.stringify(this.$store.getters.getShow);
+      const blob = new Blob([jsonData], { type: 'text/plain;charset=utf-8;' });
+      if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, filename);
+      } else {
+        const link = document.createElement('a');
+        if (link.download !== undefined) { // feature detection
+          // Browsers that support HTML5 download attribute
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', filename);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
     },
   },
 });
