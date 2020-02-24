@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
-    "buefy": "^0.8.12",
+    "buefy": "^0.8.11",
     "core-js": "^3.6.4",
     "svg-pan-zoom": "^3.6.1",
     "vue": "^2.6.11",
