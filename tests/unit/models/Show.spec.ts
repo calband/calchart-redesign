@@ -45,17 +45,17 @@ describe('models/Show', () => {
       expect(mockAddToFlow).toHaveBeenCalledWith(
         [],
         show.stuntSheets[0].stuntSheetDots[0],
-        undefined
+        undefined,
       );
       expect(mockAddToFlow).toHaveBeenCalledWith(
         [],
         show.stuntSheets[0].stuntSheetDots[1],
-        undefined
+        undefined,
       );
       expect(mockAddToFlow).toHaveBeenCalledWith(
         [],
         show.stuntSheets[0].stuntSheetDots[2],
-        undefined
+        undefined,
       );
     });
 
@@ -67,17 +67,17 @@ describe('models/Show', () => {
       expect(mockAddToFlow).toHaveBeenCalledWith(
         [],
         show.stuntSheets[0].stuntSheetDots[0],
-        undefined
+        undefined,
       );
       expect(mockAddToFlow).toHaveBeenCalledWith(
         [],
         show.stuntSheets[0].stuntSheetDots[1],
-        undefined
+        undefined,
       );
       expect(mockAddToFlow).toHaveBeenCalledWith(
         [],
         show.stuntSheets[0].stuntSheetDots[2],
-        undefined
+        undefined,
       );
     });
   });

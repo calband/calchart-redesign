@@ -14,11 +14,11 @@ export default class ContGateTurn extends Serializable<ContGateTurn>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.GATE_TURN;
 
-  duration: number = 8;
+  duration = 8;
 
   centerPoints: [number, number][] = [];
 
-  humanReadableText: string = '';
+  humanReadableText = '';
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
@@ -37,7 +37,7 @@ export default class ContGateTurn extends Serializable<ContGateTurn>
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
+    endDot?: StuntSheetDot,
   ): void {
     // TODO: Implement
   }

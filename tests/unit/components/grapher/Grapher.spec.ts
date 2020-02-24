@@ -93,26 +93,35 @@ describe('components/grapher/Grapher.vue', () => {
         .toBeFalsy();
     });
 
-    it('does not render four step grid if fourStepGrid is false', () => {
+    it('does not render four step grid if fourStepGrid is false', async () => {
       store.commit('setFourStepGrid', false);
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
         .toBeFalsy();
       expect(wrapper.contains('[data-test="grapher--grid-horizontal"]'))
         .toBeFalsy();
     });
 
-    it('replaces yardlines with gridlines if yardlines is false', () => {
+    it('replaces yardlines with gridlines if yardlines is false', async () => {
       store.commit('setYardlines', false);
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
+
       store.commit('setFourStepGrid', true);
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
         .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
         .toHaveLength(7);
     });
 
-    it('does not render yardline numbers if yardlineNumbers is false', () => {
+    it('if yardlineNumbers is false, do not render', async () => {
       store.commit('setYardlineNumbers', false);
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="grapher--yard-number"]'))
         .toBeFalsy();
     });
@@ -168,23 +177,32 @@ describe('components/grapher/Grapher.vue', () => {
         .toHaveLength(18);
     });
 
-    it('does not render four step grid if fourStepGrid is false', () => {
+    it('does not render four step grid if fourStepGrid is false', async () => {
       store.commit('setFourStepGrid', false);
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
         .toBeFalsy();
       expect(wrapper.contains('[data-test="grapher--grid-horizontal"]'))
         .toBeFalsy();
     });
 
-    it('does not render yardlines if yardlines is false', () => {
+    it('does not render yardlines if yardlines is false', async () => {
       store.commit('setYardlines', false);
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
     });
 
-    it('replaces yardlines with gridlines if yardlines is false', () => {
+    it('replaces yardlines with gridlines if yardlines is false', async () => {
       store.commit('setYardlines', false);
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
+
       store.commit('setFourStepGrid', true);
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
         .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
@@ -195,7 +213,7 @@ describe('components/grapher/Grapher.vue', () => {
   describe('stuntSheetDots', () => {
     const generateShowWithDots = (
       numDots: number,
-      numToolDots: number
+      numToolDots: number,
     ): void => {
       const stuntSheetDots = [];
       for (let i = 0; i < numDots; i++) {

@@ -26,6 +26,7 @@ describe('tools/ToolSingleDot', () => {
     cy.get('[data-test="menu-bottom-tool--pan-zoom')
       .click();
 
+    // eslint-disable-next-line cypress/require-data-selectors
     cy.get('#svg-pan-zoom-zoom-out')
       .click()
       .click();

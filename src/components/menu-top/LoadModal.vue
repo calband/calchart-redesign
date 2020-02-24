@@ -87,14 +87,14 @@ export default Vue.extend({
     },
   },
   methods: {
-    loadShow: function() {
+    loadShow(): void {
       if (this.file === null) {
         return;
       }
       this.showPreview = null;
       this.parseError = '';
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onload = (): void => {
         if (reader.result && reader.result instanceof ArrayBuffer) {
           try {
             this.showPreview = loadShowFromBuffer(reader.result);
@@ -107,7 +107,7 @@ export default Vue.extend({
       };
       reader.readAsArrayBuffer(this.file);
     },
-    setShow: function() {
+    setShow(): void {
       if (!this.showPreview) {
         return;
       }

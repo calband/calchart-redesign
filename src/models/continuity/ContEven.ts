@@ -15,11 +15,11 @@ export default class ContEven extends Serializable<ContEven>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.EVEN;
 
-  duration: number = 8;
+  duration = 8;
 
   marchType: MARCH_TYPES = MARCH_TYPES.MINI_MILITARY;
 
-  humanReadableText: string = '';
+  humanReadableText = '';
 
   constructor(json: Partial<ContEven> = {}) {
     super();
@@ -36,7 +36,7 @@ export default class ContEven extends Serializable<ContEven>
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
+    endDot?: StuntSheetDot,
   ): void {
     // TODO: Implement
   }

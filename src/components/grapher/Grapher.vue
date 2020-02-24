@@ -6,7 +6,10 @@
       @click.prevent="onClick"
       @mousemove="onMousemove"
     >
-      <g class="grapher--wrapper">
+      <g
+        class="grapher--wrapper"
+        data-test="grapher--wrapper"
+      >
         <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
         <rect
           class="grapher--field-rect"

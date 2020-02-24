@@ -29,7 +29,7 @@ describe('tools/BaseTool', () => {
   it('convertClientCoordinates calls the correct functions', () => {
     const [x, y] = BaseTool.convertClientCoordinates(new MouseEvent(
       'click',
-      { clientX: 0, clientY: 0 }
+      { clientX: 0, clientY: 0 },
     ));
 
     expect(getElementsByClassNameMock).toHaveBeenCalled();

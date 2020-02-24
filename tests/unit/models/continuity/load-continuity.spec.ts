@@ -18,7 +18,7 @@ describe('models/util/load-continuity', () => {
       marchType: MARCH_TYPES.HS,
       humanReadableText: '',
       getHumanReadableText: () => '',
-      addToFlow: () => {},
+      addToFlow: () => null,
     };
   };
 

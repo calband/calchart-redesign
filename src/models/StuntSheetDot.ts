@@ -13,13 +13,13 @@ import Serializable from './util/Serializable';
  *                           recalculated again
  */
 export default class StuntSheetDot extends Serializable<StuntSheetDot> {
-  x: number = 0;
+  x = 0;
 
-  y: number = 0;
+  y = 0;
 
   dotLabelIndex: number | null = null;
 
-  dotTypeIndex: number = 0;
+  dotTypeIndex = 0;
 
   cachedFlow: FlowBeat[] | null = null;
 

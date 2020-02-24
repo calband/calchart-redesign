@@ -3,14 +3,14 @@ export function readFourCharCode(buffer: DataView, offset: number): string {
     buffer.getUint8(offset + 0),
     buffer.getUint8(offset + 1),
     buffer.getUint8(offset + 2),
-    buffer.getUint8(offset + 3)
+    buffer.getUint8(offset + 3),
   );
 }
 
 export function readTwoCharCode(buffer: DataView, offset: number): string {
   return String.fromCharCode(
     buffer.getUint8(offset + 0),
-    buffer.getUint8(offset + 1)
+    buffer.getUint8(offset + 1),
   );
 }
 
@@ -79,7 +79,7 @@ splitDataViewIntoChunks(buffer: DataView): [string, DataView][] {
     retVal.push([fourChar, new DataView(
       buffer.buffer,
       offset + buffer.byteOffset + 8,
-      size
+      size,
     )]);
     offset += 16 + size;
   }

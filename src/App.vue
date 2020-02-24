@@ -1,5 +1,8 @@
 <template>
-  <div id="app">
+  <div
+    id="app"
+    data-test="app"
+  >
     <MenuTop />
     <div class="columns is-gapless app--bottom">
       <MenuLeft />

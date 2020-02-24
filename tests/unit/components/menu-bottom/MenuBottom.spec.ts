@@ -107,7 +107,7 @@ describe('components/menu-bottom/MenuBottom', () => {
     });
 
     it('clicking add/remove single dot disables panning/zooming and '
-    + 'calculates inverse matrix', () => {
+    + 'calculates inverse matrix', async () => {
       expect(ToolSingleDot).not.toHaveBeenCalled();
       expect(grapherSvgPanZoom.disablePan).not.toHaveBeenCalled();
       expect(grapherSvgPanZoom.disableZoom).not.toHaveBeenCalled();
@@ -118,6 +118,7 @@ describe('components/menu-bottom/MenuBottom', () => {
 
       const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
       addRmBtn.trigger('click');
+      await menu.vm.$nextTick();
 
       expect(ToolSingleDot).toHaveBeenCalled();
       const toolSelected = store.state.toolSelected as BaseTool;
@@ -138,7 +139,7 @@ describe('components/menu-bottom/MenuBottom', () => {
       expect(panZoomBtn.props('type')).toBe('is-light');
     });
 
-    it('clicking pan and zoom enables panning/zooming', () => {
+    it('clicking pan and zoom enables panning/zooming', async () => {
       expect(grapherSvgPanZoom.enablePan).not.toHaveBeenCalled();
       expect(grapherSvgPanZoom.enableZoom).not.toHaveBeenCalled();
       expect(grapherSvgPanZoom.enableControlIcons).not.toHaveBeenCalled();
@@ -146,6 +147,7 @@ describe('components/menu-bottom/MenuBottom', () => {
       const panZoomBtn = menu
         .find('[data-test="menu-bottom-tool--pan-zoom"]');
       panZoomBtn.trigger('click');
+      await menu.vm.$nextTick();
 
       const toolSelected = store.state.toolSelected as BaseTool;
       expect(toolSelected).not.toBeUndefined();

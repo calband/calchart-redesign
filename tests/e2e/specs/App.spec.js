@@ -1,15 +1,20 @@
 describe('App.vue', () => {
   it('Menus and grapher exists', () => {
-    cy.visit('/')
-      .get('#app')
+    cy.visit('/');
+
+    cy.get('[data-test="app"]')
       .find('.grapher');
-    cy.get('#app')
+
+    cy.get('[data-test="app"]')
       .find('.menu-top');
-    cy.get('#app')
+
+    cy.get('[data-test="app"]')
       .find('.menu-left');
-    cy.get('#app')
+
+    cy.get('[data-test="app"]')
       .find('.menu-right');
-    cy.get('#app')
+      
+    cy.get('[data-test="app"]')
       .find('.menu-bottom');
   });
 });

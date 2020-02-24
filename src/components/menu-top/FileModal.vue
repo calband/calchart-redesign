@@ -71,7 +71,7 @@ export default Vue.extend({
       get(): string {
         return this.$store.getters.getShowTitle;
       },
-      set(title: string) {
+      set(title: string): void {
         this.$store.commit('setShowTitle', title);
       },
     },
@@ -80,7 +80,7 @@ export default Vue.extend({
       get(): number {
         return this.$store.getters.getFrontHashOffsetY;
       },
-      set(offsetY: number) {
+      set(offsetY: number): void {
         this.$store.commit('setFrontHashOffsetY', offsetY);
       },
     },
@@ -89,7 +89,7 @@ export default Vue.extend({
       get(): number {
         return this.$store.getters.getBackHashOffsetY;
       },
-      set(offsetY: number) {
+      set(offsetY: number): void {
         this.$store.commit('setBackHashOffsetY', offsetY);
       },
     },
@@ -98,7 +98,7 @@ export default Vue.extend({
       get(): number {
         return this.$store.getters.getMiddleOfField;
       },
-      set(middle: number) {
+      set(middle: number): void {
         this.$store.commit('setMiddleOfField', middle);
       },
     },

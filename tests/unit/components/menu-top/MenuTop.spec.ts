@@ -29,12 +29,15 @@ describe('components/menu-top/MenuTop', () => {
         .toBe('Selected: Example Show');
     });
 
-    it('sets fileModal to true upon clicking "Edit Show Details"', () => {
+    it('sets fileModal to true upon clicking "Edit Show Details"', async () => {
       expect(wrapper.contains('[data-test="menu-top--file-modal"]'))
         .toBeFalsy();
       expect(wrapper.contains('[data-test="menu-top--file-edit"]'))
         .toBeTruthy();
+
       wrapper.find('[data-test="menu-top--file-edit"]').trigger('click');
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.contains('[data-test="menu-top--file-modal"]'))
         .toBeTruthy();
     });

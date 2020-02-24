@@ -17,13 +17,13 @@ export default class ContInPlace extends Serializable<ContInPlace>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.IN_PLACE;
 
-  duration: number = 0;
+  duration = 0;
 
   direction: DIRECTIONS = DIRECTIONS.E;
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  humanReadableText: string = '';
+  humanReadableText = '';
 
   constructor(json: Partial<ContInPlace> = {}) {
     super();

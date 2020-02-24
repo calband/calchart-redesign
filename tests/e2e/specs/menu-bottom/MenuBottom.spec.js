@@ -23,6 +23,7 @@ describe('components/menu-bottom/MenuBottom', () => {
     cy.get('[data-test="menu-bottom--tooltip"] .is-light')
       .should('have.length', 1);
 
+    // eslint-disable-next-line cypress/require-data-selectors
     cy.get('#svg-pan-zoom-controls')
       .should('not.be.visible');
   });
@@ -36,6 +37,7 @@ describe('components/menu-bottom/MenuBottom', () => {
       .click()
       .should('have.class', 'is-primary');
 
+    // eslint-disable-next-line cypress/require-data-selectors
     cy.get('#svg-pan-zoom-controls')
       .should('be.visible');
   });
@@ -46,6 +48,7 @@ describe('components/menu-bottom/MenuBottom', () => {
       .click()
       .should('have.class', 'is-primary');
 
+    // eslint-disable-next-line cypress/require-data-selectors
     cy.get('#svg-pan-zoom-controls')
       .should('not.be.visible');
 
@@ -56,6 +59,7 @@ describe('components/menu-bottom/MenuBottom', () => {
     cy.get('[data-test="menu-bottom-tool--pan-zoom"]')
       .should('have.class', 'is-primary');
 
+    // eslint-disable-next-line cypress/require-data-selectors
     cy.get('#svg-pan-zoom-controls')
       .should('be.visible');
 
@@ -81,6 +85,7 @@ describe('components/menu-bottom/MenuBottom', () => {
     cy.get('[data-test="menu-bottom-tool--add-rm"]')
       .should('have.class', 'is-primary');
 
+    // eslint-disable-next-line cypress/require-data-selectors
     cy.get('#svg-pan-zoom-controls')
       .should('not.be.visible');
   });

@@ -42,11 +42,13 @@ export default abstract class BaseTool {
     ];
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  /* eslint-disable @typescript-eslint/no-unused-vars,
+    @typescript-eslint/no-empty-function */
   onClick(event: MouseEvent): void {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onMousemove(event: MouseEvent): void {}
+  /* eslint-enable @typescript-eslint/no-unused-vars,
+    @typescript-eslint/no-empty-function */
 }
 
 export interface ToolConstructor {

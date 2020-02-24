@@ -95,7 +95,7 @@ import { readInt32,
 import { ParseCalChart } from './ParseCalChart';
 
 export class ParseCalChart31 implements ParseCalChart {
-  private numberDots: number = 0;
+  private numberDots = 0;
 
   ParseShow(inputBuffer: ArrayBuffer): Show {
     // we know the header for a CalChart3.1 show is 8 bytes.  Remove it.
@@ -143,7 +143,7 @@ export class ParseCalChart31 implements ParseCalChart {
     const block = new DataView(
       buffer.buffer,
       buffer.byteOffset + offset,
-      size
+      size,
     );
     const labels = readArrayOfStringsTillEnd(block, 0);
     if (labels.length !== this.numberDots) {
@@ -162,7 +162,7 @@ export class ParseCalChart31 implements ParseCalChart {
     const block = new DataView(
       buffer.buffer,
       buffer.byteOffset + offset,
-      size
+      size,
     );
     show.title = readStringTillEnd(block, 0);
     return offset + size;
@@ -216,7 +216,7 @@ export class ParseCalChart31 implements ParseCalChart {
     const block = new DataView(
       buffer.buffer,
       buffer.byteOffset + offset,
-      size
+      size,
     );
     stuntSheet.title = readStringTillEnd(block, 0);
     return offset + size;

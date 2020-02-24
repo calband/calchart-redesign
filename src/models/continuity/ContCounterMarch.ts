@@ -11,9 +11,9 @@ export default class ContCounterMarch extends Serializable<ContCounterMarch>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.COUNTER_MARCH;
 
-  duration: number = 0;
+  duration = 0;
 
-  humanReadableText: string = '';
+  humanReadableText = '';
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
@@ -32,7 +32,7 @@ export default class ContCounterMarch extends Serializable<ContCounterMarch>
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
+    endDot?: StuntSheetDot,
   ): void {
     // TODO: Implement
   }

@@ -23,11 +23,11 @@ Vue.use(Vuex);
 export class CalChartState extends Serializable<CalChartState> {
   show: Show = new Show();
 
-  selectedSS: number = 0;
+  selectedSS = 0;
 
-  fourStepGrid: boolean = true;
-  yardlines: boolean = true;
-  yardlineNumbers: boolean = true;
+  fourStepGrid = true;
+  yardlines = true;
+  yardlineNumbers = true;
 
   grapherSvgPanZoom?: SvgPanZoom.Instance;
 
