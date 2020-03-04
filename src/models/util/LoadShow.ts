@@ -4,12 +4,11 @@ import { ParseCalChart } from './ParseCalChart';
 import { ParseCalChart31 } from './ParseCalChart31';
 import { ParseCalChart34 } from './ParseCalChart34';
 
-// Importing calchart4 is not yet supported
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// Importing calchart4
 function IsCalChart4(buffer: ArrayBuffer): ParseCalChart|null {
+  // 
   return null;
 }
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 function IsCalChart3(buffer: ArrayBuffer): ParseCalChart|null {
   const view = new DataView(buffer, 0, 8);
