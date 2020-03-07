@@ -64,6 +64,16 @@ module.exports = {
   },
   overrides: [
     {
+      // Disable typescript rules for js files. This was occuring in
+      // tests/e2e/plugins/index.js.
+      files: [
+        '**/*.js',
+      ],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': 'off',
+      },
+    },
+    {
       // Overrides for jest unit tests
       files: [
         '**/__tests__/*.{j,t}s?(x)',

@@ -15,4 +15,9 @@ describe('App.vue', () => {
     expect(app.contains(MenuRight)).toBeTruthy();
     expect(app.contains(MenuBottom)).toBeTruthy();
   });
+
+  it('window.app does not exist if not an e2e test', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((window as any).app).toBeUndefined();
+  });
 });

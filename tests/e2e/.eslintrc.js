@@ -1,7 +1,6 @@
 module.exports = {
-  root: true, // Do not use parent eslintrc
+  root: false, // Also use parent eslintrc
   extends: [
-    'eslint:recommended',
     'plugin:cypress/recommended',
   ],
   env: {
