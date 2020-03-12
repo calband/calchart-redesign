@@ -1,5 +1,4 @@
 module.exports = {
-  root: false, // Also use parent eslintrc
   extends: [
     'plugin:cypress/recommended',
   ],

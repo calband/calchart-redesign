@@ -31,10 +31,10 @@ describe('App.vue', () => {
         store.commit('setShow', mockShow);
       });
 
-    cy.getStore()
-      .its('state')
-      .its('show')
-      .its('title')
-      .should('equal', 'Frozen 2 Show');
+    cy.get('[data-test="menu-top--file"]')
+      .click();
+
+    cy.get('[data-test="menu-top--selected-show"]')
+      .contains('Frozen 2 Show');
   });
 });
