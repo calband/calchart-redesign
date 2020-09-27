@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: cypress/base:12
+    # container: cypress/base:12
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js
