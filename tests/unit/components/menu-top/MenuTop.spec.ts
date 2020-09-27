@@ -23,30 +23,30 @@ describe('components/menu-top/MenuTop', () => {
 
   describe('file dropdown', () => {
     it('shows the show title', () => {
-      expect(wrapper.contains('[data-test="menu-top--selected-show"]'))
-        .toBeTruthy();
-      expect(wrapper.find('[data-test="menu-top--selected-show"]').text())
-        .toBe('Selected: Example Show');
+      const selectedShow
+        = wrapper.find('[data-test="menu-top--selected-show"]');
+      expect(selectedShow.exists()).toBeTruthy();
+      expect(selectedShow.text()).toBe('Selected: Example Show');
     });
 
     it('sets fileModal to true upon clicking "Edit Show Details"', async () => {
-      expect(wrapper.contains('[data-test="menu-top--file-modal"]'))
-        .toBeFalsy();
-      expect(wrapper.contains('[data-test="menu-top--file-edit"]'))
+      expect(wrapper.find('[data-test="menu-top--file-modal"]').props('active'))
+        .toBe(false);
+      expect(wrapper.find('[data-test="menu-top--file-edit"]').exists())
         .toBeTruthy();
 
       wrapper.find('[data-test="menu-top--file-edit"]').trigger('click');
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="menu-top--file-modal"]'))
-        .toBeTruthy();
+      expect(wrapper.find('[data-test="menu-top--file-modal"]').props('active'))
+        .toBe(true);
     });
   });
 
   describe('view dropdown', () => {
     it('four step grid checkbox', () => {
       expect(store.state.fourStepGrid).toBeTruthy();
-      expect(wrapper.contains('[data-test="menu-top--view-grid"]'))
+      expect(wrapper.find('[data-test="menu-top--view-grid"]').exists())
         .toBeTruthy();
       wrapper.find('[data-test="menu-top--view-grid"]').trigger('click');
       expect(store.state.fourStepGrid).toBeFalsy();
@@ -54,7 +54,7 @@ describe('components/menu-top/MenuTop', () => {
 
     it('yardline checkbox', () => {
       expect(store.state.yardlines).toBeTruthy();
-      expect(wrapper.contains('[data-test="menu-top--view-yardlines"]'))
+      expect(wrapper.find('[data-test="menu-top--view-yardlines"]').exists())
         .toBeTruthy();
       wrapper.find('[data-test="menu-top--view-yardlines"]').trigger('click');
       expect(store.state.yardlines).toBeFalsy();
@@ -62,10 +62,10 @@ describe('components/menu-top/MenuTop', () => {
 
     it('yardline number checkbox', () => {
       expect(store.state.yardlineNumbers).toBeTruthy();
-      expect(wrapper.contains('[data-test="menu-top--view-yardline-numbers"]'))
-        .toBeTruthy();
-      wrapper.find('[data-test="menu-top--view-yardline-numbers"]')
-        .trigger('click');
+      const viewNumbers = wrapper
+        .find('[data-test="menu-top--view-yardline-numbers"]');
+      expect(viewNumbers.exists()).toBeTruthy();
+      viewNumbers.trigger('click');
       expect(store.state.yardlineNumbers).toBeFalsy();
     });
   });

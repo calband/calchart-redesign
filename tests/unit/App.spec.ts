@@ -9,10 +9,10 @@ import MenuBottom from '@/components/menu-bottom/MenuBottom.vue';
 describe('App.vue', () => {
   it('Renders the menus and grapher', () => {
     const app = shallowMount(App);
-    expect(app.contains(MenuTop)).toBeTruthy();
-    expect(app.contains(MenuLeft)).toBeTruthy();
-    expect(app.contains(Grapher)).toBeTruthy();
-    expect(app.contains(MenuRight)).toBeTruthy();
-    expect(app.contains(MenuBottom)).toBeTruthy();
+    expect(app.findComponent(MenuTop).exists()).toBeTruthy();
+    expect(app.findComponent(MenuLeft).exists()).toBeTruthy();
+    expect(app.findComponent(Grapher).exists()).toBeTruthy();
+    expect(app.findComponent(MenuRight).exists()).toBeTruthy();
+    expect(app.findComponent(MenuBottom).exists()).toBeTruthy();
   });
 });

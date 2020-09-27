@@ -84,8 +84,6 @@ describe('components/menu-bottom/MenuBottom', () => {
     });
 
     it('renders the correct amount of tools', () => {
-      expect(menu.contains('[data-test="menu-bottom--tooltip"]'))
-        .toBeTruthy();
       expect(menu.findAll('[data-test="menu-bottom--tooltip"]'))
         .toHaveLength(2);
     });
@@ -162,36 +160,29 @@ describe('components/menu-bottom/MenuBottom', () => {
   describe('onKeyDown', () => {
     let store: Store<CalChartState>;
     let menu: Wrapper<Vue>;
-    let setToolMock: jest.Mock;
 
     beforeEach(() => {
-      jest.clearAllMocks();
       ({ store, menu } = setupHelper());
 
       store.commit('setToolSelected', new ToolSingleDot());
-
-      setToolMock = jest.fn();
-      menu.setMethods({ setTool: setToolMock });
     });
 
     it('If ctrl key, enable pan/zoom and store old tool', () => {
       expect(menu.vm.$data.temporaryTool).toBeNull();
-      expect(setToolMock).not.toHaveBeenCalled();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Control' }));
 
-      expect(menu.vm.$data.temporaryTool).not.toBeNull();
-      expect(setToolMock).toHaveBeenCalledWith(0);
+      expect(menu.vm.$data.temporaryTool instanceof ToolSingleDot).toBe(true);
+      expect(store.state.toolSelected instanceof ToolPanZoom).toBe(true);
     });
 
     it('If meta key, enable pan/zoom and store old tool', () => {
       expect(menu.vm.$data.temporaryTool).toBeNull();
-      expect(setToolMock).not.toHaveBeenCalled();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Meta' }));
 
-      expect(menu.vm.$data.temporaryTool).not.toBeNull();
-      expect(setToolMock).toHaveBeenCalledWith(0);
+      expect(menu.vm.$data.temporaryTool instanceof ToolSingleDot).toBe(true);
+      expect(store.state.toolSelected instanceof ToolPanZoom).toBe(true);
     });
 
     it('If repeat event, do not do anything', () => {
@@ -201,14 +192,14 @@ describe('components/menu-bottom/MenuBottom', () => {
       }));
 
       expect(menu.vm.$data.temporaryTool).toBeNull();
-      expect(setToolMock).not.toHaveBeenCalled();
+      expect(store.state.toolSelected instanceof ToolSingleDot).toBe(true);
     });
 
     it('If not ctrl key, do not do anything', () => {
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'KeyA' }));
 
       expect(menu.vm.$data.temporaryTool).toBeNull();
-      expect(setToolMock).not.toHaveBeenCalled();
+      expect(store.state.toolSelected instanceof ToolSingleDot).toBe(true);
     });
   });
 
