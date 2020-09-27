@@ -36,7 +36,6 @@ module.exports = {
     '@typescript-eslint/func-call-spacing': ['warn'],
     'function-paren-newline': 'warn',
     'max-len': 'warn',
-    '@typescript-eslint/member-naming': 'warn',
     'multiline-ternary': ['warn', 'always-multiline'],
     'newline-per-chained-call': 'warn',
     'no-else-return': 'warn',

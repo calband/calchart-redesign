@@ -74,6 +74,7 @@ export default Vue.extend({
       this.$store.commit('setInvertedCTMMatrix', invertedMatrix);
 
       // Enable or disable pan/zoom depending on tool selected
+      // eslint-disable-next-line no-undef
       const grapherSvgPanZoom: SvgPanZoom.Instance | undefined
         = this.$store.state.grapherSvgPanZoom;
       if (grapherSvgPanZoom === undefined) {

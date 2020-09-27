@@ -55,41 +55,31 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('generates one yard line', () => {
-      expect(wrapper.contains('[data-test="grapher--yard-line"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--yard-line"]'))
         .toHaveLength(1);
     });
 
     it('generates two hash marks', () => {
-      expect(wrapper.contains('[data-test="grapher--hash-mark"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--hash-mark"]'))
         .toHaveLength(2);
     });
 
     it('field has width 32 and height 24', () => {
-      expect(wrapper.contains('[data-test="grapher--field-rect"]'))
-        .toBeTruthy();
-      expect(wrapper.find('[data-test="grapher--field-rect"]')
-        .attributes('width')).toBe('32');
-      expect(wrapper.find('[data-test="grapher--field-rect"]')
-        .attributes('height')).toBe('24');
+      const rect = wrapper.find('[data-test="grapher--field-rect"]');
+      expect(rect.exists()).toBeTruthy();
+      expect(rect.attributes('width')).toBe('32');
+      expect(rect.attributes('height')).toBe('24');
     });
 
     it('four step grid: generates 6 vert lines and 5 horiz lines', () => {
-      expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
         .toHaveLength(6);
-      expect(wrapper.contains('[data-test="grapher--grid-horizontal"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-horizontal"]'))
         .toHaveLength(5);
     });
 
     it('generates no field numbers', () => {
-      expect(wrapper.contains('[data-test="grapher--yard-number"]'))
+      expect(wrapper.find('[data-test="grapher--yard-number"]').exists())
         .toBeFalsy();
     });
 
@@ -97,9 +87,9 @@ describe('components/grapher/Grapher.vue', () => {
       store.commit('setFourStepGrid', false);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
+      expect(wrapper.find('[data-test="grapher--grid-vertical"]').exists())
         .toBeFalsy();
-      expect(wrapper.contains('[data-test="grapher--grid-horizontal"]'))
+      expect(wrapper.find('[data-test="grapher--grid-horizontal"]').exists())
         .toBeFalsy();
     });
 
@@ -107,13 +97,12 @@ describe('components/grapher/Grapher.vue', () => {
       store.commit('setYardlines', false);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
+      expect(wrapper.find('[data-test="grapher--yard-line"]').exists())
+        .toBeFalsy();
 
       store.commit('setFourStepGrid', true);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
         .toHaveLength(7);
     });
@@ -122,7 +111,7 @@ describe('components/grapher/Grapher.vue', () => {
       store.commit('setYardlineNumbers', false);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="grapher--yard-number"]'))
+      expect(wrapper.find('[data-test="grapher--yard-number"]').exists())
         .toBeFalsy();
     });
   });
@@ -137,22 +126,16 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('generates 21 yard lines', () => {
-      expect(wrapper.contains('[data-test="grapher--yard-line"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--yard-line"]'))
         .toHaveLength(21);
     });
 
     it('generates 42 hash marks', () => {
-      expect(wrapper.contains('[data-test="grapher--hash-mark"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--hash-mark"]'))
         .toHaveLength(42);
     });
 
     it('field has width 192 and height 84', () => {
-      expect(wrapper.contains('[data-test="grapher--field-rect"]'))
-        .toBeTruthy();
       expect(wrapper.find('[data-test="grapher--field-rect"]')
         .attributes('width')).toBe('192');
       expect(wrapper.find('[data-test="grapher--field-rect"]')
@@ -160,19 +143,13 @@ describe('components/grapher/Grapher.vue', () => {
     });
 
     it('four step grid: generates 26 vert lines and 20 horiz lines', () => {
-      expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
         .toHaveLength(26);
-      expect(wrapper.contains('[data-test="grapher--grid-horizontal"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-horizontal"]'))
         .toHaveLength(20);
     });
 
     it('generates 18 field numbers', () => {
-      expect(wrapper.contains('[data-test="grapher--yard-number"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--yard-number"]'))
         .toHaveLength(18);
     });
@@ -181,9 +158,9 @@ describe('components/grapher/Grapher.vue', () => {
       store.commit('setFourStepGrid', false);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
+      expect(wrapper.find('[data-test="grapher--grid-vertical"]').exists())
         .toBeFalsy();
-      expect(wrapper.contains('[data-test="grapher--grid-horizontal"]'))
+      expect(wrapper.find('[data-test="grapher--grid-horizontal"]').exists())
         .toBeFalsy();
     });
 
@@ -191,20 +168,20 @@ describe('components/grapher/Grapher.vue', () => {
       store.commit('setYardlines', false);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
+      expect(wrapper.find('[data-test="grapher--yard-line"]').exists())
+        .toBeFalsy();
     });
 
     it('replaces yardlines with gridlines if yardlines is false', async () => {
       store.commit('setYardlines', false);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="grapher--yard-line"]')).toBeFalsy();
+      expect(wrapper.find('[data-test="grapher--yard-line"]').exists())
+        .toBeFalsy();
 
       store.commit('setFourStepGrid', true);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.contains('[data-test="grapher--grid-vertical"]'))
-        .toBeTruthy();
       expect(wrapper.findAll('[data-test="grapher--grid-vertical"]'))
         .toHaveLength(47);
     });
