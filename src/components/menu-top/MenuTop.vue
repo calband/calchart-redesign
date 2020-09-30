@@ -87,9 +87,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import FileModal from './FileModal.vue';
-import LoadModal from './LoadModal.vue';
+import Vue from 'vue'
+import FileModal from './FileModal.vue'
+import LoadModal from './LoadModal.vue'
 
 /**
  * Contains menus and options that control the application's state
@@ -98,45 +98,45 @@ export default Vue.extend({
   name: 'MenuTop',
   components: {
     FileModal,
-    LoadModal,
+    LoadModal
   },
   data: () => ({
     fileModalActive: false,
-    loadModalActive: false,
+    loadModalActive: false
   }),
   computed: {
-    showTitle(): string {
-      return this.$store.getters.getShowTitle;
+    showTitle (): string {
+      return this.$store.getters.getShowTitle
     },
 
     fourStepGrid: {
-      get(): boolean {
-        return this.$store.state.fourStepGrid;
+      get (): boolean {
+        return this.$store.state.fourStepGrid
       },
-      set(enabled: boolean): void {
-        this.$store.commit('setFourStepGrid', enabled);
-      },
+      set (enabled: boolean): void {
+        this.$store.commit('setFourStepGrid', enabled)
+      }
     },
 
     yardlines: {
-      get(): boolean {
-        return this.$store.state.yardlines;
+      get (): boolean {
+        return this.$store.state.yardlines
       },
-      set(enabled: boolean): void {
-        this.$store.commit('setYardlines', enabled);
-      },
+      set (enabled: boolean): void {
+        this.$store.commit('setYardlines', enabled)
+      }
     },
 
     yardlineNumbers: {
-      get(): boolean {
-        return this.$store.state.yardlineNumbers;
+      get (): boolean {
+        return this.$store.state.yardlineNumbers
       },
-      set(enabled: boolean): void {
-        this.$store.commit('setYardlineNumbers', enabled);
-      },
-    },
-  },
-});
+      set (enabled: boolean): void {
+        this.$store.commit('setYardlineNumbers', enabled)
+      }
+    }
+  }
+})
 </script>
 
 <style scoped lang="scss">

@@ -1,8 +1,8 @@
-import StuntSheetDot from './StuntSheetDot';
-import BaseCont from './continuity/BaseCont';
-import ContInPlace from './continuity/ContInPlace';
-import Serializable from './util/Serializable';
-import { loadContinuity } from './continuity/load-continuity';
+import StuntSheetDot from './StuntSheetDot'
+import BaseCont from './continuity/BaseCont'
+import ContInPlace from './continuity/ContInPlace'
+import Serializable from './util/Serializable'
+import { loadContinuity } from './continuity/load-continuity'
 
 /**
  * Defines the positions/directions in a formation and the continuities
@@ -25,27 +25,27 @@ export default class StuntSheet extends Serializable<StuntSheet> {
 
   beats = 16;
 
-  constructor(json: Partial<StuntSheet> = {}) {
-    super();
+  constructor (json: Partial<StuntSheet> = {}) {
+    super()
     if (json.stuntSheetDots !== undefined) {
       json.stuntSheetDots = json.stuntSheetDots
-        .map((dot: StuntSheetDot): StuntSheetDot => new StuntSheetDot(dot));
+        .map((dot: StuntSheetDot): StuntSheetDot => new StuntSheetDot(dot))
     }
     if (json.dotTypes !== undefined) {
       json.dotTypes = json.dotTypes.map((dotType: BaseCont[]): BaseCont[] => {
         return dotType.map((continuity: BaseCont): BaseCont => {
-          return loadContinuity(continuity);
-        });
-      });
+          return loadContinuity(continuity)
+        })
+      })
     }
-    this.fromJson(json);
+    this.fromJson(json)
   }
 
-  addDot(dot: StuntSheetDot): void {
-    this.stuntSheetDots.push(dot);
+  addDot (dot: StuntSheetDot): void {
+    this.stuntSheetDots.push(dot)
   }
 
-  removeDot(index: number): void {
-    this.stuntSheetDots.splice(index, 1);
+  removeDot (index: number): void {
+    this.stuntSheetDots.splice(index, 1)
   }
 }

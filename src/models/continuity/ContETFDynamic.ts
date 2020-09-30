@@ -1,14 +1,14 @@
-import BaseCont, { CONT_IDS } from './BaseCont';
-import StuntSheetDot from '../StuntSheetDot';
-import { MARCH_TYPES } from '../util/constants';
-import { FlowBeat } from '../util/types';
+import BaseCont, { CONT_IDS } from './BaseCont'
+import StuntSheetDot from '../StuntSheetDot'
+import { MARCH_TYPES } from '../util/constants'
+import { FlowBeat } from '../util/types'
 import {
   diagonalHelper,
   ewHelper,
   nsHelper,
-  startPositionHelper,
-} from './continuity-util';
-import Serializable from '../util/Serializable';
+  startPositionHelper
+} from './continuity-util'
+import Serializable from '../util/Serializable'
 
 export enum ETF_DYNAMIC_TYPES {
   EWNS,
@@ -39,58 +39,58 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(json: Partial<ContETFDynamic> = {}) {
-    super();
-    this.fromJson(json);
+  constructor (json: Partial<ContETFDynamic> = {}) {
+    super()
+    this.fromJson(json)
   }
 
-  getHumanReadableText(): string {
-    if (this.humanReadableText !== '') return this.humanReadableText;
+  getHumanReadableText (): string {
+    if (this.humanReadableText !== '') return this.humanReadableText
 
     switch (this.eightToFiveType) {
       case ETF_DYNAMIC_TYPES.EWNS:
-        return `EW/NS FM${this.marchType}`;
+        return `EW/NS FM${this.marchType}`
 
       case ETF_DYNAMIC_TYPES.NSEW:
-        return `NS/EW FM${this.marchType}`;
+        return `NS/EW FM${this.marchType}`
 
       case ETF_DYNAMIC_TYPES.DFM:
-        return `D${this.marchType}/FM${this.marchType}`;
+        return `D${this.marchType}/FM${this.marchType}`
 
       case ETF_DYNAMIC_TYPES.FMD:
-        return `FM${this.marchType}/D${this.marchType}`;
+        return `FM${this.marchType}/D${this.marchType}`
 
       default:
-        return 'Unknown';
+        return 'Unknown'
     }
   }
 
-  addToFlow(
+  addToFlow (
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot,
+    endDot?: StuntSheetDot
   ): void {
-    if (endDot === undefined) return;
+    if (endDot === undefined) return
 
-    let [startX, startY]: [number, number]
-      = startPositionHelper(flow, startDot);
-    const [endX, endY]: [number, number] = [endDot.x, endDot.y];
-    let offsetX: number = endX - startX;
-    let offsetY: number = endY - startY;
-    let diagOffsetX: number;
-    let diagOffsetY: number;
+    let [startX, startY]: [number, number] =
+      startPositionHelper(flow, startDot)
+    const [endX, endY]: [number, number] = [endDot.x, endDot.y]
+    let offsetX: number = endX - startX
+    let offsetY: number = endY - startY
+    let diagOffsetX: number
+    let diagOffsetY: number
 
-    if (this.eightToFiveType === ETF_DYNAMIC_TYPES.DFM
-      || this.eightToFiveType === ETF_DYNAMIC_TYPES.FMD) {
-      const absOffsetX: number = Math.abs(offsetX);
-      const absOffsetY: number = Math.abs(offsetY);
-      const absDiagOffset: number = Math.min(absOffsetX, absOffsetY);
+    if (this.eightToFiveType === ETF_DYNAMIC_TYPES.DFM ||
+      this.eightToFiveType === ETF_DYNAMIC_TYPES.FMD) {
+      const absOffsetX: number = Math.abs(offsetX)
+      const absOffsetY: number = Math.abs(offsetY)
+      const absDiagOffset: number = Math.min(absOffsetX, absOffsetY)
 
-      diagOffsetX = Math.sign(offsetX) * absDiagOffset;
-      diagOffsetY = Math.sign(offsetY) * absDiagOffset;
+      diagOffsetX = Math.sign(offsetX) * absDiagOffset
+      diagOffsetY = Math.sign(offsetY) * absDiagOffset
 
-      offsetX = Math.sign(offsetX) * (absOffsetX - absDiagOffset);
-      offsetY = Math.sign(offsetY) * (absOffsetY - absDiagOffset);
+      offsetX = Math.sign(offsetX) * (absOffsetX - absDiagOffset)
+      offsetY = Math.sign(offsetY) * (absOffsetY - absDiagOffset)
 
       if (this.eightToFiveType === ETF_DYNAMIC_TYPES.DFM) {
         [startX, startY] = diagonalHelper(
@@ -99,11 +99,11 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
           startY,
           diagOffsetX,
           diagOffsetY,
-          this.marchType,
+          this.marchType
         );
         [startX, startY] = offsetX > 0
           ? nsHelper(flow, startX, startY, offsetX, this.marchType)
-          : ewHelper(flow, startX, startY, offsetY, this.marchType);
+          : ewHelper(flow, startX, startY, offsetY, this.marchType)
       } else if (this.eightToFiveType === ETF_DYNAMIC_TYPES.FMD) {
         [startX, startY] = offsetX > 0
           ? nsHelper(flow, startX, startY, offsetX, this.marchType)
@@ -114,39 +114,38 @@ export default class ContETFDynamic extends Serializable<ContETFDynamic>
           startY,
           diagOffsetX,
           diagOffsetY,
-          this.marchType,
-        );
+          this.marchType
+        )
       }
-
     } else if (this.eightToFiveType === ETF_DYNAMIC_TYPES.EWNS) {
       [startX, startY] = ewHelper(
         flow,
         startX,
         startY,
         offsetY,
-        this.marchType,
+        this.marchType
       );
       [startX, startY] = nsHelper(
         flow,
         startX,
         startY,
-        offsetX, this.marchType,
-      );
+        offsetX, this.marchType
+      )
     } else if (this.eightToFiveType === ETF_DYNAMIC_TYPES.NSEW) {
       [startX, startY] = nsHelper(
         flow,
         startX,
         startY,
         offsetX,
-        this.marchType,
+        this.marchType
       );
       [startX, startY] = ewHelper(
         flow,
         startX,
         startY,
         offsetY,
-        this.marchType,
-      );
+        this.marchType
+      )
     }
   }
 }

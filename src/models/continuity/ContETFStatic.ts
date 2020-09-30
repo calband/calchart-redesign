@@ -1,8 +1,8 @@
-import BaseCont, { CONT_IDS } from './BaseCont';
-import StuntSheetDot from '../StuntSheetDot';
-import { DIRECTIONS, MARCH_TYPES } from '../util/constants';
-import { FlowBeat } from '../util/types';
-import Serializable from '../util/Serializable';
+import BaseCont, { CONT_IDS } from './BaseCont'
+import StuntSheetDot from '../StuntSheetDot'
+import { DIRECTIONS, MARCH_TYPES } from '../util/constants'
+import { FlowBeat } from '../util/types'
+import Serializable from '../util/Serializable'
 
 /**
  * Move in a specified direction for a duration. Can only move in an
@@ -29,25 +29,25 @@ export default class ContETFStatic extends Serializable<ContETFStatic>
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(json: Partial<ContETFStatic> = {}) {
-    super();
+  constructor (json: Partial<ContETFStatic> = {}) {
+    super()
     if (json.facingDirection === undefined) {
-      json.facingDirection = json.marchingDirection;
+      json.facingDirection = json.marchingDirection
     }
-    this.fromJson(json);
+    this.fromJson(json)
   }
 
-  getHumanReadableText(): string {
-    if (this.humanReadableText !== '') return this.humanReadableText;
+  getHumanReadableText (): string {
+    if (this.humanReadableText !== '') return this.humanReadableText
     // TODO: Implement
-    return '';
+    return ''
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  addToFlow(
+  addToFlow (
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot,
+    endDot?: StuntSheetDot
   ): void {
     // TODO: Implement
   }

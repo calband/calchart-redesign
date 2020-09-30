@@ -103,126 +103,126 @@
  * INGL_END  = 'E','N','D',' ' ;
  */
 
-import Show from '../Show';
-import StuntSheet from '../StuntSheet';
-import StuntSheetDot from '../StuntSheetDot';
-import { readInt32,
+import Show from '../Show'
+import StuntSheet from '../StuntSheet'
+import StuntSheetDot from '../StuntSheetDot'
+import {
+  readInt32,
   readInt16,
   readStringTillEnd,
   readArrayOfStringsTillEnd,
   splitDataViewIntoChunks,
   calChart3To4ConvertX,
-  calChart3To4ConvertY } from './ParseCalChart3Utils';
-import { ParseCalChart } from './ParseCalChart';
+  calChart3To4ConvertY
+} from './ParseCalChart3Utils'
+import { ParseCalChart } from './ParseCalChart'
 
 export class ParseCalChart34 implements ParseCalChart {
   private numberDots = 0;
 
-  ParseShow(inputBuffer: ArrayBuffer): Show {
+  ParseShow (inputBuffer: ArrayBuffer): Show {
     // we know the header for a CalChart3.5 show is 8 bytes.  Remove it.
-    const buffer = new DataView(inputBuffer, 8, inputBuffer.byteLength-8);
-    const split = splitDataViewIntoChunks(buffer);
+    const buffer = new DataView(inputBuffer, 8, inputBuffer.byteLength - 8)
+    const split = splitDataViewIntoChunks(buffer)
     if (split.length !== 1 || split[0][0] !== 'SHOW') {
-      throw 'Cannot find show when parsing CalChart3 file';
+      throw new Error('Cannot find show when parsing CalChart3 file')
     }
-    return this.ParseSHOW(split[0][1]);
+    return this.ParseSHOW(split[0][1])
   }
 
-  ParseSHOW(block: DataView): Show {
+  ParseSHOW (block: DataView): Show {
     const show = new Show({
       title: '',
-      stuntSheets: [],
-    });
-    const split = splitDataViewIntoChunks(block);
+      stuntSheets: []
+    })
+    const split = splitDataViewIntoChunks(block)
 
     for (const block of split) {
-      switch(block[0]) {
+      switch (block[0]) {
         case 'SIZE':
-          this.ParseSHOWSIZE(show, block[1]);
-          break;
+          this.ParseSHOWSIZE(show, block[1])
+          break
         case 'LABL':
-          this.ParseSHOWLABL(show, block[1]);
-          break;
+          this.ParseSHOWLABL(show, block[1])
+          break
         case 'DESC':
-          this.ParseSHOWDESC(show, block[1]);
-          break;
+          this.ParseSHOWDESC(show, block[1])
+          break
         case 'SHET':
-          this.ParseSHOWSHET(show, block[1]);
-          break;
+          this.ParseSHOWSHET(show, block[1])
+          break
       }
     }
-    return show;
+    return show
   }
 
-  ParseSHOWSIZE(show: Show, block: DataView): void {
+  ParseSHOWSIZE (show: Show, block: DataView): void {
     if (block.byteLength !== 4) {
-      throw 'Show Size incorrect when parsing CalChart3 file';
+      throw new Error('Show Size incorrect when parsing CalChart3 file')
     }
-    this.numberDots = readInt32(block, 0);
+    this.numberDots = readInt32(block, 0)
   }
 
-  ParseSHOWLABL(show: Show, block: DataView): void {
-    const labels = readArrayOfStringsTillEnd(block, 0);
+  ParseSHOWLABL (show: Show, block: DataView): void {
+    const labels = readArrayOfStringsTillEnd(block, 0)
     if (labels.length !== this.numberDots) {
-      throw 'Show Labels is incorrect when parsing CalChart3 file';
+      throw new Error('Show Labels is incorrect when parsing CalChart3 file')
     }
-    show.dotLabels = labels;
+    show.dotLabels = labels
   }
 
-  ParseSHOWDESC(show: Show, block: DataView): void {
-    show.title = readStringTillEnd(block, 0);
+  ParseSHOWDESC (show: Show, block: DataView): void {
+    show.title = readStringTillEnd(block, 0)
   }
 
-  ParseSHOWSHET(show: Show, block: DataView): void {
-    const stuntSheet = new StuntSheet();
-    const split = splitDataViewIntoChunks(block);
+  ParseSHOWSHET (show: Show, block: DataView): void {
+    const stuntSheet = new StuntSheet()
+    const split = splitDataViewIntoChunks(block)
     for (const block of split) {
       if (block[0] === 'NAME') {
-        this.ParseSHETNAME(stuntSheet, block[1]);
+        this.ParseSHETNAME(stuntSheet, block[1])
       }
       if (block[0] === 'DURA') {
-        this.ParseSHETDURA(stuntSheet, block[1]);
+        this.ParseSHETDURA(stuntSheet, block[1])
       }
       if (block[0] === 'PNTS') {
-        this.ParseSHETPNTS(stuntSheet, block[1]);
+        this.ParseSHETPNTS(stuntSheet, block[1])
       }
     }
-    show.stuntSheets.push(stuntSheet);
+    show.stuntSheets.push(stuntSheet)
   }
 
-  ParseSHETNAME(stuntSheet: StuntSheet, block: DataView): void {
-    stuntSheet.title = readStringTillEnd(block, 0);
+  ParseSHETNAME (stuntSheet: StuntSheet, block: DataView): void {
+    stuntSheet.title = readStringTillEnd(block, 0)
   }
 
-  ParseSHETDURA(stuntSheet: StuntSheet, block: DataView): void {
-    stuntSheet.beats = readInt32(block, 0);
+  ParseSHETDURA (stuntSheet: StuntSheet, block: DataView): void {
+    stuntSheet.beats = readInt32(block, 0)
   }
 
-  ParseSHETPNTS(stuntSheet: StuntSheet, block: DataView): void {
-    const dots: StuntSheetDot[] = [];
+  ParseSHETPNTS (stuntSheet: StuntSheet, block: DataView): void {
+    const dots: StuntSheetDot[] = []
 
     // keep parsing points till data is exhausted
-    let offset = 0;
+    let offset = 0
     while (offset < block.byteLength) {
-      const pointSize = block.getUint8(offset);
+      const pointSize = block.getUint8(offset)
       dots.push(this.ParsePoint(new DataView(
         block.buffer,
-        block.byteOffset + offset + 1, pointSize,
-      )));
-      offset += pointSize + 1;
+        block.byteOffset + offset + 1, pointSize
+      )))
+      offset += pointSize + 1
     }
     if (offset !== block.byteLength) {
-      throw 'Show dots is incorrect when parsing CalChart3 file';
+      throw new Error('Show dots is incorrect when parsing CalChart3 file')
     }
-    stuntSheet.stuntSheetDots = dots;
+    stuntSheet.stuntSheetDots = dots
   }
 
-  ParsePoint(buffer: DataView): StuntSheetDot {
+  ParsePoint (buffer: DataView): StuntSheetDot {
     return new StuntSheetDot({
       x: calChart3To4ConvertX(readInt16(buffer, 0)),
-      y: calChart3To4ConvertY(readInt16(buffer, 2)),
-    });
+      y: calChart3To4ConvertY(readInt16(buffer, 2))
+    })
   }
 }
-
-

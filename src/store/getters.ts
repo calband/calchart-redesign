@@ -1,6 +1,6 @@
-import { CalChartState } from '.';
-import StuntSheet from '@/models/StuntSheet';
-import { GetterTree } from 'vuex';
+import { CalChartState } from '.'
+import StuntSheet from '@/models/StuntSheet'
+import { GetterTree } from 'vuex'
 
 const getters: GetterTree<CalChartState, CalChartState> = {
   // Show
@@ -16,7 +16,7 @@ const getters: GetterTree<CalChartState, CalChartState> = {
 
   // Show -> StuntSheet
   getSelectedStuntSheet: (state): StuntSheet =>
-    state.show.stuntSheets[state.selectedSS],
-};
+    state.show.stuntSheets[state.selectedSS]
+}
 
-export default getters;
+export default getters

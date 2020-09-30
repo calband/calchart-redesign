@@ -1,8 +1,8 @@
-import { FlowBeat } from '../util/types';
+import { FlowBeat } from '../util/types'
 
-import StuntSheetDot from '../StuntSheetDot';
+import StuntSheetDot from '../StuntSheetDot'
 
-import { DIRECTIONS, MARCH_TYPES } from '../util/constants';
+import { DIRECTIONS, MARCH_TYPES } from '../util/constants'
 
 /**
  * Decides the starting position for the upcoming continuity
@@ -10,20 +10,20 @@ import { DIRECTIONS, MARCH_TYPES } from '../util/constants';
  */
 export const startPositionHelper = (
   flow: FlowBeat[],
-  startDot: StuntSheetDot,
+  startDot: StuntSheetDot
 ): [number, number] => {
-  let startX: number;
-  let startY: number;
+  let startX: number
+  let startY: number
   if (flow.length === 0) {
-    startX = startDot.x;
-    startY = startDot.y;
+    startX = startDot.x
+    startY = startDot.y
   } else {
-    const lastFlowBeat: FlowBeat = flow[flow.length - 1];
-    startX = lastFlowBeat.x;
-    startY = lastFlowBeat.y;
+    const lastFlowBeat: FlowBeat = flow[flow.length - 1]
+    startX = lastFlowBeat.x
+    startY = lastFlowBeat.y
   }
-  return [startX, startY];
-};
+  return [startX, startY]
+}
 
 /**
  * Helper function to march in either north or south (eight to five)
@@ -41,10 +41,10 @@ export const nsHelper = (
   startY: number,
   offsetX: number,
   marchType: MARCH_TYPES,
-  direction?: number,
+  direction?: number
 ): [number, number] => {
   if (direction === undefined) {
-    direction = Math.sign(offsetX) ? DIRECTIONS.N : DIRECTIONS.S;
+    direction = Math.sign(offsetX) ? DIRECTIONS.N : DIRECTIONS.S
   }
 
   for (let step = 1; step <= Math.abs(offsetX); step += 1) {
@@ -52,12 +52,12 @@ export const nsHelper = (
       x: startX + Math.sign(offsetX) * step,
       y: startY,
       direction: direction,
-      marchType: marchType,
-    });
+      marchType: marchType
+    })
   }
 
-  return [startX + offsetX, startY];
-};
+  return [startX + offsetX, startY]
+}
 
 /**
  * Helper function to march in either north or south (eight to five)
@@ -75,10 +75,10 @@ export const ewHelper = (
   startY: number,
   offsetY: number,
   marchType: MARCH_TYPES,
-  direction?: number,
+  direction?: number
 ): [number, number] => {
   if (direction === undefined) {
-    direction = Math.sign(offsetY) ? DIRECTIONS.E : DIRECTIONS.W;
+    direction = Math.sign(offsetY) ? DIRECTIONS.E : DIRECTIONS.W
   }
 
   for (let step = 1; step <= Math.abs(offsetY); step += 1) {
@@ -86,12 +86,12 @@ export const ewHelper = (
       x: startX,
       y: startY + Math.sign(offsetY) * step,
       direction: direction,
-      marchType: marchType,
-    });
+      marchType: marchType
+    })
   }
 
-  return [startX, startY + offsetY];
-};
+  return [startX, startY + offsetY]
+}
 
 /**
  * Helper function to march in a diagonal (eight to five)
@@ -110,17 +110,17 @@ export const diagonalHelper = (
   offsetX: number,
   offsetY: number,
   marchType: MARCH_TYPES,
-  direction?: number,
+  direction?: number
 ): [number, number] => {
   if (Math.abs(offsetX) !== Math.abs(offsetY)) {
-    throw `offsetX (${offsetX}) and offsetY (${offsetY}) are not equal!`;
+    throw new Error(`offsetX (${offsetX}) and offsetY (${offsetY}) are not equal!`)
   }
 
   if (direction === undefined) {
     if (Math.sign(offsetX) > 0) {
-      direction = Math.sign(offsetY) ? DIRECTIONS.NE : DIRECTIONS.NW;
+      direction = Math.sign(offsetY) ? DIRECTIONS.NE : DIRECTIONS.NW
     } else {
-      direction = Math.sign(offsetY) ? DIRECTIONS.SE : DIRECTIONS.SW;
+      direction = Math.sign(offsetY) ? DIRECTIONS.SE : DIRECTIONS.SW
     }
   }
 
@@ -129,9 +129,9 @@ export const diagonalHelper = (
       x: startX + Math.sign(offsetX) * step,
       y: startY + Math.sign(offsetY) * step,
       direction: direction,
-      marchType: marchType,
-    });
+      marchType: marchType
+    })
   }
 
-  return [startX + offsetX, startY + offsetY];
-};
+  return [startX + offsetX, startY + offsetY]
+}

@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import MenuTop from './components/menu-top/MenuTop.vue';
-import MenuLeft from './components/menu-left/MenuLeft.vue';
-import Grapher from './components/grapher/Grapher.vue';
-import MenuRight from './components/menu-right/MenuRight.vue';
-import MenuBottom from './components/menu-bottom/MenuBottom.vue';
+import Vue from 'vue'
+import MenuTop from './components/menu-top/MenuTop.vue'
+import MenuLeft from './components/menu-left/MenuLeft.vue'
+import Grapher from './components/grapher/Grapher.vue'
+import MenuRight from './components/menu-right/MenuRight.vue'
+import MenuBottom from './components/menu-bottom/MenuBottom.vue'
 
 export default Vue.extend({
   name: 'App',
@@ -30,9 +30,9 @@ export default Vue.extend({
     MenuLeft,
     Grapher,
     MenuRight,
-    MenuBottom,
-  },
-});
+    MenuBottom
+  }
+})
 </script>
 
 <style lang="scss">

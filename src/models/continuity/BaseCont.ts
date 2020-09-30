@@ -1,6 +1,6 @@
-import StuntSheetDot from '../StuntSheetDot';
-import { MARCH_TYPES } from '../util/constants';
-import { FlowBeat } from '../util/types';
+import StuntSheetDot from '../StuntSheetDot'
+import { MARCH_TYPES } from '../util/constants'
+import { FlowBeat } from '../util/types'
 
 /**
  * Defines a unique identifier for each continuity class so that it is possible

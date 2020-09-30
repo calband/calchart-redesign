@@ -67,9 +67,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { loadShowFromBuffer } from '@/models/util/LoadShow';
-import Show from '@/models/Show';
+import Vue from 'vue'
+import { loadShowFromBuffer } from '@/models/util/LoadShow'
+import Show from '@/models/Show'
 
 export default Vue.extend({
   name: 'LoadModal',
@@ -79,43 +79,42 @@ export default Vue.extend({
     parseError: string;
   } => ({ file: null, showPreview: null, parseError: '' }),
   computed: {
-    numMarchers(): number {
-      return this.showPreview ? this.showPreview.dotLabels.length : 0;
+    numMarchers (): number {
+      return this.showPreview ? this.showPreview.dotLabels.length : 0
     },
-    numSheets(): number {
-      return this.showPreview ? this.showPreview.stuntSheets.length : 0;
-    },
+    numSheets (): number {
+      return this.showPreview ? this.showPreview.stuntSheets.length : 0
+    }
   },
   methods: {
-    loadShow(): void {
+    loadShow (): void {
       if (this.file === null) {
-        return;
+        return
       }
-      this.showPreview = null;
-      this.parseError = '';
-      const reader = new FileReader();
+      this.showPreview = null
+      this.parseError = ''
+      const reader = new FileReader()
       reader.onload = (): void => {
         if (reader.result && reader.result instanceof ArrayBuffer) {
           try {
-            this.showPreview = loadShowFromBuffer(reader.result);
-          } catch(e) {
-            this.parseError = e;
+            this.showPreview = loadShowFromBuffer(reader.result)
+          } catch (e) {
+            this.parseError = e
           }
         } else {
-          this.parseError = 'Could not read file.';
+          this.parseError = 'Could not read file.'
         }
-      };
-      reader.readAsArrayBuffer(this.file);
-    },
-    setShow(): void {
-      if (!this.showPreview) {
-        return;
       }
-      this.$store.commit('setShow', this.showPreview);
+      reader.readAsArrayBuffer(this.file)
     },
-  },
-});
-
+    setShow (): void {
+      if (!this.showPreview) {
+        return
+      }
+      this.$store.commit('setShow', this.showPreview)
+    }
+  }
+})
 
 </script>
 

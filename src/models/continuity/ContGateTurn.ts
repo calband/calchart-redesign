@@ -1,8 +1,8 @@
-import BaseCont, { CONT_IDS } from './BaseCont';
-import StuntSheetDot from '../StuntSheetDot';
-import { MARCH_TYPES } from '../util/constants';
-import { FlowBeat } from '../util/types';
-import Serializable from '../util/Serializable';
+import BaseCont, { CONT_IDS } from './BaseCont'
+import StuntSheetDot from '../StuntSheetDot'
+import { MARCH_TYPES } from '../util/constants'
+import { FlowBeat } from '../util/types'
+import Serializable from '../util/Serializable'
 
 /**
  * Defines a gate turn continuity.
@@ -22,22 +22,22 @@ export default class ContGateTurn extends Serializable<ContGateTurn>
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  constructor(json: Partial<ContGateTurn> = {}) {
-    super();
-    this.fromJson(json);
+  constructor (json: Partial<ContGateTurn> = {}) {
+    super()
+    this.fromJson(json)
   }
 
-  getHumanReadableText(): string {
-    if (this.humanReadableText !== '') return this.humanReadableText;
+  getHumanReadableText (): string {
+    if (this.humanReadableText !== '') return this.humanReadableText
     // TODO: Implement
-    return '';
+    return ''
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  addToFlow(
+  addToFlow (
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot,
+    endDot?: StuntSheetDot
   ): void {
     // TODO: Implement
   }
