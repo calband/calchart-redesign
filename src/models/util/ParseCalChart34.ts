@@ -103,50 +103,52 @@
  * INGL_END  = 'E','N','D',' ' ;
  */
 
-import Show from '../Show';
-import StuntSheet from '../StuntSheet';
-import StuntSheetDot from '../StuntSheetDot';
-import { readInt32,
+import Show from "../Show";
+import StuntSheet from "../StuntSheet";
+import StuntSheetDot from "../StuntSheetDot";
+import {
+  readInt32,
   readInt16,
   readStringTillEnd,
   readArrayOfStringsTillEnd,
   splitDataViewIntoChunks,
   calChart3To4ConvertX,
-  calChart3To4ConvertY } from './ParseCalChart3Utils';
-import { ParseCalChart } from './ParseCalChart';
+  calChart3To4ConvertY,
+} from "./ParseCalChart3Utils";
+import { ParseCalChart } from "./ParseCalChart";
 
 export class ParseCalChart34 implements ParseCalChart {
   private numberDots = 0;
 
   ParseShow(inputBuffer: ArrayBuffer): Show {
     // we know the header for a CalChart3.5 show is 8 bytes.  Remove it.
-    const buffer = new DataView(inputBuffer, 8, inputBuffer.byteLength-8);
+    const buffer = new DataView(inputBuffer, 8, inputBuffer.byteLength - 8);
     const split = splitDataViewIntoChunks(buffer);
-    if (split.length !== 1 || split[0][0] !== 'SHOW') {
-      throw 'Cannot find show when parsing CalChart3 file';
+    if (split.length !== 1 || split[0][0] !== "SHOW") {
+      throw new Error("Cannot find show when parsing CalChart3 file");
     }
     return this.ParseSHOW(split[0][1]);
   }
 
   ParseSHOW(block: DataView): Show {
     const show = new Show({
-      title: '',
+      title: "",
       stuntSheets: [],
     });
     const split = splitDataViewIntoChunks(block);
 
     for (const block of split) {
-      switch(block[0]) {
-        case 'SIZE':
+      switch (block[0]) {
+        case "SIZE":
           this.ParseSHOWSIZE(show, block[1]);
           break;
-        case 'LABL':
+        case "LABL":
           this.ParseSHOWLABL(show, block[1]);
           break;
-        case 'DESC':
+        case "DESC":
           this.ParseSHOWDESC(show, block[1]);
           break;
-        case 'SHET':
+        case "SHET":
           this.ParseSHOWSHET(show, block[1]);
           break;
       }
@@ -156,7 +158,7 @@ export class ParseCalChart34 implements ParseCalChart {
 
   ParseSHOWSIZE(show: Show, block: DataView): void {
     if (block.byteLength !== 4) {
-      throw 'Show Size incorrect when parsing CalChart3 file';
+      throw new Error("Show Size incorrect when parsing CalChart3 file");
     }
     this.numberDots = readInt32(block, 0);
   }
@@ -164,7 +166,7 @@ export class ParseCalChart34 implements ParseCalChart {
   ParseSHOWLABL(show: Show, block: DataView): void {
     const labels = readArrayOfStringsTillEnd(block, 0);
     if (labels.length !== this.numberDots) {
-      throw 'Show Labels is incorrect when parsing CalChart3 file';
+      throw new Error("Show Labels is incorrect when parsing CalChart3 file");
     }
     show.dotLabels = labels;
   }
@@ -177,13 +179,13 @@ export class ParseCalChart34 implements ParseCalChart {
     const stuntSheet = new StuntSheet();
     const split = splitDataViewIntoChunks(block);
     for (const block of split) {
-      if (block[0] === 'NAME') {
+      if (block[0] === "NAME") {
         this.ParseSHETNAME(stuntSheet, block[1]);
       }
-      if (block[0] === 'DURA') {
+      if (block[0] === "DURA") {
         this.ParseSHETDURA(stuntSheet, block[1]);
       }
-      if (block[0] === 'PNTS') {
+      if (block[0] === "PNTS") {
         this.ParseSHETPNTS(stuntSheet, block[1]);
       }
     }
@@ -205,14 +207,15 @@ export class ParseCalChart34 implements ParseCalChart {
     let offset = 0;
     while (offset < block.byteLength) {
       const pointSize = block.getUint8(offset);
-      dots.push(this.ParsePoint(new DataView(
-        block.buffer,
-        block.byteOffset + offset + 1, pointSize,
-      )));
+      dots.push(
+        this.ParsePoint(
+          new DataView(block.buffer, block.byteOffset + offset + 1, pointSize)
+        )
+      );
       offset += pointSize + 1;
     }
     if (offset !== block.byteLength) {
-      throw 'Show dots is incorrect when parsing CalChart3 file';
+      throw new Error("Show dots is incorrect when parsing CalChart3 file");
     }
     stuntSheet.stuntSheetDots = dots;
   }
@@ -224,5 +227,3 @@ export class ParseCalChart34 implements ParseCalChart {
     });
   }
 }
-
-

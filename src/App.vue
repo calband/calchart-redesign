@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="app"
-    data-test="app"
-  >
+  <div id="app" data-test="app">
     <MenuTop />
     <div class="columns is-gapless app--bottom">
       <MenuLeft />
@@ -16,15 +13,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import MenuTop from './components/menu-top/MenuTop.vue';
-import MenuLeft from './components/menu-left/MenuLeft.vue';
-import Grapher from './components/grapher/Grapher.vue';
-import MenuRight from './components/menu-right/MenuRight.vue';
-import MenuBottom from './components/menu-bottom/MenuBottom.vue';
+import Vue from "vue";
+import MenuTop from "./components/menu-top/MenuTop.vue";
+import MenuLeft from "./components/menu-left/MenuLeft.vue";
+import Grapher from "./components/grapher/Grapher.vue";
+import MenuRight from "./components/menu-right/MenuRight.vue";
+import MenuBottom from "./components/menu-bottom/MenuBottom.vue";
 
 export default Vue.extend({
-  name: 'App',
+  name: "App",
   components: {
     MenuTop,
     MenuLeft,
@@ -46,7 +43,9 @@ html {
   overflow-y: hidden;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
 }
 

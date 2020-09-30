@@ -1,8 +1,8 @@
-import BaseCont, { CONT_IDS } from './BaseCont';
-import StuntSheetDot from '../StuntSheetDot';
-import { MARCH_TYPES } from '../util/constants';
-import { FlowBeat } from '../util/types';
-import Serializable from '../util/Serializable';
+import BaseCont, { CONT_IDS } from "./BaseCont";
+import StuntSheetDot from "../StuntSheetDot";
+import { MARCH_TYPES } from "../util/constants";
+import { FlowBeat } from "../util/types";
+import Serializable from "../util/Serializable";
 
 /**
  * Defines the path that the leader takes, which the other bandsmen follow.
@@ -14,7 +14,8 @@ import Serializable from '../util/Serializable';
  * @property continuities - Execute this list of continuities after waiting a
  *                          certain amount of time
  */
-export default class ContStepTwo extends Serializable<ContStepTwo>
+export default class ContStepTwo
+  extends Serializable<ContStepTwo>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.STEP_TWO;
 
@@ -22,7 +23,7 @@ export default class ContStepTwo extends Serializable<ContStepTwo>
 
   continuities: BaseCont[] = [];
 
-  humanReadableText = '';
+  humanReadableText = "";
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
@@ -32,16 +33,16 @@ export default class ContStepTwo extends Serializable<ContStepTwo>
   }
 
   getHumanReadableText(): string {
-    if (this.humanReadableText !== '') return this.humanReadableText;
+    if (this.humanReadableText !== "") return this.humanReadableText;
     // TODO: Implement
-    return '';
+    return "";
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot,
+    endDot?: StuntSheetDot
   ): void {
     // TODO: Implement
   }

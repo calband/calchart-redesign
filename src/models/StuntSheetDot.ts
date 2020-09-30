@@ -1,5 +1,5 @@
-import { FlowBeat } from './util/types';
-import Serializable from './util/Serializable';
+import { FlowBeat } from "./util/types";
+import Serializable from "./util/Serializable";
 
 /**
  * Defines the position and direction of a marcher for a specific StuntSheet.

@@ -1,8 +1,8 @@
-import { FlowBeat } from '../util/types';
+import { FlowBeat } from "../util/types";
 
-import StuntSheetDot from '../StuntSheetDot';
+import StuntSheetDot from "../StuntSheetDot";
 
-import { DIRECTIONS, MARCH_TYPES } from '../util/constants';
+import { DIRECTIONS, MARCH_TYPES } from "../util/constants";
 
 /**
  * Decides the starting position for the upcoming continuity
@@ -10,7 +10,7 @@ import { DIRECTIONS, MARCH_TYPES } from '../util/constants';
  */
 export const startPositionHelper = (
   flow: FlowBeat[],
-  startDot: StuntSheetDot,
+  startDot: StuntSheetDot
 ): [number, number] => {
   let startX: number;
   let startY: number;
@@ -41,7 +41,7 @@ export const nsHelper = (
   startY: number,
   offsetX: number,
   marchType: MARCH_TYPES,
-  direction?: number,
+  direction?: number
 ): [number, number] => {
   if (direction === undefined) {
     direction = Math.sign(offsetX) ? DIRECTIONS.N : DIRECTIONS.S;
@@ -75,7 +75,7 @@ export const ewHelper = (
   startY: number,
   offsetY: number,
   marchType: MARCH_TYPES,
-  direction?: number,
+  direction?: number
 ): [number, number] => {
   if (direction === undefined) {
     direction = Math.sign(offsetY) ? DIRECTIONS.E : DIRECTIONS.W;
@@ -110,10 +110,12 @@ export const diagonalHelper = (
   offsetX: number,
   offsetY: number,
   marchType: MARCH_TYPES,
-  direction?: number,
+  direction?: number
 ): [number, number] => {
   if (Math.abs(offsetX) !== Math.abs(offsetY)) {
-    throw `offsetX (${offsetX}) and offsetY (${offsetY}) are not equal!`;
+    throw new Error(
+      `offsetX (${offsetX}) and offsetY (${offsetY}) are not equal!`
+    );
   }
 
   if (direction === undefined) {

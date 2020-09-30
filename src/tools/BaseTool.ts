@@ -1,6 +1,5 @@
-import { GlobalStore } from '@/store';
+import { GlobalStore } from "@/store";
 
-/* eslint-disable max-len */
 /**
  * Defines the functionality of a tool to be used in the Bottom Menu.
  * Methods are event handlers for the svg in Grapher.
@@ -9,7 +8,6 @@ import { GlobalStore } from '@/store';
  * - https://css-tricks.com/creating-a-panning-effect-for-svg/#conclusion
  * - https://www.sitepoint.com/how-to-translate-from-dom-to-svg-coordinates-and-back-again/
  */
-/* eslint-enable max-len */
 export default abstract class BaseTool {
   /**
    * Approximates coordinate on the two step grid
@@ -24,15 +22,16 @@ export default abstract class BaseTool {
    * Convert clientX/Y to the X/Y coordinates on the SVG rectangle.
    **/
   static convertClientCoordinates(event: MouseEvent): [number, number] {
-    const svg = document
-      .getElementsByClassName('grapher--svg')[0] as SVGSVGElement;
+    const svg = document.getElementsByClassName(
+      "grapher--svg"
+    )[0] as SVGSVGElement;
     const point = svg.createSVGPoint();
     point.x = event.clientX;
     point.y = event.clientY;
 
     const invertedCTMMatrix = GlobalStore.state.invertedCTMMatrix;
     if (invertedCTMMatrix === undefined) {
-      throw 'No inverted ctm matrix';
+      throw new Error("No inverted ctm matrix");
     }
     const convertedPoint = point.matrixTransform(invertedCTMMatrix);
 

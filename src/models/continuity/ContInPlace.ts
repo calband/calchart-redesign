@@ -1,9 +1,9 @@
-import BaseCont, { CONT_IDS } from './BaseCont';
-import StuntSheetDot from '../StuntSheetDot';
-import { DIRECTIONS, MARCH_TYPES } from '../util/constants';
-import { FlowBeat } from '../util/types';
-import { startPositionHelper } from './continuity-util';
-import Serializable from '../util/Serializable';
+import BaseCont, { CONT_IDS } from "./BaseCont";
+import StuntSheetDot from "../StuntSheetDot";
+import { DIRECTIONS, MARCH_TYPES } from "../util/constants";
+import { FlowBeat } from "../util/types";
+import { startPositionHelper } from "./continuity-util";
+import Serializable from "../util/Serializable";
 
 /**
  * Stay in the same position for the specified duration, direction, and march
@@ -13,7 +13,8 @@ import Serializable from '../util/Serializable';
  *  - [Close N]
  *  - Vamp E
  */
-export default class ContInPlace extends Serializable<ContInPlace>
+export default class ContInPlace
+  extends Serializable<ContInPlace>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.IN_PLACE;
 
@@ -23,7 +24,7 @@ export default class ContInPlace extends Serializable<ContInPlace>
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
-  humanReadableText = '';
+  humanReadableText = "";
 
   constructor(json: Partial<ContInPlace> = {}) {
     super();
@@ -31,14 +32,16 @@ export default class ContInPlace extends Serializable<ContInPlace>
   }
 
   getHumanReadableText(): string {
-    if (this.humanReadableText !== '') return this.humanReadableText;
+    if (this.humanReadableText !== "") return this.humanReadableText;
 
     const directionText: string = DIRECTIONS[this.direction];
 
-    let prefix = '';
-    if (this.marchType === MARCH_TYPES.HS
-      || this.marchType === MARCH_TYPES.MINI_MILITARY) {
-      prefix = 'MT';
+    let prefix = "";
+    if (
+      this.marchType === MARCH_TYPES.HS ||
+      this.marchType === MARCH_TYPES.MINI_MILITARY
+    ) {
+      prefix = "MT";
     }
 
     return this.duration === 0

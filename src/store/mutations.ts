@@ -1,10 +1,10 @@
-import { CalChartState } from '.';
-import Show from '@/models/Show';
-import getters from './getters';
-import BaseTool from '@/tools/BaseTool';
-import StuntSheet from '@/models/StuntSheet';
-import StuntSheetDot from '@/models/StuntSheetDot';
-import { MutationTree } from 'vuex';
+import { CalChartState } from ".";
+import Show from "@/models/Show";
+import getters from "./getters";
+import BaseTool from "@/tools/BaseTool";
+import StuntSheet from "@/models/StuntSheet";
+import StuntSheetDot from "@/models/StuntSheetDot";
+import { MutationTree } from "vuex";
 
 const mutations: MutationTree<CalChartState> = {
   // Show
@@ -28,14 +28,16 @@ const mutations: MutationTree<CalChartState> = {
 
   // Show -> StuntSheet
   removeDot(state, dotIndex: number): void {
-    const getSelectedStuntSheet
-      = getters.getSelectedStuntSheet as (state: CalChartState) => StuntSheet;
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.removeDot(dotIndex);
   },
   addDot(state, dot: StuntSheetDot): void {
-    const getSelectedStuntSheet
-      = getters.getSelectedStuntSheet as (state: CalChartState) => StuntSheet;
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.addDot(dot);
   },

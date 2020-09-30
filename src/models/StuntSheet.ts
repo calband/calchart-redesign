@@ -1,8 +1,8 @@
-import StuntSheetDot from './StuntSheetDot';
-import BaseCont from './continuity/BaseCont';
-import ContInPlace from './continuity/ContInPlace';
-import Serializable from './util/Serializable';
-import { loadContinuity } from './continuity/load-continuity';
+import StuntSheetDot from "./StuntSheetDot";
+import BaseCont from "./continuity/BaseCont";
+import ContInPlace from "./continuity/ContInPlace";
+import Serializable from "./util/Serializable";
+import { loadContinuity } from "./continuity/load-continuity";
 
 /**
  * Defines the positions/directions in a formation and the continuities
@@ -17,7 +17,7 @@ import { loadContinuity } from './continuity/load-continuity';
  *                            next StuntSheet
  */
 export default class StuntSheet extends Serializable<StuntSheet> {
-  title = '';
+  title = "";
 
   stuntSheetDots: StuntSheetDot[] = [];
 
@@ -28,14 +28,17 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   constructor(json: Partial<StuntSheet> = {}) {
     super();
     if (json.stuntSheetDots !== undefined) {
-      json.stuntSheetDots = json.stuntSheetDots
-        .map((dot: StuntSheetDot): StuntSheetDot => new StuntSheetDot(dot));
+      json.stuntSheetDots = json.stuntSheetDots.map(
+        (dot: StuntSheetDot): StuntSheetDot => new StuntSheetDot(dot)
+      );
     }
     if (json.dotTypes !== undefined) {
       json.dotTypes = json.dotTypes.map((dotType: BaseCont[]): BaseCont[] => {
-        return dotType.map((continuity: BaseCont): BaseCont => {
-          return loadContinuity(continuity);
-        });
+        return dotType.map(
+          (continuity: BaseCont): BaseCont => {
+            return loadContinuity(continuity);
+          }
+        );
       });
     }
     this.fromJson(json);

@@ -1,12 +1,12 @@
-import BaseCont, { CONT_IDS } from './BaseCont';
-import ContInPlace from './ContInPlace';
-import ContETFDynamic from './ContETFDynamic';
-import ContEven from './ContEven';
-import ContETFStatic from './ContETFStatic';
-import ContFollowLeader from './ContFollowLeader';
-import ContCounterMarch from './ContCounterMarch';
-import ContGateTurn from './ContGateTurn';
-import ContStepTwo from './ContStepTwo';
+import BaseCont, { CONT_IDS } from "./BaseCont";
+import ContInPlace from "./ContInPlace";
+import ContETFDynamic from "./ContETFDynamic";
+import ContEven from "./ContEven";
+import ContETFStatic from "./ContETFStatic";
+import ContFollowLeader from "./ContFollowLeader";
+import ContCounterMarch from "./ContCounterMarch";
+import ContGateTurn from "./ContGateTurn";
+import ContStepTwo from "./ContStepTwo";
 
 /**
  * Helper function to initialize a continuity based off it's id
@@ -38,6 +38,8 @@ export const loadContinuity = (continuityJson: BaseCont): BaseCont => {
       return new ContStepTwo(continuityJson);
 
     default:
-      throw `Continuity id ${continuityJson.continuityId} is not recognized`;
+      throw new Error(
+        `Continuity id ${continuityJson.continuityId} is not recognized`
+      );
   }
 };

@@ -1,4 +1,4 @@
-import Serializable from './util/Serializable';
+import Serializable from "./util/Serializable";
 
 /**
  * Defines landmarks needed to determine the size of the field.

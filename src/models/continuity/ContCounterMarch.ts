@@ -1,19 +1,20 @@
-import BaseCont, { CONT_IDS } from './BaseCont';
-import StuntSheetDot from '../StuntSheetDot';
-import { MARCH_TYPES } from '../util/constants';
-import { FlowBeat } from '../util/types';
-import Serializable from '../util/Serializable';
+import BaseCont, { CONT_IDS } from "./BaseCont";
+import StuntSheetDot from "../StuntSheetDot";
+import { MARCH_TYPES } from "../util/constants";
+import { FlowBeat } from "../util/types";
+import Serializable from "../util/Serializable";
 
 /**
  * Similar to follow the leader, but the leader also follows the tail.
  */
-export default class ContCounterMarch extends Serializable<ContCounterMarch>
+export default class ContCounterMarch
+  extends Serializable<ContCounterMarch>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.COUNTER_MARCH;
 
   duration = 0;
 
-  humanReadableText = '';
+  humanReadableText = "";
 
   marchType: MARCH_TYPES = MARCH_TYPES.HS;
 
@@ -23,16 +24,16 @@ export default class ContCounterMarch extends Serializable<ContCounterMarch>
   }
 
   getHumanReadableText(): string {
-    if (this.humanReadableText !== '') return this.humanReadableText;
+    if (this.humanReadableText !== "") return this.humanReadableText;
     // TODO: Implement
-    return '';
+    return "";
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
-    endDot?: StuntSheetDot,
+    endDot?: StuntSheetDot
   ): void {
     // TODO: Implement
   }
