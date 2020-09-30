@@ -9,8 +9,10 @@ Project bootstrapped from [Vue CLI](https://cli.vuejs.org/).
 ## Project setup
 
 ```
-npm install
+npm ci
 ```
+
+Please use `npm ci` instead of `npm install` to avoid `package-lock.json` being changed at random. For example see https://github.com/npm/cli/issues/1360.
 
 Please use the LTS version of [NodeJS/npm](https://nodejs.org/en/) for this project.
 
