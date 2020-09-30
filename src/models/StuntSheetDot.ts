@@ -1,5 +1,5 @@
-import { FlowBeat } from './util/types'
-import Serializable from './util/Serializable'
+import { FlowBeat } from "./util/types";
+import Serializable from "./util/Serializable";
 
 /**
  * Defines the position and direction of a marcher for a specific StuntSheet.
@@ -23,8 +23,8 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
 
   cachedFlow: FlowBeat[] | null = null;
 
-  constructor (dotJson: Partial<StuntSheetDot> = {}) {
-    super()
-    this.fromJson(dotJson)
+  constructor(dotJson: Partial<StuntSheetDot> = {}) {
+    super();
+    this.fromJson(dotJson);
   }
 }

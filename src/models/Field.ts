@@ -1,4 +1,4 @@
-import Serializable from './util/Serializable'
+import Serializable from "./util/Serializable";
 
 /**
  * Defines landmarks needed to determine the size of the field.
@@ -18,8 +18,8 @@ export default class Field extends Serializable<Field> {
 
   middleOfField = 50;
 
-  constructor (json: Partial<Field> = {}) {
-    super()
-    this.fromJson(json)
+  constructor(json: Partial<Field> = {}) {
+    super();
+    this.fromJson(json);
   }
 }

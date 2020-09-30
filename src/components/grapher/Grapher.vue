@@ -6,10 +6,7 @@
       @click.prevent="onClick"
       @mousemove="onMousemove"
     >
-      <g
-        class="grapher--wrapper"
-        data-test="grapher--wrapper"
-      >
+      <g class="grapher--wrapper" data-test="grapher--wrapper">
         <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
         <rect
           class="grapher--field-rect"
@@ -17,10 +14,7 @@
           :height="fieldHeight"
           data-test="grapher--field-rect"
         />
-        <g
-          v-if="yardlines"
-          class="grapher--line-container"
-        >
+        <g v-if="yardlines" class="grapher--line-container">
           <line
             v-for="offsetX in yardLineOffsetsX"
             :key="offsetX + '-yardLine'"
@@ -31,9 +25,7 @@
             data-test="grapher--yard-line"
           />
         </g>
-        <g
-          class="grapher--line-container"
-        >
+        <g class="grapher--line-container">
           <template v-for="offsetY in hashMarkOffsetsY">
             <line
               v-for="offsetX in yardLineOffsetsX"
@@ -46,10 +38,7 @@
             />
           </template>
         </g>
-        <g
-          v-if="fourStepGrid"
-          class="grapher--grid-container"
-        >
+        <g v-if="fourStepGrid" class="grapher--grid-container">
           <line
             v-for="offsetX in fourStepGridOffsetsX"
             :key="offsetX + '-vertical'"
@@ -69,10 +58,7 @@
             data-test="grapher--grid-horizontal"
           />
         </g>
-        <g
-          v-if="yardlineNumbers"
-          class="grapher--number-container"
-        >
+        <g v-if="yardlineNumbers" class="grapher--number-container">
           <!-- Bottom of the yard line numbers is approximately 11 steps from
               the sideline -->
           <text
@@ -123,83 +109,80 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import svgPanZoom from 'svg-pan-zoom'
-import BaseTool from '@/tools/BaseTool'
-import StuntSheetDot from '@/models/StuntSheetDot'
-import StuntSheet from '@/models/StuntSheet'
+import Vue from "vue";
+import svgPanZoom from "svg-pan-zoom";
+import BaseTool from "@/tools/BaseTool";
+import StuntSheetDot from "@/models/StuntSheetDot";
+import StuntSheet from "@/models/StuntSheet";
 
 /**
  * Renders the field, the dots of the current stunt sheet, and pending dots
  * generated from the tool in use
  */
 export default Vue.extend({
-  name: 'Grapher',
+  name: "Grapher",
   computed: {
-    hashMarkOffsetsY (): [number, number] {
+    hashMarkOffsetsY(): [number, number] {
       return [
         this.$store.getters.getFrontHashOffsetY,
-        this.$store.getters.getBackHashOffsetY
-      ]
+        this.$store.getters.getBackHashOffsetY,
+      ];
     },
-    yardLineOffsetsX (): number[] {
-      const middleOfField = this.$store.getters.getMiddleOfField
-      const yardLineOffsetsX: number[] = []
-      let x = 16
+    yardLineOffsetsX(): number[] {
+      const middleOfField = this.$store.getters.getMiddleOfField;
+      const yardLineOffsetsX: number[] = [];
+      let x = 16;
       for (let lineNum = 0; lineNum < middleOfField; lineNum += 5) {
-        yardLineOffsetsX.push(x)
-        x += 8
+        yardLineOffsetsX.push(x);
+        x += 8;
       }
       for (let lineNum = middleOfField; lineNum >= 0; lineNum -= 5) {
-        yardLineOffsetsX.push(x)
-        x += 8
+        yardLineOffsetsX.push(x);
+        x += 8;
       }
-      return yardLineOffsetsX
+      return yardLineOffsetsX;
     },
-    fourStepGrid (): boolean {
-      return this.$store.state.fourStepGrid
+    fourStepGrid(): boolean {
+      return this.$store.state.fourStepGrid;
     },
-    yardlines (): boolean {
-      return this.$store.state.yardlines
+    yardlines(): boolean {
+      return this.$store.state.yardlines;
     },
-    yardlineNumbers (): boolean {
-      return this.$store.state.yardlineNumbers
+    yardlineNumbers(): boolean {
+      return this.$store.state.yardlineNumbers;
     },
-    fieldWidth (): number {
+    fieldWidth(): number {
       // Account for endzones + area between yard lines
-      return 16 + 8 * (this.yardLineOffsetsX.length - 1) + 16
+      return 16 + 8 * (this.yardLineOffsetsX.length - 1) + 16;
     },
-    fieldHeight (): number {
-      return this.$store.getters.getBackHashOffsetY +
+    fieldHeight(): number {
+      return (
+        this.$store.getters.getBackHashOffsetY +
         this.$store.getters.getFrontHashOffsetY
+      );
     },
-    fourStepGridOffsetsX (): number[] {
-      const offset: number = this.$store.state.yardlines ? 8 : 4
-      const retVal: number[] = [
-        4,
-        8,
-        this.fieldWidth - 8,
-        this.fieldWidth - 4
-      ]
+    fourStepGridOffsetsX(): number[] {
+      const offset: number = this.$store.state.yardlines ? 8 : 4;
+      const retVal: number[] = [4, 8, this.fieldWidth - 8, this.fieldWidth - 4];
       for (
         let offsetX = 12;
         offsetX <= this.fieldWidth - 12;
         offsetX += offset
       ) {
-        retVal.push(offsetX)
+        retVal.push(offsetX);
       }
-      return retVal
+      return retVal;
     },
-    fourStepGridOffsetsY (): number[] {
-      const retVal: number[] = []
+    fourStepGridOffsetsY(): number[] {
+      const retVal: number[] = [];
       for (let offsetY = 4; offsetY < this.fieldHeight; offsetY += 4) {
-        retVal.push(offsetY)
+        retVal.push(offsetY);
       }
-      return retVal
+      return retVal;
     },
-    yardLineNumberAndOffsetX (): [string, number][] {
-      const retVal: [string, number][] = []
-      let yardLineNumber = 1
+    yardLineNumberAndOffsetX(): [string, number][] {
+      const retVal: [string, number][] = [];
+      let yardLineNumber = 1;
       for (
         let lineIndex = 2;
         lineIndex < this.yardLineOffsetsX.length / 2;
@@ -207,56 +190,56 @@ export default Vue.extend({
       ) {
         retVal.push([
           `${yardLineNumber.toString()} 0`,
-          this.yardLineOffsetsX[lineIndex]
-        ])
-        const oppositeLineIndex = this.yardLineOffsetsX.length - 1 - lineIndex
+          this.yardLineOffsetsX[lineIndex],
+        ]);
+        const oppositeLineIndex = this.yardLineOffsetsX.length - 1 - lineIndex;
         if (oppositeLineIndex !== lineIndex) {
           retVal.push([
             `${yardLineNumber.toString()} 0`,
-            this.yardLineOffsetsX[oppositeLineIndex]
-          ])
+            this.yardLineOffsetsX[oppositeLineIndex],
+          ]);
         }
-        yardLineNumber += 1
+        yardLineNumber += 1;
       }
-      return retVal
+      return retVal;
     },
-    stuntSheetDots (): StuntSheetDot[] {
-      const currentSS: StuntSheet = this.$store.getters.getSelectedStuntSheet
-      return currentSS.stuntSheetDots
+    stuntSheetDots(): StuntSheetDot[] {
+      const currentSS: StuntSheet = this.$store.getters.getSelectedStuntSheet;
+      return currentSS.stuntSheetDots;
     },
-    grapherToolDots (): StuntSheetDot[] {
-      return this.$store.state.grapherToolDots
-    }
+    grapherToolDots(): StuntSheetDot[] {
+      return this.$store.state.grapherToolDots;
+    },
   },
-  mounted () {
-    const svgPanZoomInstance = svgPanZoom('.grapher--svg', {
-      viewportSelector: '.grapher--wrapper',
+  mounted() {
+    const svgPanZoomInstance = svgPanZoom(".grapher--svg", {
+      viewportSelector: ".grapher--wrapper",
       panEnabled: true,
       zoomEnabled: true,
       controlIconsEnabled: true,
-      dblClickZoomEnabled: false
-    })
-    this.$store.commit('setGrapherSvgPanZoom', svgPanZoomInstance)
+      dblClickZoomEnabled: false,
+    });
+    this.$store.commit("setGrapherSvgPanZoom", svgPanZoomInstance);
 
-    window.addEventListener('resize', this.onResize)
+    window.addEventListener("resize", this.onResize);
   },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.onResize)
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
   },
   methods: {
-    onResize (): void {
-      this.$store.state.grapherSvgPanZoom.resize()
+    onResize(): void {
+      this.$store.state.grapherSvgPanZoom.resize();
     },
-    onClick (event: MouseEvent): void {
-      const toolSelected: BaseTool = this.$store.state.toolSelected
-      toolSelected.onClick(event)
+    onClick(event: MouseEvent): void {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      toolSelected.onClick(event);
     },
-    onMousemove (event: MouseEvent): void {
-      const toolSelected: BaseTool = this.$store.state.toolSelected
-      toolSelected.onMousemove(event)
-    }
-  }
-})
+    onMousemove(event: MouseEvent): void {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      toolSelected.onMousemove(event);
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
@@ -275,7 +258,8 @@ export default Vue.extend({
   left: 0;
 }
 
-.grapher--line-container, .grapher--field-rect {
+.grapher--line-container,
+.grapher--field-rect {
   stroke: $white;
   stroke-width: 0.5;
 }
@@ -301,5 +285,4 @@ export default Vue.extend({
     opacity: 0.5;
   }
 }
-
 </style>

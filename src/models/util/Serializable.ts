@@ -8,7 +8,7 @@
  * See the unit tests for an example of how to use this.
  */
 export default class Serializable<T extends Record<string, any>> {
-  fromJson (json: Partial<T> = {}): void {
-    Object.assign(this, json)
+  fromJson(json: Partial<T> = {}): void {
+    Object.assign(this, json);
   }
 }

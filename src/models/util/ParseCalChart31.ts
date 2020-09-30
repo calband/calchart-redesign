@@ -82,9 +82,9 @@
  * If POINT_LABEL_FLIP is not supplied, all points assumed to be not flipped
  */
 
-import Show from '../Show'
-import StuntSheet from '../StuntSheet'
-import StuntSheetDot from '../StuntSheetDot'
+import Show from "../Show";
+import StuntSheet from "../StuntSheet";
+import StuntSheetDot from "../StuntSheetDot";
 import {
   readInt32,
   readInt16,
@@ -92,270 +92,303 @@ import {
   readArrayOfStringsTillEnd,
   readFourCharCode,
   calChart3To4ConvertX,
-  calChart3To4ConvertY
-} from './ParseCalChart3Utils'
-import { ParseCalChart } from './ParseCalChart'
+  calChart3To4ConvertY,
+} from "./ParseCalChart3Utils";
+import { ParseCalChart } from "./ParseCalChart";
 
 export class ParseCalChart31 implements ParseCalChart {
   private numberDots = 0;
 
-  ParseShow (inputBuffer: ArrayBuffer): Show {
+  ParseShow(inputBuffer: ArrayBuffer): Show {
     // we know the header for a CalChart3.1 show is 8 bytes.  Remove it.
-    const buffer = new DataView(inputBuffer, 0, inputBuffer.byteLength)
+    const buffer = new DataView(inputBuffer, 0, inputBuffer.byteLength);
     // CalChart3.1 is more complicated a format so we parse the blocks inline.
-    let offset = 8
-    if (readFourCharCode(buffer, offset) !== 'SHOW') {
-      throw new Error('Did not find SHOW block')
+    let offset = 8;
+    if (readFourCharCode(buffer, offset) !== "SHOW") {
+      throw new Error("Did not find SHOW block");
     }
-    offset += 4
+    offset += 4;
 
     const show = new Show({
-      title: '',
-      stuntSheets: []
-    })
+      title: "",
+      stuntSheets: [],
+    });
 
-    offset = this.ParseSHOWSIZE(show, buffer, offset)
-    offset = this.ParseSHOWLABL(show, buffer, offset)
-    offset = this.ParseSHOWDESC(show, buffer, offset)
-    offset = this.ParseSHOWSHETs(show, buffer, offset)
-    return show
+    offset = this.ParseSHOWSIZE(show, buffer, offset);
+    offset = this.ParseSHOWLABL(show, buffer, offset);
+    offset = this.ParseSHOWDESC(show, buffer, offset);
+    offset = this.ParseSHOWSHETs(show, buffer, offset);
+    return show;
   }
 
-  ParseSHOWSIZE (show: Show, buffer: DataView, offset: number): number {
-    if (readFourCharCode(buffer, offset) !== 'SIZE') {
-      throw new Error('Did not find SIZE block')
+  ParseSHOWSIZE(show: Show, buffer: DataView, offset: number): number {
+    if (readFourCharCode(buffer, offset) !== "SIZE") {
+      throw new Error("Did not find SIZE block");
     }
-    offset += 4
+    offset += 4;
     if (readInt32(buffer, offset) !== 4) {
-      throw new Error('SIZE block incorrect size')
+      throw new Error("SIZE block incorrect size");
     }
-    offset += 4
-    this.numberDots = readInt32(buffer, offset)
-    return offset + 4
+    offset += 4;
+    this.numberDots = readInt32(buffer, offset);
+    return offset + 4;
   }
 
-  ParseSHOWLABL (show: Show, buffer: DataView, offset: number): number {
-    if (readFourCharCode(buffer, offset) !== 'LABL') {
-      return offset
+  ParseSHOWLABL(show: Show, buffer: DataView, offset: number): number {
+    if (readFourCharCode(buffer, offset) !== "LABL") {
+      return offset;
     }
-    offset += 4
-    const size = readInt32(buffer, offset)
-    offset += 4
+    offset += 4;
+    const size = readInt32(buffer, offset);
+    offset += 4;
 
-    const block = new DataView(
-      buffer.buffer,
-      buffer.byteOffset + offset,
-      size
-    )
-    const labels = readArrayOfStringsTillEnd(block, 0)
+    const block = new DataView(buffer.buffer, buffer.byteOffset + offset, size);
+    const labels = readArrayOfStringsTillEnd(block, 0);
     if (labels.length !== this.numberDots) {
-      throw new Error(`Wrong labels. Expected ${this.numberDots}, read ${labels.length}.`)
+      throw new Error(
+        `Wrong labels. Expected ${this.numberDots}, read ${labels.length}.`
+      );
     }
-    show.dotLabels = labels
-    return offset + size
+    show.dotLabels = labels;
+    return offset + size;
   }
 
-  ParseSHOWDESC (show: Show, buffer: DataView, offset: number): number {
-    if (readFourCharCode(buffer, offset) !== 'DESC') {
-      return offset
+  ParseSHOWDESC(show: Show, buffer: DataView, offset: number): number {
+    if (readFourCharCode(buffer, offset) !== "DESC") {
+      return offset;
     }
-    const size = readInt32(buffer, offset)
-    offset += 4
-    const block = new DataView(
-      buffer.buffer,
-      buffer.byteOffset + offset,
-      size
-    )
-    show.title = readStringTillEnd(block, 0)
-    return offset + size
+    const size = readInt32(buffer, offset);
+    offset += 4;
+    const block = new DataView(buffer.buffer, buffer.byteOffset + offset, size);
+    show.title = readStringTillEnd(block, 0);
+    return offset + size;
   }
 
-  ParseSHOWSHETs (show: Show, buffer: DataView, offset: number): number {
-    while (readFourCharCode(buffer, offset) === 'GURK') {
-      offset += 4
-      offset = this.ParseSHOWSHET(show, buffer, offset)
+  ParseSHOWSHETs(show: Show, buffer: DataView, offset: number): number {
+    while (readFourCharCode(buffer, offset) === "GURK") {
+      offset += 4;
+      offset = this.ParseSHOWSHET(show, buffer, offset);
     }
-    return offset
+    return offset;
   }
 
-  ParseSHOWSHET (show: Show, buffer: DataView, offset: number): number {
-    if (readFourCharCode(buffer, offset) !== 'SHET') {
-      throw new Error('Did not find SHET block')
+  ParseSHOWSHET(show: Show, buffer: DataView, offset: number): number {
+    if (readFourCharCode(buffer, offset) !== "SHET") {
+      throw new Error("Did not find SHET block");
     }
-    offset += 4
-    const stuntSheet = new StuntSheet()
-    offset = this.ParseSHETNAME(stuntSheet, buffer, offset)
-    offset = this.ParseSHETDURA(stuntSheet, buffer, offset)
-    offset = this.ParseSHETPOS(stuntSheet, buffer, offset)
-    offset = this.ParseSHETREFPs(stuntSheet, buffer, offset)
-    offset = this.ParseSHETSYMBs(stuntSheet, buffer, offset)
-    offset = this.ParseSHETTYPEs(stuntSheet, buffer, offset)
-    offset = this.ParseSHETLABLs(stuntSheet, buffer, offset)
-    offset = this.ParseSHETCONTs(stuntSheet, buffer, offset)
+    offset += 4;
+    const stuntSheet = new StuntSheet();
+    offset = this.ParseSHETNAME(stuntSheet, buffer, offset);
+    offset = this.ParseSHETDURA(stuntSheet, buffer, offset);
+    offset = this.ParseSHETPOS(stuntSheet, buffer, offset);
+    offset = this.ParseSHETREFPs(stuntSheet, buffer, offset);
+    offset = this.ParseSHETSYMBs(stuntSheet, buffer, offset);
+    offset = this.ParseSHETTYPEs(stuntSheet, buffer, offset);
+    offset = this.ParseSHETLABLs(stuntSheet, buffer, offset);
+    offset = this.ParseSHETCONTs(stuntSheet, buffer, offset);
 
-    if (readFourCharCode(buffer, offset) !== 'END ') {
-      throw new Error('Did not find the sheet END')
+    if (readFourCharCode(buffer, offset) !== "END ") {
+      throw new Error("Did not find the sheet END");
     }
-    offset += 4
-    if (readFourCharCode(buffer, offset) !== 'SHET') {
-      throw new Error('Did not find the sheet END')
+    offset += 4;
+    if (readFourCharCode(buffer, offset) !== "SHET") {
+      throw new Error("Did not find the sheet END");
     }
-    offset += 4
+    offset += 4;
 
-    show.stuntSheets.push(stuntSheet)
-    return offset
+    show.stuntSheets.push(stuntSheet);
+    return offset;
   }
 
-  ParseSHETNAME (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    const nextSection = readFourCharCode(buffer, offset)
-    if (nextSection !== 'NAME') {
-      throw new Error('Did not find Sheet NAME block')
+  ParseSHETNAME(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    const nextSection = readFourCharCode(buffer, offset);
+    if (nextSection !== "NAME") {
+      throw new Error("Did not find Sheet NAME block");
     }
-    offset += 4
-    const size = readInt32(buffer, offset)
-    offset += 4
-    const block = new DataView(
-      buffer.buffer,
-      buffer.byteOffset + offset,
-      size
-    )
-    stuntSheet.title = readStringTillEnd(block, 0)
-    return offset + size
+    offset += 4;
+    const size = readInt32(buffer, offset);
+    offset += 4;
+    const block = new DataView(buffer.buffer, buffer.byteOffset + offset, size);
+    stuntSheet.title = readStringTillEnd(block, 0);
+    return offset + size;
   }
 
-  ParseSHETDURA (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    if (readFourCharCode(buffer, offset) !== 'DURA') {
-      throw new Error('Did not find Sheet DURA block')
+  ParseSHETDURA(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    if (readFourCharCode(buffer, offset) !== "DURA") {
+      throw new Error("Did not find Sheet DURA block");
     }
-    offset += 4
+    offset += 4;
     if (readInt32(buffer, offset) !== 4) {
-      throw new Error('DURA block not correct size')
+      throw new Error("DURA block not correct size");
     }
-    offset += 4
-    stuntSheet.beats = readInt32(buffer, offset)
-    return offset + 4
+    offset += 4;
+    stuntSheet.beats = readInt32(buffer, offset);
+    return offset + 4;
   }
 
-  ParseSHETPOS (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    if (readFourCharCode(buffer, offset) !== 'POS ') {
-      throw new Error('Did not find Sheet POS block')
+  ParseSHETPOS(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    if (readFourCharCode(buffer, offset) !== "POS ") {
+      throw new Error("Did not find Sheet POS block");
     }
-    offset += 4
-    let numPoints = readInt32(buffer, offset) / 4
+    offset += 4;
+    let numPoints = readInt32(buffer, offset) / 4;
     if (numPoints !== this.numberDots) {
-      throw new Error(`POS error.  Expecting ${this.numberDots}, received ${numPoints}.`)
+      throw new Error(
+        `POS error.  Expecting ${this.numberDots}, received ${numPoints}.`
+      );
     }
-    offset += 4
-    const dots: StuntSheetDot[] = []
+    offset += 4;
+    const dots: StuntSheetDot[] = [];
 
     // keep parsing points till data is exhausted
     while (numPoints > 0) {
-      dots.push(new StuntSheetDot({
-        x: calChart3To4ConvertX(readInt16(buffer, offset)),
-        y: calChart3To4ConvertY(readInt16(buffer, offset + 2))
-      }))
-      offset += 4
-      --numPoints
+      dots.push(
+        new StuntSheetDot({
+          x: calChart3To4ConvertX(readInt16(buffer, offset)),
+          y: calChart3To4ConvertY(readInt16(buffer, offset + 2)),
+        })
+      );
+      offset += 4;
+      --numPoints;
     }
-    stuntSheet.stuntSheetDots = dots
-    return offset
+    stuntSheet.stuntSheetDots = dots;
+    return offset;
   }
 
-  ParseSHETREFPs (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    while (readFourCharCode(buffer, offset) === 'REFP') {
-      offset = this.ParseSHETREFP(stuntSheet, buffer, offset)
+  ParseSHETREFPs(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    while (readFourCharCode(buffer, offset) === "REFP") {
+      offset = this.ParseSHETREFP(stuntSheet, buffer, offset);
     }
-    return offset
+    return offset;
   }
 
-  ParseSHETREFP (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    if (readFourCharCode(buffer, offset) !== 'REFP') {
-      return offset
+  ParseSHETREFP(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    if (readFourCharCode(buffer, offset) !== "REFP") {
+      return offset;
     }
-    offset += 4
+    offset += 4;
     // references points not implemented.  Just skip for now
     // [#51 Handle ReferencePoints from CalChart3]
-    return offset + readInt32(buffer, offset) + 4
+    return offset + readInt32(buffer, offset) + 4;
   }
 
-  ParseSHETSYMBs (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    while (readFourCharCode(buffer, offset) === 'SYMB') {
-      offset = this.ParseSHETSYMB(stuntSheet, buffer, offset)
+  ParseSHETSYMBs(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    while (readFourCharCode(buffer, offset) === "SYMB") {
+      offset = this.ParseSHETSYMB(stuntSheet, buffer, offset);
     }
-    return offset
+    return offset;
   }
 
-  ParseSHETSYMB (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    if (readFourCharCode(buffer, offset) !== 'SYMB') {
-      return offset
+  ParseSHETSYMB(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    if (readFourCharCode(buffer, offset) !== "SYMB") {
+      return offset;
     }
-    offset += 4
+    offset += 4;
     // Symbols not implemented.  Just skip for now
     // [#52 Handle Symbols from CalChart3]
-    return offset + readInt32(buffer, offset) + 4
+    return offset + readInt32(buffer, offset) + 4;
   }
 
-  ParseSHETTYPEs (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    while (readFourCharCode(buffer, offset) === 'TYPE') {
-      offset = this.ParseSHETTYPE(stuntSheet, buffer, offset)
+  ParseSHETTYPEs(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    while (readFourCharCode(buffer, offset) === "TYPE") {
+      offset = this.ParseSHETTYPE(stuntSheet, buffer, offset);
     }
-    return offset
+    return offset;
   }
 
-  ParseSHETTYPE (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    if (readFourCharCode(buffer, offset) !== 'TYPE') {
-      return offset
+  ParseSHETTYPE(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    if (readFourCharCode(buffer, offset) !== "TYPE") {
+      return offset;
     }
-    offset += 4
+    offset += 4;
     // Continuity index not implemented.  Just skip for now
     // [#53 Handle Continuity and Continuity Index from CalChart3 files]
-    return offset + readInt32(buffer, offset) + 4
+    return offset + readInt32(buffer, offset) + 4;
   }
 
-  ParseSHETLABLs (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    while (readFourCharCode(buffer, offset) === 'LABL') {
-      offset = this.ParseSHETLABL(stuntSheet, buffer, offset)
+  ParseSHETLABLs(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    while (readFourCharCode(buffer, offset) === "LABL") {
+      offset = this.ParseSHETLABL(stuntSheet, buffer, offset);
     }
-    return offset
+    return offset;
   }
 
-  ParseSHETLABL (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    if (readFourCharCode(buffer, offset) !== 'LABL') {
-      return offset
+  ParseSHETLABL(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    if (readFourCharCode(buffer, offset) !== "LABL") {
+      return offset;
     }
-    offset += 4
+    offset += 4;
     // Label flip not implemented.  Just skip for now
     // [#54 Handle LabelFlip from CalChart3 files]
-    return offset + readInt32(buffer, offset) + 4
+    return offset + readInt32(buffer, offset) + 4;
   }
 
-  ParseSHETCONTs (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    while (readFourCharCode(buffer, offset) === 'CONT') {
-      offset = this.ParseSHETCONT(stuntSheet, buffer, offset)
+  ParseSHETCONTs(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    while (readFourCharCode(buffer, offset) === "CONT") {
+      offset = this.ParseSHETCONT(stuntSheet, buffer, offset);
     }
-    return offset
+    return offset;
   }
 
-  ParseSHETCONT (stuntSheet: StuntSheet, buffer: DataView, offset: number):
-  number {
-    if (readFourCharCode(buffer, offset) !== 'CONT') {
-      return offset
+  ParseSHETCONT(
+    stuntSheet: StuntSheet,
+    buffer: DataView,
+    offset: number
+  ): number {
+    if (readFourCharCode(buffer, offset) !== "CONT") {
+      return offset;
     }
-    offset += 4
+    offset += 4;
     // Continuity translation not implemented.  Just skip for now
     // [#53 Handle Continuity and Continuity Index from CalChart3 files]
-    return offset + readInt32(buffer, offset) + 4
+    return offset + readInt32(buffer, offset) + 4;
   }
 }

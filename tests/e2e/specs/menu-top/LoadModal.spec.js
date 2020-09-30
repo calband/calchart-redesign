@@ -1,26 +1,22 @@
-describe('components/menu-top/LoadModal', () => {
+describe("components/menu-top/LoadModal", () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit("/");
 
-    cy.get('[data-test="menu-top--file"]')
-      .click();
+    cy.get('[data-test="menu-top--file"]').click();
 
-    cy.get('[data-test="menu-top--load-show"]')
-      .click();
+    cy.get('[data-test="menu-top--load-show"]').click();
 
-    cy.get('[data-test="menu-top--load-modal"]')
-      .should('be.visible');
+    cy.get('[data-test="menu-top--load-modal"]').should("be.visible");
   });
 
-  it('renders with the defaults', () => {
-    cy.get('[data-test="load-model--title"]')
-      .should('have.text', ' Load Show ');
-    cy.get('[data-test="load-modal--icon"]')
-      .should('have.text', 'Click to load');
-    cy.get('[data-test="load-modal--import"]')
-      .should('not.be.enabled');
-    cy.get('[data-test="load-modal--close"]')
-      .should('be.visible');
+  it("renders with the defaults", () => {
+    cy.get('[data-test="load-model--title"]').should("have.text", "Load Show");
+    cy.get('[data-test="load-modal--icon"]').should(
+      "have.text",
+      "Click to load"
+    );
+    cy.get('[data-test="load-modal--import"]').should("not.be.enabled");
+    cy.get('[data-test="load-modal--close"]').should("be.visible");
   });
 
   // I'm leaving this in as a reference to how we can get this working.
@@ -41,11 +37,8 @@ describe('components/menu-top/LoadModal', () => {
   // });
 
   it('closes upon clicking "close"', () => {
-    cy.get('[data-test="load-modal--close"]')
-      .click();
+    cy.get('[data-test="load-modal--close"]').click();
 
-    cy.get('[data-test="load-modal"]')
-      .should('not.be.visible');
+    cy.get('[data-test="load-modal"]').should("not.be.visible");
   });
-
 });

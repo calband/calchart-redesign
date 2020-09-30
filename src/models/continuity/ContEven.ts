@@ -1,8 +1,8 @@
-import BaseCont, { CONT_IDS } from './BaseCont'
-import { MARCH_TYPES } from '../util/constants'
-import { FlowBeat } from '../util/types'
-import StuntSheetDot from '../StuntSheetDot'
-import Serializable from '../util/Serializable'
+import BaseCont, { CONT_IDS } from "./BaseCont";
+import { MARCH_TYPES } from "../util/constants";
+import { FlowBeat } from "../util/types";
+import StuntSheetDot from "../StuntSheetDot";
+import Serializable from "../util/Serializable";
 
 /**
  * Moves in even steps for the entirety of the specified duration to the end
@@ -11,7 +11,8 @@ import Serializable from '../util/Serializable'
  * - Even HS 16
  * - Even MM 8
  */
-export default class ContEven extends Serializable<ContEven>
+export default class ContEven
+  extends Serializable<ContEven>
   implements BaseCont {
   readonly continuityId: CONT_IDS = CONT_IDS.EVEN;
 
@@ -19,21 +20,21 @@ export default class ContEven extends Serializable<ContEven>
 
   marchType: MARCH_TYPES = MARCH_TYPES.MINI_MILITARY;
 
-  humanReadableText = '';
+  humanReadableText = "";
 
-  constructor (json: Partial<ContEven> = {}) {
-    super()
-    this.fromJson(json)
+  constructor(json: Partial<ContEven> = {}) {
+    super();
+    this.fromJson(json);
   }
 
-  getHumanReadableText (): string {
-    if (this.humanReadableText !== '') return this.humanReadableText
+  getHumanReadableText(): string {
+    if (this.humanReadableText !== "") return this.humanReadableText;
     // TODO: Implement
-    return ''
+    return "";
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  addToFlow (
+  addToFlow(
     flow: FlowBeat[],
     startDot: StuntSheetDot,
     endDot?: StuntSheetDot

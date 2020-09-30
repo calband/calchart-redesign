@@ -1,13 +1,13 @@
-import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
-import mutations from './mutations'
-import getters from './getters'
-import Show from '@/models/Show'
-import Serializable from '@/models/util/Serializable'
-import BaseTool from '@/tools/BaseTool'
-import StuntSheetDot from '@/models/StuntSheetDot'
+import Vue from "vue";
+import Vuex, { Store } from "vuex";
+import mutations from "./mutations";
+import getters from "./getters";
+import Show from "@/models/Show";
+import Serializable from "@/models/util/Serializable";
+import BaseTool from "@/tools/BaseTool";
+import StuntSheetDot from "@/models/StuntSheetDot";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 /**
  * Defines the global state for the application
@@ -37,17 +37,19 @@ export class CalChartState extends Serializable<CalChartState> {
 
   grapherToolDots: StuntSheetDot[] = [];
 
-  constructor (json: Partial<CalChartState> = {}) {
-    super()
-    this.fromJson(json)
+  constructor(json: Partial<CalChartState> = {}) {
+    super();
+    this.fromJson(json);
   }
 }
 
-export const generateStore =
-(json: Partial<CalChartState> = {}): Store<CalChartState> => new Vuex.Store({
-  state: new CalChartState(json),
-  mutations,
-  getters
-})
+export const generateStore = (
+  json: Partial<CalChartState> = {}
+): Store<CalChartState> =>
+  new Vuex.Store({
+    state: new CalChartState(json),
+    mutations,
+    getters,
+  });
 
-export const GlobalStore = generateStore()
+export const GlobalStore = generateStore();

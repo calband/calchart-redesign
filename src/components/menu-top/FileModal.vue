@@ -1,22 +1,15 @@
 <template>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">
-        Show Settings
-      </p>
+      <p class="modal-card-title">Show Settings</p>
     </header>
 
     <section class="modal-card-body">
       <b-field label="Show title">
-        <b-input
-          v-model="showTitle"
-          data-test="file-modal--show-title"
-        />
+        <b-input v-model="showTitle" data-test="file-modal--show-title" />
       </b-field>
 
-      <p class="title">
-        Field
-      </p>
+      <p class="title">Field</p>
 
       <b-field label="Front hash Y offset">
         <b-numberinput
@@ -59,53 +52,51 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 
 /**
  * Show and modify values in the current Show model
  */
 export default Vue.extend({
-  name: 'FileModal',
+  name: "FileModal",
   computed: {
     showTitle: {
-      get (): string {
-        return this.$store.getters.getShowTitle
+      get(): string {
+        return this.$store.getters.getShowTitle;
       },
-      set (title: string): void {
-        this.$store.commit('setShowTitle', title)
-      }
+      set(title: string): void {
+        this.$store.commit("setShowTitle", title);
+      },
     },
 
     frontHashOffsetY: {
-      get (): number {
-        return this.$store.getters.getFrontHashOffsetY
+      get(): number {
+        return this.$store.getters.getFrontHashOffsetY;
       },
-      set (offsetY: number): void {
-        this.$store.commit('setFrontHashOffsetY', offsetY)
-      }
+      set(offsetY: number): void {
+        this.$store.commit("setFrontHashOffsetY", offsetY);
+      },
     },
 
     backHashOffsetY: {
-      get (): number {
-        return this.$store.getters.getBackHashOffsetY
+      get(): number {
+        return this.$store.getters.getBackHashOffsetY;
       },
-      set (offsetY: number): void {
-        this.$store.commit('setBackHashOffsetY', offsetY)
-      }
+      set(offsetY: number): void {
+        this.$store.commit("setBackHashOffsetY", offsetY);
+      },
     },
 
     middleOfField: {
-      get (): number {
-        return this.$store.getters.getMiddleOfField
+      get(): number {
+        return this.$store.getters.getMiddleOfField;
       },
-      set (middle: number): void {
-        this.$store.commit('setMiddleOfField', middle)
-      }
-    }
-  }
-})
+      set(middle: number): void {
+        this.$store.commit("setMiddleOfField", middle);
+      },
+    },
+  },
+});
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

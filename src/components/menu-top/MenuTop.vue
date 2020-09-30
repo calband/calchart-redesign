@@ -3,22 +3,16 @@
     <b-navbar type="is-primary">
       <template slot="brand">
         <b-navbar-item>
-          <img
-            src="@/assets/highstepper-gold.png"
-            alt="Calchart"
-          >
+          <img src="@/assets/highstepper-gold.png" alt="Calchart" />
         </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-dropdown
-          label="File"
-          data-test="menu-top--file"
-        >
+        <b-navbar-dropdown label="File" data-test="menu-top--file">
           <b-navbar-item data-test="menu-top--selected-show">
             Selected: {{ showTitle }}
           </b-navbar-item>
 
-          <hr class="navbar-divider">
+          <hr class="navbar-divider" />
 
           <b-navbar-item
             data-test="menu-top--load-show"
@@ -35,15 +29,9 @@
           </b-navbar-item>
         </b-navbar-dropdown>
 
-        <b-navbar-dropdown
-          label="View"
-          data-test="menu-top--view"
-        >
+        <b-navbar-dropdown label="View" data-test="menu-top--view">
           <b-navbar-item>
-            <b-checkbox
-              v-model="fourStepGrid"
-              data-test="menu-top--view-grid"
-            >
+            <b-checkbox v-model="fourStepGrid" data-test="menu-top--view-grid">
               Four step grid
             </b-checkbox>
           </b-navbar-item>
@@ -87,56 +75,56 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import FileModal from './FileModal.vue'
-import LoadModal from './LoadModal.vue'
+import Vue from "vue";
+import FileModal from "./FileModal.vue";
+import LoadModal from "./LoadModal.vue";
 
 /**
  * Contains menus and options that control the application's state
  */
 export default Vue.extend({
-  name: 'MenuTop',
+  name: "MenuTop",
   components: {
     FileModal,
-    LoadModal
+    LoadModal,
   },
   data: () => ({
     fileModalActive: false,
-    loadModalActive: false
+    loadModalActive: false,
   }),
   computed: {
-    showTitle (): string {
-      return this.$store.getters.getShowTitle
+    showTitle(): string {
+      return this.$store.getters.getShowTitle;
     },
 
     fourStepGrid: {
-      get (): boolean {
-        return this.$store.state.fourStepGrid
+      get(): boolean {
+        return this.$store.state.fourStepGrid;
       },
-      set (enabled: boolean): void {
-        this.$store.commit('setFourStepGrid', enabled)
-      }
+      set(enabled: boolean): void {
+        this.$store.commit("setFourStepGrid", enabled);
+      },
     },
 
     yardlines: {
-      get (): boolean {
-        return this.$store.state.yardlines
+      get(): boolean {
+        return this.$store.state.yardlines;
       },
-      set (enabled: boolean): void {
-        this.$store.commit('setYardlines', enabled)
-      }
+      set(enabled: boolean): void {
+        this.$store.commit("setYardlines", enabled);
+      },
     },
 
     yardlineNumbers: {
-      get (): boolean {
-        return this.$store.state.yardlineNumbers
+      get(): boolean {
+        return this.$store.state.yardlineNumbers;
       },
-      set (enabled: boolean): void {
-        this.$store.commit('setYardlineNumbers', enabled)
-      }
-    }
-  }
-})
+      set(enabled: boolean): void {
+        this.$store.commit("setYardlineNumbers", enabled);
+      },
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
