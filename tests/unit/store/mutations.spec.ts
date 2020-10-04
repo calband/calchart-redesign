@@ -2,10 +2,135 @@ import { CalChartState, generateStore } from "@/store";
 import { Store } from "vuex";
 import Show from "@/models/Show";
 import StuntSheet from "@/models/StuntSheet";
+import ContInPlace from "@/models/continuity/ContInPlace";
+import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import ContEven from "@/models/continuity/ContEven";
 
 describe("store/mutations", () => {
+  let store: Store<CalChartState>;
+
+  describe("addDotType", () => {
+    beforeEach(() => {
+      store = generateStore({
+        show: new Show({
+          stuntSheets: [
+            new StuntSheet({
+              dotTypes: [[new ContInPlace()], [new ContETFDynamic()]],
+            }),
+          ],
+        }),
+        selectedSS: 0,
+      });
+    });
+
+    it("adds a new dot type to the end of the array", () => {
+      expect(store.state.show.stuntSheets[0].dotTypes).toHaveLength(2);
+      store.commit("addDotType");
+      expect(store.state.show.stuntSheets[0].dotTypes).toHaveLength(3);
+    });
+  });
+
+  describe("addContinuity", () => {
+    beforeEach(() => {
+      store = generateStore({
+        show: new Show({
+          stuntSheets: [
+            new StuntSheet({
+              dotTypes: [[new ContInPlace()], [new ContETFDynamic()]],
+            }),
+            new StuntSheet(),
+          ],
+        }),
+        selectedSS: 0,
+      });
+    });
+
+    it("adds the new continuity to the end of the array", () => {
+      const oldDotTypes = store.state.show.stuntSheets[0].dotTypes;
+      expect(oldDotTypes[0]).toHaveLength(1);
+      expect(oldDotTypes[0][0] instanceof ContInPlace).toBe(true);
+      expect(oldDotTypes[1]).toHaveLength(1);
+      expect(oldDotTypes[1][0] instanceof ContETFDynamic).toBe(true);
+      store.commit("addContinuity", {
+        dotTypeIndex: 1,
+        continuity: new ContEven(),
+      });
+      const newDotTypes = store.state.show.stuntSheets[0].dotTypes;
+      expect(newDotTypes[0]).toHaveLength(1);
+      expect(newDotTypes[0][0] instanceof ContInPlace).toBe(true);
+      expect(newDotTypes[1]).toHaveLength(2);
+      expect(newDotTypes[1][0] instanceof ContETFDynamic).toBe(true);
+      expect(newDotTypes[1][1] instanceof ContEven).toBe(true);
+    });
+  });
+
+  describe("updateDotTypeContinuity", () => {
+    beforeEach(() => {
+      store = generateStore({
+        show: new Show({
+          stuntSheets: [
+            new StuntSheet({
+              dotTypes: [[new ContInPlace()], [new ContETFDynamic()]],
+            }),
+            new StuntSheet(),
+          ],
+        }),
+        selectedSS: 0,
+      });
+    });
+
+    it("updates continuity at the specified indices", () => {
+      const oldDotTypes = store.state.show.stuntSheets[0].dotTypes;
+      expect(oldDotTypes[0]).toHaveLength(1);
+      expect(oldDotTypes[0][0] instanceof ContInPlace).toBe(true);
+      expect(oldDotTypes[0][0].duration).toBe(0);
+      expect(oldDotTypes[1]).toHaveLength(1);
+      expect(oldDotTypes[1][0] instanceof ContETFDynamic).toBe(true);
+      store.commit("updateDotTypeContinuity", {
+        dotTypeIndex: 0,
+        continuityIndex: 0,
+        continuity: new ContInPlace({ duration: 8 }),
+      });
+      const newDotTypes = store.state.show.stuntSheets[0].dotTypes;
+      expect(newDotTypes[0]).toHaveLength(1);
+      expect(newDotTypes[0][0] instanceof ContInPlace).toBe(true);
+      expect(oldDotTypes[0][0].duration).toBe(8);
+      expect(newDotTypes[1]).toHaveLength(1);
+      expect(newDotTypes[1][0] instanceof ContETFDynamic).toBe(true);
+    });
+  });
+
+  describe("deleteDotTypeContinuity", () => {
+    beforeEach(() => {
+      store = generateStore({
+        show: new Show({
+          stuntSheets: [
+            new StuntSheet({
+              dotTypes: [[new ContInPlace(), new ContETFDynamic()]],
+            }),
+            new StuntSheet(),
+          ],
+        }),
+        selectedSS: 0,
+      });
+    });
+
+    it("updates continuity at the specified indices", () => {
+      const oldDotTypes = store.state.show.stuntSheets[0].dotTypes;
+      expect(oldDotTypes[0]).toHaveLength(2);
+      expect(oldDotTypes[0][0] instanceof ContInPlace).toBe(true);
+      expect(oldDotTypes[0][1] instanceof ContETFDynamic).toBe(true);
+      store.commit("deleteDotTypeContinuity", {
+        dotTypeIndex: 0,
+        continuityIndex: 0,
+      });
+      const newDotTypes = store.state.show.stuntSheets[0].dotTypes;
+      expect(newDotTypes[0]).toHaveLength(1);
+      expect(newDotTypes[0][0] instanceof ContETFDynamic).toBe(true);
+    });
+  });
+
   describe("incrementBeat", () => {
-    let store: Store<CalChartState>;
     beforeAll(() => {
       const stuntSheets = [
         new StuntSheet({ beats: 2 }),
@@ -38,7 +163,6 @@ describe("store/mutations", () => {
   });
 
   describe("decrementBeat", () => {
-    let store: Store<CalChartState>;
     beforeAll(() => {
       const stuntSheets = [
         new StuntSheet({ beats: 2 }),

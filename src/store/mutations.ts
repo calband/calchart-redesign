@@ -5,6 +5,8 @@ import BaseTool from "@/tools/BaseTool";
 import StuntSheet from "@/models/StuntSheet";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import { MutationTree } from "vuex";
+import BaseCont from "@/models/continuity/BaseCont";
+import ContInPlace from "@/models/continuity/ContInPlace";
 
 const mutations: MutationTree<CalChartState> = {
   // Show
@@ -64,6 +66,55 @@ const mutations: MutationTree<CalChartState> = {
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.beats = beats;
+  },
+  addDotType(state): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.dotTypes.push([new ContInPlace()]);
+  },
+  addContinuity(
+    state,
+    { dotTypeIndex, continuity }: { dotTypeIndex: number; continuity: BaseCont }
+  ): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.dotTypes[dotTypeIndex].push(continuity);
+    state.show.generateFlows(state.selectedSS);
+  },
+
+  // Show -> StuntSheet -> BaseCont
+  updateDotTypeContinuity(
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      continuity,
+    }: { dotTypeIndex: number; continuityIndex: number; continuity: BaseCont }
+  ): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.dotTypes[dotTypeIndex][continuityIndex] = continuity;
+    state.show.generateFlows(state.selectedSS);
+  },
+  deleteDotTypeContinuity(
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+    }: { dotTypeIndex: number; continuityIndex: number }
+  ): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.dotTypes[dotTypeIndex].splice(continuityIndex, 1);
+    state.show.generateFlows(state.selectedSS);
   },
 
   // Show controls
