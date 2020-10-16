@@ -219,13 +219,20 @@ describe("models/util/ParseCalChart3Utils", () => {
       }).toThrow("Offset is outside the bounds of the DataView");
     });
 
-    it("testing CalChart3 to 4 position convertions", () => {
-      expect(calChart3To4ConvertX(128)).toBe(176);
-      expect(calChart3To4ConvertX(-256)).toBe(128);
-      expect(calChart3To4ConvertX(0)).toBe(160);
-      expect(calChart3To4ConvertY(128)).toBe(100);
-      expect(calChart3To4ConvertY(-256)).toBe(52);
-      expect(calChart3To4ConvertY(0)).toBe(84);
+    it.each([
+      [128, 104],
+      [-256, 80],
+      [0, 96],
+    ])("calChart3To4ConvertX(%i) = %i", (input: number, output: number) => {
+      expect(calChart3To4ConvertX(input)).toBe(output);
+    });
+
+    it.each([
+      [128, 50],
+      [-256, 26],
+      [0, 42],
+    ])("calChart3To4ConvertY(%i) = %i", (input: number, output: number) => {
+      expect(calChart3To4ConvertY(input)).toBe(output);
     });
   });
 });
