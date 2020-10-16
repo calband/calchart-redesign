@@ -11,10 +11,10 @@ import {
 import Serializable from "../util/Serializable";
 
 export enum ETF_DYNAMIC_TYPES {
-  EWNS,
-  NSEW,
-  DFM,
-  FMD,
+  EWNS = "EW/NS",
+  NSEW = "NS/EW",
+  DFM = "D/FM",
+  FMD = "FM/D",
 }
 
 /**

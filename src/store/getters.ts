@@ -1,6 +1,7 @@
 import { CalChartState } from ".";
 import StuntSheet from "@/models/StuntSheet";
 import { GetterTree } from "vuex";
+import BaseCont from "@/models/continuity/BaseCont";
 
 const getters: GetterTree<CalChartState, CalChartState> = {
   // Show
@@ -14,6 +15,13 @@ const getters: GetterTree<CalChartState, CalChartState> = {
   // Show -> StuntSheet
   getSelectedStuntSheet: (state): StuntSheet =>
     state.show.stuntSheets[state.selectedSS],
+  getContinuity: (state) => (
+    dotTypeIndex: number,
+    continuityIndex: number
+  ): BaseCont =>
+    state.show.stuntSheets[state.selectedSS].dotTypes[dotTypeIndex][
+      continuityIndex
+    ],
 };
 
 export default getters;

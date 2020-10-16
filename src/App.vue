@@ -48,7 +48,7 @@ body,
 #app {
   overflow: hidden;
   display: grid;
-  grid-template-columns: 200px auto 200px;
+  grid-template-columns: 200px auto 250px;
   grid-template-rows: $navbar-height auto 36px; // See Bulma for navbar-height
   grid-template-areas:
     "menu-top menu-top menu-top"
