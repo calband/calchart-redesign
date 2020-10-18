@@ -91,6 +91,16 @@
             r="0.7"
             data-test="grapher--dot"
           />
+          <text v-if="showDotLabels" 
+            v-for="(dot, index) in stuntSheetDots"
+            :key="`${dot.x}-${dot.y}-dottext`"
+            class="grapher--dottext"
+            :x="dot.x+1"
+            :y="dot.y-1"
+            data-test="grapher--dottext"
+          >
+            {{ dotLabels[index] }}
+          </text>
         </g>
         <g class="grapher--tool-dots-container">
           <circle
@@ -151,6 +161,9 @@ export default Vue.extend({
     yardlineNumbers(): boolean {
       return this.$store.state.yardlineNumbers;
     },
+    showDotLabels(): boolean {
+      return this.$store.state.showDotLabels;
+    },
     fieldWidth(): number {
       // Account for endzones + area between yard lines
       return 16 + 8 * (this.yardLineOffsetsX.length - 1) + 16;
@@ -206,6 +219,10 @@ export default Vue.extend({
     stuntSheetDots(): StuntSheetDot[] {
       const currentSS: StuntSheet = this.$store.getters.getSelectedStuntSheet;
       return currentSS.stuntSheetDots;
+    },
+    dotLabels(): string[] {
+      const dotLabels = this.$store.getters.getDotLabels;
+      return dotLabels;
     },
     grapherToolDots(): StuntSheetDot[] {
       return this.$store.state.grapherToolDots;
@@ -285,4 +302,10 @@ export default Vue.extend({
     opacity: 0.5;
   }
 }
+.grapher--dottext {
+  fill: $black;
+  font-size: 2px;
+  text-anchor: middle;
+}
+
 </style>

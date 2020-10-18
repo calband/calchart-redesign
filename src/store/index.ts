@@ -34,6 +34,8 @@ export class CalChartState extends Serializable<CalChartState> {
 
   yardlineNumbers = true;
 
+  showDotLabels = true;
+
   grapherSvgPanZoom?: SvgPanZoom.Instance;
 
   invertedCTMMatrix?: DOMMatrix;
