@@ -56,14 +56,20 @@ describe("components/menu-top/FileModal", () => {
 
     cy.get('[data-test="file-modal--close"]').click();
 
-    cy.get('[data-test="grapher--yard-line"]').should("have.length", 1);
+    cy.get('[data-test="grapher-field--yard-line"]').should("have.length", 1);
 
-    cy.get('[data-test="grapher--hash-mark"]').should("have.length", 2);
+    cy.get('[data-test="grapher-field--hash-mark"]').should("have.length", 2);
 
-    cy.get('[data-test="grapher--grid-vertical"]').should("have.length", 6);
+    cy.get('[data-test="grapher-field--grid-vertical"]').should(
+      "have.length",
+      6
+    );
 
-    cy.get('[data-test="grapher--grid-horizontal"]').should("have.length", 5);
+    cy.get('[data-test="grapher-field--grid-horizontal"]').should(
+      "have.length",
+      5
+    );
 
-    cy.get('[data-test="grapher--yard-number"]').should("not.exist");
+    cy.get('[data-test="grapher-field--yard-number"]').should("not.exist");
   });
 });
