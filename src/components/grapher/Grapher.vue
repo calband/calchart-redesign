@@ -91,7 +91,9 @@
             r="0.7"
             data-test="grapher--dot"
           />
-          <text v-if="showDotLabels" 
+        </g>
+        <g v-if="showDotLabels" class="grapher--dotstext-container">
+          <text
             v-for="(dot, index) in stuntSheetDots"
             :key="`${dot.x}-${dot.y}-dottext`"
             class="grapher--dottext"
