@@ -266,6 +266,9 @@ describe("components/grapher/Grapher.vue", () => {
       expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(
         numDots
       );
+      expect(wrapper.findAll('[data-test="grapher--dottext"]')).toHaveLength(
+        numDots
+      );
       expect(wrapper.findAll('[data-test="grapher--tool-dot"]')).toHaveLength(
         numToolDots
       );
