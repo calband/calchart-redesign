@@ -3,6 +3,11 @@ import StuntSheetDot from "../StuntSheetDot";
 import { DIRECTIONS, MARCH_TYPES } from "../util/constants";
 import { FlowBeat } from "../util/types";
 import Serializable from "../util/Serializable";
+import {
+  ewHelper,
+  nsHelper,
+  startPositionHelper,
+} from "./continuity-util";
 
 /**
  * Move in a specified direction for a duration. Can only move in an
@@ -11,9 +16,6 @@ import Serializable from "../util/Serializable";
  * - FMMM 4 SW
  *
  * @property marchingDirection - Which direction the marcher is moving
- * @property facingDirection   - Which direction the marcher is facing during
- *                               the movement. If undefined, will be
- *                               marchingDirection.
  */
 export default class ContETFStatic
   extends Serializable<ContETFStatic>
@@ -39,9 +41,11 @@ export default class ContETFStatic
   }
 
   getHumanReadableText(): string {
-    if (this.humanReadableText !== "") return this.humanReadableText;
-    // TODO: Implement
-    return "";
+    if (this.humanReadableText !== "") {
+      return this.humanReadableText;
+    } else {
+      return `FM${this.marchType} ${this.duration} ${this.marchingDirection}`
+    }
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -50,6 +54,53 @@ export default class ContETFStatic
     startDot: StuntSheetDot,
     endDot?: StuntSheetDot
   ): void {
+    let [startX, startY]: [number, number] = startPositionHelper(
+      flow,
+      startDot
+    );
+    switch (this.marchingDirection) {
+      case DIRECTIONS.E: {
+        [startX, startY] = ewHelper(
+          flow,
+          startX,
+          startY,
+          this.duration,
+          this.marchType
+        );
+        break;
+      }
+      case DIRECTIONS.W: {
+        [startX, startY] = ewHelper(
+          flow,
+          startX,
+          startY,
+          -this.duration,
+          this.marchType
+        );
+        break;
+      }
+      case DIRECTIONS.E: {
+        [startX, startY] = nsHelper(
+          flow,
+          startX,
+          startY,
+          this.duration,
+          this.marchType
+        );
+        break;
+      }
+      case DIRECTIONS.E: {
+        [startX, startY] = nsHelper(
+          flow,
+          startX,
+          startY,
+          -this.duration,
+          this.marchType
+        );
+        break;
+      }
+    }
+
     // TODO: Implement
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */

@@ -30,6 +30,11 @@
           data-test="menu-right--add-etf-dynamic"
           >Eight to Five Dynamic</b-dropdown-item
         >
+        <b-dropdown-item
+          @click="addContETFStatic"
+          data-test="menu-right--add-etf-static"
+          >Eight to Five Static</b-dropdown-item
+        >
       </b-dropdown>
     </div>
     <hr />
@@ -39,6 +44,7 @@
 <script lang="ts">
 import BaseCont from "@/models/continuity/BaseCont";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import ContETFStatic from "@/models/continuity/ContETFStatic";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
@@ -76,6 +82,12 @@ export default Vue.extend({
       this.$store.commit("addContinuity", {
         dotTypeIndex: this.dotTypeIndex,
         continuity: new ContETFDynamic(),
+      });
+    },
+    addContETFStatic() {
+      this.$store.commit("addContinuity", {
+        dotTypeIndex: this.dotTypeIndex,
+        continuity: new ContETFStatic(),
       });
     },
   },
