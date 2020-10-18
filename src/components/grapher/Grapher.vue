@@ -97,8 +97,8 @@
             v-for="(dot, index) in stuntSheetDots"
             :key="`${dot.x}-${dot.y}-dottext`"
             class="grapher--dottext"
-            :x="dot.x+1"
-            :y="dot.y-1"
+            :x="dot.x + 1"
+            :y="dot.y - 1"
             data-test="grapher--dottext"
           >
             {{ dotLabels[index] }}
@@ -330,5 +330,4 @@ export default Vue.extend({
   text-anchor: left;
   user-select: none;
 }
-
 </style>
