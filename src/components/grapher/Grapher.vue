@@ -3,8 +3,9 @@
     <svg
       class="grapher--svg"
       data-test="grapher--svg"
-      @click.prevent="onClick"
-      @mousemove="onMousemove"
+      @mousedown="onMouseDown"
+      @mouseup="onMouseUp"
+      @mousemove="onMouseMove"
     >
       <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
       <g class="grapher--wrapper" data-test="grapher--wrapper">
@@ -53,13 +54,17 @@ export default Vue.extend({
     onResize(): void {
       this.$store.state.grapherSvgPanZoom.resize();
     },
-    onClick(event: MouseEvent): void {
+    onMouseDown(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
-      toolSelected.onClick(event);
+      toolSelected.onMouseDown(event);
     },
-    onMousemove(event: MouseEvent): void {
+    onMouseUp(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
-      toolSelected.onMousemove(event);
+      toolSelected.onMouseUp(event);
+    },
+    onMouseMove(event: MouseEvent): void {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      toolSelected.onMouseMove(event);
     },
   },
 });

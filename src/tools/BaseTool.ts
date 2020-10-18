@@ -1,4 +1,5 @@
 import { GlobalStore } from "@/store";
+import StuntSheetDot from "@/models/StuntSheetDot";
 
 /**
  * Defines the functionality of a tool to be used in the Bottom Menu.
@@ -14,8 +15,11 @@ export default abstract class BaseTool {
    *
    * @param coordinate - Either the x or y coordinate
    */
-  static roundCoordinateToGrid(coordinate: number): number {
-    return Math.round(coordinate / 2) * 2;
+  static roundCoordinateToGrid(coordinate: [number, number]): [number, number] {
+    return [
+      Math.round(coordinate[0] / 2) * 2,
+      Math.round(coordinate[1] / 2) * 2,
+    ];
   }
 
   /**
@@ -35,19 +39,50 @@ export default abstract class BaseTool {
     }
     const convertedPoint = point.matrixTransform(invertedCTMMatrix);
 
-    return [
-      BaseTool.roundCoordinateToGrid(convertedPoint.x),
-      BaseTool.roundCoordinateToGrid(convertedPoint.y),
-    ];
+    return [convertedPoint.x, convertedPoint.y];
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars,
-    @typescript-eslint/no-empty-function */
-  onClick(event: MouseEvent): void {}
+  /**
+   * Convert clientX/Y to the X/Y coordinates on the SVG rectangle.
+   **/
+  static convertClientCoordinatesRounded(event: MouseEvent): [number, number] {
+    const point: [number, number] = BaseTool.convertClientCoordinates(event);
+    return BaseTool.roundCoordinateToGrid(point);
+  }
 
-  onMousemove(event: MouseEvent): void {}
-  /* eslint-enable @typescript-eslint/no-unused-vars,
-    @typescript-eslint/no-empty-function */
+  /**
+   * returns index of dot at mouse event, or -1 if nothing found
+   **/
+  static findDotAtEvent(event: MouseEvent): number {
+    const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
+    const stuntSheetDots: StuntSheetDot[] =
+      GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
+    return stuntSheetDots.findIndex((dot: StuntSheetDot): boolean => {
+      return x === dot.x && y === dot.y;
+    });
+  }
+
+  /**
+   * Convert clientX/Y to the X/Y coordinates on the SVG rectangle.
+   **/
+  static updateInvertedCTMMatrix(): void {
+    /**
+     * Calculate inverted CTM matrix that is used to convert ClientX/Y to
+     * X/Y of the SVG
+     */
+    const wrapper = document.getElementsByClassName(
+      "grapher--wrapper"
+    )[0] as SVGGElement;
+    const ctm = wrapper.getScreenCTM();
+    if (!ctm) {
+      throw new Error("Unable to retrieve wrapper CTM");
+    }
+    GlobalStore.commit("setInvertedCTMMatrix", ctm.inverse());
+  }
+
+  abstract onMouseDown(event: MouseEvent): void;
+  abstract onMouseUp(event: MouseEvent): void;
+  abstract onMouseMove(event: MouseEvent): void;
 }
 
 export interface ToolConstructor {
