@@ -3,6 +3,7 @@ import BaseCont from "./continuity/BaseCont";
 import ContInPlace from "./continuity/ContInPlace";
 import Serializable from "./util/Serializable";
 import { loadContinuity } from "./continuity/load-continuity";
+import DotAppearance from "./DotAppearance";
 
 /**
  * Defines the positions/directions in a formation and the continuities
@@ -23,6 +24,8 @@ export default class StuntSheet extends Serializable<StuntSheet> {
 
   dotTypes: BaseCont[][] = [[new ContInPlace()]];
 
+  dotAppearances: DotAppearance[] = [new DotAppearance()];
+
   beats = 16;
 
   constructor(json: Partial<StuntSheet> = {}) {
@@ -40,6 +43,12 @@ export default class StuntSheet extends Serializable<StuntSheet> {
           }
         );
       });
+    }
+    if (json.dotAppearances !== undefined) {
+      json.dotAppearances = json.dotAppearances.map(
+        (dotAppearance: DotAppearance): DotAppearance =>
+          new DotAppearance(dotAppearance)
+      );
     }
     this.fromJson(json);
   }

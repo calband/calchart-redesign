@@ -4,18 +4,23 @@ describe("tools/ToolSingleDot", () => {
   });
 
   it("clicking adds, then removes a dot", () => {
-    cy.get('[data-test="grapher--dot"]').should("not.exist");
+    cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
     cy.clickGrapher(12, 8);
 
-    cy.get('[data-test="grapher--dot"]')
+    cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
       .should("have.attr", "cx", "12")
       .should("have.attr", "cy", "8");
 
+    cy.get('[data-test="dot--dottext"]')
+      .should("have.length", 1)
+      .should("have.attr", "y", "-1");
+    cy.get('[data-test="dot--dottext"]').contains("0");
+
     cy.clickGrapher(12, 8);
 
-    cy.get('[data-test="grapher--dot"]').should("not.exist");
+    cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
   });
 
   it("After panning and zooming, adding a dot is still accurate", () => {
@@ -32,14 +37,17 @@ describe("tools/ToolSingleDot", () => {
 
     cy.clickGrapher(12, 8);
 
-    cy.get('[data-test="grapher--dot"]')
+    cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
       .should("have.attr", "cx", "12")
       .should("have.attr", "cy", "8");
+    cy.get('[data-test="dot--dottext"]')
+      .should("have.length", 1)
+      .should("have.attr", "y", "-1");
   });
 
   it("clicking multiple dots", () => {
-    cy.get('[data-test="grapher--dot"]').should("not.exist");
+    cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
     cy.clickGrapher(2, 0);
     cy.clickGrapher(2, 2);
@@ -47,7 +55,7 @@ describe("tools/ToolSingleDot", () => {
     cy.clickGrapher(2, 6);
     cy.clickGrapher(2, 8);
 
-    cy.get('[data-test="grapher--dot"]')
+    cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 5)
       .each((dot, index) => {
         cy.wrap(dot)
@@ -58,7 +66,7 @@ describe("tools/ToolSingleDot", () => {
     cy.clickGrapher(2, 0);
     cy.clickGrapher(2, 8);
 
-    cy.get('[data-test="grapher--dot"]')
+    cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 3)
       .each((dot, index) => {
         cy.wrap(dot)
@@ -68,18 +76,18 @@ describe("tools/ToolSingleDot", () => {
   });
 
   it("mousemove sets tool dots", () => {
-    cy.get('[data-test="grapher--tool-dot"]').should("not.exist");
+    cy.get('[data-test="grapher-tool--dot"]').should("not.exist");
 
     cy.mousemoveGrapher(4, 6);
 
-    cy.get('[data-test="grapher--tool-dot"]')
+    cy.get('[data-test="grapher-tool--dot"]')
       .should("have.length", 1)
       .should("have.attr", "cx", "4")
       .should("have.attr", "cy", "6");
 
     cy.mousemoveGrapher(6, 8);
 
-    cy.get('[data-test="grapher--tool-dot"]')
+    cy.get('[data-test="grapher-tool--dot"]')
       .should("have.length", 1)
       .should("have.attr", "cx", "6")
       .should("have.attr", "cy", "8");

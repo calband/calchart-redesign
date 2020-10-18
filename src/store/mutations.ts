@@ -7,6 +7,7 @@ import StuntSheetDot from "@/models/StuntSheetDot";
 import { MutationTree } from "vuex";
 import BaseCont from "@/models/continuity/BaseCont";
 import ContInPlace from "@/models/continuity/ContInPlace";
+import DotAppearance from "@/models/DotAppearance";
 
 const mutations: MutationTree<CalChartState> = {
   // Show
@@ -73,6 +74,7 @@ const mutations: MutationTree<CalChartState> = {
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.dotTypes.push([new ContInPlace()]);
+    currentSS.dotAppearances.push(new DotAppearance());
   },
   addContinuity(
     state,
