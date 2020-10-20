@@ -16,6 +16,7 @@ import {
  * - FMMM 4 SW
  *
  * @property marchingDirection - Which direction the marcher is moving
+ * @property facingDirection - Which direction the marcher is facing
  */
 export default class ContETFStatic
   extends Serializable<ContETFStatic>
@@ -54,54 +55,36 @@ export default class ContETFStatic
     startDot: StuntSheetDot,
     endDot?: StuntSheetDot
   ): void {
-    let [startX, startY]: [number, number] = startPositionHelper(
-      flow,
-      startDot
-    );
+    let dx: number = 0;
+    let dy: number = 0;
     switch (this.marchingDirection) {
       case DIRECTIONS.E: {
-        [startX, startY] = ewHelper(
-          flow,
-          startX,
-          startY,
-          this.duration,
-          this.marchType
-        );
+        dy = 1;
         break;
       }
       case DIRECTIONS.W: {
-        [startX, startY] = ewHelper(
-          flow,
-          startX,
-          startY,
-          -this.duration,
-          this.marchType
-        );
+        dy = -1
         break;
       }
-      case DIRECTIONS.E: {
-        [startX, startY] = nsHelper(
-          flow,
-          startX,
-          startY,
-          this.duration,
-          this.marchType
-        );
+      case DIRECTIONS.N: {
+        dx = 1
         break;
       }
-      case DIRECTIONS.E: {
-        [startX, startY] = nsHelper(
-          flow,
-          startX,
-          startY,
-          -this.duration,
-          this.marchType
-        );
+      case DIRECTIONS.S: {
+        dx = -1
         break;
       }
     }
-
-    // TODO: Implement
+    const [x, y]: [number, number] = startPositionHelper(flow, startDot);
+    for (let beat = 1; beat <= Math.max(this.duration, 1); beat += 1) {
+      const flowBeat: FlowBeat = {
+        x: x + dx * beat,
+        y: y + dy * beat,
+        direction: this.facingDirection,
+        marchType: this.marchType,
+      };
+      flow.push(flowBeat);
+    }
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */
 }

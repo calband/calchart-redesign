@@ -23,15 +23,15 @@
         data-test="cont-etf-static--duration"
       />
       <b-select
-        v-model="selectedDirection"
+        v-model="selectedMarchingDirection"
         size="is-small"
-        data-test="cont-etf-static-direction"
+        data-test="cont-etf-static-marching-direction"
       >
         <option
           v-for="(direction, directionIndex) in directionOptions"
-          :key="`direction-${continuityIndex}-${directionIndex}`"
+          :key="`marchingdirection-${continuityIndex}-${directionIndex}`"
           :value="direction.degrees"
-          :selected="selectedDirection == direction.degrees"
+          :selected="selectedMarchingDirection == direction.degrees"
         >
           {{ direction.friendlyName }}
         </option>
@@ -107,7 +107,7 @@ export default Vue.extend({
         });
       },
     },
-    selectedDirection: {
+    selectedMarchingDirection: {
       get(): number {
         const continuity: ContETFStatic = this.$store.getters.getContinuity(
           this.dotTypeIndex,
@@ -121,6 +121,28 @@ export default Vue.extend({
           this.continuityIndex
         );
         continuity.marchingDirection = direction;
+        continuity.facingDirection = direction;
+        this.$store.commit("updateDotTypeContinuity", {
+          dotTypeIndex: this.dotTypeIndex,
+          continuityIndex: this.continuityIndex,
+          continuity: continuity,
+        });
+      },
+    },
+    selectedFacingDirection: {
+      get(): number {
+        const continuity: ContETFStatic = this.$store.getters.getContinuity(
+          this.dotTypeIndex,
+          this.continuityIndex
+        );
+        return continuity.facingDirection;
+      },
+      set(direction: number): void {
+        const continuity: ContETFStatic= this.$store.getters.getContinuity(
+          this.dotTypeIndex,
+          this.continuityIndex
+        );
+        continuity.facingDirection = direction;
         this.$store.commit("updateDotTypeContinuity", {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
