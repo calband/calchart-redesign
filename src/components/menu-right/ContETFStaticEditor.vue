@@ -116,7 +116,7 @@ export default Vue.extend({
         return continuity.marchingDirection;
       },
       set(direction: number): void {
-        const continuity: ContETFStatic= this.$store.getters.getContinuity(
+        const continuity: ContETFStatic = this.$store.getters.getContinuity(
           this.dotTypeIndex,
           this.continuityIndex
         );
@@ -138,7 +138,7 @@ export default Vue.extend({
         return continuity.facingDirection;
       },
       set(direction: number): void {
-        const continuity: ContETFStatic= this.$store.getters.getContinuity(
+        const continuity: ContETFStatic = this.$store.getters.getContinuity(
           this.dotTypeIndex,
           this.continuityIndex
         );

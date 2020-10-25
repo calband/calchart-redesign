@@ -3,11 +3,7 @@ import StuntSheetDot from "../StuntSheetDot";
 import { DIRECTIONS, MARCH_TYPES } from "../util/constants";
 import { FlowBeat } from "../util/types";
 import Serializable from "../util/Serializable";
-import {
-  ewHelper,
-  nsHelper,
-  startPositionHelper,
-} from "./continuity-util";
+import { startPositionHelper } from "./continuity-util";
 
 /**
  * Move in a specified direction for a duration. Can only move in an
@@ -46,9 +42,9 @@ export default class ContETFStatic
     const marchingDirectionText: string = DIRECTIONS[this.marchingDirection];
     const facingDirectionText: string = DIRECTIONS[this.facingDirection];
     if (this.marchingDirection === this.facingDirection) {
-      return `FM${this.marchType} ${this.duration} ${marchingDirectionText}`
+      return `FM${this.marchType} ${this.duration} ${marchingDirectionText}`;
     } else {
-      return `FM${this.marchType} ${this.duration} ${marchingDirectionText} FACING ${facingDirectionText}`
+      return `FM${this.marchType} ${this.duration} ${marchingDirectionText} FACING ${facingDirectionText}`;
     }
   }
 
@@ -58,23 +54,23 @@ export default class ContETFStatic
     startDot: StuntSheetDot,
     endDot?: StuntSheetDot
   ): void {
-    let dx: number = 0;
-    let dy: number = 0;
+    let dx = 0;
+    let dy = 0;
     switch (this.marchingDirection) {
       case DIRECTIONS.E: {
         dy = 1;
         break;
       }
       case DIRECTIONS.W: {
-        dy = -1
+        dy = -1;
         break;
       }
       case DIRECTIONS.N: {
-        dx = 1
+        dx = 1;
         break;
       }
       case DIRECTIONS.S: {
-        dx = -1
+        dx = -1;
         break;
       }
     }
