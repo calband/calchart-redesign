@@ -86,8 +86,8 @@
             v-for="dot in stuntSheetDots"
             :key="`${dot.x}-${dot.y}-dot`"
             class="grapher--dot"
-            :cx="dot.x"
-            :cy="dot.y"
+            :cx="dot.xAtBeat(beat - 1)"
+            :cy="dot.yAtBeat(beat - 1)"
             r="0.7"
             data-test="grapher--dot"
           />
@@ -97,20 +97,8 @@
             v-for="(dot, index) in stuntSheetDots"
             :key="`${dot.x}-${dot.y}-dottext`"
             class="grapher--dottext"
-            :x="dot.x + 1"
-            :y="dot.y - 1"
-            data-test="grapher--dottext"
-          >
-            {{ dotLabels[index] }}
-          </text>
-        </g>
-        <g v-if="showDotLabels" class="grapher--dotstext-container">
-          <text
-            v-for="(dot, index) in stuntSheetDots"
-            :key="`${dot.x}-${dot.y}-dottext`"
-            class="grapher--dottext"
-            :x="dot.x"
-            :y="dot.y - 1"
+            :x="dot.xAtBeat(beat - 1)"
+            :y="dot.yAtBeat(beat - 1) - 1"
             data-test="grapher--dottext"
           >
             {{ dotLabels[index] }}
@@ -248,6 +236,11 @@ export default Vue.extend({
     },
     grapherToolDots(): StuntSheetDot[] {
       return this.$store.state.grapherToolDots;
+    },
+    beat: {
+      get(): number {
+        return this.$store.state.beat;
+      },
     },
   },
   mounted() {
