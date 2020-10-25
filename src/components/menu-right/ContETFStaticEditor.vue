@@ -25,7 +25,7 @@
       <b-select
         v-model="selectedMarchingDirection"
         size="is-small"
-        data-test="cont-etf-static-marching-direction"
+        data-test="cont-etf-static--marching-direction"
       >
         <option
           v-for="(direction, directionIndex) in directionOptions"

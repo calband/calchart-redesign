@@ -42,10 +42,13 @@ export default class ContETFStatic
   }
 
   getHumanReadableText(): string {
-    if (this.humanReadableText !== "") {
-      return this.humanReadableText;
+    if (this.humanReadableText !== "") return this.humanReadableText;
+    const marchingDirectionText: string = DIRECTIONS[this.marchingDirection];
+    const facingDirectionText: string = DIRECTIONS[this.facingDirection];
+    if (this.marchingDirection === this.facingDirection) {
+      return `FM${this.marchType} ${this.duration} ${marchingDirectionText}`
     } else {
-      return `FM${this.marchType} ${this.duration} ${this.marchingDirection}`
+      return `FM${this.marchType} ${this.duration} ${marchingDirectionText} FACING ${facingDirectionText}`
     }
   }
 
@@ -78,8 +81,8 @@ export default class ContETFStatic
     const [x, y]: [number, number] = startPositionHelper(flow, startDot);
     for (let beat = 1; beat <= Math.max(this.duration, 1); beat += 1) {
       const flowBeat: FlowBeat = {
-        x: x + dx * beat,
-        y: y + dy * beat,
+        x: x + dx * (beat - 1),
+        y: y + dy * (beat - 1),
         direction: this.facingDirection,
         marchType: this.marchType,
       };
