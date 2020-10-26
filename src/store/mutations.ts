@@ -161,6 +161,9 @@ const mutations: MutationTree<CalChartState> = {
   setYardlineNumbers(state, enabled: boolean): void {
     state.yardlineNumbers = enabled;
   },
+  setShowDotLabels(state, enabled: boolean): void {
+    state.showDotLabels = enabled;
+  },
 
   // Tools
   setGrapherSvgPanZoom(state, svgPanZoomInstance: SvgPanZoom.Instance): void {

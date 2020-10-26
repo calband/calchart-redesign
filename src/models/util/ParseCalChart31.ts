@@ -243,7 +243,7 @@ export class ParseCalChart31 implements ParseCalChart {
       throw new Error("Did not find Sheet POS block");
     }
     offset += 4;
-    let numPoints = readInt32(buffer, offset) / 4;
+    const numPoints = readInt32(buffer, offset) / 4;
     if (numPoints !== this.numberDots) {
       throw new Error(
         `POS error.  Expecting ${this.numberDots}, received ${numPoints}.`
@@ -253,15 +253,15 @@ export class ParseCalChart31 implements ParseCalChart {
     const dots: StuntSheetDot[] = [];
 
     // keep parsing points till data is exhausted
-    while (numPoints > 0) {
+    for (let index = 0; index < numPoints; index++) {
       dots.push(
         new StuntSheetDot({
           x: calChart3To4ConvertX(readInt16(buffer, offset)),
           y: calChart3To4ConvertY(readInt16(buffer, offset + 2)),
+          dotLabelIndex: index,
         })
       );
       offset += 4;
-      --numPoints;
     }
     stuntSheet.stuntSheetDots = dots;
     return offset;

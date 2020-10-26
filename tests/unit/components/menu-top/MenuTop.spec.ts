@@ -75,5 +75,15 @@ describe("components/menu-top/MenuTop", () => {
       viewNumbers.trigger("click");
       expect(store.state.yardlineNumbers).toBeFalsy();
     });
+
+    it("show dot labels checkbox", () => {
+      expect(store.state.showDotLabels).toBeTruthy();
+      const viewNumbers = wrapper.find(
+        '[data-test="menu-top--view-show-dot-labels"]'
+      );
+      expect(viewNumbers.exists()).toBeTruthy();
+      viewNumbers.trigger("click");
+      expect(store.state.showDotLabels).toBeFalsy();
+    });
   });
 });

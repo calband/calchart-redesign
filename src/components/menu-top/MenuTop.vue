@@ -51,6 +51,14 @@
               Yard Line Numbers
             </b-checkbox>
           </b-navbar-item>
+          <b-navbar-item>
+            <b-checkbox
+              v-model="showDotLabels"
+              data-test="menu-top--view-show-dot-labels"
+            >
+              Show Dot Labels
+            </b-checkbox>
+          </b-navbar-item>
         </b-navbar-dropdown>
       </template>
     </b-navbar>
@@ -121,6 +129,15 @@ export default Vue.extend({
       },
       set(enabled: boolean): void {
         this.$store.commit("setYardlineNumbers", enabled);
+      },
+    },
+
+    showDotLabels: {
+      get(): boolean {
+        return this.$store.state.showDotLabels;
+      },
+      set(enabled: boolean): void {
+        this.$store.commit("setShowDotLabels", enabled);
       },
     },
   },
