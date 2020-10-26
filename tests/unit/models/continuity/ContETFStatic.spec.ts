@@ -68,7 +68,7 @@ describe("models/continuity/ETFStatic", () => {
   });
 
   describe("addToFlow", () => {
-    it("if duration is 0 adds one FlowBeat", () => {
+    it("if duration is 0 doesn't add a flowbeat", () => {
       const continuity = new ContETFStatic({
         duration: 0,
         marchingDirection: DIRECTIONS.E,
@@ -76,35 +76,7 @@ describe("models/continuity/ETFStatic", () => {
       });
       const flow: FlowBeat[] = [];
       continuity.addToFlow(flow, startDot);
-      expect(flow).toStrictEqual([
-        {
-          x: 2,
-          y: 4,
-          direction: DIRECTIONS.E,
-          marchType: MARCH_TYPES.HS,
-        },
-      ]);
-    });
-
-    it("after stringifying and parsing, if duration is 0 adds one FlowBeat", () => {
-      const originalContinuity = new ContETFStatic({
-        duration: 0,
-        marchingDirection: DIRECTIONS.E,
-        marchType: MARCH_TYPES.HS,
-      });
-      const parsedContinuity = new ContETFStatic(
-        JSON.parse(JSON.stringify(originalContinuity))
-      );
-      const flow: FlowBeat[] = [];
-      parsedContinuity.addToFlow(flow, startDot);
-      expect(flow).toStrictEqual([
-        {
-          x: 2,
-          y: 4,
-          direction: DIRECTIONS.E,
-          marchType: MARCH_TYPES.HS,
-        },
-      ]);
+      expect(flow).toStrictEqual([]);
     });
 
     it("if duration is 2 adds two FlowBeats", () => {
@@ -223,6 +195,30 @@ describe("models/continuity/ETFStatic", () => {
           x: 3,
           y: 4,
           direction: DIRECTIONS.S,
+          marchType: MARCH_TYPES.HS,
+        },
+      ]);
+    });
+
+    it("properly handles diagonal marching", () => {
+      const continuity = new ContETFStatic({
+        duration: 2,
+        marchingDirection: DIRECTIONS.NE,
+        marchType: MARCH_TYPES.HS,
+      });
+      const flow: FlowBeat[] = [];
+      continuity.addToFlow(flow, startDot);
+      expect(flow).toStrictEqual([
+        {
+          x: 2,
+          y: 4,
+          direction: DIRECTIONS.NE,
+          marchType: MARCH_TYPES.HS,
+        },
+        {
+          x: 3,
+          y: 5,
+          direction: DIRECTIONS.NE,
           marchType: MARCH_TYPES.HS,
         },
       ]);
