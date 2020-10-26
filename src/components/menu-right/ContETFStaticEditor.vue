@@ -129,27 +129,6 @@ export default Vue.extend({
         });
       },
     },
-    selectedFacingDirection: {
-      get(): number {
-        const continuity: ContETFStatic = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        return continuity.facingDirection;
-      },
-      set(direction: number): void {
-        const continuity: ContETFStatic = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.facingDirection = direction;
-        this.$store.commit("updateDotTypeContinuity", {
-          dotTypeIndex: this.dotTypeIndex,
-          continuityIndex: this.continuityIndex,
-          continuity: continuity,
-        });
-      },
-    },
     selectedDuration: {
       get(): number {
         const continuity: ContETFStatic = this.$store.getters.getContinuity(
