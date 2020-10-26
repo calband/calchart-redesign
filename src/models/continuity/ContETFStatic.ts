@@ -54,8 +54,12 @@ export default class ContETFStatic
     startDot: StuntSheetDot,
     endDot?: StuntSheetDot
   ): void {
-    let dx = Math.sign(Math.round(Math.cos(this.marchingDirection / 180 * Math.PI)));
-    let dy = Math.sign(Math.round(Math.sin(this.marchingDirection / 180 * Math.PI)));
+    const dx = Math.sign(
+      Math.round(Math.cos((this.marchingDirection / 180) * Math.PI))
+    );
+    const dy = Math.sign(
+      Math.round(Math.sin((this.marchingDirection / 180) * Math.PI))
+    );
 
     const [x, y]: [number, number] = startPositionHelper(flow, startDot);
     for (let beat = 1; beat <= this.duration; beat += 1) {
