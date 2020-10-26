@@ -7,6 +7,9 @@ const getters: GetterTree<CalChartState, CalChartState> = {
   // Show
   getShowTitle: (state): string => state.show.title,
 
+  // Show -> Dots
+  getDotLabels: (state): string[] => state.show.dotLabels,
+
   // Show -> Field
   getFrontHashOffsetY: (state): number => state.show.field.frontHashOffsetY,
   getBackHashOffsetY: (state): number => state.show.field.backHashOffsetY,

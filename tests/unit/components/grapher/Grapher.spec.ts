@@ -124,6 +124,15 @@ describe("components/grapher/Grapher.vue", () => {
         wrapper.find('[data-test="grapher--yard-number"]').exists()
       ).toBeFalsy();
     });
+
+    it("if showDotLabels is false, do not render", async () => {
+      store.commit("setShowDotLabels", false);
+      await wrapper.vm.$nextTick();
+
+      expect(
+        wrapper.find('[data-test="grapher--dottext"]').exists()
+      ).toBeFalsy();
+    });
   });
 
   describe("default field (college field)", () => {
@@ -255,6 +264,9 @@ describe("components/grapher/Grapher.vue", () => {
     ])("renders %i dots and %i tool dots", (numDots, numToolDots) => {
       generateShowWithDots(numDots, numToolDots);
       expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(
+        numDots
+      );
+      expect(wrapper.findAll('[data-test="grapher--dottext"]')).toHaveLength(
         numDots
       );
       expect(wrapper.findAll('[data-test="grapher--tool-dot"]')).toHaveLength(

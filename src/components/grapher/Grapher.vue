@@ -92,6 +92,18 @@
             data-test="grapher--dot"
           />
         </g>
+        <g v-if="showDotLabels" class="grapher--dotstext-container">
+          <text
+            v-for="(dot, index) in stuntSheetDots"
+            :key="`${dot.x}-${dot.y}-dottext`"
+            class="grapher--dottext"
+            :x="dot.x"
+            :y="dot.y - 1"
+            data-test="grapher--dottext"
+          >
+            {{ dotLabels[index] }}
+          </text>
+        </g>
         <g class="grapher--tool-dots-container">
           <circle
             v-for="dot in grapherToolDots"
@@ -151,6 +163,9 @@ export default Vue.extend({
     yardlineNumbers(): boolean {
       return this.$store.state.yardlineNumbers;
     },
+    showDotLabels(): boolean {
+      return this.$store.state.showDotLabels;
+    },
     fieldWidth(): number {
       // Account for endzones + area between yard lines
       return 16 + 8 * (this.yardLineOffsetsX.length - 1) + 16;
@@ -206,6 +221,18 @@ export default Vue.extend({
     stuntSheetDots(): StuntSheetDot[] {
       const currentSS: StuntSheet = this.$store.getters.getSelectedStuntSheet;
       return currentSS.stuntSheetDots;
+    },
+    dotLabels(): string[] {
+      const dotLabels = this.$store.getters.getDotLabels;
+      const dots: StuntSheetDot[] = this.$store.getters.getSelectedStuntSheet
+        .stuntSheetDots;
+      return dots.map((dot, index) => {
+        return dotLabels !== null &&
+          dot.dotLabelIndex !== null &&
+          dot.dotLabelIndex < dotLabels.length
+          ? dotLabels[dot.dotLabelIndex]
+          : index.toString();
+      });
     },
     grapherToolDots(): StuntSheetDot[] {
       return this.$store.state.grapherToolDots;
@@ -284,5 +311,11 @@ export default Vue.extend({
   &.grapher--tool-dot {
     opacity: 0.5;
   }
+}
+.grapher--dottext {
+  fill: $black;
+  font-size: 2px;
+  text-anchor: left;
+  user-select: none;
 }
 </style>
