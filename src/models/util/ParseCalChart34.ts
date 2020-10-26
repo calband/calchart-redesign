@@ -205,14 +205,17 @@ export class ParseCalChart34 implements ParseCalChart {
 
     // keep parsing points till data is exhausted
     let offset = 0;
+    let index = 0;
     while (offset < block.byteLength) {
       const pointSize = block.getUint8(offset);
       dots.push(
         this.ParsePoint(
-          new DataView(block.buffer, block.byteOffset + offset + 1, pointSize)
+          new DataView(block.buffer, block.byteOffset + offset + 1, pointSize),
+          index
         )
       );
       offset += pointSize + 1;
+      index += 1;
     }
     if (offset !== block.byteLength) {
       throw new Error("Show dots is incorrect when parsing CalChart3 file");
@@ -220,10 +223,11 @@ export class ParseCalChart34 implements ParseCalChart {
     stuntSheet.stuntSheetDots = dots;
   }
 
-  ParsePoint(buffer: DataView): StuntSheetDot {
+  ParsePoint(buffer: DataView, labelIndex: number): StuntSheetDot {
     return new StuntSheetDot({
       x: calChart3To4ConvertX(readInt16(buffer, 0)),
       y: calChart3To4ConvertY(readInt16(buffer, 2)),
+      dotLabelIndex: labelIndex,
     });
   }
 }

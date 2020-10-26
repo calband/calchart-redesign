@@ -97,7 +97,7 @@
             v-for="(dot, index) in stuntSheetDots"
             :key="`${dot.x}-${dot.y}-dottext`"
             class="grapher--dottext"
-            :x="dot.x + 1"
+            :x="dot.x"
             :y="dot.y - 1"
             data-test="grapher--dottext"
           >
@@ -224,10 +224,14 @@ export default Vue.extend({
     },
     dotLabels(): string[] {
       const dotLabels = this.$store.getters.getDotLabels;
-      const numDots = this.$store.getters.getSelectedStuntSheet.stuntSheetDots
-        .length;
-      return [...Array(numDots).keys()].map((i) => {
-        return dotLabels && i < dotLabels.length ? dotLabels[i] : i.toString();
+      const dots: StuntSheetDot[] = this.$store.getters.getSelectedStuntSheet
+        .stuntSheetDots;
+      return dots.map((dot, index) => {
+        return dotLabels !== null &&
+          dot.dotLabelIndex !== null &&
+          dot.dotLabelIndex < dotLabels.length
+          ? dotLabels[dot.dotLabelIndex]
+          : index.toString();
       });
     },
     grapherToolDots(): StuntSheetDot[] {
@@ -311,6 +315,7 @@ export default Vue.extend({
 .grapher--dottext {
   fill: $black;
   font-size: 2px;
-  text-anchor: middle;
+  text-anchor: left;
+  user-select: none;
 }
 </style>
