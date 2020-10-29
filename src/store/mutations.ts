@@ -53,6 +53,60 @@ const mutations: MutationTree<CalChartState> = {
     const currentSS = getSelectedStuntSheet(state);
     currentSS.addDot(dot);
   },
+  syncDotLabelIndices(
+    state,
+    payload: { currentSSDotIndex: number; nextSSDotIndex: number }
+  ): void {
+    // TODO: Design a better way to connect dots between stuntsheets
+
+    // Get the current and next stuntsheets
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS: StuntSheet = getSelectedStuntSheet(state);
+    const getNextStuntSheet = getters.getNextStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const nextSS = getNextStuntSheet(state);
+
+    // Set the current dot's label index if not already set
+    const currentDot = currentSS.stuntSheetDots[payload.currentSSDotIndex];
+    if (currentDot.dotLabelIndex === null) {
+      let i: number;
+      for (i = 0; i < currentSS.stuntSheetDots.length; i++) {
+        const dotWithDotLabelIndex = currentSS.stuntSheetDots.findIndex(
+          (dot) => dot.dotLabelIndex === i
+        );
+        if (dotWithDotLabelIndex === -1) {
+          break;
+        }
+      }
+      currentDot.dotLabelIndex = i;
+    } else {
+      // TODO: Can we make this not affect the next ss's dot's pairing with the next next ss?
+      const pairedDot = nextSS.stuntSheetDots.find(
+        (dot) => dot.dotLabelIndex === currentDot.dotLabelIndex
+      );
+      pairedDot && (pairedDot.dotLabelIndex = null);
+    }
+
+    // Set the next dot's label index to the current dot's
+    const nextDot = nextSS.stuntSheetDots[payload.nextSSDotIndex];
+    if (nextDot.dotLabelIndex === null) {
+      nextDot.dotLabelIndex = currentDot.dotLabelIndex;
+    } else {
+      // TODO: If the next stuntsheet's dotLabelIndex is not null, then update
+      // the paired dot in the next next stuntsheet, and so on. If there's a
+      // dot on the current stuntsheet that's paired to this dot, then unset
+      // that dot's dot label index.
+      nextDot.dotLabelIndex = currentDot.dotLabelIndex;
+    }
+
+    state.show.generateFlows(state.selectedSS);
+
+    // Reset tool
+    state.toolSelected && (state.toolSelected.currentSSDotIndex = null);
+  },
   setStuntSheetTitle(state, title: string): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
@@ -150,6 +204,10 @@ const mutations: MutationTree<CalChartState> = {
       state.beat = currentSS.beats;
     }
   },
+  setIsSetNextPointMode(state, isSetNextPointMode: boolean): void {
+    state.isSetNextPointMode = isSetNextPointMode;
+    state.toolSelected = null;
+  },
 
   // View Settings
   setFourStepGrid(state, enabled: boolean): void {
@@ -175,6 +233,9 @@ const mutations: MutationTree<CalChartState> = {
   },
   setGrapherToolDots(state, grapherToolDots: StuntSheetDot[]): void {
     state.grapherToolDots = grapherToolDots;
+  },
+  updateToolSelectedNextPoint(state, dotIndex: number): void {
+    state.toolSelected && (state.toolSelected.currentSSDotIndex = dotIndex);
   },
 };
 

@@ -15,6 +15,10 @@ const getters: GetterTree<CalChartState, CalChartState> = {
   // Show -> StuntSheet
   getSelectedStuntSheet: (state): StuntSheet =>
     state.show.stuntSheets[state.selectedSS],
+  getNextStuntSheet: (state): StuntSheet | null =>
+    state.selectedSS + 1 < state.show.stuntSheets.length
+      ? state.show.stuntSheets[state.selectedSS + 1]
+      : null,
   getContinuity: (state) => (
     dotTypeIndex: number,
     continuityIndex: number

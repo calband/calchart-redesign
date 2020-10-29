@@ -1,5 +1,6 @@
 <template>
   <div class="menu-right">
+    <SetNextPoint />
     <p class="label">Dot Type Editor</p>
     <DotTypeEditor
       v-for="(dotType, index) in dotTypes"
@@ -20,6 +21,7 @@
 
 <script lang="ts">
 import DotTypeEditor from "./DotTypeEditor.vue";
+import SetNextPoint from "./SetNextPoint.vue";
 import BaseCont from "@/models/continuity/BaseCont";
 import Vue from "vue";
 import StuntSheet from "@/models/StuntSheet";
@@ -28,6 +30,7 @@ export default Vue.extend({
   name: "MenuRight",
   components: {
     DotTypeEditor,
+    SetNextPoint,
   },
   computed: {
     dotTypes(): BaseCont[][] {

@@ -11,7 +11,8 @@
           :type="toolSelectedIndex === index ? 'is-primary' : 'is-light'"
           :icon-left="toolData.icon"
           :data-test="`menu-bottom-tool--${toolData['data-test']}`"
-          @click="setTool(index)"
+          @click="!toolData.disabled && setTool(index)"
+          :disabled="toolData.disabled"
         />
       </b-tooltip>
     </div>
@@ -23,39 +24,48 @@
  * Handles setting and modifying the tools used in Grapher
  */
 import Vue from "vue";
-import BaseTool, { ToolConstructor } from "@/tools/BaseTool";
+import BaseTool from "@/tools/BaseTool";
 import ToolPanZoom from "@/tools/ToolPanZoom";
 import ToolSingleDot from "@/tools/ToolSingleDot";
+import ToolSelectNextPoint from "@/tools/ToolSelectNextPoint";
 
 interface ToolData {
   label: string;
   icon: string;
-  tool: ToolConstructor;
+  tool: BaseTool;
   "data-test": string;
+  disabled?: boolean;
 }
+
+// This is a function so that the tools are refreshed upon updating the mode
+const generateToolData = (isSetNextPointMode: boolean): ToolData[] => [
+  {
+    label: "Pan and Zoom (Hold Ctrl/Meta to turn on)",
+    icon: "hand-right",
+    tool: new ToolPanZoom(),
+    "data-test": "pan-zoom",
+  },
+  {
+    label: "Add and Remove Single Dot",
+    icon: "plus-minus",
+    tool: new ToolSingleDot(),
+    "data-test": "add-rm",
+    disabled: isSetNextPointMode,
+  },
+  {
+    label: "Set Next Point",
+    icon: "link",
+    tool: new ToolSelectNextPoint(),
+    "data-test": "select-next-point",
+    disabled: !isSetNextPointMode,
+  },
+];
 
 export default Vue.extend({
   name: "MenuBottom",
   data: (): {
-    toolDataList: ToolData[];
-    toolSelectedIndex: number;
     temporaryTool: BaseTool | null;
   } => ({
-    toolDataList: [
-      {
-        label: "Pan and Zoom (Hold Ctrl/Meta to turn on)",
-        icon: "hand-right",
-        tool: ToolPanZoom,
-        "data-test": "pan-zoom",
-      },
-      {
-        label: "Add and Remove Single Dot",
-        icon: "plus-minus",
-        tool: ToolSingleDot,
-        "data-test": "add-rm",
-      },
-    ],
-    toolSelectedIndex: 0, // Assume that 0 is the pan/zoom tool
     temporaryTool: null, // Used to hold last tool when ctrl/meta is held
   }),
   watch: {
@@ -78,7 +88,7 @@ export default Vue.extend({
       // eslint-disable-next-line no-undef
       const grapherSvgPanZoom: SvgPanZoom.Instance | undefined = this.$store
         .state.grapherSvgPanZoom;
-      if (grapherSvgPanZoom === undefined) {
+      if (!grapherSvgPanZoom) {
         throw new Error("There is no grapher pan zoom instance");
       }
 
@@ -93,8 +103,19 @@ export default Vue.extend({
       }
     },
   },
+  computed: {
+    toolDataList(): ToolData[] {
+      return generateToolData(this.$store.state.isSetNextPointMode);
+    },
+    toolSelectedIndex(): number {
+      const toolSelected = this.$store.state.toolSelected;
+      return this.toolDataList.findIndex((toolData) => {
+        return toolData.tool === toolSelected;
+      });
+    },
+  },
   mounted() {
-    this.setTool(this.$data.toolSelectedIndex);
+    this.setTool(0);
 
     document.addEventListener("keydown", this.onKeyDown);
     document.addEventListener("keyup", this.onKeyUp);
@@ -105,11 +126,7 @@ export default Vue.extend({
   },
   methods: {
     setTool(toolIndex: number): void {
-      this.$data.toolSelectedIndex = toolIndex;
-      const ToolConstructor: ToolConstructor = this.$data.toolDataList[
-        toolIndex
-      ].tool;
-      const tool: BaseTool = new ToolConstructor();
+      const tool: BaseTool = this.toolDataList[toolIndex].tool;
       this.$store.commit("setToolSelected", tool);
     },
     isCtrl(event: KeyboardEvent): boolean {
@@ -137,11 +154,6 @@ export default Vue.extend({
       // We do not use this.setTool to avoid reinitializing the previous tool
       const temporaryTool: BaseTool = this.$data.temporaryTool;
       this.$store.commit("setToolSelected", temporaryTool);
-      this.$data.toolSelectedIndex = this.$data.toolDataList.findIndex(
-        (toolData: ToolData): boolean => {
-          return toolData.tool === temporaryTool.constructor;
-        }
-      );
       this.$data.temporaryTool = null;
     },
   },

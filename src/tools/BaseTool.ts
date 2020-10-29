@@ -10,6 +10,13 @@ import { GlobalStore } from "@/store";
  */
 export default abstract class BaseTool {
   /**
+   * Used in ToolSelectNextPoint. Put in BaseTool due to a circular dependency:
+   * ToolSingleDot -> BaseTool -> store/index -> store/mutations -> ToolSelectNextPoint -> BaseTool
+   * "TypeError: Class extends value undefined is not a constructor or null"
+   */
+  currentSSDotIndex: number | null = null;
+
+  /**
    * Approximates coordinate on the two step grid
    *
    * @param coordinate - Either the x or y coordinate
@@ -30,7 +37,7 @@ export default abstract class BaseTool {
     point.y = event.clientY;
 
     const invertedCTMMatrix = GlobalStore.state.invertedCTMMatrix;
-    if (invertedCTMMatrix === undefined) {
+    if (!invertedCTMMatrix) {
       throw new Error("No inverted ctm matrix");
     }
     const convertedPoint = point.matrixTransform(invertedCTMMatrix);
@@ -48,8 +55,4 @@ export default abstract class BaseTool {
   onMousemove(event: MouseEvent): void {}
   /* eslint-enable @typescript-eslint/no-unused-vars,
     @typescript-eslint/no-empty-function */
-}
-
-export interface ToolConstructor {
-  new (): BaseTool;
 }

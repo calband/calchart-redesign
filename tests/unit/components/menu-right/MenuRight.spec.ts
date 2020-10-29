@@ -3,6 +3,7 @@ import Buefy from "buefy";
 import { generateStore, CalChartState } from "@/store";
 import Vuex, { Store } from "vuex";
 import MenuRight from "@/components/menu-right/MenuRight.vue";
+import SetNextPoint from "@/components/menu-right/SetNextPoint.vue";
 import DotTypeEditor from "@/components/menu-right/DotTypeEditor.vue";
 import StuntSheet from "@/models/StuntSheet";
 import Show from "@/models/Show";
@@ -37,6 +38,11 @@ describe("components/menu-right/MenuRight", () => {
       store,
       localVue,
     });
+  });
+
+  it("renders SetNextPoint", () => {
+    const setNextPoint = menu.findComponent(SetNextPoint);
+    expect(setNextPoint.exists()).toBe(true);
   });
 
   it("renders all dot type editors", () => {

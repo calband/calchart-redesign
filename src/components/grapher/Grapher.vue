@@ -1,7 +1,13 @@
 <template>
   <div class="grapher">
     <svg
-      class="grapher--svg"
+      :class="`grapher--svg ${
+        isSetNextPointMode ? 'grapher--svg-next-point' : ''
+      } ${
+        toolCurrentSSDotIndex === null
+          ? 'grapher--highlight-current-ss'
+          : 'grapher--highlight-next-ss'
+      }`"
       data-test="grapher--svg"
       @click.prevent="onClick"
       @mousemove="onMousemove"
@@ -82,15 +88,29 @@
           </text>
         </g>
         <g class="grapher--dots-container">
-          <circle
-            v-for="dot in stuntSheetDots"
-            :key="`${dot.x}-${dot.y}-dot`"
-            class="grapher--dot"
-            :cx="dot.x"
-            :cy="dot.y"
-            r="0.7"
-            data-test="grapher--dot"
-          />
+          <template v-for="(dot, index) in stuntSheetDots">
+            <circle
+              :key="`${dot.x}-${dot.y}-dot`"
+              :class="`grapher--dot ${
+                dot.dotLabelIndex === null ? 'grapher--not-paired' : ''
+              } ${
+                toolCurrentSSDotIndex === index ? 'grapher--dot-selected' : ''
+              }`"
+              :cx="dot.x"
+              :cy="dot.y"
+              r="0.7"
+              data-test="grapher--dot"
+            />
+            <polyline
+              :key="`${dot.x}-${dot.y}-dot-flow-line`"
+              v-if="isSetNextPointMode && dot.cachedFlow"
+              class="grapher--flow-line"
+              data-test="grapher--flow-line"
+              :points="
+                dot.cachedFlow.map((flow) => `${flow.x},${flow.y}`).join(' ')
+              "
+            />
+          </template>
         </g>
         <g class="grapher--tool-dots-container">
           <circle
@@ -101,6 +121,19 @@
             :cy="dot.y"
             r="0.7"
             data-test="grapher--tool-dot"
+          />
+        </g>
+        <g class="grapher--next-dots-container" v-if="isSetNextPointMode">
+          <circle
+            v-for="dot in nextStuntSheetDots"
+            :key="`${dot.x}-${dot.y}-next-dot`"
+            :class="`grapher--dot grapher--next-dot ${
+              dot.dotLabelIndex === null ? 'grapher--next-dot-not-paired' : ''
+            }`"
+            :cx="dot.x"
+            :cy="dot.y"
+            r="0.7"
+            data-test="grapher--next-dot"
           />
         </g>
       </g>
@@ -116,7 +149,7 @@ import StuntSheetDot from "@/models/StuntSheetDot";
 import StuntSheet from "@/models/StuntSheet";
 
 /**
- * Renders the field, the dots of the current stunt sheet, and pending dots
+ * Renders the field, thts of the current stunt sheet, and pending dots
  * generated from the tool in use
  */
 export default Vue.extend({
@@ -210,6 +243,17 @@ export default Vue.extend({
     grapherToolDots(): StuntSheetDot[] {
       return this.$store.state.grapherToolDots;
     },
+    isSetNextPointMode(): boolean {
+      return this.$store.state.isSetNextPointMode;
+    },
+    toolCurrentSSDotIndex(): number | null {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      return toolSelected && toolSelected.currentSSDotIndex;
+    },
+    nextStuntSheetDots(): StuntSheetDot[] {
+      const nextSS: StuntSheet | null = this.$store.getters.getNextStuntSheet;
+      return nextSS ? nextSS.stuntSheetDots : [];
+    },
   },
   mounted() {
     const svgPanZoomInstance = svgPanZoom(".grapher--svg", {
@@ -278,6 +322,42 @@ export default Vue.extend({
   fill: $white;
   font-size: 4px;
   text-anchor: middle;
+}
+
+.grapher--flow-line {
+  fill: none;
+  stroke: $california-gold;
+  stroke-width: 0.5;
+}
+
+.grapher--svg-next-point {
+  .grapher--dot {
+    opacity: 0.5;
+
+    &.grapher--dot-selected {
+      stroke: $california-gold;
+      stroke-width: 0.2;
+    }
+
+    &.grapher--next-dot {
+      stroke: $white;
+      stroke-width: 0.33;
+      fill: none;
+    }
+  }
+
+  &.grapher--highlight-current-ss {
+    .grapher--not-paired {
+      opacity: 1;
+    }
+  }
+
+  &.grapher--highlight-next-ss {
+    .grapher--dot-selected,
+    .grapher--next-dot-not-paired {
+      opacity: 1;
+    }
+  }
 }
 
 .grapher--dot {

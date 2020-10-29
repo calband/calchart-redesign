@@ -9,6 +9,8 @@ import svgPanZoom from "svg-pan-zoom";
 import StuntSheet from "@/models/StuntSheet";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import BaseTool from "@/tools/BaseTool";
+import { FlowBeat } from "@/models/util/types";
+import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
 
 jest.mock("svg-pan-zoom", () => {
   return {
@@ -28,14 +30,14 @@ describe("components/grapher/Grapher.vue", () => {
 
   it("on mount, initialize grapherSvgPanZoom in store", () => {
     const store = generateStore({});
-    expect(store.state.grapherSvgPanZoom).toBeUndefined();
+    expect(store.state.grapherSvgPanZoom).toBeNull();
     expect(svgPanZoom).not.toHaveBeenCalled();
     mount(Grapher, {
       store,
       localVue,
     });
     expect(svgPanZoom).toHaveBeenCalled();
-    expect(store.state.grapherSvgPanZoom).not.toBeUndefined();
+    expect(store.state.grapherSvgPanZoom).not.toBeNull();
     expect(store.state.grapherSvgPanZoom);
   });
 
@@ -212,7 +214,8 @@ describe("components/grapher/Grapher.vue", () => {
   describe("stuntSheetDots", () => {
     const generateShowWithDots = (
       numDots: number,
-      numToolDots: number
+      numToolDots: number,
+      numNextDots: number
     ): void => {
       const stuntSheetDots = [];
       for (let i = 0; i < numDots; i++) {
@@ -234,9 +237,22 @@ describe("components/grapher/Grapher.vue", () => {
         );
       }
 
+      const nextDots = [];
+      for (let k = 0; k < numNextDots; k++) {
+        nextDots.push(
+          new StuntSheetDot({
+            x: k * 2 + 2,
+            y: k * 2 + 2,
+          })
+        );
+      }
+
       store = generateStore({
         show: new Show({
-          stuntSheets: [new StuntSheet({ stuntSheetDots })],
+          stuntSheets: [
+            new StuntSheet({ stuntSheetDots }),
+            new StuntSheet({ stuntSheetDots: nextDots }),
+          ],
         }),
         grapherToolDots,
       });
@@ -247,29 +263,74 @@ describe("components/grapher/Grapher.vue", () => {
     };
 
     it.each([
-      [0, 0],
-      [1, 0],
-      [2, 0],
-      [0, 1],
-      [1, 1],
-    ])("renders %i dots and %i tool dots", (numDots, numToolDots) => {
-      generateShowWithDots(numDots, numToolDots);
-      expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(
-        numDots
+      [0, 0, 0],
+      [1, 0, 0],
+      [2, 0, 2],
+      [0, 1, 0],
+      [1, 1, 1],
+    ])(
+      "renders %i dots, %i tool dots, and %i next dots",
+      async (numDots, numToolDots, numNextDots) => {
+        generateShowWithDots(numDots, numToolDots, numNextDots);
+        expect(wrapper.findAll('[data-test="grapher--dot"]')).toHaveLength(
+          numDots
+        );
+        expect(wrapper.findAll('[data-test="grapher--tool-dot"]')).toHaveLength(
+          numToolDots
+        );
+        expect(wrapper.find('[data-test="grapher--next-dot"]').exists()).toBe(
+          false
+        );
+
+        store.commit("setIsSetNextPointMode", true);
+        await wrapper.vm.$nextTick();
+        expect(wrapper.findAll('[data-test="grapher--next-dot"]')).toHaveLength(
+          numNextDots
+        );
+      }
+    );
+  });
+
+  describe("flow lines", () => {
+    it("generates a polyline for flow line", async () => {
+      const cachedFlow: FlowBeat[] = [
+        { x: 0, y: 1, direction: DIRECTIONS.E, marchType: MARCH_TYPES.HS },
+        { x: 0, y: 2, direction: DIRECTIONS.E, marchType: MARCH_TYPES.HS },
+        { x: 1, y: 2, direction: DIRECTIONS.E, marchType: MARCH_TYPES.HS },
+        { x: 2, y: 2, direction: DIRECTIONS.E, marchType: MARCH_TYPES.HS },
+      ];
+      store = generateStore({
+        show: new Show({
+          stuntSheets: [
+            new StuntSheet({
+              stuntSheetDots: [new StuntSheetDot({ x: 0, y: 0, cachedFlow })],
+            }),
+          ],
+        }),
+      });
+      wrapper = mount(Grapher, {
+        store,
+        localVue,
+      });
+      expect(wrapper.find('[data-test="grapher--flow-line"]').exists()).toBe(
+        false
       );
-      expect(wrapper.findAll('[data-test="grapher--tool-dot"]')).toHaveLength(
-        numToolDots
-      );
+      store.commit("setIsSetNextPointMode", true);
+      await wrapper.vm.$nextTick();
+      const flowLine = wrapper.find('[data-test="grapher--flow-line"]');
+      expect(flowLine.exists()).toBe(true);
+      expect(flowLine.attributes("points")).toBe("0,1 0,2 1,2 2,2");
     });
   });
 
-  describe("event listners", () => {
+  describe("event listeners", () => {
     let mockTool: BaseTool;
 
     beforeEach(() => {
       mockTool = {
         onClick: jest.fn(),
         onMousemove: jest.fn(),
+        currentSSDotIndex: null,
       };
       store = generateStore({ toolSelected: mockTool });
       wrapper = mount(Grapher, {

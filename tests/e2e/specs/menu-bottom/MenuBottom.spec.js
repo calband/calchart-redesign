@@ -4,7 +4,7 @@ describe("components/menu-bottom/MenuBottom", () => {
   });
 
   it("all buttons are rendered and pan/zoom is selected", () => {
-    cy.get('[data-test="menu-bottom--tooltip"]').should("have.length", 2);
+    cy.get('[data-test="menu-bottom--tooltip"]').should("have.length", 3);
 
     cy.get('[data-test="menu-bottom-tool--pan-zoom"]').should(
       "have.class",
@@ -13,7 +13,7 @@ describe("components/menu-bottom/MenuBottom", () => {
 
     cy.get('[data-test="menu-bottom--tooltip"] .is-light').should(
       "have.length",
-      1
+      2
     );
   });
 
@@ -25,7 +25,7 @@ describe("components/menu-bottom/MenuBottom", () => {
 
     cy.get('[data-test="menu-bottom--tooltip"] .is-light').should(
       "have.length",
-      1
+      2
     );
 
     // eslint-disable-next-line cypress/require-data-selectors

@@ -7,6 +7,7 @@ import MenuBottom from "@/components/menu-bottom/MenuBottom.vue";
 import ToolSingleDot from "@/tools/ToolSingleDot";
 import ToolPanZoom from "@/tools/ToolPanZoom";
 import BaseTool from "@/tools/BaseTool";
+import ToolSelectNextPoint from "@/tools/ToolSelectNextPoint";
 
 jest.mock("svg-pan-zoom", () => {
   return {
@@ -65,14 +66,14 @@ const setupHelper = () => {
 };
 
 describe("components/menu-bottom/MenuBottom", () => {
-  describe("tool buttons", () => {
-    let inverseMock: jest.Mock;
-    let getScreenCTMMock: jest.Mock;
-    let getElementsByClassNameMock: jest.Mock;
-    let grapherSvgPanZoom: SvgPanZoom.Instance;
-    let store: Store<CalChartState>;
-    let menu: Wrapper<Vue>;
+  let inverseMock: jest.Mock;
+  let getScreenCTMMock: jest.Mock;
+  let getElementsByClassNameMock: jest.Mock;
+  let grapherSvgPanZoom: SvgPanZoom.Instance;
+  let store: Store<CalChartState>;
+  let menu: Wrapper<Vue>;
 
+  describe("tool buttons", () => {
     beforeAll(() => {
       jest.clearAllMocks();
       ({
@@ -87,54 +88,54 @@ describe("components/menu-bottom/MenuBottom", () => {
 
     it("renders the correct amount of tools", () => {
       expect(menu.findAll('[data-test="menu-bottom--tooltip"]')).toHaveLength(
-        2
+        3
       );
     });
 
     it("on mount, selects the pan and zoom tool", () => {
-      const toolSelected = store.state.toolSelected as BaseTool;
-      expect(toolSelected).not.toBeUndefined();
-      expect(ToolPanZoom).toHaveBeenCalled();
-      expect(toolSelected.constructor).toBe(ToolPanZoom);
+      expect(store.state.toolSelected instanceof ToolPanZoom).toBe(true);
       const panZoomBtn = menu.find('[data-test="menu-bottom-tool--pan-zoom"]');
       expect(panZoomBtn.exists()).toBeTruthy();
       expect(panZoomBtn.props("type")).toBe("is-primary");
+      expect(panZoomBtn.attributes("disabled")).toBeFalsy();
     });
 
     it("add/remove single dot has type is-light when it is unselected", () => {
       const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
       expect(addRmBtn.props("type")).toBe("is-light");
+      expect(addRmBtn.attributes("disabled")).toBeFalsy();
     });
 
-    it(
-      "clicking add/remove single dot disables panning/zooming and " +
-        "calculates inverse matrix",
-      async () => {
-        expect(ToolSingleDot).not.toHaveBeenCalled();
-        expect(grapherSvgPanZoom.disablePan).not.toHaveBeenCalled();
-        expect(grapherSvgPanZoom.disableZoom).not.toHaveBeenCalled();
-        expect(grapherSvgPanZoom.disableControlIcons).not.toHaveBeenCalled();
-        expect(inverseMock).not.toHaveBeenCalled();
-        expect(getScreenCTMMock).not.toHaveBeenCalled();
-        expect(getElementsByClassNameMock).not.toHaveBeenCalled();
+    it("set next point has type is-light and is disabled", () => {
+      const selectNextPointBtn = menu.find(
+        '[data-test="menu-bottom-tool--select-next-point"]'
+      );
+      expect(selectNextPointBtn.props("type")).toBe("is-light");
+      expect(selectNextPointBtn.attributes("disabled")).toBeTruthy();
+    });
 
-        const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
-        addRmBtn.trigger("click");
-        await menu.vm.$nextTick();
+    it("clicking add/remove single dot disables panning/zooming and calculates inverse matrix", async () => {
+      expect(store.state.toolSelected instanceof ToolSingleDot).toBe(false);
+      expect(grapherSvgPanZoom.disablePan).not.toHaveBeenCalled();
+      expect(grapherSvgPanZoom.disableZoom).not.toHaveBeenCalled();
+      expect(grapherSvgPanZoom.disableControlIcons).not.toHaveBeenCalled();
+      expect(inverseMock).toHaveBeenCalledTimes(1);
+      expect(getScreenCTMMock).toHaveBeenCalledTimes(1);
+      expect(getElementsByClassNameMock).toHaveBeenCalledTimes(1);
 
-        expect(ToolSingleDot).toHaveBeenCalled();
-        const toolSelected = store.state.toolSelected as BaseTool;
-        expect(toolSelected).not.toBeUndefined();
-        expect(toolSelected.constructor).toBe(ToolSingleDot);
-        expect(addRmBtn.props("type")).toBe("is-primary");
-        expect(grapherSvgPanZoom.disablePan).toHaveBeenCalled();
-        expect(grapherSvgPanZoom.disableZoom).toHaveBeenCalled();
-        expect(grapherSvgPanZoom.disableControlIcons).toHaveBeenCalled();
-        expect(inverseMock).toHaveBeenCalled();
-        expect(getScreenCTMMock).toHaveBeenCalled();
-        expect(getElementsByClassNameMock).toHaveBeenCalled();
-      }
-    );
+      const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
+      addRmBtn.trigger("click");
+      await menu.vm.$nextTick();
+
+      expect(store.state.toolSelected instanceof ToolSingleDot).toBe(true);
+      expect(addRmBtn.props("type")).toBe("is-primary");
+      expect(grapherSvgPanZoom.disablePan).toHaveBeenCalled();
+      expect(grapherSvgPanZoom.disableZoom).toHaveBeenCalled();
+      expect(grapherSvgPanZoom.disableControlIcons).toHaveBeenCalled();
+      expect(inverseMock).toHaveBeenCalledTimes(2);
+      expect(getScreenCTMMock).toHaveBeenCalledTimes(2);
+      expect(getElementsByClassNameMock).toHaveBeenCalledTimes(2);
+    });
 
     it("pan and zoom is no longer selected", () => {
       const panZoomBtn = menu.find('[data-test="menu-bottom-tool--pan-zoom"]');
@@ -142,28 +143,91 @@ describe("components/menu-bottom/MenuBottom", () => {
     });
 
     it("clicking pan and zoom enables panning/zooming", async () => {
-      expect(grapherSvgPanZoom.enablePan).not.toHaveBeenCalled();
-      expect(grapherSvgPanZoom.enableZoom).not.toHaveBeenCalled();
-      expect(grapherSvgPanZoom.enableControlIcons).not.toHaveBeenCalled();
+      expect(grapherSvgPanZoom.enablePan).toHaveBeenCalledTimes(1);
+      expect(grapherSvgPanZoom.enableZoom).toHaveBeenCalledTimes(1);
+      expect(grapherSvgPanZoom.enableControlIcons).toHaveBeenCalledTimes(1);
 
       const panZoomBtn = menu.find('[data-test="menu-bottom-tool--pan-zoom"]');
       panZoomBtn.trigger("click");
       await menu.vm.$nextTick();
 
-      const toolSelected = store.state.toolSelected as BaseTool;
-      expect(toolSelected).not.toBeUndefined();
-      expect(toolSelected.constructor).toBe(ToolPanZoom);
+      expect(store.state.toolSelected instanceof ToolPanZoom).toBe(true);
       expect(panZoomBtn.props("type")).toBe("is-primary");
-      expect(grapherSvgPanZoom.enablePan).toHaveBeenCalled();
-      expect(grapherSvgPanZoom.enableZoom).toHaveBeenCalled();
-      expect(grapherSvgPanZoom.enableControlIcons).toHaveBeenCalled();
+      expect(grapherSvgPanZoom.enablePan).toHaveBeenCalledTimes(2);
+      expect(grapherSvgPanZoom.enableZoom).toHaveBeenCalledTimes(2);
+      expect(grapherSvgPanZoom.enableControlIcons).toHaveBeenCalledTimes(2);
+    });
+
+    it("clicking set next point does nothing because it is disabled", async () => {
+      const selectNextPointBtn = menu.find(
+        '[data-test="menu-bottom-tool--select-next-point"]'
+      );
+      selectNextPointBtn.trigger("click");
+      await menu.vm.$nextTick();
+
+      expect(store.state.toolSelected instanceof ToolPanZoom).toBe(true);
+    });
+  });
+
+  describe("tool buttons with isSetNextPointMode", () => {
+    beforeAll(() => {
+      jest.clearAllMocks();
+      ({
+        inverseMock,
+        getScreenCTMMock,
+        getElementsByClassNameMock,
+        grapherSvgPanZoom,
+        store,
+        menu,
+      } = setupHelper());
+      store.commit("setIsSetNextPointMode", true);
+    });
+
+    it("renders the correct amount of tools and no tool selected", () => {
+      expect(menu.findAll('[data-test="menu-bottom--tooltip"]')).toHaveLength(
+        3
+      );
+      expect(store.state.toolSelected).toBeNull();
+    });
+
+    it("pan and zoom tool has type is-light", () => {
+      const panZoomBtn = menu.find('[data-test="menu-bottom-tool--pan-zoom"]');
+      expect(panZoomBtn.exists()).toBeTruthy();
+      expect(panZoomBtn.props("type")).toBe("is-light");
+      expect(panZoomBtn.attributes("disabled")).toBeFalsy();
+    });
+
+    it("add/remove single dot has type is-light and is disabled", () => {
+      const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
+      expect(addRmBtn.props("type")).toBe("is-light");
+      expect(addRmBtn.attributes("disabled")).toBeTruthy();
+    });
+
+    it("set next point has type is-light", () => {
+      const selectNextPointBtn = menu.find(
+        '[data-test="menu-bottom-tool--select-next-point"]'
+      );
+      expect(selectNextPointBtn.props("type")).toBe("is-light");
+      expect(selectNextPointBtn.attributes("disabled")).toBeFalsy();
+    });
+
+    it("clicking the set next point tool switches the tool", async () => {
+      const selectNextPointBtn = menu.find(
+        '[data-test="menu-bottom-tool--select-next-point"]'
+      );
+      selectNextPointBtn.trigger("click");
+      await menu.vm.$nextTick();
+
+      expect(store.state.toolSelected instanceof ToolSelectNextPoint).toBe(
+        true
+      );
+      expect(selectNextPointBtn.props("type")).toBe("is-primary");
+      const panZoomBtn = menu.find('[data-test="menu-bottom-tool--pan-zoom"]');
+      expect(panZoomBtn.props("type")).toBe("is-light");
     });
   });
 
   describe("onKeyDown", () => {
-    let store: Store<CalChartState>;
-    let menu: Wrapper<Vue>;
-
     beforeEach(() => {
       ({ store, menu } = setupHelper());
 
@@ -209,9 +273,6 @@ describe("components/menu-bottom/MenuBottom", () => {
   });
 
   describe("onKeyUp", () => {
-    let store: Store<CalChartState>;
-    let menu: Wrapper<Vue>;
-
     beforeEach(() => {
       jest.clearAllMocks();
       ({ store, menu } = setupHelper());

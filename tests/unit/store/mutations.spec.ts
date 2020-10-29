@@ -5,9 +5,51 @@ import StuntSheet from "@/models/StuntSheet";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import ContEven from "@/models/continuity/ContEven";
+import StuntSheetDot from "@/models/StuntSheetDot";
 
 describe("store/mutations", () => {
   let store: Store<CalChartState>;
+
+  describe("syncDotLabelIndices", () => {
+    // TODO: Update and add tests upon updating syncDotLabelIndices
+    beforeEach(() => {
+      store = generateStore({
+        show: new Show({
+          stuntSheets: [
+            new StuntSheet({
+              dotTypes: [[new ContETFDynamic(), new ContInPlace()]],
+              stuntSheetDots: [
+                new StuntSheetDot({ x: 0, y: 0 }),
+                new StuntSheetDot({ x: 2, y: 2 }),
+              ],
+            }),
+            new StuntSheet({
+              stuntSheetDots: [
+                new StuntSheetDot({ x: 0, y: 4 }),
+                new StuntSheetDot({ x: 2, y: 4 }),
+              ],
+            }),
+          ],
+        }),
+      });
+    });
+
+    it("updates current and next dot label indices", () => {
+      const dots = store.state.show.stuntSheets[0].stuntSheetDots;
+      expect(dots[0].dotLabelIndex).toBeNull();
+      expect(dots[1].dotLabelIndex).toBeNull();
+      store.commit("syncDotLabelIndices", {
+        currentSSDotIndex: 1,
+        nextSSDotIndex: 0,
+      });
+      const updatedDots = store.state.show.stuntSheets[0].stuntSheetDots;
+      expect(updatedDots[0].dotLabelIndex).toBeNull();
+      expect(updatedDots[1].dotLabelIndex).toBe(0);
+      const nextSSDots = store.state.show.stuntSheets[1].stuntSheetDots;
+      expect(nextSSDots[0].dotLabelIndex).toBe(0);
+      expect(nextSSDots[1].dotLabelIndex).toBeNull();
+    });
+  });
 
   describe("addDotType", () => {
     beforeEach(() => {

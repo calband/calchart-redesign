@@ -34,13 +34,15 @@ export class CalChartState extends Serializable<CalChartState> {
 
   yardlineNumbers = true;
 
-  grapherSvgPanZoom?: SvgPanZoom.Instance;
+  grapherSvgPanZoom: SvgPanZoom.Instance | null = null;
 
-  invertedCTMMatrix?: DOMMatrix;
+  invertedCTMMatrix: DOMMatrix | null = null;
 
-  toolSelected?: BaseTool;
+  toolSelected: BaseTool | null = null;
 
   grapherToolDots: StuntSheetDot[] = [];
+
+  isSetNextPointMode = false;
 
   constructor(json: Partial<CalChartState> = {}) {
     super();

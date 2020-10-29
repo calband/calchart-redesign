@@ -1,4 +1,4 @@
-import BaseTool, { ToolConstructor } from "./BaseTool";
+import BaseTool from "./BaseTool";
 import { GlobalStore } from "@/store";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import StuntSheet from "@/models/StuntSheet";
@@ -6,7 +6,7 @@ import StuntSheet from "@/models/StuntSheet";
 /**
  * Add or remove a single dot on click.
  */
-const ToolSingleDot: ToolConstructor = class ToolSingleDot extends BaseTool {
+export default class ToolSingleDot extends BaseTool {
   onClick(event: MouseEvent): void {
     const [x, y] = BaseTool.convertClientCoordinates(event);
     const stuntSheet: StuntSheet = GlobalStore.getters.getSelectedStuntSheet;
@@ -26,6 +26,4 @@ const ToolSingleDot: ToolConstructor = class ToolSingleDot extends BaseTool {
     const [x, y] = BaseTool.convertClientCoordinates(event);
     GlobalStore.commit("setGrapherToolDots", [new StuntSheetDot({ x, y })]);
   }
-};
-
-export default ToolSingleDot;
+}
