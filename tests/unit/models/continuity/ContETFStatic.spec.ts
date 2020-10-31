@@ -23,6 +23,16 @@ describe("models/continuity/ETFStatic", () => {
       expect(continuity.getHumanReadableText()).toBe("FMHS 8 E");
     });
 
+    it("defaults facingDirection to marchingDirection if left blank", () => {
+      const continuity = new ContETFStatic({
+        duration: 8,
+        marchingDirection: DIRECTIONS.E,
+        marchType: MARCH_TYPES.HS,
+      });
+      expect(continuity.getHumanReadableText()).toBe("FMHS 8 E");
+      expect(continuity.facingDirection === DIRECTIONS.E);
+    });
+
     it("after stringifying and parsing, generates MTHS E", () => {
       const originalContinuity = new ContETFStatic({
         duration: 8,
