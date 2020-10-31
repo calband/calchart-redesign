@@ -1,5 +1,5 @@
 describe("components/menu-left/MenuLeft", () => {
-  it("Creating and  editing two stuntsheets", () => {
+  it("Creating and editing two stuntsheets", () => {
     cy.visit("/");
 
     // Edit the first stuntsheet to have title "Sunset" and 2 beats

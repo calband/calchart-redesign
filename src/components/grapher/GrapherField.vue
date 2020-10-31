@@ -1,6 +1,5 @@
 <template>
   <g class="grapher-field" data-test="grapher-field">
-    <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
     <rect
       class="grapher-field--rect"
       :width="fieldWidth"
@@ -81,8 +80,7 @@
 import Vue from "vue";
 
 /**
- * Renders the field, the dots of the current stunt sheet, and pending dots
- * generated from the tool in use
+ * Renders the field.
  */
 export default Vue.extend({
   name: "GrapherField",

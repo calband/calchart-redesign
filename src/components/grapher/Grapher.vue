@@ -6,6 +6,7 @@
       @click.prevent="onClick"
       @mousemove="onMousemove"
     >
+      <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
       <g class="grapher--wrapper" data-test="grapher--wrapper">
         <GrapherField />
         <GrapherDots />
@@ -24,8 +25,7 @@ import svgPanZoom from "svg-pan-zoom";
 import BaseTool from "@/tools/BaseTool";
 
 /**
- * Renders the field, the dots of the current stunt sheet, and pending dots
- * generated from the tool in use
+ * Holds the components for rendering the field, dots, tools, etc.
  */
 export default Vue.extend({
   name: "Grapher",

@@ -30,8 +30,7 @@ import StuntSheetDot from "@/models/StuntSheetDot";
 import StuntSheet from "@/models/StuntSheet";
 
 /**
- * Renders the field, the dots of the current stunt sheet, and pending dots
- * generated from the tool in use
+ * Renders the dots of the current stunt sheet.
  */
 export default Vue.extend({
   name: "GrapherDots",
