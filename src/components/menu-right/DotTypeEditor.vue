@@ -33,7 +33,8 @@
         <b-dropdown-item
           @click="addContETFStatic"
           data-test="menu-right--add-etf-static"
-          >Eight to Five Static</b-dropdown-item>
+          >Eight to Five Static</b-dropdown-item
+        >
         <b-dropdown-item @click="addContEven" data-test="menu-right--add-even"
           >Even</b-dropdown-item
         >
