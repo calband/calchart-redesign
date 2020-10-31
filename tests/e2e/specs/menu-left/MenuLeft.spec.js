@@ -34,11 +34,11 @@ describe("components/menu-left/MenuLeft", () => {
     cy.get('[data-test="menu-left--beat"]').should("include.text", "1 / 2");
 
     // Add a stuntsheet dot (4, 4) to the first stuntsheet
-    cy.get('[data-test="grapher--dot"]').should("not.exist");
+    cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
     cy.get('[data-test="menu-bottom-tool--add-rm"]').click().clickGrapher(4, 4);
 
-    cy.get('[data-test="grapher--dot"]')
+    cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
       .should("have.attr", "cx", "4")
       .should("have.attr", "cy", "4");
@@ -81,11 +81,11 @@ describe("components/menu-left/MenuLeft", () => {
     cy.get('[data-test="menu-left--beat"]').should("include.text", "1 / 4");
 
     // Add a stuntsheet dot (8, 8) to the first stuntsheet
-    cy.get('[data-test="grapher--dot"]').should("not.exist");
+    cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
     cy.get('[data-test="menu-bottom-tool--add-rm"]').click().clickGrapher(8, 8);
 
-    cy.get('[data-test="grapher--dot"]')
+    cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
       .should("have.attr", "cx", "8")
       .should("have.attr", "cy", "8");
@@ -99,7 +99,7 @@ describe("components/menu-left/MenuLeft", () => {
 
     cy.get('[data-test="menu-left--beat"]').should("include.text", "2 / 2");
 
-    cy.get('[data-test="grapher--dot"]')
+    cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
       .should("have.attr", "cx", "4")
       .should("have.attr", "cy", "4");
@@ -113,7 +113,7 @@ describe("components/menu-left/MenuLeft", () => {
 
     cy.get('[data-test="menu-left--beat"]').should("include.text", "1 / 4");
 
-    cy.get('[data-test="grapher--dot"]')
+    cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
       .should("have.attr", "cx", "8")
       .should("have.attr", "cy", "8");

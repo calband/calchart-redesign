@@ -55,34 +55,41 @@ describe("components/menu-top/MenuTop", () => {
       cy.get('[data-test="menu-top--view-grid"]').should("be.visible");
     });
 
-    it("can toggle four step grid", () => {
-      cy.get('[data-test="grapher--grid-vertical"]').should("be.visible");
+    it("can toggl 1e four step grid", () => {
+      cy.get('[data-test="grapher-field--grid-vertical"]').should("be.visible");
 
-      cy.get('[data-test="grapher--grid-horizontal"]').should("be.visible");
+      cy.get('[data-test="grapher-field--grid-horizontal"]').should(
+        "be.visible"
+      );
 
       cy.get('[data-test="menu-top--view-grid"]').click();
 
-      cy.get('[data-test="grapher--grid-vertical"]').should("not.exist");
+      cy.get('[data-test="grapher-field--grid-vertical"]').should("not.exist");
 
-      cy.get('[data-test="grapher--grid-horizontal"]').should("not.exist");
+      cy.get('[data-test="grapher-field--grid-horizontal"]').should(
+        "not.exist"
+      );
     });
 
     it("can toggle yardlines", () => {
-      cy.get('[data-test="grapher--yard-line"]').should("be.visible");
+      cy.get('[data-test="grapher-field--yard-line"]').should("be.visible");
 
       cy.get('[data-test="menu-top--view-yardlines"]').click();
 
-      cy.get('[data-test="grapher--yard-line"]').should("not.exist");
+      cy.get('[data-test="grapher-field--yard-line"]').should("not.exist");
 
-      cy.get('[data-test="grapher--grid-vertical"]').should("have.length", 47);
+      cy.get('[data-test="grapher-field--grid-vertical"]').should(
+        "have.length",
+        47
+      );
     });
 
     it("can toggle yardline numbers", () => {
-      cy.get('[data-test="grapher--yard-number"]').should("be.visible");
+      cy.get('[data-test="grapher-field--yard-number"]').should("be.visible");
 
       cy.get('[data-test="menu-top--view-yardline-numbers"]').click();
 
-      cy.get('[data-test="grapher--yard-number"]').should("not.exist");
+      cy.get('[data-test="grapher-field--yard-number"]').should("not.exist");
     });
   });
 });

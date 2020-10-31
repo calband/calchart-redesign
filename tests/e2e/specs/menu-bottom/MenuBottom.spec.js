@@ -65,13 +65,13 @@ describe("components/menu-bottom/MenuBottom", () => {
     cy.get("#svg-pan-zoom-controls").should("be.visible");
 
     // Try panning (taken from ToolPanZoom.spec.js)
-    cy.get('[data-test="grapher--field-rect"]').then((field) => {
+    cy.get('[data-test="grapher-field--rect"]').then((field) => {
       const oldX = field.get(0).getBoundingClientRect().x;
       cy.mousedownGrapher(24, 2);
       cy.mousemoveGrapher(8, 2);
       cy.mouseupGrapher(8, 2);
 
-      cy.get('[data-test="grapher--field-rect"]')
+      cy.get('[data-test="grapher-field--rect"]')
         .then((field) => {
           cy.wrap(field.get(0).getBoundingClientRect().x);
         })
