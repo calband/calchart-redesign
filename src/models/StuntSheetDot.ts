@@ -27,4 +27,16 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
     super();
     this.fromJson(dotJson);
   }
+
+  xAtBeat(beat: number): number {
+    return this.cachedFlow !== null && beat < this.cachedFlow.length
+      ? this.cachedFlow[beat].x
+      : this.x;
+  }
+
+  yAtBeat(beat: number): number {
+    return this.cachedFlow !== null && beat < this.cachedFlow.length
+      ? this.cachedFlow[beat].y
+      : this.y;
+  }
 }

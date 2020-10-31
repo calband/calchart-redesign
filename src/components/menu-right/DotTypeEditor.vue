@@ -33,7 +33,9 @@
         <b-dropdown-item
           @click="addContETFStatic"
           data-test="menu-right--add-etf-static"
-          >Eight to Five Static</b-dropdown-item
+          >Eight to Five Static</b-dropdown-item>
+        <b-dropdown-item @click="addContEven" data-test="menu-right--add-even"
+          >Even</b-dropdown-item
         >
       </b-dropdown>
     </div>
@@ -46,6 +48,7 @@ import BaseCont from "@/models/continuity/BaseCont";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 import ContInPlace from "@/models/continuity/ContInPlace";
+import ContEven from "@/models/continuity/ContEven";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";
@@ -88,6 +91,12 @@ export default Vue.extend({
       this.$store.commit("addContinuity", {
         dotTypeIndex: this.dotTypeIndex,
         continuity: new ContETFStatic(),
+      });
+    },
+    addContEven() {
+      this.$store.commit("addContinuity", {
+        dotTypeIndex: this.dotTypeIndex,
+        continuity: new ContEven(),
       });
     },
   },

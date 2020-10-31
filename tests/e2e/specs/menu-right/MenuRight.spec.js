@@ -52,6 +52,29 @@ describe("components/menu-right/MenuRight", () => {
 
     cy.get('[data-test="cont-in-place--march-type"]').should("not.exist");
 
+    // Add a new even continuity for the first dot type
+    cy.get('[data-test="menu-right--add-continuity"]').click();
+
+    cy.get('[data-test="menu-right--add-even"]').click();
+
+    // Check on the fields for the eight to five continuity
+    cy.get('[data-test="cont-even--march-type"]')
+      .should("have.length", 1)
+      .should("have.value", "MM");
+
+    cy.get('[data-test="cont-even--duration"]')
+      .should("have.length", 1)
+      .should("have.value", "8");
+
+    cy.get('[data-test="cont-even--delete"]').should("exist");
+
+    // Delete the second continuity
+    cy.get('[data-test="cont-even--delete"]').click();
+
+    cy.get('[data-test="menu-right--dot-type"]').should("have.length", 1);
+
+    cy.get('[data-test="cont-even--march-type"]').should("not.exist");
+
     // Create a new dot type
     cy.get('[data-se="menu-right--add-dot-type"]').click();
 

@@ -2,6 +2,7 @@ import Serializable from "@/models/util/Serializable";
 import Show from "@/models/Show";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import ContEven from "@/models/continuity/ContEven";
 import StuntSheet from "@/models/StuntSheet";
 import Field from "@/models/Field";
 import { CONT_IDS } from "@/models/continuity/BaseCont";
@@ -120,6 +121,7 @@ describe("models/util/Serializable", () => {
           [
             new ContInPlace({ humanReadableText: "one" }),
             new ContETFDynamic({ humanReadableText: "two" }),
+            new ContEven({ humanReadableText: "three" }),
           ],
         ],
       });
@@ -129,6 +131,7 @@ describe("models/util/Serializable", () => {
           [
             new ContETFDynamic({ humanReadableText: "three" }),
             new ContInPlace({ humanReadableText: "four" }),
+            new ContEven({ humanReadableText: "five" }),
           ],
         ],
       });
@@ -162,7 +165,7 @@ describe("models/util/Serializable", () => {
       expect(stuntSheet1.stuntSheetDots[0].x).toBe(10);
       expect(stuntSheet1.dotTypes).toHaveLength(1);
       const dotType = stuntSheet1.dotTypes[0];
-      expect(dotType).toHaveLength(2);
+      expect(dotType).toHaveLength(3);
       expect(dotType[0] instanceof ContInPlace).toBeTruthy();
       expect(dotType[0].continuityId).toBe(CONT_IDS.IN_PLACE);
       expect(dotType[0].getHumanReadableText instanceof Function).toBeTruthy();
@@ -182,7 +185,7 @@ describe("models/util/Serializable", () => {
       expect(stuntSheet2.stuntSheetDots[0].x).toBe(20);
       expect(stuntSheet2.dotTypes).toHaveLength(1);
       const dotType = stuntSheet2.dotTypes[0];
-      expect(dotType).toHaveLength(2);
+      expect(dotType).toHaveLength(3);
       expect(dotType[0] instanceof ContETFDynamic).toBeTruthy();
       expect(dotType[0].continuityId).toBe(CONT_IDS.ETF_DYNAMIC);
       expect(dotType[0].getHumanReadableText instanceof Function).toBeTruthy();
