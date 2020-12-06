@@ -64,7 +64,7 @@
 /**
  * Helper command for mouse events on the grapher
  */
-const grapherMouseCommand = (eventName, x, y) => {
+const grapherMouseCommand = (eventName, x, y, options) => {
   return cy.get('[data-test="grapher--wrapper"]').then((wrapper) => {
     const matrix = wrapper.get(0).getCTM();
 
@@ -78,7 +78,8 @@ const grapherMouseCommand = (eventName, x, y) => {
       cy.get('[data-test="grapher--svg"]').trigger(
         eventName,
         convertedPoint.x,
-        convertedPoint.y
+        convertedPoint.y,
+        options
       );
     });
   });
@@ -91,10 +92,10 @@ const grapherMouseCommand = (eventName, x, y) => {
  *  - mousedownGrapher
  *  - mouseupGrapher
  */
-const grapherCommands = ["click", "mousemove", "mousedown", "mouseup"];
+const grapherCommands = ["mousemove", "mousedown", "mouseup"];
 
 grapherCommands.forEach((command) => {
-  Cypress.Commands.add(`${command}Grapher`, (x, y) => {
-    return grapherMouseCommand(command, x, y);
+  Cypress.Commands.add(`${command}Grapher`, (x, y, options) => {
+    return grapherMouseCommand(command, x, y, options);
   });
 });

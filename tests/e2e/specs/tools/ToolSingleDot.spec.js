@@ -6,7 +6,7 @@ describe("tools/ToolSingleDot", () => {
   it("clicking adds, then removes a dot", () => {
     cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
-    cy.clickGrapher(12, 8);
+    cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
@@ -19,13 +19,13 @@ describe("tools/ToolSingleDot", () => {
       .should("have.attr", "y", "7");
     cy.get('[data-test="grapher-dots--dottext"]').contains("0");
 
-    cy.clickGrapher(12, 8);
+    cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
 
     cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
   });
 
   it("After panning and zooming, adding a dot is still accurate", () => {
-    cy.get('[data-test="menu-bottom-tool--pan-zoom').click();
+    cy.get('[data-test="menu-bottom-tool--select-box-move').click();
 
     // eslint-disable-next-line cypress/require-data-selectors
     cy.get("#svg-pan-zoom-zoom-out").click().click();
@@ -36,7 +36,7 @@ describe("tools/ToolSingleDot", () => {
 
     cy.get('[data-test="menu-bottom-tool--add-rm"]').click();
 
-    cy.clickGrapher(12, 8);
+    cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
@@ -51,11 +51,11 @@ describe("tools/ToolSingleDot", () => {
   it("clicking multiple dots", () => {
     cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
-    cy.clickGrapher(2, 0);
-    cy.clickGrapher(2, 2);
-    cy.clickGrapher(2, 4);
-    cy.clickGrapher(2, 6);
-    cy.clickGrapher(2, 8);
+    cy.mousedownGrapher(2, 0).mouseupGrapher(2, 0);
+    cy.mousedownGrapher(2, 2).mouseupGrapher(2, 2);
+    cy.mousedownGrapher(2, 4).mouseupGrapher(2, 4);
+    cy.mousedownGrapher(2, 6).mouseupGrapher(2, 6);
+    cy.mousedownGrapher(2, 8).mouseupGrapher(2, 8);
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 5)
@@ -65,8 +65,8 @@ describe("tools/ToolSingleDot", () => {
           .should("have.attr", "cy", `${index * 2}`);
       });
 
-    cy.clickGrapher(2, 0);
-    cy.clickGrapher(2, 8);
+    cy.mousedownGrapher(2, 0).mouseupGrapher(2, 0);
+    cy.mousedownGrapher(2, 8).mouseupGrapher(2, 8);
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 3)

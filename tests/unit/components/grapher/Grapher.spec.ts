@@ -100,8 +100,9 @@ describe("components/grapher/Grapher.vue", () => {
 
     beforeEach(() => {
       mockTool = {
-        onClick: jest.fn(),
-        onMousemove: jest.fn(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseMove: jest.fn(),
       };
       store = generateStore({ toolSelected: mockTool });
       wrapper = mount(Grapher, {
@@ -118,15 +119,15 @@ describe("components/grapher/Grapher.vue", () => {
     });
 
     it("click", () => {
-      expect(mockTool.onClick).not.toHaveBeenCalled();
-      wrapper.find('[data-test="grapher--svg"]').trigger("click");
-      expect(mockTool.onClick).toHaveBeenCalled();
+      expect(mockTool.onMouseDown).not.toHaveBeenCalled();
+      wrapper.find('[data-test="grapher--svg"]').trigger("mousedown");
+      expect(mockTool.onMouseDown).toHaveBeenCalled();
     });
 
     it("mousemove", () => {
-      expect(mockTool.onMousemove).not.toHaveBeenCalled();
+      expect(mockTool.onMouseMove).not.toHaveBeenCalled();
       wrapper.find('[data-test="grapher--svg"]').trigger("mousemove");
-      expect(mockTool.onMousemove).toHaveBeenCalled();
+      expect(mockTool.onMouseMove).toHaveBeenCalled();
     });
   });
 });
