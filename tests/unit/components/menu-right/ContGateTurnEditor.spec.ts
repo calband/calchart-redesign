@@ -79,9 +79,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
     });
 
     it("changing angle", () => {
-      const selectAngle = editor.find(
-        '[data-test="cont-gate-turn--angle"]'
-      );
+      const selectAngle = editor.find('[data-test="cont-gate-turn--angle"]');
       expect(selectAngle.exists()).toBe(true);
       const selectAngleElement = selectAngle.element as HTMLSelectElement;
       expect(selectAngleElement.value).toBe(`180`);
@@ -91,9 +89,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
         "updateDotTypeContinuity",
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.angle).toBe(
-        90
-      );
+      expect(commitSpy.mock.calls[0][1].continuity.angle).toBe(90);
     });
 
     it("can delete if more than one continuity exists for the dot type", async () => {

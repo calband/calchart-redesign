@@ -55,7 +55,7 @@ import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContEven from "@/models/continuity/ContEven";
-import ContGateTurn from "@/models/continuity/ContGateTurn"
+import ContGateTurn from "@/models/continuity/ContGateTurn";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";

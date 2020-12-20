@@ -112,7 +112,7 @@ export default Vue.extend({
           this.dotTypeIndex,
           this.continuityIndex
         );
-        continuity.angle = angle
+        continuity.angle = angle;
         this.$store.commit("updateDotTypeContinuity", {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
