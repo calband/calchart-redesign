@@ -44,19 +44,28 @@ export default class StuntSheet extends Serializable<StuntSheet> {
     this.fromJson(json);
   }
 
-  addDot(dot: StuntSheetDot): void {
-    this.stuntSheetDots.push(dot);
+  addDots(dots: StuntSheetDot[]): void {
+    this.stuntSheetDots = this.stuntSheetDots.concat(dots);
   }
 
-  removeDot(index: number): void {
-    this.stuntSheetDots.splice(index, 1);
-  }
-
-  moveDot(index: number, position: [number, number]): void {
-    if (index >= this.stuntSheetDots.length) {
-      return;
+  removeDots(indices: number[]): void {
+    // There has to be an algorithm for this.
+    let newDots: StuntSheetDot[] = [];
+    for (let i = 0; i < this.stuntSheetDots.length; i += 1) {
+      if (!indices.includes(i)) {
+        newDots.push(this.stuntSheetDots[i]);
+      }
     }
-    this.stuntSheetDots[index].x = position[0];
-    this.stuntSheetDots[index].y = position[1];
+    this.stuntSheetDots = newDots;
+  }
+
+  moveDots(newPositions: [number, [number, number]][]): void {
+    for (let newPosition of newPositions) {
+      if (newPosition[0] >= this.stuntSheetDots.length) {
+        continue;
+      }
+      this.stuntSheetDots[newPosition[0]].x = newPosition[1][0];
+      this.stuntSheetDots[newPosition[0]].y = newPosition[1][1];
+    }
   }
 }

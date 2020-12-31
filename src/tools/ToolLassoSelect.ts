@@ -1,6 +1,7 @@
 import { ToolConstructor } from "./BaseTool";
 import { ToolSelectMove } from "./ToolSelectMove";
 import { GlobalStore } from "@/store";
+import { SET_TOOL_SELECTED } from "@/store/mutations";
 
 /**
  * Enables Selection, Moving, and Panning via base class
@@ -13,7 +14,7 @@ const ToolLassoSelect: ToolConstructor = class ToolLassoSelect extends ToolSelec
     }
     const arrayCopy = GlobalStore.state.selectionLasso;
     arrayCopy.push(point);
-    GlobalStore.commit("setSelectionLasso", arrayCopy);
+    GlobalStore.commit(SET_TOOL_SELECTED, arrayCopy);
   }
 };
 

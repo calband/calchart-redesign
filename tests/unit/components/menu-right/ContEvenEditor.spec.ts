@@ -8,6 +8,7 @@ import Show from "@/models/Show";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContEven from "@/models/continuity/ContEven";
 import { MARCH_TYPES } from "@/models/util/constants";
+import { DELETE_DOT_TYPE_CONTINUITY, UPDATE_DOT_TYPE_CONTINUITY } from "@/store/mutations";
 
 describe("components/menu-right/ContEvenEditor", () => {
   let editor: Wrapper<Vue>;
@@ -51,7 +52,7 @@ describe("components/menu-right/ContEvenEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.HS);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        UPDATE_DOT_TYPE_CONTINUITY,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
@@ -65,7 +66,7 @@ describe("components/menu-right/ContEvenEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       deleteButton.trigger("click");
       await editor.vm.$nextTick();
-      expect(commitSpy).toHaveBeenCalledWith("deleteDotTypeContinuity", {
+      expect(commitSpy).toHaveBeenCalledWith(DELETE_DOT_TYPE_CONTINUITY, {
         dotTypeIndex: 0,
         continuityIndex: 0,
       });

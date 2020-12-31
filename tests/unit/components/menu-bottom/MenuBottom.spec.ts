@@ -2,7 +2,7 @@ import { createLocalVue, mount, Wrapper } from "@vue/test-utils";
 import Buefy from "buefy";
 import { generateStore, CalChartState } from "@/store";
 import Vuex, { Store } from "vuex";
-import MenuBottom from "@/components/menu-bottom/MenuBottom.vue";
+import MenuBottomTools from "@/components/menu-bottom/MenuBottomToolsz.vue";
 import ToolSingleDot from "@/tools/ToolSingleDot";
 import ToolBoxSelect from "@/tools/ToolBoxSelect";
 import BaseTool from "@/tools/BaseTool";
@@ -16,7 +16,7 @@ const setupHelper = () => {
   localVue.use(Vuex);
   localVue.use(Buefy);
   const store = generateStore({});
-  const menu = mount(MenuBottom, {
+  const menu = mount(MenuBottomTools, {
     store,
     localVue,
   });
@@ -27,7 +27,7 @@ const setupHelper = () => {
   };
 };
 
-describe("components/menu-bottom/MenuBottom", () => {
+describe("components/menu-bottom-tools/MenuBottom", () => {
   describe("tool buttons", () => {
     let store: Store<CalChartState>;
     let menu: Wrapper<Vue>;
@@ -38,7 +38,7 @@ describe("components/menu-bottom/MenuBottom", () => {
     });
 
     it("renders the correct amount of tools", () => {
-      expect(menu.findAll('[data-test="menu-bottom--tooltip"]')).toHaveLength(
+      expect(menu.findAll('[data-test="menu-bottom-tools--tooltip"]')).toHaveLength(
         3
       );
     });
@@ -49,21 +49,21 @@ describe("components/menu-bottom/MenuBottom", () => {
       expect(ToolBoxSelect).toHaveBeenCalled();
       expect(toolSelected.constructor).toBe(ToolBoxSelect);
       const panZoomBtn = menu.find(
-        '[data-test="menu-bottom-tool--select-box-move"]'
+        '[data-test="menu-bottom-tools-tool--select-box-move"]'
       );
       expect(panZoomBtn.exists()).toBeTruthy();
       expect(panZoomBtn.props("type")).toBe("is-primary");
     });
 
     it("add/remove single dot has type is-light when it is unselected", () => {
-      const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
+      const addRmBtn = menu.find('[data-test="menu-bottom-tools-tool--add-rm"]');
       expect(addRmBtn.props("type")).toBe("is-light");
     });
 
     it("clicking add/remove single dot disables box select", async () => {
       expect(ToolSingleDot).not.toHaveBeenCalled();
 
-      const addRmBtn = menu.find('[data-test="menu-bottom-tool--add-rm"]');
+      const addRmBtn = menu.find('[data-test="menu-bottom-tools-tool--add-rm"]');
       addRmBtn.trigger("click");
       await menu.vm.$nextTick();
 
@@ -76,14 +76,14 @@ describe("components/menu-bottom/MenuBottom", () => {
 
     it("select box is no longer selected", () => {
       const panZoomBtn = menu.find(
-        '[data-test="menu-bottom-tool--select-box-move"]'
+        '[data-test="menu-bottom-tools-tool--select-box-move"]'
       );
       expect(panZoomBtn.props("type")).toBe("is-light");
     });
 
     it("clicking select box enables box", async () => {
       const panZoomBtn = menu.find(
-        '[data-test="menu-bottom-tool--select-box-move"]'
+        '[data-test="menu-bottom-tools-tool--select-box-move"]'
       );
       panZoomBtn.trigger("click");
       await menu.vm.$nextTick();

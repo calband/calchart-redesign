@@ -1,5 +1,5 @@
 import { CalChartState } from ".";
-import Show from "@/models/Show";
+import InitialShowState from "@/models/InitialShowState";
 import getters from "./getters";
 import BaseTool from "@/tools/BaseTool";
 import StuntSheet from "@/models/StuntSheet";
@@ -8,83 +8,149 @@ import { MutationTree } from "vuex";
 import BaseCont from "@/models/continuity/BaseCont";
 import ContInPlace from "@/models/continuity/ContInPlace";
 
-const mutations: MutationTree<CalChartState> = {
-  // Show
-  setShow(state, show: Show): void {
-    state.show = show;
+// Show mutations:
+export const SET_SHOW = 'setShow';
+export const SET_SHOW_TITLE = 'setShowTitle';
+export const ADD_STUNT_SHEET = 'addStuntSheet';
+export const DELETE_STUNT_SHEET = 'deleteStuntSheet';
+// Field mutations:
+export const SET_FRONT_HASH_OFFSET_Y = 'setFrontHashOffsetY';
+export const SET_BACK_HASH_OFFSET_Y = 'setBackHashOffsetY';
+export const SET_MIDDLE_OF_FIELD = 'setMiddleOfField';
+// Stuntsheet mutations:
+export const ADD_DOTS = 'addDots';
+export const REMOVE_DOTS = 'removeDots';
+export const MOVE_DOTS = 'moveDots';
+export const SET_STUNT_SHEET_TITLE = 'setStuntSheetTitle';
+export const SET_STUNT_SHEET_BEATS = 'setStuntSheetBeats';
+export const ADD_DOT_TYPE = 'addDotType';
+export const ADD_CONTINUITY = 'addContinuity';
+// Continuity mutations:
+export const UPDATE_DOT_TYPE_CONTINUITY = 'updateDotTypeContinuity';
+export const DELETE_DOT_TYPE_CONTINUITY = 'deleteDotTypeContinuity';
+
+// View mutations:
+export const SET_SELECTED_SS = 'setSelectedSS';
+export const SET_BEAT = 'setBeat';
+export const INCREMENT_BEAT = 'incrementBeat';
+export const DECREMENT_BEAT = 'decrementBeat';
+// Field view mutations:
+export const SET_FOUR_STEP_GRID = 'setFourStepGrid';
+export const SET_YARDLINES = 'setYardlines';
+export const SET_YARDLINE_NUMBERS = 'setYardlineNumbers';
+export const SET_SHOW_DOT_LABELS = 'setShowDotLabels';
+// Tools
+export const SET_GRAPHER_SVG_PAN_ZOOM = 'setGrapherSvgPanZoom';
+export const SET_INVERTED_CTM_MATRIX = 'setInvertedCTMMatrix';
+export const SET_TOOL_SELECTED = 'setToolSelected';
+export const SET_GRAPHER_TOOL_DOTS = 'setGrapherToolDots'
+// selection
+export const CLEAR_SELECTED_DOTS = 'clearSelectedDots';
+export const ADD_SELECTED_DOTS = 'addSelectedDots';
+export const TOGGLE_SELECTED_DOTS = 'toggleSelectedDots';
+export const SET_SELECTION_LASSO = 'setSelectionLasso';
+
+
+export const UNDO = 'undo';
+export const REDO = 'redo';
+export const INITIAL_SHOW_STATE = 'resetShowState';
+
+export const UNDOABLE_ACTIONS = [ 
+  SET_SHOW_TITLE,
+  ADD_STUNT_SHEET,
+  DELETE_STUNT_SHEET,
+  SET_FRONT_HASH_OFFSET_Y,
+  SET_BACK_HASH_OFFSET_Y,
+  SET_MIDDLE_OF_FIELD,
+  ADD_DOTS,
+  REMOVE_DOTS,
+  MOVE_DOTS,
+  SET_STUNT_SHEET_TITLE,
+  SET_STUNT_SHEET_BEATS,
+  ADD_DOT_TYPE,
+  ADD_CONTINUITY,
+  UPDATE_DOT_TYPE_CONTINUITY,
+  DELETE_DOT_TYPE_CONTINUITY
+];
+
+export const mutations: MutationTree<CalChartState> = {
+  [SET_SHOW] (state, initialShowState: InitialShowState): void {
+    state.initialShowState = initialShowState;
+    state.show = state.initialShowState.getInitialState();
   },
-  setShowTitle(state, title: string): void {
+  [SET_SHOW_TITLE] (state, title: string): void {
     state.show.title = title;
   },
-  addStuntSheet(state, stuntSheet: StuntSheet): void {
+  [ADD_STUNT_SHEET] (state, stuntSheet: StuntSheet): void {
     state.show.stuntSheets.push(stuntSheet);
     state.selectedSS = state.show.stuntSheets.length - 1;
     state.beat = 1;
   },
-  deleteStuntSheet(state): void {
+  [DELETE_STUNT_SHEET](state): void {
     state.show.stuntSheets.splice(state.selectedSS, 1);
     state.selectedSS = Math.max(0, state.selectedSS - 1);
     state.beat = 1;
   },
 
   // Show -> Field
-  setFrontHashOffsetY(state, offsetY: number): void {
+  [SET_FRONT_HASH_OFFSET_Y](state, offsetY: number): void {
     state.show.field.frontHashOffsetY = offsetY;
   },
-  setBackHashOffsetY(state, offsetY: number): void {
+  [SET_BACK_HASH_OFFSET_Y](state, offsetY: number): void {
     state.show.field.backHashOffsetY = offsetY;
   },
-  setMiddleOfField(state, middle: number): void {
+  [SET_MIDDLE_OF_FIELD](state, middle: number): void {
     state.show.field.middleOfField = middle;
   },
 
   // Show -> StuntSheet
-  removeDot(state, dotIndex: number): void {
+  [REMOVE_DOTS](state, dotIndex: number[]): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.removeDot(dotIndex);
+    currentSS.removeDots(dotIndex);
   },
-  addDot(state, dot: StuntSheetDot): void {
+  [ADD_DOTS] (state, dot: { x:number, y:number }[]): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.addDot(dot);
+    currentSS.addDots(dot.map( d => new StuntSheetDot(d)));
   },
-  moveDot(
+  [MOVE_DOTS](
     state,
-    { index, position }: { index: number; position: [number, number] }
+    newPositions: [number, [number, number]][]
   ): void {
+    console.log("move a dot here")
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.moveDot(index, position);
+    currentSS.moveDots(newPositions);
   },
-  setStuntSheetTitle(state, title: string): void {
+  [SET_STUNT_SHEET_TITLE](state, title: string): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.title = title;
   },
-  setStuntSheetBeats(state, beats: number): void {
+  [SET_STUNT_SHEET_BEATS](state, beats: number): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.beats = beats;
   },
-  addDotType(state): void {
+  [ADD_DOT_TYPE](state): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.dotTypes.push([new ContInPlace()]);
   },
-  addContinuity(
+  [ADD_CONTINUITY](
     state,
     { dotTypeIndex, continuity }: { dotTypeIndex: number; continuity: BaseCont }
   ): void {
@@ -97,7 +163,7 @@ const mutations: MutationTree<CalChartState> = {
   },
 
   // Show -> StuntSheet -> BaseCont
-  updateDotTypeContinuity(
+  [UPDATE_DOT_TYPE_CONTINUITY](
     state,
     {
       dotTypeIndex,
@@ -112,7 +178,7 @@ const mutations: MutationTree<CalChartState> = {
     currentSS.dotTypes[dotTypeIndex][continuityIndex] = continuity;
     state.show.generateFlows(state.selectedSS);
   },
-  deleteDotTypeContinuity(
+  [DELETE_DOT_TYPE_CONTINUITY](
     state,
     {
       dotTypeIndex,
@@ -128,13 +194,13 @@ const mutations: MutationTree<CalChartState> = {
   },
 
   // Show controls
-  setSelectedSS(state, selectedSS: number): void {
+  [SET_SELECTED_SS](state, selectedSS: number): void {
     state.selectedSS = selectedSS;
   },
-  setBeat(state, beat: number): void {
+  [SET_BEAT](state, beat: number): void {
     state.beat = beat;
   },
-  incrementBeat(state): void {
+  [INCREMENT_BEAT](state): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
@@ -147,7 +213,7 @@ const mutations: MutationTree<CalChartState> = {
       state.beat = 1;
     }
   },
-  decrementBeat(state): void {
+  [DECREMENT_BEAT](state): void {
     if (state.beat > 1) {
       state.beat -= 1;
     } else if (state.selectedSS > 0) {
@@ -162,44 +228,44 @@ const mutations: MutationTree<CalChartState> = {
   },
 
   // View Settings
-  setFourStepGrid(state, enabled: boolean): void {
+  [SET_FOUR_STEP_GRID](state, enabled: boolean): void {
     state.fourStepGrid = enabled;
   },
-  setYardlines(state, enabled: boolean): void {
+  [SET_YARDLINES](state, enabled: boolean): void {
     state.yardlines = enabled;
   },
-  setYardlineNumbers(state, enabled: boolean): void {
+  [SET_YARDLINE_NUMBERS](state, enabled: boolean): void {
     state.yardlineNumbers = enabled;
   },
-  setShowDotLabels(state, enabled: boolean): void {
+  [SET_SHOW_DOT_LABELS](state, enabled: boolean): void {
     state.showDotLabels = enabled;
   },
 
   // Tools
-  setGrapherSvgPanZoom(state, svgPanZoomInstance: SvgPanZoom.Instance): void {
+  [SET_GRAPHER_SVG_PAN_ZOOM](state, svgPanZoomInstance: SvgPanZoom.Instance): void {
     state.grapherSvgPanZoom = svgPanZoomInstance;
   },
-  setInvertedCTMMatrix(state, matrix: DOMMatrix): void {
+  [SET_INVERTED_CTM_MATRIX](state, matrix: DOMMatrix): void {
     state.invertedCTMMatrix = matrix;
   },
-  setToolSelected(state, toolSelected: BaseTool): void {
+  [SET_TOOL_SELECTED](state, toolSelected: BaseTool): void {
     state.toolSelected = toolSelected;
     state.grapherToolDots = [];
   },
-  setGrapherToolDots(state, grapherToolDots: StuntSheetDot[]): void {
+  [SET_GRAPHER_TOOL_DOTS](state, grapherToolDots: StuntSheetDot[]): void {
     state.grapherToolDots = grapherToolDots;
   },
 
   // selection
-  clearSelectedDots(state): void {
+  [CLEAR_SELECTED_DOTS](state): void {
     state.selectedDots = [];
   },
-  addSelectedDots(state, dots: number[]): void {
+  [ADD_SELECTED_DOTS](state, dots: number[]): void {
     dots.forEach((dot) => {
       state.selectedDots.indexOf(dot) < 0 && state.selectedDots.push(dot);
     });
   },
-  toggleSelectedDots(state, dots: number[]): void {
+  [TOGGLE_SELECTED_DOTS](state, dots: number[]): void {
     // first remove all the items passed in.
     dots.forEach((v) => {
       const index = state.selectedDots.indexOf(v);
@@ -210,9 +276,20 @@ const mutations: MutationTree<CalChartState> = {
       }
     });
   },
-  setSelectionLasso(state, lasso: [number, number][]): void {
+  [SET_SELECTION_LASSO](state, lasso: [number, number][]): void {
     state.selectionLasso = lasso;
   },
+
+  // Undo system
+  [UNDO] (state): void {
+    // intentionally empty as the Undo system is "sniffing" for this command.
+  },
+  [REDO] (state): void {
+    // intentionally empty as the Undo system is "sniffing" for this command.
+  },
+  [INITIAL_SHOW_STATE] (state): void {
+    state.show = state.initialShowState.getInitialState();
+  },
+  
 };
 
-export default mutations;

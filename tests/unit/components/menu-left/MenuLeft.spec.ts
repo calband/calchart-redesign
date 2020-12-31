@@ -5,6 +5,7 @@ import Vuex, { Store } from "vuex";
 import MenuLeft from "@/components/menu-left/MenuLeft.vue";
 import Show from "@/models/Show";
 import StuntSheet from "@/models/StuntSheet";
+import { ADD_STUNT_SHEET, DECREMENT_BEAT, INCREMENT_BEAT, SET_BEAT, SET_SELECTED_SS } from "@/store/mutations";
 
 describe("components/menu-left/MenuLeft", () => {
   let menu: Wrapper<Vue>;
@@ -39,8 +40,8 @@ describe("components/menu-left/MenuLeft", () => {
     ])(
       "Beat control with beat %i and stuntsheet %i",
       async (beat, selectedSS) => {
-        store.commit("setBeat", beat);
-        store.commit("setSelectedSS", selectedSS);
+        store.commit(SET_BEAT, beat);
+        store.commit(SET_SELECTED_SS, selectedSS);
         await menu.vm.$nextTick();
 
         const beatControl = menu.find('[data-test="menu-left--beat"]');
@@ -58,8 +59,8 @@ describe("components/menu-left/MenuLeft", () => {
     );
 
     it.each([
-      ["decrementBeat", "menu-left--decrement-beat"],
-      ["incrementBeat", "menu-left--increment-beat"],
+      [DECREMENT_BEAT, "menu-left--decrement-beat"],
+      [INCREMENT_BEAT, "menu-left--increment-beat"],
     ])("Calls %s in store upon clicking button", (commitMsg, selector) => {
       const button = menu.find(`[data-test="${selector}"]`);
       expect(button.exists()).toBeTruthy();
@@ -84,8 +85,8 @@ describe("components/menu-left/MenuLeft", () => {
       menuItem.trigger("click");
       await menu.vm.$nextTick();
 
-      expect(commitSpy).toHaveBeenCalledWith("setSelectedSS", index);
-      expect(commitSpy).toHaveBeenCalledWith("setBeat", 1);
+      expect(commitSpy).toHaveBeenCalledWith(SET_SELECTED_SS, index);
+      expect(commitSpy).toHaveBeenCalledWith(SET_BEAT, 1);
       expect(menuItem.classes("is-active")).toBeTruthy();
     });
 
@@ -113,7 +114,7 @@ describe("components/menu-left/MenuLeft", () => {
       await menu.vm.$nextTick();
 
       expect(commitSpy).toHaveBeenLastCalledWith(
-        "addStuntSheet",
+        ADD_STUNT_SHEET,
         show.stuntSheets[3]
       );
       expect(menu.findAll('[data-test="menu-left--ss"]')).toHaveLength(4);

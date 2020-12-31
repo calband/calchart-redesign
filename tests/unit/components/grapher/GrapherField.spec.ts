@@ -5,6 +5,7 @@ import Grapher from "@/components/grapher/Grapher.vue";
 import { CalChartState, generateStore } from "@/store";
 import Show from "@/models/Show";
 import Field from "@/models/Field";
+import { SET_FOUR_STEP_GRID, SET_SHOW_DOT_LABELS, SET_YARDLINES, SET_YARDLINE_NUMBERS } from "@/store/mutations";
 
 jest.mock("svg-pan-zoom", () => {
   return {
@@ -72,7 +73,7 @@ describe("components/grapher/GrapherField.vue", () => {
     });
 
     it("does not render four step grid if fourStepGrid is false", async () => {
-      store.commit("setFourStepGrid", false);
+      store.commit(SET_FOUR_STEP_GRID, false);
       await wrapper.vm.$nextTick();
 
       expect(
@@ -84,14 +85,14 @@ describe("components/grapher/GrapherField.vue", () => {
     });
 
     it("replaces yardlines with gridlines if yardlines is false", async () => {
-      store.commit("setYardlines", false);
+      store.commit(SET_YARDLINES, false);
       await wrapper.vm.$nextTick();
 
       expect(
         wrapper.find('[data-test="grapher-field--yard-line"]').exists()
       ).toBeFalsy();
 
-      store.commit("setFourStepGrid", true);
+      store.commit(SET_FOUR_STEP_GRID, true);
       await wrapper.vm.$nextTick();
 
       expect(
@@ -100,7 +101,7 @@ describe("components/grapher/GrapherField.vue", () => {
     });
 
     it("if yardlineNumbers is false, do not render", async () => {
-      store.commit("setYardlineNumbers", false);
+      store.commit(SET_YARDLINE_NUMBERS, false);
       await wrapper.vm.$nextTick();
 
       expect(
@@ -109,7 +110,7 @@ describe("components/grapher/GrapherField.vue", () => {
     });
 
     it("if showDotLabels is false, do not render", async () => {
-      store.commit("setShowDotLabels", false);
+      store.commit(SET_SHOW_DOT_LABELS, false);
       await wrapper.vm.$nextTick();
 
       expect(
@@ -164,7 +165,7 @@ describe("components/grapher/GrapherField.vue", () => {
     });
 
     it("does not render four step grid if fourStepGrid is false", async () => {
-      store.commit("setFourStepGrid", false);
+      store.commit(SET_FOUR_STEP_GRID, false);
       await wrapper.vm.$nextTick();
 
       expect(
@@ -176,7 +177,7 @@ describe("components/grapher/GrapherField.vue", () => {
     });
 
     it("does not render yardlines if yardlines is false", async () => {
-      store.commit("setYardlines", false);
+      store.commit(SET_YARDLINES, false);
       await wrapper.vm.$nextTick();
 
       expect(
@@ -185,14 +186,14 @@ describe("components/grapher/GrapherField.vue", () => {
     });
 
     it("replaces yardlines with gridlines if yardlines is false", async () => {
-      store.commit("setYardlines", false);
+      store.commit(SET_YARDLINES, false);
       await wrapper.vm.$nextTick();
 
       expect(
         wrapper.find('[data-test="grapher-field--yard-line"]').exists()
       ).toBeFalsy();
 
-      store.commit("setFourStepGrid", true);
+      store.commit(SET_FOUR_STEP_GRID, true);
       await wrapper.vm.$nextTick();
 
       expect(

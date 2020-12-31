@@ -2,6 +2,7 @@ import BaseMoveTool from "./BaseMoveTool";
 import BaseTool, { ToolConstructor } from "./BaseTool";
 import { GlobalStore } from "@/store";
 import StuntSheetDot from "@/models/StuntSheetDot";
+import { ADD_DOTS, REMOVE_DOTS, SET_GRAPHER_TOOL_DOTS } from "@/store/mutations"
 
 /**
  * Add or remove a single dot on click.
@@ -11,15 +12,15 @@ const ToolSingleDot: ToolConstructor = class ToolSingleDot extends BaseMoveTool 
     const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
     const existingDotIndex = BaseTool.findDotAtEvent(event);
     if (existingDotIndex !== -1) {
-      GlobalStore.commit("removeDot", existingDotIndex);
+      GlobalStore.commit(REMOVE_DOTS, [ existingDotIndex ]);
     } else {
-      GlobalStore.commit("addDot", new StuntSheetDot({ x, y }));
+      GlobalStore.commit(ADD_DOTS, [ { x, y } ]);
     }
   }
 
   onMouseMoveInternal(event: MouseEvent): void {
     const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
-    GlobalStore.commit("setGrapherToolDots", [new StuntSheetDot({ x, y })]);
+    GlobalStore.commit(SET_GRAPHER_TOOL_DOTS, [new StuntSheetDot({ x, y })]);
   }
 };
 

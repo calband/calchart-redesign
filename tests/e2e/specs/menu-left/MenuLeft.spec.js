@@ -36,7 +36,7 @@ describe("components/menu-left/MenuLeft", () => {
     // Add a stuntsheet dot (4, 4) to the first stuntsheet
     cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
-    cy.get('[data-test="menu-bottom-tool--add-rm"]')
+    cy.get('[data-test="menu-bottom-tools-tool--add-rm"]')
       .click()
       .mousedownGrapher(4, 4)
       .mouseupGrapher(4, 4);
@@ -86,7 +86,7 @@ describe("components/menu-left/MenuLeft", () => {
     // Add a stuntsheet dot (8, 8) to the first stuntsheet
     cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
-    cy.get('[data-test="menu-bottom-tool--add-rm"]')
+    cy.get('[data-test="menu-bottom-tools-tool--add-rm"]')
       .click()
       .mousedownGrapher(8, 8)
       .mouseupGrapher(8, 8);

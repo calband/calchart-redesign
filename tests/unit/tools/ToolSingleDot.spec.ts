@@ -3,6 +3,7 @@ import { GlobalStore } from "@/store";
 import BaseTool from "@/tools/BaseTool";
 import BaseMoveTool from "@/tools/BaseMoveTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
+import { ADD_DOTS, REMOVE_DOTS, SET_GRAPHER_SVG_PAN_ZOOM } from "@/store/mutations";
 
 describe("tools/ToolSingleDot", () => {
   let tool: BaseTool;
@@ -29,7 +30,7 @@ describe("tools/ToolSingleDot", () => {
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
       expect(GlobalStore.commit).toHaveBeenCalledWith(
-        "addDot",
+        ADD_DOTS,
         expect.any(StuntSheetDot)
       );
     });
@@ -45,7 +46,7 @@ describe("tools/ToolSingleDot", () => {
 
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
-      expect(GlobalStore.commit).toHaveBeenCalledWith("removeDot", 0);
+      expect(GlobalStore.commit).toHaveBeenCalledWith(REMOVE_DOTS, 0);
     });
   });
 
@@ -59,7 +60,7 @@ describe("tools/ToolSingleDot", () => {
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
       expect(GlobalStore.commit).toHaveBeenCalledWith(
-        "setGrapherToolDots",
+        SET_GRAPHER_SVG_PAN_ZOOM,
         expect.anything()
       );
       const grapherToolDots: StuntSheetDot[] = (GlobalStore.commit as jest.Mock)

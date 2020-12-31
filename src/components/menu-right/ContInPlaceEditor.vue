@@ -53,6 +53,7 @@ import Vue from "vue";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
 import StuntSheet from "@/models/StuntSheet";
+import { DELETE_DOT_TYPE_CONTINUITY } from "@/store/mutations";
 
 /**
  * View/Edit an In Place continuity
@@ -163,7 +164,7 @@ export default Vue.extend({
   },
   methods: {
     deleteContinuity() {
-      this.$store.commit("deleteDotTypeContinuity", {
+      this.$store.commit(DELETE_DOT_TYPE_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuityIndex: this.continuityIndex,
       });

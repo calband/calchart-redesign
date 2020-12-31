@@ -53,6 +53,7 @@ import ContEven from "@/models/continuity/ContEven";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";
+import { ADD_CONTINUITY } from "@/store/mutations";
 
 /**
  * View/Edit all continuiuties for a dot type
@@ -77,25 +78,25 @@ export default Vue.extend({
   },
   methods: {
     addContInPlace() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuity: new ContInPlace(),
       });
     },
     addContETFDynamic() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuity: new ContETFDynamic(),
       });
     },
     addContETFStatic() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuity: new ContETFStatic(),
       });
     },
     addContEven() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuity: new ContEven(),
       });

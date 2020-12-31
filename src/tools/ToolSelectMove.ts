@@ -3,6 +3,7 @@ import BaseMoveTool from "./BaseMoveTool";
 import { GlobalStore } from "@/store";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import { InsideLasso } from "@/models/util/Lasso";
+import { ADD_SELECTED_DOTS, CLEAR_SELECTED_DOTS, MOVE_DOTS, SET_GRAPHER_TOOL_DOTS, SET_SELECTION_LASSO, TOGGLE_SELECTED_DOTS } from "@/store/mutations";
 
 /**
  * Enables Selection and Moving.
@@ -27,16 +28,16 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       // if we click on a selected dot, determine if we are toggling selection.
       if (GlobalStore.state.selectedDots.includes(existingDotIndex)) {
         if (event.altKey) {
-          GlobalStore.commit("toggleSelectedDots", [existingDotIndex]);
+          GlobalStore.commit(TOGGLE_SELECTED_DOTS, [existingDotIndex]);
         }
       } else {
         if (!event.shiftKey) {
-          GlobalStore.commit("clearSelectedDots");
+          GlobalStore.commit(CLEAR_SELECTED_DOTS);
         }
         if (event.altKey) {
-          GlobalStore.commit("toggleSelectedDots", [existingDotIndex]);
+          GlobalStore.commit(TOGGLE_SELECTED_DOTS, [existingDotIndex]);
         } else {
-          GlobalStore.commit("addSelectedDots", [existingDotIndex]);
+          GlobalStore.commit(ADD_SELECTED_DOTS, [existingDotIndex]);
         }
       }
       this.moveToolStart = [x, y];
@@ -44,9 +45,9 @@ export abstract class ToolSelectMove extends BaseMoveTool {
     } else {
       // if we hvae not clicked on a dot, start a new selection.
       if (!event.shiftKey) {
-        GlobalStore.commit("clearSelectedDots");
+        GlobalStore.commit(CLEAR_SELECTED_DOTS);
       }
-      GlobalStore.commit("setSelectionLasso", [[x, y]]);
+      GlobalStore.commit(SET_SELECTION_LASSO, [[x, y]]);
       this.selectionLassoStart = [x, y];
     }
   }
@@ -62,18 +63,16 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       ];
       const currentSSDots: StuntSheetDot[] =
         GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
-      GlobalStore.state.selectedDots.forEach((index: number) => {
+      let newPositions = GlobalStore.state.selectedDots.map((index: number) => {
         const [roundedX, roundedY] = BaseTool.roundCoordinateToGrid([
           currentSSDots[index].x + deltaX,
           currentSSDots[index].y + deltaY,
         ]);
-        GlobalStore.commit("moveDot", {
-          index: index,
-          position: [roundedX, roundedY],
-        });
+        return [index, [roundedX, roundedY]];
       });
-      // Set the ToolDots to be empty to indicate we're not moving anymore.
-      GlobalStore.commit("setGrapherToolDots", []);
+      GlobalStore.commit(MOVE_DOTS, newPositions);
+    // Set the ToolDots to be empty to indicate we're not moving anymore.
+      GlobalStore.commit(SET_GRAPHER_TOOL_DOTS, []);
       // null out moveToolStart to incidcate we're not moving anymore.
       this.moveToolStart = null;
       return;
@@ -91,12 +90,12 @@ export abstract class ToolSelectMove extends BaseMoveTool {
         })
       );
       if (event.altKey) {
-        GlobalStore.commit("toggleSelectedDots", newIndices);
+        GlobalStore.commit(TOGGLE_SELECTED_DOTS, newIndices);
       } else {
-        GlobalStore.commit("addSelectedDots", newIndices);
+        GlobalStore.commit(ADD_SELECTED_DOTS, newIndices);
       }
       // we are done selecting, so clear out the box
-      GlobalStore.commit("setSelectionLasso", []);
+      GlobalStore.commit(SET_SELECTION_LASSO, []);
       this.selectionLassoStart = null;
     }
   }
@@ -124,7 +123,7 @@ export abstract class ToolSelectMove extends BaseMoveTool {
     const currentSSDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
     GlobalStore.commit(
-      "setGrapherToolDots",
+      SET_GRAPHER_TOOL_DOTS,
       GlobalStore.state.selectedDots.map((index: number) => {
         const [roundedX, roundedY] = BaseTool.roundCoordinateToGrid([
           currentSSDots[index].x + deltaX,

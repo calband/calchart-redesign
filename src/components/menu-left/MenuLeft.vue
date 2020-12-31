@@ -71,6 +71,7 @@
 </template>
 
 <script lang="ts">
+import { ADD_STUNT_SHEET, DECREMENT_BEAT, INCREMENT_BEAT, SET_BEAT, SET_SELECTED_SS } from "@/store/mutations";
 import Vue from "vue";
 import StuntSheet from "../../models/StuntSheet";
 import StuntSheetModal from "./StuntSheetModal.vue";
@@ -91,7 +92,7 @@ export default Vue.extend({
         return this.$store.state.beat;
       },
       set(beat: number): void {
-        this.$store.commit("setBeat", beat);
+        this.$store.commit(SET_BEAT, beat);
       },
     },
     stuntSheets(): StuntSheet[] {
@@ -102,8 +103,8 @@ export default Vue.extend({
         return this.$store.state.selectedSS;
       },
       set(selectedSS: number): void {
-        this.$store.commit("setSelectedSS", selectedSS);
-        this.$store.commit("setBeat", 1);
+        this.$store.commit(SET_SELECTED_SS, selectedSS);
+        this.$store.commit(SET_BEAT, 1);
       },
     },
     selectedSSBeats(): number {
@@ -115,13 +116,13 @@ export default Vue.extend({
   methods: {
     addStuntSheet(): void {
       const stuntSheet = new StuntSheet();
-      this.$store.commit("addStuntSheet", stuntSheet);
+      this.$store.commit(ADD_STUNT_SHEET, stuntSheet);
     },
     incrementBeat(): void {
-      this.$store.commit("incrementBeat");
+      this.$store.commit(INCREMENT_BEAT);
     },
     decrementBeat(): void {
-      this.$store.commit("decrementBeat");
+      this.$store.commit(DECREMENT_BEAT);
     },
   },
 });

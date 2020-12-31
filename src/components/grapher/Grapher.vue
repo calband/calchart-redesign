@@ -24,6 +24,7 @@ import GrapherDots from "./GrapherDots.vue";
 import GrapherTool from "./GrapherTool.vue";
 import svgPanZoom from "svg-pan-zoom";
 import BaseTool from "@/tools/BaseTool";
+import { SET_GRAPHER_SVG_PAN_ZOOM } from "@/store/mutations";
 
 /**
  * Holds the components for rendering the field, dots, tools, etc.
@@ -43,7 +44,7 @@ export default Vue.extend({
       controlIconsEnabled: true,
       dblClickZoomEnabled: false,
     });
-    this.$store.commit("setGrapherSvgPanZoom", svgPanZoomInstance);
+    this.$store.commit(SET_GRAPHER_SVG_PAN_ZOOM, svgPanZoomInstance);
 
     window.addEventListener("resize", this.onResize);
   },

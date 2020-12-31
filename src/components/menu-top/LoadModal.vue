@@ -50,16 +50,18 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { loadShowFromBuffer } from "@/models/util/LoadShow";
+import InitialLoadShowState from "@/models/InitialLoadShowState";
 import Show from "@/models/Show";
+import { SET_SHOW } from "@/store/mutations";
 
 export default Vue.extend({
   name: "LoadModal",
   data: (): {
     file: Blob | null;
+    showLoadState: InitialLoadShowState | null;
     showPreview: Show | null;
     parseError: string;
-  } => ({ file: null, showPreview: null, parseError: "" }),
+  } => ({ file: null, showLoadState: null, showPreview: null, parseError: "" }),
   computed: {
     numMarchers(): number {
       return this.showPreview ? this.showPreview.dotLabels.length : 0;
@@ -79,7 +81,8 @@ export default Vue.extend({
       reader.onload = (): void => {
         if (reader.result && reader.result instanceof ArrayBuffer) {
           try {
-            this.showPreview = loadShowFromBuffer(reader.result);
+           this.showLoadState = new InitialLoadShowState({ showData: reader.result });
+            this.showPreview = this.showLoadState.getInitialState();
           } catch (e) {
             this.parseError = e;
           }
@@ -93,7 +96,7 @@ export default Vue.extend({
       if (!this.showPreview) {
         return;
       }
-      this.$store.commit("setShow", this.showPreview);
+      this.$store.commit(SET_SHOW, this.showLoadState);
     },
   },
 });

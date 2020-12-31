@@ -53,6 +53,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { SET_BACK_HASH_OFFSET_Y, SET_FRONT_HASH_OFFSET_Y, SET_MIDDLE_OF_FIELD, SET_SHOW_TITLE } from "@/store/mutations";
 
 /**
  * Show and modify values in the current Show model
@@ -65,7 +66,7 @@ export default Vue.extend({
         return this.$store.getters.getShowTitle;
       },
       set(title: string): void {
-        this.$store.commit("setShowTitle", title);
+        this.$store.commit(SET_SHOW_TITLE, title);
       },
     },
 
@@ -74,7 +75,7 @@ export default Vue.extend({
         return this.$store.getters.getFrontHashOffsetY;
       },
       set(offsetY: number): void {
-        this.$store.commit("setFrontHashOffsetY", offsetY);
+        this.$store.commit(SET_FRONT_HASH_OFFSET_Y, offsetY);
       },
     },
 
@@ -83,7 +84,7 @@ export default Vue.extend({
         return this.$store.getters.getBackHashOffsetY;
       },
       set(offsetY: number): void {
-        this.$store.commit("setBackHashOffsetY", offsetY);
+        this.$store.commit(SET_BACK_HASH_OFFSET_Y, offsetY);
       },
     },
 
@@ -92,7 +93,7 @@ export default Vue.extend({
         return this.$store.getters.getMiddleOfField;
       },
       set(middle: number): void {
-        this.$store.commit("setMiddleOfField", middle);
+        this.$store.commit(SET_MIDDLE_OF_FIELD, middle);
       },
     },
   },
