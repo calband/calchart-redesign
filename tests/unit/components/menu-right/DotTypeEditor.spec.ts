@@ -8,6 +8,7 @@ import StuntSheet from "@/models/StuntSheet";
 import Show from "@/models/Show";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import { Mutations } from "@/store/mutations";
 
 describe("components/menu-right/DotTypeEditor", () => {
   let editor: Wrapper<Vue>;
@@ -59,7 +60,10 @@ describe("components/menu-right/DotTypeEditor", () => {
     expect(commitSpy).not.toHaveBeenCalled();
     addInPlaceBtn.trigger("click");
     await editor.vm.$nextTick();
-    expect(commitSpy).toHaveBeenCalledWith("addContinuity", expect.anything());
+    expect(commitSpy).toHaveBeenCalledWith(
+      Mutations.ADD_CONTINUITY,
+      expect.anything()
+    );
     expect(commitSpy.mock.calls[0][1].continuity instanceof ContInPlace).toBe(
       true
     );
@@ -73,7 +77,10 @@ describe("components/menu-right/DotTypeEditor", () => {
     expect(commitSpy).not.toHaveBeenCalled();
     addETFDynamicBtn.trigger("click");
     await editor.vm.$nextTick();
-    expect(commitSpy).toHaveBeenCalledWith("addContinuity", expect.anything());
+    expect(commitSpy).toHaveBeenCalledWith(
+      Mutations.ADD_CONTINUITY,
+      expect.anything()
+    );
     expect(
       commitSpy.mock.calls[0][1].continuity instanceof ContETFDynamic
     ).toBe(true);

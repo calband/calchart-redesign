@@ -5,6 +5,7 @@ import Vuex, { Store } from "vuex";
 import MenuLeft from "@/components/menu-left/MenuLeft.vue";
 import Show from "@/models/Show";
 import StuntSheet from "@/models/StuntSheet";
+import { Mutations } from "@/store/mutations";
 
 describe("components/menu-left/MenuLeft", () => {
   let menu: Wrapper<Vue>;
@@ -39,8 +40,8 @@ describe("components/menu-left/MenuLeft", () => {
     ])(
       "Beat control with beat %i and stuntsheet %i",
       async (beat, selectedSS) => {
-        store.commit("setBeat", beat);
-        store.commit("setSelectedSS", selectedSS);
+        store.commit(Mutations.SET_BEAT, beat);
+        store.commit(Mutations.SET_SELECTED_SS, selectedSS);
         await menu.vm.$nextTick();
 
         const beatControl = menu.find('[data-test="menu-left--beat"]');
@@ -58,8 +59,8 @@ describe("components/menu-left/MenuLeft", () => {
     );
 
     it.each([
-      ["decrementBeat", "menu-left--decrement-beat"],
-      ["incrementBeat", "menu-left--increment-beat"],
+      [Mutations.DECREMENT_BEAT, "menu-left--decrement-beat"],
+      [Mutations.INCREMENT_BEAT, "menu-left--increment-beat"],
     ])("Calls %s in store upon clicking button", (commitMsg, selector) => {
       const button = menu.find(`[data-test="${selector}"]`);
       expect(button.exists()).toBeTruthy();
@@ -84,8 +85,8 @@ describe("components/menu-left/MenuLeft", () => {
       menuItem.trigger("click");
       await menu.vm.$nextTick();
 
-      expect(commitSpy).toHaveBeenCalledWith("setSelectedSS", index);
-      expect(commitSpy).toHaveBeenCalledWith("setBeat", 0);
+      expect(commitSpy).toHaveBeenCalledWith(Mutations.SET_SELECTED_SS, index);
+      expect(commitSpy).toHaveBeenCalledWith(Mutations.SET_BEAT, 0);
       expect(menuItem.classes("is-active")).toBeTruthy();
     });
 
@@ -112,7 +113,7 @@ describe("components/menu-left/MenuLeft", () => {
       addButton.trigger("click");
       await menu.vm.$nextTick();
 
-      expect(commitSpy).toHaveBeenCalledWith("addStuntSheet");
+      expect(commitSpy).toHaveBeenCalledWith(Mutations.ADD_STUNT_SHEET);
       expect(menu.findAll('[data-test="menu-left--ss"]')).toHaveLength(4);
     });
   });

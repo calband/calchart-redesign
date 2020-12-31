@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
-import mutations from "./mutations";
+import { mutations } from "./mutations";
 import getters from "./getters";
 import Show from "@/models/Show";
 import Serializable from "@/models/util/Serializable";
 import BaseTool from "@/tools/BaseTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
+import { UndoRedo } from "@/models/UndoRedo";
+import InitialShowState from "@/models/InitialShowState";
 
 Vue.use(Vuex);
 
@@ -13,6 +15,8 @@ Vue.use(Vuex);
  * Defines the global state for the application
  *
  * @property show              - The currently selected show data
+ * @property initialShowState  - Beginning spot for undo system
+ * @property undoRedo          - The undoRedo state
  * @property selectedSS        - Index of stuntsheet currently in view
  * @property beat              - The point in time the show is in
  * @property fourStepGrid      - View setting to toggle the grapher grid
@@ -23,6 +27,10 @@ Vue.use(Vuex);
  */
 export class CalChartState extends Serializable<CalChartState> {
   show: Show = new Show();
+
+  initialShowState: InitialShowState = new InitialShowState();
+
+  undoRedo: UndoRedo = new UndoRedo();
 
   selectedSS = 0;
 
@@ -58,11 +66,14 @@ export class CalChartState extends Serializable<CalChartState> {
 
 export const generateStore = (
   json: Partial<CalChartState> = {}
-): Store<CalChartState> =>
-  new Vuex.Store({
-    state: new CalChartState(json),
+): Store<CalChartState> => {
+  const show = new CalChartState(json);
+  return new Vuex.Store({
+    state: show,
     mutations,
     getters,
+    plugins: [show.undoRedo.createPlugin()],
   });
+};
 
 export const GlobalStore = generateStore();

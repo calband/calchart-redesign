@@ -8,6 +8,7 @@ import Show from "@/models/Show";
 import ContETFStatic from "@/models/continuity/ContETFStatic.ts";
 import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import { Mutations } from "@/store/mutations";
 
 describe("components/menu-right/ContETFStaticEditor", () => {
   let editor: Wrapper<Vue>;
@@ -54,7 +55,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
@@ -72,7 +73,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       durationInput.setValue("10");
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.duration).toBe(10);
@@ -88,7 +89,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectDirection.setValue(`${DIRECTIONS.S}`);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.marchingDirection).toBe(
@@ -102,10 +103,13 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       deleteButton.trigger("click");
       await editor.vm.$nextTick();
-      expect(commitSpy).toHaveBeenCalledWith("deleteDotTypeContinuity", {
-        dotTypeIndex: 0,
-        continuityIndex: 1,
-      });
+      expect(commitSpy).toHaveBeenCalledWith(
+        Mutations.DELETE_DOT_TYPE_CONTINUITY,
+        {
+          dotTypeIndex: 0,
+          continuityIndex: 1,
+        }
+      );
     });
   });
 

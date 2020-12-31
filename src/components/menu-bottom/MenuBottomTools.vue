@@ -1,16 +1,16 @@
 <template>
-  <div class="menu-bottom">
+  <div class="menu-bottom-tools">
     <div class="buttons">
       <b-tooltip
         v-for="(toolData, index) in toolDataList"
         :key="`${toolData.icon}-toolData`"
         :label="toolData.label"
-        data-test="menu-bottom--tooltip"
+        data-test="menu-bottom-tools--tooltip"
       >
         <b-button
           :type="toolSelectedIndex === index ? 'is-primary' : 'is-light'"
           :icon-left="toolData.icon"
-          :data-test="`menu-bottom-tool--${toolData['data-test']}`"
+          :data-test="`menu-bottom-tools-tool--${toolData['data-test']}`"
           @click="setTool(index)"
         />
       </b-tooltip>
@@ -27,6 +27,7 @@ import BaseTool, { ToolConstructor } from "@/tools/BaseTool";
 import ToolBoxSelect from "@/tools/ToolBoxSelect";
 import ToolLassoSelect from "@/tools/ToolLassoSelect";
 import ToolSingleDot from "@/tools/ToolSingleDot";
+import { Mutations } from "@/store/mutations";
 
 interface ToolData {
   label: string;
@@ -36,7 +37,7 @@ interface ToolData {
 }
 
 export default Vue.extend({
-  name: "MenuBottom",
+  name: "MenuBottomTools",
   data: (): {
     toolDataList: ToolData[];
     toolSelectedIndex: number;
@@ -73,9 +74,9 @@ export default Vue.extend({
         toolIndex
       ].tool;
       const tool: BaseTool = new ToolConstructor();
-      this.$store.commit("setToolSelected", tool);
+      this.$store.commit(Mutations.SET_TOOL_SELECTED, tool);
       if (!tool.supportsSelection) {
-        this.$store.commit("clearSelectedDotIds");
+        this.$store.commit(Mutations.CLEAR_SELECTED_DOTS);
       }
     },
   },
@@ -83,7 +84,7 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.menu-bottom {
-  grid-area: menu-bottom;
+.menu-bottom-tools {
+  grid-area: menu-bottom-tools;
 }
 </style>

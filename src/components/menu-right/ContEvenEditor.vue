@@ -39,6 +39,7 @@ import Vue from "vue";
 import ContEven from "@/models/continuity/ContEven";
 import { MARCH_TYPES } from "@/models/util/constants";
 import StuntSheet from "@/models/StuntSheet";
+import { Mutations } from "@/store/mutations";
 
 /**
  * View/Edit an In Place continuity
@@ -83,7 +84,7 @@ export default Vue.extend({
           this.continuityIndex
         );
         continuity.marchType = marchType;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_CONTINUITY, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
           continuity,
@@ -104,7 +105,7 @@ export default Vue.extend({
           this.continuityIndex
         );
         continuity.duration = duration;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_CONTINUITY, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
           continuity,
@@ -119,7 +120,7 @@ export default Vue.extend({
   },
   methods: {
     deleteContinuity() {
-      this.$store.commit("deleteDotTypeContinuity", {
+      this.$store.commit(Mutations.DELETE_DOT_TYPE_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuityIndex: this.continuityIndex,
       });

@@ -1,7 +1,7 @@
 describe("tools/ToolBoxSelect", () => {
   beforeEach(() => {
     cy.visit("/")
-      .get('[data-test="menu-bottom-tool--select-box-move"]')
+      .get('[data-test="menu-bottom-tools-tool--select-box-move"]')
       .click();
   });
 

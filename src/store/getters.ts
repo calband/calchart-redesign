@@ -25,6 +25,12 @@ const getters: GetterTree<CalChartState, CalChartState> = {
     state.show.stuntSheets[state.selectedSS].dotTypes[dotTypeIndex][
       continuityIndex
     ],
+
+  // Undo
+  getCanUndo: (state): boolean => state.undoRedo.canUndo(),
+  getUndoName: (state): string => state.undoRedo.undoString(),
+  getCanRedo: (state): boolean => state.undoRedo.canRedo(),
+  getRedoName: (state): string => state.undoRedo.redoString(),
 };
 
 export default getters;

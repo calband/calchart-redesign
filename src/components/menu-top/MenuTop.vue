@@ -27,6 +27,16 @@
           >
             Edit Show Details
           </b-navbar-item>
+
+          <hr class="navbar-divider" />
+
+          <b-navbar-item data-test="menu-top--undo" @click="undo">
+            Undo {{ undoName }}
+          </b-navbar-item>
+
+          <b-navbar-item data-test="menu-top--redo" @click="redo">
+            Redo {{ redoName }}
+          </b-navbar-item>
         </b-navbar-dropdown>
 
         <b-navbar-dropdown label="View" data-test="menu-top--view">
@@ -83,6 +93,7 @@
 </template>
 
 <script lang="ts">
+import { Mutations } from "@/store/mutations";
 import Vue from "vue";
 import FileModal from "./FileModal.vue";
 import LoadModal from "./LoadModal.vue";
@@ -110,7 +121,7 @@ export default Vue.extend({
         return this.$store.state.fourStepGrid;
       },
       set(enabled: boolean): void {
-        this.$store.commit("setFourStepGrid", enabled);
+        this.$store.commit(Mutations.SET_FOUR_STEP_GRID, enabled);
       },
     },
 
@@ -119,7 +130,7 @@ export default Vue.extend({
         return this.$store.state.yardlines;
       },
       set(enabled: boolean): void {
-        this.$store.commit("setYardlines", enabled);
+        this.$store.commit(Mutations.SET_YARDLINES, enabled);
       },
     },
 
@@ -128,7 +139,7 @@ export default Vue.extend({
         return this.$store.state.yardlineNumbers;
       },
       set(enabled: boolean): void {
-        this.$store.commit("setYardlineNumbers", enabled);
+        this.$store.commit(Mutations.SET_YARDLINE_NUMBERS, enabled);
       },
     },
 
@@ -137,8 +148,23 @@ export default Vue.extend({
         return this.$store.state.showDotLabels;
       },
       set(enabled: boolean): void {
-        this.$store.commit("setShowDotLabels", enabled);
+        this.$store.commit(Mutations.SET_SHOW_DOT_LABELS, enabled);
       },
+    },
+
+    undoName(): string {
+      return this.$store.getters.getUndoName;
+    },
+    redoName(): string {
+      return this.$store.getters.getRedoName;
+    },
+  },
+  methods: {
+    undo(): void {
+      this.$store.commit(Mutations.UNDO);
+    },
+    redo(): void {
+      this.$store.commit(Mutations.REDO);
     },
   },
 });
