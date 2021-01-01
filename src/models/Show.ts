@@ -28,7 +28,7 @@ export default class Show extends Serializable<Show> {
 
   field: Field = new Field();
 
-  stuntSheets: StuntSheet[] = [new StuntSheet()];
+  stuntSheets: StuntSheet[] = [new StuntSheet({ title: "Stuntsheet 1" })];
 
   constructor(showJson: Partial<Show> = {}) {
     super();
@@ -50,7 +50,7 @@ export default class Show extends Serializable<Show> {
    * the flow based on it's continuities in stuntSheetDot.cachedFlow.
    */
   generateFlows(stuntSheetIndex: number): void {
-    if (stuntSheetIndex < 0 || stuntSheetIndex + 1 >= this.stuntSheets.length) {
+    if (stuntSheetIndex < 0 || stuntSheetIndex >= this.stuntSheets.length) {
       throw new Error(
         `stuntSheetIndex (${stuntSheetIndex}) is invalid with stuntsheet` +
           ` length ${this.stuntSheets.length}`
@@ -58,14 +58,16 @@ export default class Show extends Serializable<Show> {
     }
 
     const startSS: StuntSheet = this.stuntSheets[stuntSheetIndex];
-    const endSS: StuntSheet = this.stuntSheets[stuntSheetIndex + 1];
+    const endSS: StuntSheet | null =
+      stuntSheetIndex + 1 < this.stuntSheets.length
+        ? this.stuntSheets[stuntSheetIndex + 1]
+        : null;
 
-    startSS.stuntSheetDots.map((startDot: StuntSheetDot): void => {
+    startSS.stuntSheetDots.forEach((startDot: StuntSheetDot): void => {
       let endDot: StuntSheetDot | undefined;
-      if (startDot.dotLabelIndex !== null) {
+      if (endSS && startDot.nextDotId !== null) {
         endDot = endSS.stuntSheetDots.find(
-          (dot: StuntSheetDot): boolean =>
-            startDot.dotLabelIndex === dot.dotLabelIndex
+          (dot: StuntSheetDot): boolean => startDot.nextDotId === dot.id
         );
       }
 
@@ -78,5 +80,7 @@ export default class Show extends Serializable<Show> {
 
       startDot.cachedFlow = flow;
     });
+
+    startSS.nextSSId = endSS ? endSS.id : null;
   }
 }
