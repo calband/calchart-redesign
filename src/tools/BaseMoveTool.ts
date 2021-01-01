@@ -55,4 +55,8 @@ export default abstract class BaseMoveTool {
   onMouseMoveInternal(event: MouseEvent): void {}
   /* eslint-enable @typescript-eslint/no-unused-vars,
     @typescript-eslint/no-empty-function */
+
+  supportsSelection(): boolean {
+    return false;
+  }
 }

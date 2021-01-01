@@ -15,6 +15,10 @@ export abstract class ToolSelectMove extends BaseMoveTool {
   private moveToolStart: [number, number] | null = null;
   protected selectionLassoStart: [number, number] | null = null;
 
+  supportsSelection(): boolean {
+    return true;
+  }
+
   onMouseDownInternal(event: MouseEvent): void {
     const [x, y] = BaseTool.convertClientCoordinates(event);
     const existingDotIndex = BaseTool.findDotAtEvent(event);
