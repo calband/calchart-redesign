@@ -51,7 +51,7 @@ export default class ContGateTurn
       for (let beat = 1; beat <= this.duration; beat += 1) {
         const theta: number =
           (((beat - 1) / this.duration) * this.angle * Math.PI) / 180;
-        const x: number = dx * Math.cos(theta) + dy * Math.sin(theta);
+        const x: number = dx * Math.cos(theta) - dy * Math.sin(theta);
         const y: number = dx * Math.sin(theta) + dy * Math.cos(theta);
         const direction: number =
           ((Math.sign(this.angle) > 0 ? 180 : 360) -
