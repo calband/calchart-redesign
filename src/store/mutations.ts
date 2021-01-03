@@ -54,6 +54,16 @@ const mutations: MutationTree<CalChartState> = {
     const currentSS = getSelectedStuntSheet(state);
     currentSS.addDot(dot);
   },
+  moveDot(
+    state,
+    { index, position }: { index: number; position: [number, number] }
+  ): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    currentSS.moveDot(index, position);
+  },
   setStuntSheetTitle(state, title: string): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
@@ -180,6 +190,30 @@ const mutations: MutationTree<CalChartState> = {
   },
   setGrapherToolDots(state, grapherToolDots: StuntSheetDot[]): void {
     state.grapherToolDots = grapherToolDots;
+  },
+
+  // selection
+  clearSelectedDots(state): void {
+    state.selectedDots = [];
+  },
+  addSelectedDots(state, dots: number[]): void {
+    dots.forEach((dot) => {
+      state.selectedDots.indexOf(dot) < 0 && state.selectedDots.push(dot);
+    });
+  },
+  toggleSelectedDots(state, dots: number[]): void {
+    // first remove all the items passed in.
+    dots.forEach((v) => {
+      const index = state.selectedDots.indexOf(v);
+      if (index > -1) {
+        state.selectedDots.splice(index, 1);
+      } else {
+        state.selectedDots.push(v);
+      }
+    });
+  },
+  setSelectionLasso(state, lasso: [number, number][]): void {
+    state.selectionLasso = lasso;
   },
 };
 

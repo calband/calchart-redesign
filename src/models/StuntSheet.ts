@@ -60,4 +60,12 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   removeDot(index: number): void {
     this.stuntSheetDots.splice(index, 1);
   }
+
+  moveDot(index: number, position: [number, number]): void {
+    if (index >= this.stuntSheetDots.length) {
+      return;
+    }
+    this.stuntSheetDots[index].x = position[0];
+    this.stuntSheetDots[index].y = position[1];
+  }
 }

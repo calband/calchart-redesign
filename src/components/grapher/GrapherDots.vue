@@ -13,6 +13,7 @@
       :dotTypeIndex="dot.dotTypeIndex"
       :label="dotLabels[index]"
       :labeled="showDotLabels"
+      :selected="selectedDots.includes(index)"
     />
   </g>
 </template>
@@ -20,7 +21,6 @@
 <script lang="ts">
 import Vue from "vue";
 import StuntSheetDot from "@/models/StuntSheetDot";
-import StuntSheet from "@/models/StuntSheet";
 import Dot from "./Dot.vue";
 
 /**
@@ -37,21 +37,23 @@ export default Vue.extend({
       return this.$store.state.showDotLabels;
     },
     stuntSheetDots(): StuntSheetDot[] {
-      const currentSS: StuntSheet = this.$store.getters.getSelectedStuntSheet;
-      return currentSS.stuntSheetDots;
+      return this.$store.getters.getSelectedStuntSheet.stuntSheetDots;
+    },
+    selectedDots(): number[] {
+      return this.$store.state.selectedDots;
     },
     dotLabels(): string[] {
       const dotLabels = this.$store.getters.getDotLabels;
       const dots: StuntSheetDot[] = this.$store.getters.getSelectedStuntSheet
         .stuntSheetDots;
       return dots.map((dot, index) => {
-        return dotLabels !== null &&
-          dot.dotLabelIndex !== null &&
+        return dot.dotLabelIndex !== null &&
           dot.dotLabelIndex < dotLabels.length
           ? dotLabels[dot.dotLabelIndex]
           : index.toString();
       });
     },
+
     beat: {
       get(): number {
         return this.$store.state.beat;

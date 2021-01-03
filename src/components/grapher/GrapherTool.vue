@@ -9,12 +9,24 @@
       r="0.7"
       data-test="grapher-tool--dot"
     />
-    <rect
-      v-if="showGrapherToolBox"
-      class="grapher-tool--box"
-      :cx="grapherToolBoxX"
-      :cy="grapherToolBoxY"
-      data-test="grapher-tool--box"
+    <g v-if="showDotLabels">
+      <text
+        v-for="dot in grapherToolDotLabels"
+        :key="`${dot[0].x}-${dot[0].y}-tool--dottext`"
+        class="grapher-tool--dottext"
+        :x="dot[0].x"
+        :y="dot[0].y - 1"
+        data-test="grapher-tool--dottext"
+      >
+        {{ dot[1] }}
+      </text>
+    </g>
+    <polyline
+      v-if="showSelectionLasso"
+      class="grapher-tool--selection-lasso"
+      :points="selectionLasso"
+      fill="none"
+      data-test="grapher-tool--selection-lasso"
     />
   </g>
 </template>
@@ -24,8 +36,7 @@ import Vue from "vue";
 import StuntSheetDot from "@/models/StuntSheetDot";
 
 /**
- * Renders the field, the dots of the current stunt sheet, and pending dots
- * generated from the tool in use
+ * Renders the pending dots generated from the tool in use.
  */
 export default Vue.extend({
   name: "GrapherTool",
@@ -33,14 +44,33 @@ export default Vue.extend({
     grapherToolDots(): StuntSheetDot[] {
       return this.$store.state.grapherToolDots;
     },
-    showGrapherToolBox(): boolean {
-      return this.$store.state.grapherToolSelectBox;
+    showDotLabels(): boolean {
+      return this.$store.state.showDotLabels;
     },
-    grapherToolBoxX(): number {
-      return this.$store.state.grapherToolSelectBoxX;
+    grapherToolDotLabels(): [StuntSheetDot, string][] {
+      const dotLabels = this.$store.getters.getDotLabels;
+      const dots: StuntSheetDot[] = this.grapherToolDots;
+      return dots.map((dot) => {
+        return [
+          dot,
+          dotLabels !== null &&
+          dot.dotLabelIndex !== null &&
+          dot.dotLabelIndex < dotLabels.length
+            ? dotLabels[dot.dotLabelIndex]
+            : "",
+        ];
+      });
     },
-    grapherToolBoxY(): number {
-      return this.$store.state.grapherToolSelectBoxY;
+    showSelectionLasso(): boolean {
+      return this.$store.state.showSelectionLasso;
+    },
+    selectionLasso(): string {
+      // construct a string ready to be used by polyline.  See:
+      // https://developer.mozilla.org/en-US/docs/Web/SVG/Element/polyline
+      const lassoPointStrings: string[] = this.$store.state.selectionLasso.map(
+        (point: [number, number]) => point.join(",")
+      );
+      return lassoPointStrings.join(" ");
     },
   },
 });
@@ -50,7 +80,13 @@ export default Vue.extend({
 .grapher-tool--dot {
   opacity: 0.5;
 }
-.grapher-tool--box {
+.grapher-tool--dottext {
+  fill: $black;
+  font-size: 1px;
+  text-anchor: left;
+  user-select: none;
+}
+.grapher-tool--selection-lasso {
   stroke: $yellow;
   stroke-width: 0.5;
   opacity: 0.5;

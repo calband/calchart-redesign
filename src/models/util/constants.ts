@@ -18,6 +18,7 @@ export enum DIRECTIONS {
 export enum MARCH_TYPES {
   HS = "HS",
   MINI_MILITARY = "MM",
+  SH = "SH",
   MILITARY = "Military",
   CLOSE = "Close",
   VAMP = "Vamp",

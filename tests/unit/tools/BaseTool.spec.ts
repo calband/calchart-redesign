@@ -29,7 +29,7 @@ describe("tools/BaseTool", () => {
   });
 
   it("convertClientCoordinates calls the correct functions", () => {
-    const [x, y] = BaseTool.convertClientCoordinates(
+    const [x, y] = BaseTool.convertClientCoordinatesRounded(
       new MouseEvent("click", { clientX: 0, clientY: 0 })
     );
 
@@ -51,7 +51,10 @@ describe("tools/BaseTool", () => {
       [3.0, 4],
       [-1.5, -2],
     ])("%f rounds to %i", (input, output) => {
-      expect(BaseTool.roundCoordinateToGrid(input)).toBe(output);
+      expect(BaseTool.roundCoordinateToGrid([input, input])).toStrictEqual([
+        output,
+        output,
+      ]);
     });
   });
 });

@@ -1,6 +1,7 @@
 import ToolSingleDot from "@/tools/ToolSingleDot";
 import { GlobalStore } from "@/store";
 import BaseTool from "@/tools/BaseTool";
+import BaseMoveTool from "@/tools/BaseMoveTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
 
 describe("tools/ToolSingleDot", () => {
@@ -8,6 +9,8 @@ describe("tools/ToolSingleDot", () => {
 
   beforeEach(() => {
     BaseTool.convertClientCoordinates = jest.fn().mockReturnValue([0, 2]);
+    BaseTool.updateInvertedCTMMatrix = jest.fn();
+    BaseMoveTool.enablePan = jest.fn();
     Object.defineProperty(GlobalStore, "commit", { value: jest.fn() });
     tool = new ToolSingleDot();
   });
@@ -16,12 +19,12 @@ describe("tools/ToolSingleDot", () => {
     jest.resetAllMocks();
   });
 
-  describe("onClick", () => {
+  describe("onMouseDown", () => {
     it("adds a new dot if none exists in the spot", () => {
       expect(BaseTool.convertClientCoordinates).not.toHaveBeenCalled();
       expect(GlobalStore.commit).not.toHaveBeenCalled();
 
-      tool.onClick(new MouseEvent("click", { clientX: 0, clientY: 0 }));
+      tool.onMouseDown(new MouseEvent("click", { clientX: 0, clientY: 0 }));
 
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
@@ -38,7 +41,7 @@ describe("tools/ToolSingleDot", () => {
       expect(BaseTool.convertClientCoordinates).not.toHaveBeenCalled();
       expect(GlobalStore.commit).not.toHaveBeenCalled();
 
-      tool.onClick(new MouseEvent("click", { clientX: 0, clientY: 2 }));
+      tool.onMouseDown(new MouseEvent("click", { clientX: 0, clientY: 2 }));
 
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
@@ -46,12 +49,12 @@ describe("tools/ToolSingleDot", () => {
     });
   });
 
-  describe("onMousemove", () => {
+  describe("onMouseMove", () => {
     it("sets grapher tool dot", () => {
       expect(BaseTool.convertClientCoordinates).not.toHaveBeenCalled();
       expect(GlobalStore.commit).not.toHaveBeenCalled();
 
-      tool.onMousemove(new MouseEvent("mousemove", { clientX: 0, clientY: 2 }));
+      tool.onMouseMove(new MouseEvent("mousemove", { clientX: 0, clientY: 2 }));
 
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);

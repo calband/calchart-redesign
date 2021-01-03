@@ -9,6 +9,11 @@
     :continuityIndex="continuityIndex"
     :dotTypeIndex="dotTypeIndex"
   />
+  <ContETFStaticEditor
+    v-else-if="isETFStatic"
+    :continuityIndex="continuityIndex"
+    :dotTypeIndex="dotTypeIndex"
+  />
   <ContEvenEditor
     v-else-if="isEven"
     :continuityIndex="continuityIndex"
@@ -22,6 +27,8 @@ import ContInPlace from "@/models/continuity/ContInPlace";
 import ContInPlaceEditor from "./ContInPlaceEditor.vue";
 import ContETFDynamicEditor from "./ContETFDynamicEditor.vue";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import ContETFStatic from "@/models/continuity/ContETFStatic";
+import ContETFStaticEditor from "./ContETFStaticEditor.vue";
 import ContEven from "@/models/continuity/ContEven";
 import ContEvenEditor from "./ContEvenEditor.vue";
 
@@ -33,6 +40,7 @@ export default Vue.extend({
   components: {
     ContInPlaceEditor,
     ContETFDynamicEditor,
+    ContETFStaticEditor,
     ContEvenEditor,
   },
   props: {
@@ -59,6 +67,13 @@ export default Vue.extend({
         this.continuityIndex
       );
       return continuity instanceof ContETFDynamic;
+    },
+    isETFStatic() {
+      const continuity = this.$store.getters.getContinuity(
+        this.dotTypeIndex,
+        this.continuityIndex
+      );
+      return continuity instanceof ContETFStatic;
     },
     isEven() {
       const continuity = this.$store.getters.getContinuity(

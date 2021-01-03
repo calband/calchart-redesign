@@ -3,9 +3,11 @@
     <svg
       class="grapher--svg"
       data-test="grapher--svg"
-      @click.prevent="onClick"
-      @mousemove="onMousemove"
+      @mousedown="onMouseDown"
+      @mouseup="onMouseUp"
+      @mousemove="onMouseMove"
     >
+      <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
       <g class="grapher--wrapper" data-test="grapher--wrapper">
         <GrapherField />
         <GrapherDots />
@@ -24,8 +26,7 @@ import svgPanZoom from "svg-pan-zoom";
 import BaseTool from "@/tools/BaseTool";
 
 /**
- * Renders the field, the dots of the current stunt sheet, and pending dots
- * generated from the tool in use
+ * Holds the components for rendering the field, dots, tools, etc.
  */
 export default Vue.extend({
   name: "Grapher",
@@ -53,13 +54,17 @@ export default Vue.extend({
     onResize(): void {
       this.$store.state.grapherSvgPanZoom.resize();
     },
-    onClick(event: MouseEvent): void {
+    onMouseDown(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
-      toolSelected.onClick(event);
+      toolSelected.onMouseDown(event);
     },
-    onMousemove(event: MouseEvent): void {
+    onMouseUp(event: MouseEvent): void {
       const toolSelected: BaseTool = this.$store.state.toolSelected;
-      toolSelected.onMousemove(event);
+      toolSelected.onMouseUp(event);
+    },
+    onMouseMove(event: MouseEvent): void {
+      const toolSelected: BaseTool = this.$store.state.toolSelected;
+      toolSelected.onMouseMove(event);
     },
   },
 });
