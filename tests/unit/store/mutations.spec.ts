@@ -5,6 +5,7 @@ import StuntSheet from "@/models/StuntSheet";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import ContEven from "@/models/continuity/ContEven";
+import DotAppearance from "@/models/DotAppearance";
 
 describe("store/mutations", () => {
   let store: Store<CalChartState>;
@@ -16,6 +17,7 @@ describe("store/mutations", () => {
           stuntSheets: [
             new StuntSheet({
               dotTypes: [[new ContInPlace()], [new ContETFDynamic()]],
+              dotAppearances: [new DotAppearance(), new DotAppearance()],
             }),
           ],
         }),
@@ -27,6 +29,11 @@ describe("store/mutations", () => {
       expect(store.state.show.stuntSheets[0].dotTypes).toHaveLength(2);
       store.commit("addDotType");
       expect(store.state.show.stuntSheets[0].dotTypes).toHaveLength(3);
+    });
+    it("adds a new dot appereance to the end of the array", () => {
+      expect(store.state.show.stuntSheets[0].dotAppearances).toHaveLength(2);
+      store.commit("addDotType");
+      expect(store.state.show.stuntSheets[0].dotAppearances).toHaveLength(3);
     });
   });
 
