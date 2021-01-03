@@ -13,11 +13,10 @@ describe("tools/ToolSingleDot", () => {
       .should("have.attr", "cx", "12")
       .should("have.attr", "cy", "8");
 
-    cy.get('[data-test="grapher-dots--dottext"]')
+    cy.get('[data-test="dot--dottext"]')
       .should("have.length", 1)
-      .should("have.attr", "x", "12")
-      .should("have.attr", "y", "7");
-    cy.get('[data-test="grapher-dots--dottext"]').contains("0");
+      .should("have.attr", "y", "-1");
+    cy.get('[data-test="dot--dottext"]').contains("0");
 
     cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
 
@@ -42,10 +41,9 @@ describe("tools/ToolSingleDot", () => {
       .should("have.length", 1)
       .should("have.attr", "cx", "12")
       .should("have.attr", "cy", "8");
-    cy.get('[data-test="grapher-dots--dottext"]')
+    cy.get('[data-test="dot--dottext"]')
       .should("have.length", 1)
-      .should("have.attr", "x", "12")
-      .should("have.attr", "y", "7");
+      .should("have.attr", "y", "-1");
   });
 
   it("clicking multiple dots", () => {
