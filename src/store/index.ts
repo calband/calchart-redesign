@@ -8,6 +8,7 @@ import BaseTool from "@/tools/BaseTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import { UndoRedo } from "@/models/UndoRedo";
 import InitialShowState from "@/models/InitialShowState"
+import { loadTool } from "@/tools/load-tools";
 
 Vue.use(Vuex);
 
@@ -19,7 +20,6 @@ Vue.use(Vuex);
  * @property selectedSS        - Index of stuntsheet currently in view
  * @property beat              - The point in time the show is in
  * @property fourStepGrid      - View setting to toggle the grapher grid
- * @property grapherSvgPanZoom - Initialized upon mounting Grapher
  * @property invertedCTMMatrix - Used to calculate clientX/Y to SVG X/Y
  * @property toolSelected      - See BaseTool
  * @property grapherToolDots   - Helper dots to help visualize tools
@@ -43,8 +43,6 @@ export class CalChartState extends Serializable<CalChartState> {
 
   showDotLabels = true;
 
-  grapherSvgPanZoom?: SvgPanZoom.Instance;
-
   invertedCTMMatrix?: DOMMatrix;
 
   selectedDots: number[] = [];
@@ -58,6 +56,21 @@ export class CalChartState extends Serializable<CalChartState> {
 
   constructor(json: Partial<CalChartState> = {}) {
     super();
+    if (json.show) {
+      json.show = new Show(json.show);
+    }
+    if (json.initialShowState) {
+      json.initialShowState = new InitialShowState(json.initialShowState);
+    }
+    if (json.undoRedo) {
+      json.undoRedo = new UndoRedo(json.undoRedo);
+    }
+    if (json.toolSelected) {
+      json.toolSelected = loadTool(json.toolSelected);
+    }
+    if (json.grapherToolDots) {
+      json.grapherToolDots.map((dot) => new StuntSheetDot(dot));
+    }
     this.fromJson(json);
   }
 

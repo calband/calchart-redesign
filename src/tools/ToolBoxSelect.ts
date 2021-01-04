@@ -1,4 +1,4 @@
-import { ToolConstructor } from "./BaseTool";
+import { ToolConstructor, TOOL_IDS } from "./BaseTool";
 import { ToolSelectMove } from "./ToolSelectMove";
 import { GlobalStore } from "@/store";
 import { SET_SELECTION_LASSO } from "@/store/mutations";
@@ -8,6 +8,8 @@ import { SET_SELECTION_LASSO } from "@/store/mutations";
  * This Tool creates a rectangle as a lasso.
  */
 const ToolBoxSelect: ToolConstructor = class ToolBoxSelect extends ToolSelectMove {
+  readonly toolId: TOOL_IDS = TOOL_IDS.BOX_SELECT;
+
   onNewMouseMoveSelection(point: [number, number]): void {
     if (this.selectionLassoStart === null) {
       return;

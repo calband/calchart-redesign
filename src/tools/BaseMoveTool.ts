@@ -1,4 +1,5 @@
 import { GlobalStore } from "@/store";
+import { GLOBALS } from "@/store/globals";
 import BaseTool from "./BaseTool";
 
 /**
@@ -8,9 +9,9 @@ import BaseTool from "./BaseTool";
  */
 export default abstract class BaseMoveTool {
   static enablePan(enable: boolean): void {
-    const grapherSvgPanZoom: SvgPanZoom.Instance | undefined =
-      GlobalStore.state.grapherSvgPanZoom;
-    if (grapherSvgPanZoom === undefined) {
+    const grapherSvgPanZoom: SvgPanZoom.Instance | null =
+      GLOBALS.grapherSvgPanZoom;
+    if (grapherSvgPanZoom === null) {
       throw new Error("There is no grapher pan zoom instance");
     }
     if (enable) {

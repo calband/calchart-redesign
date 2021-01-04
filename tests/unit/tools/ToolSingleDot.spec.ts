@@ -3,7 +3,7 @@ import { GlobalStore } from "@/store";
 import BaseTool from "@/tools/BaseTool";
 import BaseMoveTool from "@/tools/BaseMoveTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
-import { ADD_DOTS, REMOVE_DOTS, SET_GRAPHER_SVG_PAN_ZOOM } from "@/store/mutations";
+import { ADD_DOTS, REMOVE_DOTS } from "@/store/mutations";
 
 describe("tools/ToolSingleDot", () => {
   let tool: BaseTool;

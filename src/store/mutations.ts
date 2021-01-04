@@ -40,7 +40,6 @@ export const SET_YARDLINES = 'setYardlines';
 export const SET_YARDLINE_NUMBERS = 'setYardlineNumbers';
 export const SET_SHOW_DOT_LABELS = 'setShowDotLabels';
 // Tools
-export const SET_GRAPHER_SVG_PAN_ZOOM = 'setGrapherSvgPanZoom';
 export const SET_INVERTED_CTM_MATRIX = 'setInvertedCTMMatrix';
 export const SET_TOOL_SELECTED = 'setToolSelected';
 export const SET_GRAPHER_TOOL_DOTS = 'setGrapherToolDots'
@@ -54,6 +53,7 @@ export const SET_SELECTION_LASSO = 'setSelectionLasso';
 export const UNDO = 'undo';
 export const REDO = 'redo';
 export const INITIAL_SHOW_STATE = 'resetShowState';
+export const SET_STATE = 'setState';
 
 export const UNDOABLE_ACTIONS = [ 
   SET_SHOW_TITLE,
@@ -242,9 +242,6 @@ export const mutations: MutationTree<CalChartState> = {
   },
 
   // Tools
-  [SET_GRAPHER_SVG_PAN_ZOOM](state, svgPanZoomInstance: SvgPanZoom.Instance): void {
-    state.grapherSvgPanZoom = svgPanZoomInstance;
-  },
   [SET_INVERTED_CTM_MATRIX](state, matrix: DOMMatrix): void {
     state.invertedCTMMatrix = matrix;
   },

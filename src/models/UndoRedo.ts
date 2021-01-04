@@ -1,6 +1,7 @@
-import { INITIAL_SHOW_STATE, UNDO, REDO, UNDOABLE_ACTIONS } from "@/store/mutations"
+import { UNDO, REDO, UNDOABLE_ACTIONS } from "@/store/mutations"
 import { CalChartState } from "@/store";
 import Serializable from "./util/Serializable";
+import { Store } from "vuex";
 
 // Increment upon making show metadata changes that break previous versions.
 const METADATA_VERSION = 1;
@@ -11,8 +12,8 @@ const METADATA_VERSION = 1;
 export class UndoRedo extends Serializable<UndoRedo> {
   metadataVersion: number = METADATA_VERSION;
 
-  done: any[] = [];
-  undone: any[] = [];
+  done: { mutationType: string; stateString: string }[] = [];
+  undone: { mutationType: string; stateString: string }[] = [];
   newMutation = true;
 
   constructor(json: Partial<UndoRedo> = {}) {
@@ -25,7 +26,7 @@ export class UndoRedo extends Serializable<UndoRedo> {
   }
 
   undoString(): string {
-    return this.done.length ? this.done[this.done.length - 1].type : "";
+    return this.done.length ? this.done[this.done.length - 1].mutationType : "";
   }
 
   canRedo(): boolean {
@@ -33,42 +34,46 @@ export class UndoRedo extends Serializable<UndoRedo> {
   }
 
   redoString(): string {
-    return this.undone.length ? this.undone[this.undone.length - 1].type : "";
+    return this.undone.length ? this.undone[this.undone.length - 1].mutationType : "";
   }
 
   createPlugin () {
-    return (store: any) => {
+    return (store: Store<CalChartState>): void => {
+      let lastStateString = JSON.stringify(store.state);
+
       // called when the store is initialized
-      store.subscribe((mutation: any, state: CalChartState) => {
+      store.subscribe((mutation: { type: string, payload: any }, state: CalChartState) => {
         if (UNDOABLE_ACTIONS.includes(mutation.type)) {
-          console.log( "adding mutation: ", mutation);
-          this.done.push(mutation);
-          if (this.newMutation) {
-            this.undone = [];
-          }
-        }
-        if (mutation.type === UNDO) {
-          let lastAction = this.done.pop()
-          if (!lastAction) {
+          this.done.push({ mutationType: mutation.type, stateString: lastStateString });
+          this.undone = [];
+        } else if (mutation.type === UNDO) {
+          const lastDone = this.done.pop()
+          if (!lastDone) {
             return;
           }
-          this.undone.push(lastAction);
-          this.newMutation = false;
-          store.commit(INITIAL_SHOW_STATE);
-          this.done.forEach((mutant: any) => {
-            store.commit(`${mutant.type}`, mutant.payload);
-            this.done.pop();
+          const lastState = new CalChartState(JSON.parse(lastDone.stateString));
+          this.undone.push({ mutationType: lastDone.mutationType, stateString: JSON.stringify(store.state) });
+          Object.entries(lastState).forEach(([key, value]) => {
+            if (key === 'undoRedo') {
+              return;
+            }
+            state[key] = value;
           });
-          this.newMutation = true;
-        }
-        if (mutation.type === REDO) {
-          let commit = this.undone.pop();
-          if (commit && commit) {
-            this.newMutation = false;
-            store.commit(`${commit.type}`, commit.payload);
-            this.newMutation = true;
+        } else if (mutation.type === REDO) {
+          const nextUndone = this.undone.pop();
+          if (!nextUndone) {
+            return;
           }
+          const nextState = new CalChartState(JSON.parse(nextUndone.stateString));
+          this.done.push({ mutationType: nextUndone.mutationType, stateString: JSON.stringify(store.state) });
+          Object.entries(nextState).forEach(([key, value]) => {
+            if (key === 'undoRedo') {
+              return;
+            }
+            state[key] = value;
+          });
         }
+        lastStateString = JSON.stringify(store.state);
       })
     }
   }

@@ -2,6 +2,14 @@ import { GlobalStore } from "@/store";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import { SET_INVERTED_CTM_MATRIX } from "@/store/mutations";
 
+export enum TOOL_IDS {
+  NONE,
+  BOX_SELECT,
+  LASSO_SELECT,
+  SELECT_MOVE,
+  SINGLE_DOT
+}
+
 /**
  * Defines the functionality of a tool to be used in the Bottom Menu.
  * Methods are event handlers for the svg in Grapher.
@@ -11,6 +19,8 @@ import { SET_INVERTED_CTM_MATRIX } from "@/store/mutations";
  * - https://www.sitepoint.com/how-to-translate-from-dom-to-svg-coordinates-and-back-again/
  */
 export default abstract class BaseTool {
+  readonly toolId: TOOL_IDS = TOOL_IDS.NONE;
+
   /**
    * Approximates coordinate on the two step grid
    *
