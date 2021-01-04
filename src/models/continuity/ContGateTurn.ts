@@ -43,16 +43,21 @@ export default class ContGateTurn
       flow,
       startDot
     );
+    // Find the relative coordinates to the center
     const [dx, dy]: [number, number] = [
       startx - this.centerPoint[0],
       starty - this.centerPoint[1],
     ];
     if (dx !== 0 || dy !== 0) {
       for (let beat = 1; beat <= this.duration; beat += 1) {
+        // Split theta up into duration equal parts and convert to radians
         const theta: number =
           (((beat - 1) / this.duration) * this.angle * Math.PI) / 180;
+        // Rotation matrix transfomration here
         const x: number = dx * Math.cos(theta) - dy * Math.sin(theta);
         const y: number = dx * Math.sin(theta) + dy * Math.cos(theta);
+        // Direction is a phase shift on the negative rotation
+        // Phase change depends on the sign of the angle, wither 180 or 360
         const direction: number =
           ((Math.sign(this.angle) > 0 ? 180 : 360) -
             (Math.atan2(-y, x) * 180) / Math.PI) %
