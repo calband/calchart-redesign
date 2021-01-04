@@ -17,26 +17,26 @@ export abstract class ToolSelectMove extends BaseMoveTool {
 
   onMouseDownInternal(event: MouseEvent): void {
     const [x, y] = BaseTool.convertClientCoordinates(event);
-    const existingDotIndex = BaseTool.findDotAtEvent(event);
+    const existingDot = BaseTool.findDotAtEvent(event);
 
     // reset what we are doing
     this.moveToolStart = null;
     this.selectionLassoStart = null;
 
-    if (existingDotIndex !== -1) {
+    if (existingDot) {
       // if we click on a selected dot, determine if we are toggling selection.
-      if (GlobalStore.state.selectedDots.includes(existingDotIndex)) {
+      if (GlobalStore.state.selectedDotIds.includes(existingDot.id)) {
         if (event.altKey) {
-          GlobalStore.commit("toggleSelectedDots", [existingDotIndex]);
+          GlobalStore.commit("toggleSelectedDotIds", [existingDot.id]);
         }
       } else {
         if (!event.shiftKey) {
-          GlobalStore.commit("clearSelectedDots");
+          GlobalStore.commit("clearSelectedDotIds");
         }
         if (event.altKey) {
-          GlobalStore.commit("toggleSelectedDots", [existingDotIndex]);
+          GlobalStore.commit("toggleSelectedDotIds", [existingDot.id]);
         } else {
-          GlobalStore.commit("addSelectedDots", [existingDotIndex]);
+          GlobalStore.commit("addSelectedDotIds", [existingDot.id]);
         }
       }
       this.moveToolStart = [x, y];
@@ -44,7 +44,7 @@ export abstract class ToolSelectMove extends BaseMoveTool {
     } else {
       // if we hvae not clicked on a dot, start a new selection.
       if (!event.shiftKey) {
-        GlobalStore.commit("clearSelectedDots");
+        GlobalStore.commit("clearSelectedDotIds");
       }
       GlobalStore.commit("setSelectionLasso", [[x, y]]);
       this.selectionLassoStart = [x, y];
@@ -62,13 +62,17 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       ];
       const currentSSDots: StuntSheetDot[] =
         GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
-      GlobalStore.state.selectedDots.forEach((index: number) => {
+      GlobalStore.state.selectedDotIds.forEach((id: number) => {
+        const selectedDot = currentSSDots.find((dot) => dot.id === id);
+        if (!selectedDot) {
+          return;
+        }
         const [roundedX, roundedY] = BaseTool.roundCoordinateToGrid([
-          currentSSDots[index].x + deltaX,
-          currentSSDots[index].y + deltaY,
+          selectedDot.x + deltaX,
+          selectedDot.y + deltaY,
         ]);
         GlobalStore.commit("moveDot", {
-          index: index,
+          dotId: selectedDot.id,
           position: [roundedX, roundedY],
         });
       });
@@ -82,18 +86,14 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       // Complete the selection by finding everything in the selection box.
       const stuntSheetDots: StuntSheetDot[] =
         GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
-      const newArray = stuntSheetDots.filter((dot) =>
+      const dotsInLasso = stuntSheetDots.filter((dot) =>
         InsideLasso(GlobalStore.state.selectionLasso, [dot.x, dot.y])
       );
-      const newIndices = newArray.map((dot) =>
-        stuntSheetDots.findIndex((dot2): boolean => {
-          return dot.x === dot2.x && dot.y === dot2.y;
-        })
-      );
+      const dotIdsInLasso = dotsInLasso.map((dot) => dot.id);
       if (event.altKey) {
-        GlobalStore.commit("toggleSelectedDots", newIndices);
+        GlobalStore.commit("toggleSelectedDotIds", dotIdsInLasso);
       } else {
-        GlobalStore.commit("addSelectedDots", newIndices);
+        GlobalStore.commit("addSelectedDotIds", dotIdsInLasso);
       }
       // we are done selecting, so clear out the box
       GlobalStore.commit("setSelectionLasso", []);
@@ -123,22 +123,25 @@ export abstract class ToolSelectMove extends BaseMoveTool {
     ];
     const currentSSDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
-    GlobalStore.commit(
-      "setGrapherToolDots",
-      GlobalStore.state.selectedDots.map((index: number) => {
-        const [roundedX, roundedY] = BaseTool.roundCoordinateToGrid([
-          currentSSDots[index].x + deltaX,
-          currentSSDots[index].y + deltaY,
-        ]);
-        return currentSSDots !== null && index < currentSSDots.length
-          ? {
-              x: roundedX,
-              y: roundedY,
-              dotLabelIndex: currentSSDots[index].dotLabelIndex,
-            }
-          : {};
-      })
-    );
+    const grapherToolDots: StuntSheetDot[] = [];
+    GlobalStore.state.selectedDotIds.forEach((id: number) => {
+      const selectedDot = currentSSDots.find((dot) => dot.id === id);
+      if (!selectedDot) {
+        return;
+      }
+      const [roundedX, roundedY] = BaseTool.roundCoordinateToGrid([
+        selectedDot.x + deltaX,
+        selectedDot.y + deltaY,
+      ]);
+      grapherToolDots.push(
+        new StuntSheetDot({
+          ...selectedDot,
+          x: roundedX,
+          y: roundedY,
+        })
+      );
+    });
+    GlobalStore.commit("setGrapherToolDots", grapherToolDots);
   }
 
   // override this function change the selection lasso.

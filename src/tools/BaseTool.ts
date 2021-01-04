@@ -51,14 +51,15 @@ export default abstract class BaseTool {
   }
 
   /**
-   * returns index of dot at mouse event, or -1 if nothing found
+   * returns dot at mouse event, or undefined if nothing found
    **/
-  static findDotAtEvent(event: MouseEvent): number {
+  static findDotAtEvent(event: MouseEvent): StuntSheetDot | undefined {
+    const beat = GlobalStore.state.beat;
     const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
     const stuntSheetDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
-    return stuntSheetDots.findIndex((dot: StuntSheetDot): boolean => {
-      return x === dot.xAtBeat(GlobalStore.state.beat) && y === dot.yAtBeat(GlobalStore.state.beat);
+    return stuntSheetDots.find((dot: StuntSheetDot): boolean => {
+      return x === dot.xAtBeat(beat) && y === dot.yAtBeat(beat);
     });
   }
 

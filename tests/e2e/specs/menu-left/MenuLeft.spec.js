@@ -14,7 +14,8 @@ describe("components/menu-left/MenuLeft", () => {
     cy.get('[data-test="menu-left--ss-modal"]').should("be.visible");
 
     cy.get('[data-test="ss-modal--title"]')
-      .should("have.value", "")
+      .should("have.value", "Stuntsheet 1")
+      .clear()
       .type("Sunset");
 
     cy.get('[data-test="ss-modal--beats"]')
@@ -64,7 +65,8 @@ describe("components/menu-left/MenuLeft", () => {
     cy.get('[data-test="menu-left--ss-modal"]').should("be.visible");
 
     cy.get('[data-test="ss-modal--title"]')
-      .should("have.value", "")
+      .should("have.value", "Stuntsheet 2")
+      .clear()
       .type("Script YOLO");
 
     cy.get('[data-test="ss-modal--beats"]')

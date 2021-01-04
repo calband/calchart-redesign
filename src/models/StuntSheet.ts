@@ -5,10 +5,14 @@ import Serializable from "./util/Serializable";
 import { loadContinuity } from "./continuity/load-continuity";
 import DotAppearance from "./DotAppearance";
 
+// Global ID counter for the next stuntsheet
+let NEXT_SS_ID = 0;
+
 /**
  * Defines the positions/directions in a formation and the continuities
  * used to reach the next position.
  *
+ * @property id             - Uniquely defines a stuntsheet
  * @property title          - High level description
  * @property stuntSheetDots - The collection of positions that make up a
  *                            formation
@@ -16,8 +20,13 @@ import DotAppearance from "./DotAppearance";
  *                            movements to get to the next StuntSheet
  * @property beats          - How many beats to execute the continuities to the
  *                            next StuntSheet
+ * @property nextSSId       - Used as a pointer to the next SS. Used for validation
+ *                            when building flows
+ * @property dotId          - The id to give the next created dot
  */
 export default class StuntSheet extends Serializable<StuntSheet> {
+  id = -1;
+
   title = "";
 
   stuntSheetDots: StuntSheetDot[] = [];
@@ -28,8 +37,19 @@ export default class StuntSheet extends Serializable<StuntSheet> {
 
   beats = 16;
 
+  dotId = 1;
+
+  nextSSId: number | null = null;
+
   constructor(json: Partial<StuntSheet> = {}) {
     super();
+
+    if (json.id === undefined) {
+      json.id = NEXT_SS_ID++;
+    } else if (json.id >= NEXT_SS_ID) {
+      NEXT_SS_ID = json.id + 1;
+    }
+
     if (json.stuntSheetDots !== undefined) {
       json.stuntSheetDots = json.stuntSheetDots.map(
         (dot: StuntSheetDot): StuntSheetDot => new StuntSheetDot(dot)
@@ -53,19 +73,22 @@ export default class StuntSheet extends Serializable<StuntSheet> {
     this.fromJson(json);
   }
 
-  addDot(dot: StuntSheetDot): void {
-    this.stuntSheetDots.push(dot);
+  addDot(dot: Partial<StuntSheetDot> = {}): void {
+    this.stuntSheetDots.push(new StuntSheetDot(dot));
   }
 
-  removeDot(index: number): void {
-    this.stuntSheetDots.splice(index, 1);
-  }
-
-  moveDot(index: number, position: [number, number]): void {
-    if (index >= this.stuntSheetDots.length) {
-      return;
+  removeDot(dotId: number): void {
+    const dotIndex = this.stuntSheetDots.findIndex((dot) => dot.id === dotId);
+    if (dotIndex !== -1) {
+      this.stuntSheetDots.splice(dotIndex, 1);
     }
-    this.stuntSheetDots[index].x = position[0];
-    this.stuntSheetDots[index].y = position[1];
+  }
+
+  moveDot(dotId: number, position: [number, number]): void {
+    const selectedDot = this.stuntSheetDots.find((dot) => dot.id === dotId);
+    if (selectedDot) {
+      selectedDot.x = position[0];
+      selectedDot.y = position[1];
+    }
   }
 }

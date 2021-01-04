@@ -28,10 +28,7 @@ describe("tools/ToolSingleDot", () => {
 
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
-      expect(GlobalStore.commit).toHaveBeenCalledWith(
-        "addDot",
-        expect.any(StuntSheetDot)
-      );
+      expect(GlobalStore.commit).toHaveBeenCalledWith("addDot", { x: 0, y: 2 });
     });
 
     it("removes a dot if it exists in the spot", () => {
