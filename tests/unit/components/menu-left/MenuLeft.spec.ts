@@ -112,10 +112,7 @@ describe("components/menu-left/MenuLeft", () => {
       addButton.trigger("click");
       await menu.vm.$nextTick();
 
-      expect(commitSpy).toHaveBeenLastCalledWith(
-        "addStuntSheet",
-        show.stuntSheets[3]
-      );
+      expect(commitSpy).toHaveBeenLastCalledWith("addStuntSheet");
       expect(menu.findAll('[data-test="menu-left--ss"]')).toHaveLength(4);
     });
   });

@@ -40,13 +40,14 @@ export class CalChartState extends Serializable<CalChartState> {
 
   invertedCTMMatrix?: DOMMatrix;
 
-  selectedDots: number[] = [];
+  selectedDotIds: number[] = [];
 
   toolSelected?: BaseTool;
 
   grapherToolDots: StuntSheetDot[] = [];
 
   showSelectionLasso = true;
+
   selectionLasso: [number, number][] = [];
 
   constructor(json: Partial<CalChartState> = {}) {

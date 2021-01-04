@@ -2,7 +2,7 @@
   <g class="grapher-dots--dots-container">
     <Dot
       v-for="(dot, index) in stuntSheetDots"
-      :key="`${dot.x}-${dot.y}-dots--dot`"
+      :key="`${dot.id}-dots--dot`"
       class="grapher-dots--dot"
       data-test="grapher-dots--dot"
       :transform="`translate(${dot.xAtBeat(beat - 1)}, ${dot.yAtBeat(
@@ -11,9 +11,9 @@
       :cx="dot.xAtBeat(beat - 1)"
       :cy="dot.yAtBeat(beat - 1)"
       :dotTypeIndex="dot.dotTypeIndex"
-      :label="dotLabels[index]"
+      :label="indexedDotLabels[index]"
       :labeled="showDotLabels"
-      :selected="selectedDots.includes(index)"
+      :selected="selectedDotIds.includes(dot.id)"
     />
   </g>
 </template>
@@ -39,10 +39,10 @@ export default Vue.extend({
     stuntSheetDots(): StuntSheetDot[] {
       return this.$store.getters.getSelectedStuntSheet.stuntSheetDots;
     },
-    selectedDots(): number[] {
-      return this.$store.state.selectedDots;
+    selectedDotIds(): number[] {
+      return this.$store.state.selectedDotIds;
     },
-    dotLabels(): string[] {
+    indexedDotLabels(): string[] {
       const dotLabels = this.$store.getters.getDotLabels;
       const dots: StuntSheetDot[] = this.$store.getters.getSelectedStuntSheet
         .stuntSheetDots;
@@ -53,7 +53,6 @@ export default Vue.extend({
           : index.toString();
       });
     },
-
     beat: {
       get(): number {
         return this.$store.state.beat;
