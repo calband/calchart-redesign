@@ -9,7 +9,8 @@ describe("components/menu-left/StuntSheetModal", () => {
 
   it("Setting the title", () => {
     cy.get('[data-test="ss-modal--title"]')
-      .should("have.value", "")
+      .should("have.value", "Stuntsheet 1")
+      .clear()
       .type("Sunrise");
 
     cy.get('[data-test="ss-modal--close"]').click();
@@ -32,7 +33,8 @@ describe("components/menu-left/StuntSheetModal", () => {
     cy.get('[data-test="ss-modal--delete"]').should("not.exist");
 
     cy.get('[data-test="ss-modal--title"]')
-      .should("have.value", "")
+      .should("have.value", "Stuntsheet 1")
+      .clear()
       .type("Sunrise");
 
     cy.get('[data-test="ss-modal--close"]').click();

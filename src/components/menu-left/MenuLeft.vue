@@ -32,7 +32,7 @@
       <b-menu-list>
         <b-menu-item
           v-for="(stuntSheet, index) in stuntSheets"
-          :key="stuntSheet.title"
+          :key="stuntSheet.id"
           class="stuntsheet"
           :active="selectedSS === index"
           data-test="menu-left--ss"
@@ -114,8 +114,7 @@ export default Vue.extend({
   },
   methods: {
     addStuntSheet(): void {
-      const stuntSheet = new StuntSheet();
-      this.$store.commit("addStuntSheet", stuntSheet);
+      this.$store.commit("addStuntSheet");
     },
     incrementBeat(): void {
       this.$store.commit("incrementBeat");
