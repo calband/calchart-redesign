@@ -26,7 +26,7 @@ export class CalChartState extends Serializable<CalChartState> {
 
   selectedSS = 0;
 
-  beat = 1;
+  beat = 0;
 
   fourStepGrid = true;
 

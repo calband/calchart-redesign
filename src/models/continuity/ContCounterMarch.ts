@@ -1,7 +1,7 @@
 import BaseCont, { CONT_IDS } from "./BaseCont";
 import StuntSheetDot from "../StuntSheetDot";
 import { MARCH_TYPES } from "../util/constants";
-import { FlowBeat } from "../util/types";
+import { FlowBeat } from "../util/FlowBeat";
 import Serializable from "../util/Serializable";
 
 /**
@@ -30,11 +30,7 @@ export default class ContCounterMarch
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  addToFlow(
-    flow: FlowBeat[],
-    startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
-  ): void {
+  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot): void {
     // TODO: Implement
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */
