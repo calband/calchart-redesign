@@ -18,7 +18,11 @@ export default class ContGateTurn
 
   duration = 8;
 
-  centerPoint: [number, number] = [0, 0];
+  centerPoints: Map<number, [number, number]> = new Map<
+    number,
+    [number, number]
+  >();
+
   angle = 180;
 
   humanReadableText = "";
@@ -35,7 +39,7 @@ export default class ContGateTurn
     const rotation: string = Math.sign(this.angle) === 1 ? "CW" : "CCW";
     return `GT${this.marchType} ${this.duration} COUNTS ${Math.abs(
       this.angle
-    )} DEGREES ${rotation} ABOUT POINT [${this.centerPoint}]`;
+    )} DEGREES ${rotation}`;
   }
 
   addToFlow(flow: FlowBeat[], startDot: StuntSheetDot): void {
@@ -43,10 +47,16 @@ export default class ContGateTurn
       flow,
       startDot
     );
+    let centerPoint: [number, number] | undefined = this.centerPoints.get(
+      startDot.id
+    );
+    if (!centerPoint) {
+      centerPoint = [0, 0];
+    }
     // Find the relative coordinates to the center
     const [dx, dy]: [number, number] = [
-      startx - this.centerPoint[0],
-      starty - this.centerPoint[1],
+      startx - centerPoint[0],
+      starty - centerPoint[1],
     ];
     if (dx !== 0 || dy !== 0) {
       for (let beat = 1; beat <= this.duration; beat += 1) {
@@ -54,6 +64,8 @@ export default class ContGateTurn
         const theta: number =
           (((beat - 1) / this.duration) * this.angle * Math.PI) / 180;
         // Rotation matrix transfomration here
+        // Because y-axis is positive going down and angle is measured clockwise,
+        // it is the same matrix transformation as a regular rotation.
         const x: number = dx * Math.cos(theta) - dy * Math.sin(theta);
         const y: number = dx * Math.sin(theta) + dy * Math.cos(theta);
         // Direction is a phase shift on the negative rotation
@@ -64,8 +76,8 @@ export default class ContGateTurn
           360;
 
         const flowBeat: FlowBeat = {
-          x: x + this.centerPoint[0],
-          y: y + this.centerPoint[1],
+          x: x + centerPoint[0],
+          y: y + centerPoint[1],
           marchType: this.marchType,
           direction: direction,
         };
@@ -80,8 +92,8 @@ export default class ContGateTurn
           ((Math.sign(this.angle) > 0 ? 180 : 360) + (theta * 180) / Math.PI) %
           360;
         const flowBeat: FlowBeat = {
-          x: this.centerPoint[0],
-          y: this.centerPoint[1],
+          x: centerPoint[0],
+          y: centerPoint[1],
           marchType: this.marchType,
           direction: direction,
         };
