@@ -7,6 +7,7 @@ import StuntSheetDot from "@/models/StuntSheetDot";
 import { MutationTree } from "vuex";
 import BaseCont from "@/models/continuity/BaseCont";
 import ContInPlace from "@/models/continuity/ContInPlace";
+import DotAppearance from "@/models/DotAppearance";
 
 const mutations: MutationTree<CalChartState> = {
   // Show
@@ -16,8 +17,12 @@ const mutations: MutationTree<CalChartState> = {
   setShowTitle(state, title: string): void {
     state.show.title = title;
   },
-  addStuntSheet(state, stuntSheet: StuntSheet): void {
-    state.show.stuntSheets.push(stuntSheet);
+  addStuntSheet(state): void {
+    state.show.stuntSheets.push(
+      new StuntSheet({
+        title: `Stuntsheet ${state.show.stuntSheets.length + 1}`,
+      })
+    );
     state.selectedSS = state.show.stuntSheets.length - 1;
     state.beat = 1;
   },
@@ -39,14 +44,14 @@ const mutations: MutationTree<CalChartState> = {
   },
 
   // Show -> StuntSheet
-  removeDot(state, dotIndex: number): void {
+  removeDot(state, dotId: number): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.removeDot(dotIndex);
+    currentSS.removeDot(dotId);
   },
-  addDot(state, dot: StuntSheetDot): void {
+  addDot(state, dot: Partial<StuntSheetDot>): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
@@ -55,13 +60,13 @@ const mutations: MutationTree<CalChartState> = {
   },
   moveDot(
     state,
-    { index, position }: { index: number; position: [number, number] }
+    { dotId, position }: { dotId: number; position: [number, number] }
   ): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.moveDot(index, position);
+    currentSS.moveDot(dotId, position);
   },
   setStuntSheetTitle(state, title: string): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
@@ -83,6 +88,7 @@ const mutations: MutationTree<CalChartState> = {
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.dotTypes.push([new ContInPlace()]);
+    currentSS.dotAppearances.push(new DotAppearance());
   },
   addContinuity(
     state,
@@ -191,22 +197,22 @@ const mutations: MutationTree<CalChartState> = {
   },
 
   // selection
-  clearSelectedDots(state): void {
-    state.selectedDots = [];
+  clearSelectedDotIds(state): void {
+    state.selectedDotIds = [];
   },
-  addSelectedDots(state, dots: number[]): void {
-    dots.forEach((dot) => {
-      state.selectedDots.indexOf(dot) < 0 && state.selectedDots.push(dot);
+  addSelectedDotIds(state, dotIds: number[]): void {
+    dotIds.forEach((id) => {
+      !state.selectedDotIds.includes(id) && state.selectedDotIds.push(id);
     });
   },
-  toggleSelectedDots(state, dots: number[]): void {
+  toggleSelectedDotIds(state, dotIds: number[]): void {
     // first remove all the items passed in.
-    dots.forEach((v) => {
-      const index = state.selectedDots.indexOf(v);
+    dotIds.forEach((id) => {
+      const index = state.selectedDotIds.indexOf(id);
       if (index > -1) {
-        state.selectedDots.splice(index, 1);
+        state.selectedDotIds.splice(index, 1);
       } else {
-        state.selectedDots.push(v);
+        state.selectedDotIds.push(id);
       }
     });
   },

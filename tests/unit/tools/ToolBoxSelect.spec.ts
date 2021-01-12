@@ -25,66 +25,66 @@ describe("tools/ToolBoxSelect", () => {
     stuntSheet.stuntSheetDots.push(new StuntSheetDot({ x: 2, y: 4 }));
 
     it("Click where nothing is", () => {
-      expect(GlobalStore.state.selectedDots).toEqual([]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseDown(new MouseEvent("mousedown", { clientX: 0, clientY: 0 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([[0, 0]]);
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 0, clientY: 0 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
     });
 
     it("Click on a dot", () => {
-      expect(GlobalStore.state.selectedDots).toEqual([]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseDown(new MouseEvent("mousedown", { clientX: 2, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([0]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 2, clientY: 2 }));
     });
 
     it("Click on a space loses selection", () => {
-      expect(GlobalStore.state.selectedDots).toEqual([0]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseDown(new MouseEvent("mousedown", { clientX: 6, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([[6, 2]]);
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 6, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
     });
 
     it("Click on a dot loses selection and adds another", () => {
       tool.onMouseDown(new MouseEvent("mousedown", { clientX: 4, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([1]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([1]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 4, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([1]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([1]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseDown(new MouseEvent("mousedown", { clientX: 2, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([0]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 2, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([0]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
     });
 
@@ -93,12 +93,12 @@ describe("tools/ToolBoxSelect", () => {
         new MouseEvent("mousedown", { clientX: 4, clientY: 2, shiftKey: true })
       );
 
-      expect(GlobalStore.state.selectedDots).toEqual([0, 1]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0, 1]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 4, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([0, 1]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0, 1]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
     });
 
@@ -112,19 +112,19 @@ describe("tools/ToolBoxSelect", () => {
         })
       );
 
-      expect(GlobalStore.state.selectedDots).toEqual([1]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([1]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 2, clientY: 2 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([1]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([1]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
     });
 
     it("Selecting box will select all", () => {
       tool.onMouseDown(new MouseEvent("mousedown", { clientX: 0, clientY: 0 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([[0, 0]]);
 
       tool.onMouseMove(new MouseEvent("mousemove", { clientX: 6, clientY: 6 }));
@@ -138,44 +138,69 @@ describe("tools/ToolBoxSelect", () => {
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 6, clientY: 6 }));
 
-      expect(GlobalStore.state.selectedDots).toEqual([0, 1, 2]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0, 1, 2]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
     });
 
     it("shift and move will move the dots", () => {
       expect(GlobalStore.state.grapherToolDots).toEqual([]);
-      expect(GlobalStore.state.selectedDots).toEqual([0, 1, 2]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0, 1, 2]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
       tool.onMouseDown(
         new MouseEvent("mousedown", { clientX: 2, clientY: 2, shiftKey: true })
       );
 
-      expect(GlobalStore.state.grapherToolDots).toEqual([
-        { x: 2, y: 2, dotLabelIndex: null },
-        { x: 4, y: 2, dotLabelIndex: null },
-        { x: 2, y: 4, dotLabelIndex: null },
-      ]);
-      expect(GlobalStore.state.selectedDots).toEqual([0, 1, 2]);
+      const grapherToolDotsBefore = GlobalStore.state.grapherToolDots;
+      expect(grapherToolDotsBefore).toHaveLength(3);
+      expect(grapherToolDotsBefore[0]).toMatchObject({
+        x: 2,
+        y: 2,
+        dotLabelIndex: null,
+      });
+      expect(grapherToolDotsBefore[1]).toMatchObject({
+        x: 4,
+        y: 2,
+        dotLabelIndex: null,
+      });
+      expect(grapherToolDotsBefore[2]).toMatchObject({
+        x: 2,
+        y: 4,
+        dotLabelIndex: null,
+      });
+      expect(GlobalStore.state.selectedDotIds).toEqual([0, 1, 2]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseMove(new MouseEvent("mousemove", { clientX: 6, clientY: 6 }));
-      expect(GlobalStore.state.grapherToolDots).toEqual([
-        { x: 6, y: 6, dotLabelIndex: null },
-        { x: 8, y: 6, dotLabelIndex: null },
-        { x: 6, y: 8, dotLabelIndex: null },
-      ]);
-      expect(GlobalStore.state.selectedDots).toEqual([0, 1, 2]);
+
+      const grapherToolDotsAfter = GlobalStore.state.grapherToolDots;
+      expect(grapherToolDotsAfter).toHaveLength(3);
+      expect(grapherToolDotsAfter[0]).toMatchObject({
+        x: 6,
+        y: 6,
+        dotLabelIndex: null,
+      });
+      expect(grapherToolDotsAfter[1]).toMatchObject({
+        x: 8,
+        y: 6,
+        dotLabelIndex: null,
+      });
+      expect(grapherToolDotsAfter[2]).toMatchObject({
+        x: 6,
+        y: 8,
+        dotLabelIndex: null,
+      });
+      expect(GlobalStore.state.selectedDotIds).toEqual([0, 1, 2]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 6, clientY: 6 }));
 
       expect(GlobalStore.state.grapherToolDots).toEqual([]);
-      expect(GlobalStore.state.selectedDots).toEqual([0, 1, 2]);
+      expect(GlobalStore.state.selectedDotIds).toEqual([0, 1, 2]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
       expect(stuntSheet.stuntSheetDots).toEqual([
-        new StuntSheetDot({ x: 6, y: 6, dotTypeIndex: 0 }),
-        new StuntSheetDot({ x: 8, y: 6, dotTypeIndex: 0 }),
-        new StuntSheetDot({ x: 6, y: 8, dotTypeIndex: 0 }),
+        new StuntSheetDot({ x: 6, y: 6, dotTypeIndex: 0, id: 0 }),
+        new StuntSheetDot({ x: 8, y: 6, dotTypeIndex: 0, id: 1 }),
+        new StuntSheetDot({ x: 6, y: 8, dotTypeIndex: 0, id: 2 }),
       ]);
     });
   });

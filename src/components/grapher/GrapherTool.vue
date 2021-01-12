@@ -1,8 +1,8 @@
 <template>
   <g class="grapher-tool--tool-dots-container">
     <circle
-      v-for="dot in grapherToolDots"
-      :key="`${dot.x}-${dot.y}-tool--dot`"
+      v-for="(dot, index) in grapherToolDots"
+      :key="`${index}-tool--dot`"
       class="grapher-tool--dot"
       :cx="dot.x"
       :cy="dot.y"

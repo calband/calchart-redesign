@@ -1,59 +1,37 @@
 <template>
   <g class="grapher-dots--dots-container">
-    <circle
-      v-for="dot in stuntSheetDotsUnselected"
-      :key="`${dot.x}-${dot.y}-dots--dot`"
+    <Dot
+      v-for="(dot, index) in stuntSheetDots"
+      :key="`${dot.id}-dots--dot`"
       class="grapher-dots--dot"
-      :cx="dot.xAtBeat(beat - 1)"
-      :cy="dot.yAtBeat(beat - 1)"
-      r="0.7"
       data-test="grapher-dots--dot"
-    />
-    <circle
-      v-for="dot in stuntSheetDotsSelected"
-      :key="`${dot.x}-${dot.y}-dots--dot-selected`"
-      class="grapher-dots--dot-selected"
+      :transform="`translate(${dot.xAtBeat(beat - 1)}, ${dot.yAtBeat(
+        beat - 1
+      )})`"
       :cx="dot.xAtBeat(beat - 1)"
       :cy="dot.yAtBeat(beat - 1)"
-      r="0.7"
-      data-test="grapher-dots--dot-selected"
+      :dotTypeIndex="dot.dotTypeIndex"
+      :label="indexedDotLabels[index]"
+      :labeled="showDotLabels"
+      :selected="selectedDotIds.includes(dot.id)"
     />
-    <g v-if="showDotLabels">
-      <text
-        v-for="dot in dotLabelsUnselected"
-        :key="`${dot[0].x}-${dot[0].y}-dots--dottext`"
-        class="grapher-dots--dottext"
-        :x="dot[0].xAtBeat(beat - 1)"
-        :y="dot[0].yAtBeat(beat - 1) - 1"
-        data-test="grapher-dots--dottext"
-      >
-        {{ dot[1] }}
-      </text>
-    </g>
-    <g v-if="showDotLabels">
-      <text
-        v-for="dot in dotLabelsSelected"
-        :key="`${dot[0].x}-${dot[0].y}-dots--dottext-selected`"
-        class="grapher-dots--dottext-selected"
-        :x="dot[0].xAtBeat(beat - 1)"
-        :y="dot[0].yAtBeat(beat - 1) - 1"
-        data-test="grapher-dots--dottext-selected"
-      >
-        {{ dot[1] }}
-      </text>
-    </g>
   </g>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import StuntSheetDot from "@/models/StuntSheetDot";
+import Dot from "./Dot.vue";
 
 /**
- * Renders the dots of the current stunt sheet.
+ * Renders the field, the dots of the current stunt sheet, and pending dots
+ * generated from the tool in use
  */
 export default Vue.extend({
   name: "GrapherDots",
+  components: {
+    Dot,
+  },
   computed: {
     showDotLabels(): boolean {
       return this.$store.state.showDotLabels;
@@ -61,48 +39,19 @@ export default Vue.extend({
     stuntSheetDots(): StuntSheetDot[] {
       return this.$store.getters.getSelectedStuntSheet.stuntSheetDots;
     },
-    stuntSheetDotsUnselected(): StuntSheetDot[] {
-      const selectedDots = this.$store.state.selectedDots;
-      return this.stuntSheetDots.filter((dot: StuntSheetDot, index: number) => {
-        return !selectedDots.includes(index);
-      });
+    selectedDotIds(): number[] {
+      return this.$store.state.selectedDotIds;
     },
-    stuntSheetDotsSelected(): StuntSheetDot[] {
-      const selectedDots = this.$store.state.selectedDots;
-      return this.stuntSheetDots.filter((dot: StuntSheetDot, index: number) => {
-        return selectedDots.includes(index);
-      });
-    },
-    dotLabels(): [StuntSheetDot, string][] {
+    indexedDotLabels(): string[] {
       const dotLabels = this.$store.getters.getDotLabels;
       const dots: StuntSheetDot[] = this.$store.getters.getSelectedStuntSheet
         .stuntSheetDots;
       return dots.map((dot, index) => {
-        return [
-          dot,
-          dotLabels !== null &&
-          dot.dotLabelIndex !== null &&
+        return dot.dotLabelIndex !== null &&
           dot.dotLabelIndex < dotLabels.length
-            ? dotLabels[dot.dotLabelIndex]
-            : index.toString(),
-        ];
+          ? dotLabels[dot.dotLabelIndex]
+          : index.toString();
       });
-    },
-    dotLabelsUnselected(): [StuntSheetDot, string][] {
-      const selectedDots = this.$store.state.selectedDots;
-      return this.dotLabels.filter(
-        (dotLabel: [StuntSheetDot, string], index: number) => {
-          return !selectedDots.includes(index);
-        }
-      );
-    },
-    dotLabelsSelected(): [StuntSheetDot, string][] {
-      const selectedDots = this.$store.state.selectedDots;
-      return this.dotLabels.filter(
-        (dotLabel: [StuntSheetDot, string], index: number) => {
-          return selectedDots.includes(index);
-        }
-      );
     },
     beat: {
       get(): number {
@@ -113,29 +62,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss">
-.grapher-dots--dot-selected {
-  fill: $yellow;
-}
-
-.grapher-dots--dottext {
-  fill: $black;
-  font-size: 1px;
-  text-anchor: left;
-  user-select: none;
-}
-
-.grapher-dots--dottext-selected {
-  fill: $yellow;
-  font-size: 1px;
-  text-anchor: left;
-  user-select: none;
-}
-
-.grapher-dots--dottext-selected {
-  fill: $yellow;
-  font-size: 2px;
-  text-anchor: left;
-  user-select: none;
-}
-</style>
+<style scoped lang="scss"></style>
