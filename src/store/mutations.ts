@@ -145,25 +145,36 @@ const mutations: MutationTree<CalChartState> = {
       state: CalChartState
     ) => StuntSheet;
     const currentSS: StuntSheet = getSelectedStuntSheet(state);
-    if (state.beat < currentSS.beats) {
+
+    if (state.beat + 1 >= currentSS.beats) {
+      if (state.selectedSS + 1 < state.show.stuntSheets.length) {
+        // Go to next stuntsheet's Hup! beat
+        state.selectedSS += 1;
+        state.beat = 0;
+      } else {
+        // If the last stuntsheet, go to the last beat
+        state.beat = currentSS.beats;
+      }
+    } else {
       state.beat += 1;
-    } else if (state.selectedSS + 1 < state.show.stuntSheets.length) {
-      // Go to next stuntsheet's first beat
-      state.selectedSS += 1;
-      state.beat = 1;
     }
   },
   decrementBeat(state): void {
-    if (state.beat > 1) {
+    if (state.beat - 1 < 0) {
+      if (state.selectedSS > 0) {
+        // Go to previous stuntsheet's 2nd to last beat
+        state.selectedSS -= 1;
+        const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+          state: CalChartState
+        ) => StuntSheet;
+        const currentSS: StuntSheet = getSelectedStuntSheet(state);
+        state.beat = currentSS.beats - 1;
+      } else {
+        // If the first stuntsheet, go to Hup! beat
+        state.beat = 0;
+      }
+    } else {
       state.beat -= 1;
-    } else if (state.selectedSS > 0) {
-      // Go to previous stuntsheet's last beat
-      state.selectedSS -= 1;
-      const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
-        state: CalChartState
-      ) => StuntSheet;
-      const currentSS: StuntSheet = getSelectedStuntSheet(state);
-      state.beat = currentSS.beats;
     }
   },
 

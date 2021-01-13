@@ -1,9 +1,7 @@
 import BaseCont, { CONT_IDS } from "./BaseCont";
-import StuntSheetDot from "../StuntSheetDot";
 import { DIRECTIONS, MARCH_TYPES } from "../util/constants";
-import { FlowBeat } from "../util/types";
+import { FlowBeat } from "../util/FlowBeat";
 import Serializable from "../util/Serializable";
-import { startPositionHelper } from "./continuity-util";
 
 /**
  * Move in a specified direction for a duration. Can only move in an
@@ -48,12 +46,7 @@ export default class ContETFStatic
     }
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  addToFlow(
-    flow: FlowBeat[],
-    startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
-  ): void {
+  addToFlow(flow: FlowBeat[]): void {
     const dx = Math.sign(
       Math.round(Math.cos((this.marchingDirection / 180) * Math.PI))
     );
@@ -61,11 +54,14 @@ export default class ContETFStatic
       Math.round(Math.sin((this.marchingDirection / 180) * Math.PI))
     );
 
-    const [x, y]: [number, number] = startPositionHelper(flow, startDot);
+    const lastFlowBeat = flow[flow.length - 1];
+    lastFlowBeat.direction = this.facingDirection;
+    lastFlowBeat.marchType = this.marchType;
+
     for (let beat = 1; beat <= this.duration; beat += 1) {
       const flowBeat: FlowBeat = {
-        x: x + dx * (beat - 1),
-        y: y + dy * (beat - 1),
+        x: lastFlowBeat.x + dx * beat,
+        y: lastFlowBeat.y + dy * beat,
         direction: this.facingDirection,
         marchType: this.marchType,
       };

@@ -10,8 +10,7 @@ describe("tools/ToolSingleDot", () => {
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
-      .should("have.attr", "cx", "12")
-      .should("have.attr", "cy", "8");
+      .should("have.attr", "transform", "translate(12, 8)");
 
     cy.get('[data-test="dot--dottext"]')
       .should("have.length", 1)
@@ -39,8 +38,7 @@ describe("tools/ToolSingleDot", () => {
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
-      .should("have.attr", "cx", "12")
-      .should("have.attr", "cy", "8");
+      .should("have.attr", "transform", "translate(12, 8)");
     cy.get('[data-test="dot--dottext"]')
       .should("have.length", 1)
       .should("have.attr", "y", "-1");
@@ -58,9 +56,11 @@ describe("tools/ToolSingleDot", () => {
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 5)
       .each((dot, index) => {
-        cy.wrap(dot)
-          .should("have.attr", "cx", "2")
-          .should("have.attr", "cy", `${index * 2}`);
+        cy.wrap(dot).should(
+          "have.attr",
+          "transform",
+          `translate(2, ${index * 2})`
+        );
       });
 
     cy.mousedownGrapher(2, 0).mouseupGrapher(2, 0);
@@ -69,9 +69,11 @@ describe("tools/ToolSingleDot", () => {
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 3)
       .each((dot, index) => {
-        cy.wrap(dot)
-          .should("have.attr", "cx", "2")
-          .should("have.attr", "cy", `${(index + 1) * 2}`);
+        cy.wrap(dot).should(
+          "have.attr",
+          "transform",
+          `translate(2, ${(index + 1) * 2})`
+        );
       });
   });
 

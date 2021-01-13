@@ -1,7 +1,6 @@
 import BaseCont, { CONT_IDS } from "./BaseCont";
 import { MARCH_TYPES } from "../util/constants";
-import { FlowBeat } from "../util/types";
-import { startPositionHelper } from "./continuity-util";
+import { FlowBeat } from "../util/FlowBeat";
 import StuntSheetDot from "../StuntSheetDot";
 import Serializable from "../util/Serializable";
 
@@ -33,27 +32,22 @@ export default class ContEven
     return `EVEN MARCH ${this.marchType}`;
   }
 
-  addToFlow(
-    flow: FlowBeat[],
-    startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
-  ): void {
+  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot): void {
     if (endDot === undefined) return;
     const [endX, endY]: [number, number] = [endDot.x, endDot.y];
-    const [startX, startY]: [number, number] = startPositionHelper(
-      flow,
-      startDot
-    );
+    const lastFlowBeat = flow[flow.length - 1];
     const [deltaX, deltaY]: [number, number] = [
-      (endX - startX) / this.duration,
-      (endY - startY) / this.duration,
+      (endX - lastFlowBeat.x) / this.duration,
+      (endY - lastFlowBeat.y) / this.duration,
     ];
     const dir =
       (Math.atan2(deltaY, deltaX) * 180) / Math.PI + (deltaY < 0 ? 360 : 0);
-    for (let beat = 0; beat < this.duration; beat += 1) {
+    lastFlowBeat.direction = dir;
+    lastFlowBeat.marchType = this.marchType;
+    for (let beat = 1; beat <= this.duration; beat += 1) {
       const flowBeat: FlowBeat = {
-        x: startX + deltaX * beat,
-        y: startY + deltaY * beat,
+        x: lastFlowBeat.x + deltaX * beat,
+        y: lastFlowBeat.y + deltaY * beat,
         direction: dir,
         marchType: this.marchType,
       };

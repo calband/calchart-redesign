@@ -2,7 +2,7 @@ import Field from "./Field";
 import StuntSheet from "./StuntSheet";
 import StuntSheetDot from "./StuntSheetDot";
 import BaseCont from "./continuity/BaseCont";
-import { FlowBeat } from "./util/types";
+import { FlowBeat, initializeFlow } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
 
 // Increment upon making show metadata changes that break previous versions.
@@ -48,6 +48,9 @@ export default class Show extends Serializable<Show> {
   /**
    * For each StuntSheetDot in the specified StuntSheet, calculate and store
    * the flow based on it's continuities in stuntSheetDot.cachedFlow.
+   *
+   * Note that the index 0 is the "Hup!" beat. Therefore, index 1 is beat 1,
+   * and so on.
    */
   generateFlows(stuntSheetIndex: number): void {
     if (stuntSheetIndex < 0 || stuntSheetIndex >= this.stuntSheets.length) {
@@ -71,11 +74,11 @@ export default class Show extends Serializable<Show> {
         );
       }
 
-      const flow: FlowBeat[] = [];
+      const flow: FlowBeat[] = initializeFlow(startDot);
       const continuities: BaseCont[] = startSS.dotTypes[startDot.dotTypeIndex];
 
       continuities.forEach((continuity: BaseCont): void => {
-        continuity.addToFlow(flow, startDot, endDot);
+        continuity.addToFlow(flow, endDot);
       });
 
       startDot.cachedFlow = flow;
