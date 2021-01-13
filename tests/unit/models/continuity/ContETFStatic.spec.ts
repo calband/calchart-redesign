@@ -1,7 +1,7 @@
 import StuntSheetDot from "@/models/StuntSheetDot";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
-import { FlowBeat } from "@/models/util/types";
+import { FlowBeat, initializeFlow } from "@/models/util/FlowBeat";
 import { CONT_IDS } from "@/models/continuity/BaseCont";
 
 describe("models/continuity/ETFStatic", () => {
@@ -84,9 +84,13 @@ describe("models/continuity/ETFStatic", () => {
         marchingDirection: DIRECTIONS.E,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
-      expect(flow).toStrictEqual([]);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
+      expect(flow).toHaveLength(1);
+      expect(flow[0]).toMatchObject({
+        x: 2,
+        y: 4,
+      });
     });
 
     it("if duration is 2 adds two FlowBeats", () => {
@@ -95,8 +99,8 @@ describe("models/continuity/ETFStatic", () => {
         marchingDirection: DIRECTIONS.E,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
       expect(flow).toStrictEqual([
         {
           x: 2,
@@ -110,6 +114,12 @@ describe("models/continuity/ETFStatic", () => {
           direction: DIRECTIONS.E,
           marchType: MARCH_TYPES.HS,
         },
+        {
+          x: 2,
+          y: 6,
+          direction: DIRECTIONS.E,
+          marchType: MARCH_TYPES.HS,
+        },
       ]);
     });
 
@@ -119,8 +129,8 @@ describe("models/continuity/ETFStatic", () => {
         marchingDirection: DIRECTIONS.W,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
       expect(flow).toStrictEqual([
         {
           x: 2,
@@ -134,6 +144,12 @@ describe("models/continuity/ETFStatic", () => {
           direction: DIRECTIONS.W,
           marchType: MARCH_TYPES.HS,
         },
+        {
+          x: 2,
+          y: 2,
+          direction: DIRECTIONS.W,
+          marchType: MARCH_TYPES.HS,
+        },
       ]);
     });
 
@@ -143,8 +159,8 @@ describe("models/continuity/ETFStatic", () => {
         marchingDirection: DIRECTIONS.S,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
       expect(flow).toStrictEqual([
         {
           x: 2,
@@ -158,6 +174,12 @@ describe("models/continuity/ETFStatic", () => {
           direction: DIRECTIONS.S,
           marchType: MARCH_TYPES.HS,
         },
+        {
+          x: 0,
+          y: 4,
+          direction: DIRECTIONS.S,
+          marchType: MARCH_TYPES.HS,
+        },
       ]);
     });
 
@@ -167,8 +189,8 @@ describe("models/continuity/ETFStatic", () => {
         marchingDirection: DIRECTIONS.N,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
       expect(flow).toStrictEqual([
         {
           x: 2,
@@ -178,6 +200,12 @@ describe("models/continuity/ETFStatic", () => {
         },
         {
           x: 3,
+          y: 4,
+          direction: DIRECTIONS.N,
+          marchType: MARCH_TYPES.HS,
+        },
+        {
+          x: 4,
           y: 4,
           direction: DIRECTIONS.N,
           marchType: MARCH_TYPES.HS,
@@ -192,8 +220,8 @@ describe("models/continuity/ETFStatic", () => {
         facingDirection: DIRECTIONS.S,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
       expect(flow).toStrictEqual([
         {
           x: 2,
@@ -203,6 +231,12 @@ describe("models/continuity/ETFStatic", () => {
         },
         {
           x: 3,
+          y: 4,
+          direction: DIRECTIONS.S,
+          marchType: MARCH_TYPES.HS,
+        },
+        {
+          x: 4,
           y: 4,
           direction: DIRECTIONS.S,
           marchType: MARCH_TYPES.HS,
@@ -216,8 +250,8 @@ describe("models/continuity/ETFStatic", () => {
         marchingDirection: DIRECTIONS.NE,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
       expect(flow).toStrictEqual([
         {
           x: 2,
@@ -228,6 +262,12 @@ describe("models/continuity/ETFStatic", () => {
         {
           x: 3,
           y: 5,
+          direction: DIRECTIONS.NE,
+          marchType: MARCH_TYPES.HS,
+        },
+        {
+          x: 4,
+          y: 6,
           direction: DIRECTIONS.NE,
           marchType: MARCH_TYPES.HS,
         },

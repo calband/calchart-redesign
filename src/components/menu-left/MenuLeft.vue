@@ -1,14 +1,14 @@
 <template>
   <div class="menu-left">
     <b-field
-      :label="`Beat: ${beat} / ${selectedSSBeats}`"
+      :label="`Beat: ${beatString} / ${selectedSSBeats}`"
       data-test="menu-left--beat"
     >
       <b-slider
         v-model="beat"
         class="beat-slider"
         data-test="menu-left--beat-slider"
-        :min="1"
+        :min="0"
         :max="selectedSSBeats"
         :tooltip="false"
       />
@@ -94,6 +94,11 @@ export default Vue.extend({
         this.$store.commit("setBeat", beat);
       },
     },
+    beatString(): string {
+      return this.$store.state.beat === 0
+        ? "Hup!"
+        : this.$store.state.beat.toString();
+    },
     stuntSheets(): StuntSheet[] {
       return this.$store.state.show.stuntSheets;
     },
@@ -103,7 +108,7 @@ export default Vue.extend({
       },
       set(selectedSS: number): void {
         this.$store.commit("setSelectedSS", selectedSS);
-        this.$store.commit("setBeat", 1);
+        this.$store.commit("setBeat", 0);
       },
     },
     selectedSSBeats(): number {

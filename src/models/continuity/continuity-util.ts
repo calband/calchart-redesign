@@ -1,29 +1,6 @@
-import { FlowBeat } from "../util/types";
-
-import StuntSheetDot from "../StuntSheetDot";
+import { FlowBeat } from "../util/FlowBeat";
 
 import { DIRECTIONS, MARCH_TYPES } from "../util/constants";
-
-/**
- * Decides the starting position for the upcoming continuity
- * @returns [x, y]
- */
-export const startPositionHelper = (
-  flow: FlowBeat[],
-  startDot: StuntSheetDot
-): [number, number] => {
-  let startX: number;
-  let startY: number;
-  if (flow.length === 0) {
-    startX = startDot.x;
-    startY = startDot.y;
-  } else {
-    const lastFlowBeat: FlowBeat = flow[flow.length - 1];
-    startX = lastFlowBeat.x;
-    startY = lastFlowBeat.y;
-  }
-  return [startX, startY];
-};
 
 /**
  * Helper function to march in either north or south (eight to five)
@@ -33,30 +10,32 @@ export const startPositionHelper = (
  * @param direction? - To enforce a direction to face, set this parameter. If
  *                     undefined, the marcher will face the direction they are
  *                     marching.
- * @returns [x, y] ending coordinates
  */
 export const nsHelper = (
   flow: FlowBeat[],
-  startX: number,
-  startY: number,
   offsetX: number,
   marchType: MARCH_TYPES,
   direction?: number
-): [number, number] => {
+): void => {
+  if (offsetX === 0) {
+    return;
+  }
   if (direction === undefined) {
     direction = Math.sign(offsetX) ? DIRECTIONS.N : DIRECTIONS.S;
   }
 
+  const lastFlowBeat = flow[flow.length - 1];
+  lastFlowBeat.direction = direction;
+  lastFlowBeat.marchType = marchType;
+
   for (let step = 1; step <= Math.abs(offsetX); step += 1) {
     flow.push({
-      x: startX + Math.sign(offsetX) * step,
-      y: startY,
+      x: lastFlowBeat.x + Math.sign(offsetX) * step,
+      y: lastFlowBeat.y,
       direction: direction,
       marchType: marchType,
     });
   }
-
-  return [startX + offsetX, startY];
 };
 
 /**
@@ -67,30 +46,32 @@ export const nsHelper = (
  * @param direction? - To enforce a direction to face, set this parameter. If
  *                     undefined, the marcher will face the direction they are
  *                     marching.
- * @returns [x, y] ending coordinates
  */
 export const ewHelper = (
   flow: FlowBeat[],
-  startX: number,
-  startY: number,
   offsetY: number,
   marchType: MARCH_TYPES,
   direction?: number
-): [number, number] => {
+): void => {
+  if (offsetY === 0) {
+    return;
+  }
   if (direction === undefined) {
     direction = Math.sign(offsetY) ? DIRECTIONS.E : DIRECTIONS.W;
   }
 
+  const lastFlowBeat = flow[flow.length - 1];
+  lastFlowBeat.direction = direction;
+  lastFlowBeat.marchType = marchType;
+
   for (let step = 1; step <= Math.abs(offsetY); step += 1) {
     flow.push({
-      x: startX,
-      y: startY + Math.sign(offsetY) * step,
+      x: lastFlowBeat.x,
+      y: lastFlowBeat.y + Math.sign(offsetY) * step,
       direction: direction,
       marchType: marchType,
     });
   }
-
-  return [startX, startY + offsetY];
 };
 
 /**
@@ -101,21 +82,21 @@ export const ewHelper = (
  * @param direction  - To enforce a direction to face, set this parameter. If
  *                     undefined, the marcher will face the direction they are
  *                     marching.
- * @returns [x, y] ending coordinates
  */
 export const diagonalHelper = (
   flow: FlowBeat[],
-  startX: number,
-  startY: number,
   offsetX: number,
   offsetY: number,
   marchType: MARCH_TYPES,
   direction?: number
-): [number, number] => {
+): void => {
   if (Math.abs(offsetX) !== Math.abs(offsetY)) {
     throw new Error(
       `offsetX (${offsetX}) and offsetY (${offsetY}) are not equal!`
     );
+  }
+  if (offsetX === 0 && offsetY === 0) {
+    return;
   }
 
   if (direction === undefined) {
@@ -126,14 +107,16 @@ export const diagonalHelper = (
     }
   }
 
+  const lastFlowBeat = flow[flow.length - 1];
+  lastFlowBeat.direction = direction;
+  lastFlowBeat.marchType = marchType;
+
   for (let step = 1; step <= Math.abs(offsetX); step += 1) {
     flow.push({
-      x: startX + Math.sign(offsetX) * step,
-      y: startY + Math.sign(offsetY) * step,
+      x: lastFlowBeat.x + Math.sign(offsetX) * step,
+      y: lastFlowBeat.y + Math.sign(offsetY) * step,
       direction: direction,
       marchType: marchType,
     });
   }
-
-  return [startX + offsetX, startY + offsetY];
 };

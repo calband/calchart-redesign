@@ -1,6 +1,6 @@
 import StuntSheetDot from "../StuntSheetDot";
 import { MARCH_TYPES } from "../util/constants";
-import { FlowBeat } from "../util/types";
+import { FlowBeat } from "../util/FlowBeat";
 
 /**
  * Defines a unique identifier for each continuity class so that it is possible
@@ -45,16 +45,14 @@ export default interface BaseCont {
   getHumanReadableText(): string;
 
   /**
-   * Execute the continuity for the specified dot and flow. Directly concats
-   * to flow.
+   * Execute the continuity for the specified dot and flow. Directly modifies
+   * the inputted flow. It is important to note that a continuity is
+   * responsible for updating the last flow beat's direction and marchType.
+   * This is due to the marching style of Cal Band; marchers prep for the next
+   * step with a Hup!
    *
    * @param flow     - The flow to concat
-   * @param startDot - The dot in the start stuntsheet
    * @param endDot   - The dot in the next stuntsheet
    */
-  addToFlow(
-    flow: FlowBeat[],
-    startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
-  ): void;
+  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot): void;
 }

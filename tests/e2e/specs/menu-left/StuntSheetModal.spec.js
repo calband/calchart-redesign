@@ -26,7 +26,7 @@ describe("components/menu-left/StuntSheetModal", () => {
 
     cy.get('[data-test="ss-modal--close"]').click();
 
-    cy.get('[data-test="menu-left--beat"]').should("include.text", "1 / 2");
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "Hup! / 2");
   });
 
   it("Can delete a stuntsheet if there is more than one", () => {

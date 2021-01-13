@@ -39,21 +39,6 @@ describe("models/Show", () => {
       expect(mockAddToFlow).toHaveBeenCalledTimes(0);
       show.generateFlows(0);
       expect(mockAddToFlow).toHaveBeenCalledTimes(4);
-      expect(mockAddToFlow).toHaveBeenCalledWith(
-        [],
-        show.stuntSheets[0].stuntSheetDots[0],
-        undefined
-      );
-      expect(mockAddToFlow).toHaveBeenCalledWith(
-        [],
-        show.stuntSheets[0].stuntSheetDots[1],
-        undefined
-      );
-      expect(mockAddToFlow).toHaveBeenCalledWith(
-        [],
-        show.stuntSheets[0].stuntSheetDots[2],
-        undefined
-      );
     });
 
     it("works correctly after stringifying and parsing", () => {
@@ -61,21 +46,6 @@ describe("models/Show", () => {
       expect(mockAddToFlow).toHaveBeenCalledTimes(0);
       show.generateFlows(0);
       expect(mockAddToFlow).toHaveBeenCalledTimes(4);
-      expect(mockAddToFlow).toHaveBeenCalledWith(
-        [],
-        show.stuntSheets[0].stuntSheetDots[0],
-        undefined
-      );
-      expect(mockAddToFlow).toHaveBeenCalledWith(
-        [],
-        show.stuntSheets[0].stuntSheetDots[1],
-        undefined
-      );
-      expect(mockAddToFlow).toHaveBeenCalledWith(
-        [],
-        show.stuntSheets[0].stuntSheetDots[2],
-        undefined
-      );
     });
   });
 });

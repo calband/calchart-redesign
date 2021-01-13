@@ -1,8 +1,6 @@
 import BaseCont, { CONT_IDS } from "./BaseCont";
-import StuntSheetDot from "../StuntSheetDot";
 import { DIRECTIONS, MARCH_TYPES } from "../util/constants";
-import { FlowBeat } from "../util/types";
-import { startPositionHelper } from "./continuity-util";
+import { FlowBeat } from "../util/FlowBeat";
 import Serializable from "../util/Serializable";
 
 /**
@@ -49,16 +47,12 @@ export default class ContInPlace
       : `${prefix}${this.marchType} ${this.duration} ${directionText}`;
   }
 
-  addToFlow(flow: FlowBeat[], startDot: StuntSheetDot): void {
-    const [x, y]: [number, number] = startPositionHelper(flow, startDot);
-    const flowBeat: FlowBeat = {
-      x,
-      y,
-      direction: this.direction,
-      marchType: this.marchType,
-    };
-
-    for (let beat = 1; beat <= Math.max(this.duration, 1); beat += 1) {
+  addToFlow(flow: FlowBeat[]): void {
+    const lastFlowBeat = flow[flow.length - 1];
+    lastFlowBeat.direction = this.direction;
+    lastFlowBeat.marchType = this.marchType;
+    const flowBeat: FlowBeat = { ...lastFlowBeat };
+    for (let beat = 1; beat <= this.duration; beat += 1) {
       flow.push(flowBeat);
     }
   }

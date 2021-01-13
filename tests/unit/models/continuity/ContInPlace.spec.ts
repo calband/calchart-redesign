@@ -1,7 +1,7 @@
 import StuntSheetDot from "@/models/StuntSheetDot";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
-import { FlowBeat } from "@/models/util/types";
+import { FlowBeat, initializeFlow } from "@/models/util/FlowBeat";
 import { CONT_IDS } from "@/models/continuity/BaseCont";
 
 describe("models/continuity/ContInPlace", () => {
@@ -73,43 +73,39 @@ describe("models/continuity/ContInPlace", () => {
   });
 
   describe("addToFlow", () => {
-    it("if duration is 0 adds one FlowBeat", () => {
+    it("if duration is 0, only modifies previous flow beat", () => {
       const continuity = new ContInPlace({
         duration: 0,
-        direction: DIRECTIONS.E,
+        direction: DIRECTIONS.N,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
-      expect(flow).toStrictEqual([
-        {
-          x: 2,
-          y: 4,
-          direction: DIRECTIONS.E,
-          marchType: MARCH_TYPES.HS,
-        },
-      ]);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
+      expect(flow).toHaveLength(1);
+      expect(flow[0]).toMatchObject({
+        x: 2,
+        y: 4,
+        direction: DIRECTIONS.N,
+      });
     });
 
-    it("after stringifying and parsing, if duration is 0 adds one FlowBeat", () => {
+    it("after stringifying and parsing, if duration is 0 only modifies previous flow beat", () => {
       const originalContinuity = new ContInPlace({
         duration: 0,
-        direction: DIRECTIONS.E,
+        direction: DIRECTIONS.N,
         marchType: MARCH_TYPES.HS,
       });
       const parsedContinuity = new ContInPlace(
         JSON.parse(JSON.stringify(originalContinuity))
       );
-      const flow: FlowBeat[] = [];
-      parsedContinuity.addToFlow(flow, startDot);
-      expect(flow).toStrictEqual([
-        {
-          x: 2,
-          y: 4,
-          direction: DIRECTIONS.E,
-          marchType: MARCH_TYPES.HS,
-        },
-      ]);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      parsedContinuity.addToFlow(flow);
+      expect(flow).toHaveLength(1);
+      expect(flow[0]).toMatchObject({
+        x: 2,
+        y: 4,
+        direction: DIRECTIONS.N,
+      });
     });
 
     it("if duration is 2 adds two FlowBeats", () => {
@@ -118,9 +114,15 @@ describe("models/continuity/ContInPlace", () => {
         direction: DIRECTIONS.E,
         marchType: MARCH_TYPES.HS,
       });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow);
       expect(flow).toStrictEqual([
+        {
+          x: 2,
+          y: 4,
+          direction: DIRECTIONS.E,
+          marchType: MARCH_TYPES.HS,
+        },
         {
           x: 2,
           y: 4,

@@ -1,4 +1,4 @@
-import { FlowBeat } from "./util/types";
+import { FlowBeat } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
 
 // Global ID counter for the next dot
@@ -19,7 +19,8 @@ let NEXT_DOT_ID = 0;
  * @property nextDotId     - The dot in the next stuntsheet to generate
  *                           a flow toward
  * @property cachedFlow    - Cached so that the flow does not need to be
- *                           recalculated again
+ *                           recalculated again. The 0 index is the "Hup!" beat
+ *                           and is represented by x and y.
  */
 export default class StuntSheetDot extends Serializable<StuntSheetDot> {
   id = -1;
@@ -49,13 +50,13 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
   }
 
   xAtBeat(beat: number): number {
-    return this.cachedFlow && this.cachedFlow.length > 0
+    return this.cachedFlow && this.cachedFlow.length > 0 && beat >= 0
       ? this.cachedFlow[Math.min(beat, this.cachedFlow.length - 1)].x
       : this.x;
   }
 
   yAtBeat(beat: number): number {
-    return this.cachedFlow && this.cachedFlow.length > 0
+    return this.cachedFlow && this.cachedFlow.length > 0 && beat >= 0
       ? this.cachedFlow[Math.min(beat, this.cachedFlow.length - 1)].y
       : this.y;
   }
