@@ -1,6 +1,6 @@
 # Calchart
 
-Calchart 4.0 for the web!
+Calchart 4.1 for the web!
 
 See this [Figma link](https://www.figma.com/file/XIkyioLzRlGlpmNiEu47glkQ/Calchart) for the design. Also see [calchart-redesign-old](https://github.com/calband/calchart-redesign-old) for the prototype.
 
