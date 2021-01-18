@@ -85,7 +85,7 @@ export default abstract class BaseTool {
   abstract onMouseMove(event: MouseEvent): void;
 
   // does the tool support selections
-  abstract supportsSelection(): boolean;
+  abstract readonly supportsSelection: boolean;
 }
 
 export interface ToolConstructor {

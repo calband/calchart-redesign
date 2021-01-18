@@ -6,7 +6,7 @@ import BaseTool from "./BaseTool";
  * pressed.  Derived tools implement onMouseDown/Up/Move to do tool specific
  * actions.
  */
-export default abstract class BaseMoveTool {
+export default abstract class BaseMoveTool extends BaseTool {
   static enablePan(enable: boolean): void {
     const grapherSvgPanZoom: SvgPanZoom.Instance | undefined =
       GlobalStore.state.grapherSvgPanZoom;
@@ -56,7 +56,5 @@ export default abstract class BaseMoveTool {
   /* eslint-enable @typescript-eslint/no-unused-vars,
     @typescript-eslint/no-empty-function */
 
-  supportsSelection(): boolean {
-    return false;
-  }
+  supportsSelection = false;
 }
