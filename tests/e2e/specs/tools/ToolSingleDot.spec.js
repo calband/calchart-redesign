@@ -94,4 +94,57 @@ describe("tools/ToolSingleDot", () => {
       .should("have.attr", "cx", "6")
       .should("have.attr", "cy", "8");
   });
+
+  it("clicking add should clear out selection", () => {
+    cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
+
+    cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
+
+    cy.mousedownGrapher(16, 12).mouseupGrapher(16, 12);
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 2);
+    cy.get('[data-test="grapher-dots--dot-selected"]').should("have.length", 0);
+
+    cy.get('[data-test="menu-bottom-tool--select-box-move').click();
+
+    cy.mousedownGrapher(16, 12).mouseupGrapher(16, 12);
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 1);
+    cy.get('[data-test="grapher-dots--dot-selected"]').should("have.length", 1);
+
+    cy.get('[data-test="menu-bottom-tool--add-rm').click();
+
+    cy.mousedownGrapher(20, 16).mouseupGrapher(20, 16);
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 3);
+    cy.get('[data-test="grapher-dots--dot-selected"]').should("have.length", 0);
+  });
+
+  it("clicking between box and lasso should not clear out selection", () => {
+    cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
+
+    cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
+
+    cy.mousedownGrapher(16, 12).mouseupGrapher(16, 12);
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 2);
+    cy.get('[data-test="grapher-dots--dot-selected"]').should("have.length", 0);
+
+    cy.get('[data-test="menu-bottom-tool--select-box-move').click();
+
+    cy.mousedownGrapher(16, 12).mouseupGrapher(16, 12);
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 1);
+    cy.get('[data-test="grapher-dots--dot-selected"]').should("have.length", 1);
+
+    cy.get('[data-test="menu-bottom-tool--select-lasso-move').click();
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 1);
+    cy.get('[data-test="grapher-dots--dot-selected"]').should("have.length", 1);
+
+    cy.get('[data-test="menu-bottom-tool--select-box-move').click();
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 1);
+    cy.get('[data-test="grapher-dots--dot-selected"]').should("have.length", 1);
+  });
 });
