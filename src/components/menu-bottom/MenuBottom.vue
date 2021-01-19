@@ -75,7 +75,7 @@ export default Vue.extend({
       const tool: BaseTool = new ToolConstructor();
       this.$store.commit("setToolSelected", tool);
       if (!tool.supportsSelection) {
-        this.$store.commit("clearSelectedDots");
+        this.$store.commit("clearSelectedDotIds");
       }
     },
   },
