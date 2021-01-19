@@ -20,7 +20,8 @@ describe("tools/ToolBoxSelect", () => {
     });
   });
 
-  it("shift grapher to the left by panning", () => {
+  // #66 - Skipping due to flakey test
+  it.skip("shift grapher to the left by panning", () => {
     cy.get('[data-test="grapher-field--rect"]').then((field) => {
       const oldX = field.get(0).getBoundingClientRect().x;
       cy.mousedownGrapher(24, 2, { metaKey: true });
