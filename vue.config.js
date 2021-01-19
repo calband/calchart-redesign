@@ -1,10 +1,10 @@
 module.exports = {
   configureWebpack: {
-    devtool: 'source-map',
+    devtool: "source-map",
   },
-  lintOnSave: process.env.NODE_ENV !== 'production',
-  publicPath: '',
-  outputDir: 'calchart',
+  lintOnSave: false,
+  publicPath: "",
+  outputDir: "calchart",
   css: {
     loaderOptions: {
       scss: {

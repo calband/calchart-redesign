@@ -23,7 +23,7 @@ export function readInt16(buffer: DataView, offset: number): number {
 }
 
 export function readStringTillEnd(buffer: DataView, offset: number): string {
-  let retVal = '';
+  let retVal = "";
   while (offset < buffer.byteLength) {
     const value = buffer.getUint8(offset++);
     if (!value) {
@@ -32,28 +32,30 @@ export function readStringTillEnd(buffer: DataView, offset: number): string {
     retVal += String.fromCharCode(value);
   }
   if (offset !== buffer.byteLength) {
-    throw 'String not parsed correctly';
+    throw new Error("String not parsed correctly");
   }
   return retVal;
 }
 
-export function
-readArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
+export function readArrayOfStringsTillEnd(
+  buffer: DataView,
+  offset: number
+): string[] {
   const retVal: string[] = [];
 
-  let currentLabel = '';
+  let currentLabel = "";
   while (offset < buffer.byteLength) {
     const value = buffer.getUint8(offset++);
     if (value) {
       currentLabel += String.fromCharCode(value);
     } else {
       retVal.push(currentLabel);
-      currentLabel = '';
+      currentLabel = "";
     }
   }
-  if (currentLabel !== '') {
+  if (currentLabel !== "") {
     // if we have a partial label we did not end with a '\0'.  Error.
-    throw 'Label did not end with \\0';
+    throw new Error("Label did not end with \\0");
   }
   return retVal;
 }
@@ -63,34 +65,35 @@ readArrayOfStringsTillEnd(buffer: DataView, offset: number): string[] {
  * <4char> <size_of_data> <data...> <"END "> <4char>
  * The beginning and end 4char describes what the data represents.
  */
-export function
-splitDataViewIntoChunks(buffer: DataView): [string, DataView][] {
+export function splitDataViewIntoChunks(
+  buffer: DataView
+): [string, DataView][] {
   // while we haven't reached the end, split
   const retVal: [string, DataView][] = [];
   let offset = 0;
   while (offset !== buffer.byteLength) {
     const fourChar = readFourCharCode(buffer, offset);
-    const size = readInt32(buffer, offset+4);
-    const endCode = readFourCharCode(buffer, offset+size+8);
-    const endFourChar = readFourCharCode(buffer, offset+size+12);
-    if (fourChar !== endFourChar || endCode !== 'END ') {
-      throw `error.  Section ${fourChar} ended with ${endFourChar} ${endCode}`;
+    const size = readInt32(buffer, offset + 4);
+    const endCode = readFourCharCode(buffer, offset + size + 8);
+    const endFourChar = readFourCharCode(buffer, offset + size + 12);
+    if (fourChar !== endFourChar || endCode !== "END ") {
+      throw new Error(
+        `Section ${fourChar} ended with ${endFourChar} ${endCode}`
+      );
     }
-    retVal.push([fourChar, new DataView(
-      buffer.buffer,
-      offset + buffer.byteOffset + 8,
-      size
-    )]);
+    retVal.push([
+      fourChar,
+      new DataView(buffer.buffer, offset + buffer.byteOffset + 8, size),
+    ]);
     offset += 16 + size;
   }
   return retVal;
 }
 
 export function calChart3To4ConvertX(x: number): number {
-  return 160 + x/8;
+  return 96 + x / 16;
 }
 
 export function calChart3To4ConvertY(y: number): number {
-  return 84 + y/8;
+  return 42 + y / 16;
 }
-

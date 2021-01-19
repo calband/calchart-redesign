@@ -3,22 +3,16 @@
     <b-navbar type="is-primary">
       <template slot="brand">
         <b-navbar-item>
-          <img
-            src="@/assets/highstepper-gold.png"
-            alt="Calchart"
-          >
+          <img src="@/assets/highstepper-gold.png" alt="Calchart" />
         </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-dropdown
-          label="File"
-          data-test="menu-top--file"
-        >
+        <b-navbar-dropdown label="File" data-test="menu-top--file">
           <b-navbar-item data-test="menu-top--selected-show">
             Selected: {{ showTitle }}
           </b-navbar-item>
 
-          <hr class="navbar-divider">
+          <hr class="navbar-divider" />
 
           <b-navbar-item
             data-test="menu-top--save-show"
@@ -44,15 +38,9 @@
           </b-navbar-item>
         </b-navbar-dropdown>
 
-        <b-navbar-dropdown
-          label="View"
-          data-test="menu-top--view"
-        >
+        <b-navbar-dropdown label="View" data-test="menu-top--view">
           <b-navbar-item>
-            <b-checkbox
-              v-model="fourStepGrid"
-              data-test="menu-top--view-grid"
-            >
+            <b-checkbox v-model="fourStepGrid" data-test="menu-top--view-grid">
               Four step grid
             </b-checkbox>
           </b-navbar-item>
@@ -70,6 +58,14 @@
               data-test="menu-top--view-yardline-numbers"
             >
               Yard Line Numbers
+            </b-checkbox>
+          </b-navbar-item>
+          <b-navbar-item>
+            <b-checkbox
+              v-model="showDotLabels"
+              data-test="menu-top--view-show-dot-labels"
+            >
+              Show Dot Labels
             </b-checkbox>
           </b-navbar-item>
         </b-navbar-dropdown>
@@ -96,15 +92,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import FileModal from './FileModal.vue';
-import LoadModal from './LoadModal.vue';
+import Vue from "vue";
+import FileModal from "./FileModal.vue";
+import LoadModal from "./LoadModal.vue";
 
 /**
  * Contains menus and options that control the application's state
  */
 export default Vue.extend({
-  name: 'MenuTop',
+  name: "MenuTop",
   components: {
     FileModal,
     LoadModal,
@@ -123,7 +119,7 @@ export default Vue.extend({
         return this.$store.state.fourStepGrid;
       },
       set(enabled: boolean): void {
-        this.$store.commit('setFourStepGrid', enabled);
+        this.$store.commit("setFourStepGrid", enabled);
       },
     },
 
@@ -132,7 +128,7 @@ export default Vue.extend({
         return this.$store.state.yardlines;
       },
       set(enabled: boolean): void {
-        this.$store.commit('setYardlines', enabled);
+        this.$store.commit("setYardlines", enabled);
       },
     },
 
@@ -141,7 +137,16 @@ export default Vue.extend({
         return this.$store.state.yardlineNumbers;
       },
       set(enabled: boolean): void {
-        this.$store.commit('setYardlineNumbers', enabled);
+        this.$store.commit("setYardlineNumbers", enabled);
+      },
+    },
+
+    showDotLabels: {
+      get(): boolean {
+        return this.$store.state.showDotLabels;
+      },
+      set(enabled: boolean): void {
+        this.$store.commit("setShowDotLabels", enabled);
       },
     },
 
@@ -160,6 +165,6 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .menu-top {
-  flex: 0 0;
+  grid-area: menu-top;
 }
 </style>

@@ -1,4 +1,4 @@
-import Show from '../Show';
+import Show from "../Show";
 
 /**
  * Interface for building up the various Parsers we need for parsing CalChart

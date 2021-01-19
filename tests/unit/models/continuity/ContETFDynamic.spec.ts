@@ -1,98 +1,114 @@
-import StuntSheetDot from '@/models/StuntSheetDot';
-import ContETFDynamic, { ETF_DYNAMIC_TYPES }
-  from '@/models/continuity/ContETFDynamic';
-import { DIRECTIONS, MARCH_TYPES } from '@/models/util/constants';
-import { FlowBeat } from '@/models/util/types';
-import { CONT_IDS } from '@/models/continuity/BaseCont';
+import StuntSheetDot from "@/models/StuntSheetDot";
+import ContETFDynamic, {
+  ETF_DYNAMIC_TYPES,
+} from "@/models/continuity/ContETFDynamic";
+import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
+import { FlowBeat, initializeFlow } from "@/models/util/FlowBeat";
+import { CONT_IDS } from "@/models/continuity/BaseCont";
 
-describe('models/continuity/ContETFDynamic', () => {
-  it('has correct continuityId', () => {
+describe("models/continuity/ContETFDynamic", () => {
+  it("has correct continuityId", () => {
     const continuity = new ContETFDynamic();
     expect(continuity.continuityId).toBe(CONT_IDS.ETF_DYNAMIC);
   });
 
-  describe('getHumanReadableText', () => {
-    it('generates EW/NS FMHS', () => {
+  describe("getHumanReadableText", () => {
+    it("generates EW/NS FMHS", () => {
       const continuity = new ContETFDynamic({
         eightToFiveType: ETF_DYNAMIC_TYPES.EWNS,
         marchType: MARCH_TYPES.HS,
       });
-      expect(continuity.getHumanReadableText()).toBe('EW/NS FMHS');
+      expect(continuity.getHumanReadableText()).toBe("EW/NS FMHS");
     });
 
-    it('after stringifying and parsing, generates EW/NS FMHS', () => {
+    it("after stringifying and parsing, generates EW/NS FMHS", () => {
       const originalContinuity = new ContETFDynamic({
         eightToFiveType: ETF_DYNAMIC_TYPES.EWNS,
         marchType: MARCH_TYPES.HS,
       });
-      const parsedContinuity
-        = new ContETFDynamic(JSON.parse(JSON.stringify(originalContinuity)));
-      expect(parsedContinuity.getHumanReadableText()).toBe('EW/NS FMHS');
+      const parsedContinuity = new ContETFDynamic(
+        JSON.parse(JSON.stringify(originalContinuity))
+      );
+      expect(parsedContinuity.getHumanReadableText()).toBe("EW/NS FMHS");
     });
 
-    it('generates NS/EW FMMM', () => {
+    it("generates NS/EW FMMM", () => {
       const continuity = new ContETFDynamic({
         eightToFiveType: ETF_DYNAMIC_TYPES.NSEW,
         marchType: MARCH_TYPES.MINI_MILITARY,
       });
-      expect(continuity.getHumanReadableText()).toBe('NS/EW FMMM');
+      expect(continuity.getHumanReadableText()).toBe("NS/EW FMMM");
     });
 
-    it('generates DHS/FMHS', () => {
+    it("generates DHS/FMHS", () => {
       const continuity = new ContETFDynamic({
         eightToFiveType: ETF_DYNAMIC_TYPES.DFM,
         marchType: MARCH_TYPES.HS,
       });
-      expect(continuity.getHumanReadableText()).toBe('DHS/FMHS');
+      expect(continuity.getHumanReadableText()).toBe("DHS/FMHS");
     });
 
-    it('generates FMMM/DMM', () => {
+    it("generates FMMM/DMM", () => {
       const continuity = new ContETFDynamic({
         eightToFiveType: ETF_DYNAMIC_TYPES.FMD,
         marchType: MARCH_TYPES.MINI_MILITARY,
       });
-      expect(continuity.getHumanReadableText()).toBe('FMMM/DMM');
+      expect(continuity.getHumanReadableText()).toBe("FMMM/DMM");
     });
   });
 
-  describe('addToFlow', () => {
-    it('does not generate flow if endDot is undefined', () => {
+  describe("addToFlow", () => {
+    it("does not generate flow if endDot is undefined", () => {
       const continuity = new ContETFDynamic({
         eightToFiveType: ETF_DYNAMIC_TYPES.EWNS,
         marchType: MARCH_TYPES.HS,
       });
       const startDot = new StuntSheetDot({ x: 2, y: 2 });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot, undefined);
-      expect(flow).toStrictEqual([]);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow, undefined);
+      expect(flow).toHaveLength(1);
+      expect(flow[0]).toMatchObject({
+        x: 2,
+        y: 2,
+      });
     });
 
-    it('after stringifying and parsing, does not generate flow if endDot is'
-    + 'undefined', () => {
+    it("after stringifying and parsing, does not generate flow if endDot is undefined", () => {
       const originalContinuity = new ContETFDynamic({
         eightToFiveType: ETF_DYNAMIC_TYPES.EWNS,
         marchType: MARCH_TYPES.HS,
       });
-      const parsedContinuity
-        = new ContETFDynamic(JSON.parse(JSON.stringify(originalContinuity)));
+      const parsedContinuity = new ContETFDynamic(
+        JSON.parse(JSON.stringify(originalContinuity))
+      );
       const startDot = new StuntSheetDot({ x: 2, y: 2 });
-      const flow: FlowBeat[] = [];
-      parsedContinuity.addToFlow(flow, startDot, undefined);
-      expect(flow).toStrictEqual([]);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      parsedContinuity.addToFlow(flow, undefined);
+      expect(flow).toHaveLength(1);
+      expect(flow[0]).toMatchObject({
+        x: 2,
+        y: 2,
+      });
     });
 
-    describe('No diagonals', () => {
+    describe("No diagonals", () => {
       const startDot = new StuntSheetDot({ x: 2, y: 2 });
       const endDot = new StuntSheetDot({ x: 4, y: 4 });
 
-      it('generates flow for EW/NS', () => {
+      it("generates flow for EW/NS", () => {
         const continuity = new ContETFDynamic({
           eightToFiveType: ETF_DYNAMIC_TYPES.EWNS,
           marchType: MARCH_TYPES.HS,
         });
-        const flow: FlowBeat[] = [];
-        continuity.addToFlow(flow, startDot, endDot);
+        const flow: FlowBeat[] = initializeFlow(startDot);
+        continuity.addToFlow(flow, endDot);
         expect(flow).toStrictEqual([
+          {
+            x: 2,
+            y: 2,
+            direction: DIRECTIONS.E,
+            marchType: MARCH_TYPES.HS,
+          },
           {
             x: 2,
             y: 3,
@@ -102,7 +118,7 @@ describe('models/continuity/ContETFDynamic', () => {
           {
             x: 2,
             y: 4,
-            direction: DIRECTIONS.E,
+            direction: DIRECTIONS.N,
             marchType: MARCH_TYPES.HS,
           },
           {
@@ -120,14 +136,20 @@ describe('models/continuity/ContETFDynamic', () => {
         ]);
       });
 
-      it('generates flow for NS/EW', () => {
+      it("generates flow for NS/EW", () => {
         const continuity = new ContETFDynamic({
           eightToFiveType: ETF_DYNAMIC_TYPES.NSEW,
           marchType: MARCH_TYPES.HS,
         });
-        const flow: FlowBeat[] = [];
-        continuity.addToFlow(flow, startDot, endDot);
+        const flow: FlowBeat[] = initializeFlow(startDot);
+        continuity.addToFlow(flow, endDot);
         expect(flow).toStrictEqual([
+          {
+            x: 2,
+            y: 2,
+            direction: DIRECTIONS.N,
+            marchType: MARCH_TYPES.HS,
+          },
           {
             x: 3,
             y: 2,
@@ -137,7 +159,7 @@ describe('models/continuity/ContETFDynamic', () => {
           {
             x: 4,
             y: 2,
-            direction: DIRECTIONS.N,
+            direction: DIRECTIONS.E,
             marchType: MARCH_TYPES.HS,
           },
           {
@@ -156,18 +178,24 @@ describe('models/continuity/ContETFDynamic', () => {
       });
     });
 
-    describe('Diagonals', () => {
+    describe("Diagonals", () => {
       const startDot = new StuntSheetDot({ x: 2, y: 2 });
       const endDot = new StuntSheetDot({ x: 6, y: 4 });
 
-      it('generates flow for DHS/FMHS', () => {
+      it("generates flow for DHS/FMHS", () => {
         const continuity = new ContETFDynamic({
           eightToFiveType: ETF_DYNAMIC_TYPES.DFM,
           marchType: MARCH_TYPES.HS,
         });
-        const flow: FlowBeat[] = [];
-        continuity.addToFlow(flow, startDot, endDot);
+        const flow: FlowBeat[] = initializeFlow(startDot);
+        continuity.addToFlow(flow, endDot);
         expect(flow).toStrictEqual([
+          {
+            x: 2,
+            y: 2,
+            direction: DIRECTIONS.NE,
+            marchType: MARCH_TYPES.HS,
+          },
           {
             x: 3,
             y: 3,
@@ -177,7 +205,7 @@ describe('models/continuity/ContETFDynamic', () => {
           {
             x: 4,
             y: 4,
-            direction: DIRECTIONS.NE,
+            direction: DIRECTIONS.N,
             marchType: MARCH_TYPES.HS,
           },
           {
@@ -195,14 +223,20 @@ describe('models/continuity/ContETFDynamic', () => {
         ]);
       });
 
-      it('generates flow for FMHS/DHS', () => {
+      it("generates flow for FMHS/DHS", () => {
         const continuity = new ContETFDynamic({
           eightToFiveType: ETF_DYNAMIC_TYPES.FMD,
           marchType: MARCH_TYPES.HS,
         });
-        const flow: FlowBeat[] = [];
-        continuity.addToFlow(flow, startDot, endDot);
+        const flow: FlowBeat[] = initializeFlow(startDot);
+        continuity.addToFlow(flow, endDot);
         expect(flow).toStrictEqual([
+          {
+            x: 2,
+            y: 2,
+            direction: DIRECTIONS.N,
+            marchType: MARCH_TYPES.HS,
+          },
           {
             x: 3,
             y: 2,
@@ -212,7 +246,7 @@ describe('models/continuity/ContETFDynamic', () => {
           {
             x: 4,
             y: 2,
-            direction: DIRECTIONS.N,
+            direction: DIRECTIONS.NE,
             marchType: MARCH_TYPES.HS,
           },
           {

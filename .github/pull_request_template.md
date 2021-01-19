@@ -1,6 +1,6 @@
 ## Description
 
-Fixes issue __
+Fixes issue \_\_
 
 [What does your PR add or fix?]
 

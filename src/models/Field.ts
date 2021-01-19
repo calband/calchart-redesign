@@ -1,4 +1,4 @@
-import Serializable from './util/Serializable';
+import Serializable from "./util/Serializable";
 
 /**
  * Defines landmarks needed to determine the size of the field.
@@ -12,11 +12,11 @@ import Serializable from './util/Serializable';
  *                              calculate the field width)
  */
 export default class Field extends Serializable<Field> {
-  frontHashOffsetY: number = 32;
+  frontHashOffsetY = 32;
 
-  backHashOffsetY: number = 52;
+  backHashOffsetY = 52;
 
-  middleOfField: number = 50;
+  middleOfField = 50;
 
   constructor(json: Partial<Field> = {}) {
     super();

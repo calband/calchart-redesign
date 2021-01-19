@@ -9,16 +9,17 @@ export enum DIRECTIONS {
   S = 180,
   SW = 225,
   W = 270,
-  NW = 315
+  NW = 315,
 }
 
 /**
  * Defines the different types of marching that Cal Band performs.
  */
 export enum MARCH_TYPES {
-  HS = 'HS',
-  MINI_MILITARY = 'MM',
-  MILITARY = 'Military',
-  CLOSE = 'Close',
-  VAMP = 'Vamp',
+  HS = "HS",
+  MINI_MILITARY = "MM",
+  SH = "SH",
+  MILITARY = "Military",
+  CLOSE = "Close",
+  VAMP = "Vamp",
 }
