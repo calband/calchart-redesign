@@ -5,6 +5,7 @@
       :key="`${dot.id}-dots--dot`"
       class="grapher-dots--dot"
       data-test="grapher-dots--dot"
+      :data-test-selected="selectedDotIds.includes(dot.id)"
       :transform="`translate(${dot.xAtBeat(beat)}, ${dot.yAtBeat(beat)})`"
       :dotTypeIndex="dot.dotTypeIndex"
       :label="indexedDotLabels[index]"
