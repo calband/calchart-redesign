@@ -11,6 +11,7 @@ describe("components/menu-top/MenuTop", () => {
   let store: Store<CalChartState>;
 
   beforeEach(() => {
+    window.URL.createObjectURL = jest.fn();
     localVue = createLocalVue();
     localVue.use(Vuex);
     localVue.use(Buefy);
@@ -19,8 +20,6 @@ describe("components/menu-top/MenuTop", () => {
       store,
       localVue,
     });
-    // Typescript errors if this isn't here
-    window.URL.createObjectURL = jest.fn();
   });
 
   describe("file dropdown", () => {
