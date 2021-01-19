@@ -19,6 +19,8 @@ describe("components/menu-top/MenuTop", () => {
       store,
       localVue,
     });
+    // Typescript errors if this isn't here
+    window.URL.createObjectURL = jest.fn();
   });
 
   describe("file dropdown", () => {

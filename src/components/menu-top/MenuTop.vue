@@ -16,9 +16,8 @@
 
           <b-navbar-item
             data-test="menu-top--save-show"
-            :download="showFilename"
-            :href="showObjectURL"
-            :target="_blank"
+            :href="fileURL"
+            :download="`${showTitle}.shw4`"
           >
             Export Show
           </b-navbar-item>
@@ -150,13 +149,9 @@ export default Vue.extend({
       },
     },
 
-    showFilename(): string {
-      return this.$store.getters.getShowTitle + '.shw';
-    },
-
-    showObjectUrl(): string {
+    fileURL(): string {
       const jsonData = JSON.stringify(this.$store.getters.getShow);
-      const blob = new Blob([jsonData], { type: 'text/plain;charset=utf-8;' });
+      const blob = new Blob([jsonData], { type: "text/plain;charset=utf-8;" });
       return URL.createObjectURL(blob);
     },
   },

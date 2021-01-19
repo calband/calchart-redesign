@@ -6,7 +6,7 @@
 
     <section class="modal-card-body">
       <b-field class="file">
-        <b-upload v-model="file" accept=".shw" @input="loadShow">
+        <b-upload v-model="file" @input="loadShow">
           <a class="button is-primary" data-test="load-modal--icon">
             <b-icon icon="upload" />
             <span>Click to load</span>
@@ -56,13 +56,15 @@ import Show from "@/models/Show";
 export default Vue.extend({
   name: "LoadModal",
   data: (): {
-    file: Blob | null;
+    file: File | null;
     showPreview: Show | null;
     parseError: string;
   } => ({ file: null, showPreview: null, parseError: "" }),
   computed: {
     numMarchers(): number {
-      return this.showPreview ? this.showPreview.dotLabels.length : 0;
+      return this.showPreview && this.showPreview.stuntSheets.length > 0
+        ? this.showPreview?.stuntSheets[0].stuntSheetDots.length
+        : 0;
     },
     numSheets(): number {
       return this.showPreview ? this.showPreview.stuntSheets.length : 0;
@@ -76,18 +78,38 @@ export default Vue.extend({
       this.showPreview = null;
       this.parseError = "";
       const reader = new FileReader();
-      reader.onload = (): void => {
-        if (reader.result && reader.result instanceof ArrayBuffer) {
-          try {
-            this.showPreview = loadShowFromBuffer(reader.result);
-          } catch (e) {
-            this.parseError = e;
+      // Check if calchart 4 or not...
+      if (this.file.name.includes(".shw4")) {
+        reader.onload = (): void => {
+          if (reader.result) {
+            try {
+              if (reader.result)
+                this.showPreview = new Show(
+                  JSON.parse(reader.result as string)
+                );
+            } catch (e) {
+              this.parseError = e;
+            }
+          } else {
+            this.parseError = "Could not read file.";
           }
-        } else {
-          this.parseError = "Could not read file.";
-        }
-      };
-      reader.readAsArrayBuffer(this.file);
+        };
+        reader.readAsText(this.file);
+      } else {
+        reader.onload = (): void => {
+          if (reader.result && reader.result instanceof ArrayBuffer) {
+            try {
+              if (reader.result)
+                this.showPreview = loadShowFromBuffer(reader.result);
+            } catch (e) {
+              this.parseError = e;
+            }
+          } else {
+            this.parseError = "Could not read file.";
+          }
+        };
+        reader.readAsArrayBuffer(this.file);
+      }
     },
     setShow(): void {
       if (!this.showPreview) {
