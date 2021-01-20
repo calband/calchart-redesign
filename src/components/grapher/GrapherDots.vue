@@ -5,11 +5,7 @@
       :key="`${dot.id}-dots--dot`"
       class="grapher-dots--dot"
       data-test="grapher-dots--dot"
-      :transform="`translate(${dot.xAtBeat(beat - 1)}, ${dot.yAtBeat(
-        beat - 1
-      )})`"
-      :cx="dot.xAtBeat(beat - 1)"
-      :cy="dot.yAtBeat(beat - 1)"
+      :transform="`translate(${dot.xAtBeat(beat)}, ${dot.yAtBeat(beat)})`"
       :dotTypeIndex="dot.dotTypeIndex"
       :label="indexedDotLabels[index]"
       :labeled="showDotLabels"
@@ -28,7 +24,7 @@ import Dot from "./Dot.vue";
  * generated from the tool in use
  */
 export default Vue.extend({
-  name: "GrapherDots",
+  name: "Grapgit sherDots",
   components: {
     Dot,
   },

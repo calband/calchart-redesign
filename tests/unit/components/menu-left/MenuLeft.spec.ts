@@ -85,7 +85,7 @@ describe("components/menu-left/MenuLeft", () => {
       await menu.vm.$nextTick();
 
       expect(commitSpy).toHaveBeenCalledWith("setSelectedSS", index);
-      expect(commitSpy).toHaveBeenCalledWith("setBeat", 1);
+      expect(commitSpy).toHaveBeenCalledWith("setBeat", 0);
       expect(menuItem.classes("is-active")).toBeTruthy();
     });
 
@@ -112,7 +112,7 @@ describe("components/menu-left/MenuLeft", () => {
       addButton.trigger("click");
       await menu.vm.$nextTick();
 
-      expect(commitSpy).toHaveBeenLastCalledWith("addStuntSheet");
+      expect(commitSpy).toHaveBeenCalledWith("addStuntSheet");
       expect(menu.findAll('[data-test="menu-left--ss"]')).toHaveLength(4);
     });
   });

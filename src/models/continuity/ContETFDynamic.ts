@@ -1,13 +1,8 @@
 import BaseCont, { CONT_IDS } from "./BaseCont";
 import StuntSheetDot from "../StuntSheetDot";
 import { MARCH_TYPES } from "../util/constants";
-import { FlowBeat } from "../util/types";
-import {
-  diagonalHelper,
-  ewHelper,
-  nsHelper,
-  startPositionHelper,
-} from "./continuity-util";
+import { FlowBeat } from "../util/FlowBeat";
+import { diagonalHelper, ewHelper, nsHelper } from "./continuity-util";
 import Serializable from "../util/Serializable";
 
 export enum ETF_DYNAMIC_TYPES {
@@ -66,20 +61,13 @@ export default class ContETFDynamic
     }
   }
 
-  addToFlow(
-    flow: FlowBeat[],
-    startDot: StuntSheetDot,
-    endDot?: StuntSheetDot
-  ): void {
+  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot): void {
     if (endDot === undefined) return;
 
-    let [startX, startY]: [number, number] = startPositionHelper(
-      flow,
-      startDot
-    );
+    const lastFlowBeat = flow[flow.length - 1];
     const [endX, endY]: [number, number] = [endDot.x, endDot.y];
-    let offsetX: number = endX - startX;
-    let offsetY: number = endY - startY;
+    let offsetX: number = endX - lastFlowBeat.x;
+    let offsetY: number = endY - lastFlowBeat.y;
     let diagOffsetX: number;
     let diagOffsetY: number;
 
@@ -98,62 +86,22 @@ export default class ContETFDynamic
       offsetY = Math.sign(offsetY) * (absOffsetY - absDiagOffset);
 
       if (this.eightToFiveType === ETF_DYNAMIC_TYPES.DFM) {
-        [startX, startY] = diagonalHelper(
-          flow,
-          startX,
-          startY,
-          diagOffsetX,
-          diagOffsetY,
-          this.marchType
-        );
-        [startX, startY] =
-          offsetX > 0
-            ? nsHelper(flow, startX, startY, offsetX, this.marchType)
-            : ewHelper(flow, startX, startY, offsetY, this.marchType);
+        diagonalHelper(flow, diagOffsetX, diagOffsetY, this.marchType);
+        offsetX > 0
+          ? nsHelper(flow, offsetX, this.marchType)
+          : ewHelper(flow, offsetY, this.marchType);
       } else if (this.eightToFiveType === ETF_DYNAMIC_TYPES.FMD) {
-        [startX, startY] =
-          offsetX > 0
-            ? nsHelper(flow, startX, startY, offsetX, this.marchType)
-            : ewHelper(flow, startX, startY, offsetY, this.marchType);
-        [startX, startY] = diagonalHelper(
-          flow,
-          startX,
-          startY,
-          diagOffsetX,
-          diagOffsetY,
-          this.marchType
-        );
+        offsetX > 0
+          ? nsHelper(flow, offsetX, this.marchType)
+          : ewHelper(flow, offsetY, this.marchType);
+        diagonalHelper(flow, diagOffsetX, diagOffsetY, this.marchType);
       }
     } else if (this.eightToFiveType === ETF_DYNAMIC_TYPES.EWNS) {
-      [startX, startY] = ewHelper(
-        flow,
-        startX,
-        startY,
-        offsetY,
-        this.marchType
-      );
-      [startX, startY] = nsHelper(
-        flow,
-        startX,
-        startY,
-        offsetX,
-        this.marchType
-      );
+      ewHelper(flow, offsetY, this.marchType);
+      nsHelper(flow, offsetX, this.marchType);
     } else if (this.eightToFiveType === ETF_DYNAMIC_TYPES.NSEW) {
-      [startX, startY] = nsHelper(
-        flow,
-        startX,
-        startY,
-        offsetX,
-        this.marchType
-      );
-      [startX, startY] = ewHelper(
-        flow,
-        startX,
-        startY,
-        offsetY,
-        this.marchType
-      );
+      nsHelper(flow, offsetX, this.marchType);
+      ewHelper(flow, offsetY, this.marchType);
     }
   }
 }

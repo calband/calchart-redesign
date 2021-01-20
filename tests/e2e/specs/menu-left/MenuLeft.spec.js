@@ -32,7 +32,7 @@ describe("components/menu-left/MenuLeft", () => {
       .should("have.class", "is-active")
       .should("contain", "Sunset");
 
-    cy.get('[data-test="menu-left--beat"]').should("include.text", "1 / 2");
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "Hup! / 2");
 
     // Add a stuntsheet dot (4, 4) to the first stuntsheet
     cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
@@ -44,8 +44,7 @@ describe("components/menu-left/MenuLeft", () => {
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
-      .should("have.attr", "cx", "4")
-      .should("have.attr", "cy", "4");
+      .should("have.attr", "transform", "translate(4, 4)");
 
     // Add new stuntsheet
     cy.get('[data-test="menu-left--add-ss"]').click();
@@ -83,7 +82,7 @@ describe("components/menu-left/MenuLeft", () => {
       .should("have.class", "is-active")
       .should("contain", "Script YOLO");
 
-    cy.get('[data-test="menu-left--beat"]').should("include.text", "1 / 4");
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "Hup! / 4");
 
     // Add a stuntsheet dot (8, 8) to the first stuntsheet
     cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
@@ -95,35 +94,32 @@ describe("components/menu-left/MenuLeft", () => {
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
-      .should("have.attr", "cx", "8")
-      .should("have.attr", "cy", "8");
+      .should("have.attr", "transform", "translate(8, 8)");
 
-    // Decrement the beat to go to the first stuntsheet at beat 2 / 2
+    // Decrement the beat to go to the first stuntsheet at beat 1 / 2
     cy.get('[data-test="menu-left--decrement-beat"]').click();
 
     cy.get('[data-test="menu-left--ss"]')
       .eq(0)
       .should("have.class", "is-active");
 
-    cy.get('[data-test="menu-left--beat"]').should("include.text", "2 / 2");
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "1 / 2");
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
-      .should("have.attr", "cx", "4")
-      .should("have.attr", "cy", "4");
+      .should("have.attr", "transform", "translate(4, 4)");
 
-    // Increment the beat to go the second stuntsheet at beat 1 / 4
+    // Increment the beat to go the second stuntsheet at beat Hup! / 4
     cy.get('[data-test="menu-left--increment-beat"]').click();
 
     cy.get('[data-test="menu-left--ss"]')
       .eq(1)
       .should("have.class", "is-active");
 
-    cy.get('[data-test="menu-left--beat"]').should("include.text", "1 / 4");
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "Hup! / 4");
 
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
-      .should("have.attr", "cx", "8")
-      .should("have.attr", "cy", "8");
+      .should("have.attr", "transform", "translate(8, 8)");
   });
 });

@@ -3,7 +3,7 @@ import ContETFDynamic, {
   ETF_DYNAMIC_TYPES,
 } from "@/models/continuity/ContETFDynamic";
 import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
-import { FlowBeat } from "@/models/util/types";
+import { FlowBeat, initializeFlow } from "@/models/util/FlowBeat";
 import { CONT_IDS } from "@/models/continuity/BaseCont";
 
 describe("models/continuity/ContETFDynamic", () => {
@@ -64,28 +64,32 @@ describe("models/continuity/ContETFDynamic", () => {
         marchType: MARCH_TYPES.HS,
       });
       const startDot = new StuntSheetDot({ x: 2, y: 2 });
-      const flow: FlowBeat[] = [];
-      continuity.addToFlow(flow, startDot, undefined);
-      expect(flow).toStrictEqual([]);
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      continuity.addToFlow(flow, undefined);
+      expect(flow).toHaveLength(1);
+      expect(flow[0]).toMatchObject({
+        x: 2,
+        y: 2,
+      });
     });
 
-    it(
-      "after stringifying and parsing, does not generate flow if endDot is" +
-        "undefined",
-      () => {
-        const originalContinuity = new ContETFDynamic({
-          eightToFiveType: ETF_DYNAMIC_TYPES.EWNS,
-          marchType: MARCH_TYPES.HS,
-        });
-        const parsedContinuity = new ContETFDynamic(
-          JSON.parse(JSON.stringify(originalContinuity))
-        );
-        const startDot = new StuntSheetDot({ x: 2, y: 2 });
-        const flow: FlowBeat[] = [];
-        parsedContinuity.addToFlow(flow, startDot, undefined);
-        expect(flow).toStrictEqual([]);
-      }
-    );
+    it("after stringifying and parsing, does not generate flow if endDot is undefined", () => {
+      const originalContinuity = new ContETFDynamic({
+        eightToFiveType: ETF_DYNAMIC_TYPES.EWNS,
+        marchType: MARCH_TYPES.HS,
+      });
+      const parsedContinuity = new ContETFDynamic(
+        JSON.parse(JSON.stringify(originalContinuity))
+      );
+      const startDot = new StuntSheetDot({ x: 2, y: 2 });
+      const flow: FlowBeat[] = initializeFlow(startDot);
+      parsedContinuity.addToFlow(flow, undefined);
+      expect(flow).toHaveLength(1);
+      expect(flow[0]).toMatchObject({
+        x: 2,
+        y: 2,
+      });
+    });
 
     describe("No diagonals", () => {
       const startDot = new StuntSheetDot({ x: 2, y: 2 });
@@ -96,9 +100,15 @@ describe("models/continuity/ContETFDynamic", () => {
           eightToFiveType: ETF_DYNAMIC_TYPES.EWNS,
           marchType: MARCH_TYPES.HS,
         });
-        const flow: FlowBeat[] = [];
-        continuity.addToFlow(flow, startDot, endDot);
+        const flow: FlowBeat[] = initializeFlow(startDot);
+        continuity.addToFlow(flow, endDot);
         expect(flow).toStrictEqual([
+          {
+            x: 2,
+            y: 2,
+            direction: DIRECTIONS.E,
+            marchType: MARCH_TYPES.HS,
+          },
           {
             x: 2,
             y: 3,
@@ -108,7 +118,7 @@ describe("models/continuity/ContETFDynamic", () => {
           {
             x: 2,
             y: 4,
-            direction: DIRECTIONS.E,
+            direction: DIRECTIONS.N,
             marchType: MARCH_TYPES.HS,
           },
           {
@@ -131,9 +141,15 @@ describe("models/continuity/ContETFDynamic", () => {
           eightToFiveType: ETF_DYNAMIC_TYPES.NSEW,
           marchType: MARCH_TYPES.HS,
         });
-        const flow: FlowBeat[] = [];
-        continuity.addToFlow(flow, startDot, endDot);
+        const flow: FlowBeat[] = initializeFlow(startDot);
+        continuity.addToFlow(flow, endDot);
         expect(flow).toStrictEqual([
+          {
+            x: 2,
+            y: 2,
+            direction: DIRECTIONS.N,
+            marchType: MARCH_TYPES.HS,
+          },
           {
             x: 3,
             y: 2,
@@ -143,7 +159,7 @@ describe("models/continuity/ContETFDynamic", () => {
           {
             x: 4,
             y: 2,
-            direction: DIRECTIONS.N,
+            direction: DIRECTIONS.E,
             marchType: MARCH_TYPES.HS,
           },
           {
@@ -171,9 +187,15 @@ describe("models/continuity/ContETFDynamic", () => {
           eightToFiveType: ETF_DYNAMIC_TYPES.DFM,
           marchType: MARCH_TYPES.HS,
         });
-        const flow: FlowBeat[] = [];
-        continuity.addToFlow(flow, startDot, endDot);
+        const flow: FlowBeat[] = initializeFlow(startDot);
+        continuity.addToFlow(flow, endDot);
         expect(flow).toStrictEqual([
+          {
+            x: 2,
+            y: 2,
+            direction: DIRECTIONS.NE,
+            marchType: MARCH_TYPES.HS,
+          },
           {
             x: 3,
             y: 3,
@@ -183,7 +205,7 @@ describe("models/continuity/ContETFDynamic", () => {
           {
             x: 4,
             y: 4,
-            direction: DIRECTIONS.NE,
+            direction: DIRECTIONS.N,
             marchType: MARCH_TYPES.HS,
           },
           {
@@ -206,9 +228,15 @@ describe("models/continuity/ContETFDynamic", () => {
           eightToFiveType: ETF_DYNAMIC_TYPES.FMD,
           marchType: MARCH_TYPES.HS,
         });
-        const flow: FlowBeat[] = [];
-        continuity.addToFlow(flow, startDot, endDot);
+        const flow: FlowBeat[] = initializeFlow(startDot);
+        continuity.addToFlow(flow, endDot);
         expect(flow).toStrictEqual([
+          {
+            x: 2,
+            y: 2,
+            direction: DIRECTIONS.N,
+            marchType: MARCH_TYPES.HS,
+          },
           {
             x: 3,
             y: 2,
@@ -218,7 +246,7 @@ describe("models/continuity/ContETFDynamic", () => {
           {
             x: 4,
             y: 2,
-            direction: DIRECTIONS.N,
+            direction: DIRECTIONS.NE,
             marchType: MARCH_TYPES.HS,
           },
           {

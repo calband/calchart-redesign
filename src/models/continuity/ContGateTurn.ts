@@ -1,7 +1,7 @@
 import BaseCont, { CONT_IDS } from "./BaseCont";
 import StuntSheetDot from "../StuntSheetDot";
 import { MARCH_TYPES } from "../util/constants";
-import { FlowBeat } from "../util/types";
+import { FlowBeat } from "../util/FlowBeat";
 import Serializable from "../util/Serializable";
 import { startPositionHelper } from "./continuity-util";
 
