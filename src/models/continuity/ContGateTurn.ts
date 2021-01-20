@@ -3,7 +3,6 @@ import StuntSheetDot from "../StuntSheetDot";
 import { MARCH_TYPES } from "../util/constants";
 import { FlowBeat } from "../util/FlowBeat";
 import Serializable from "../util/Serializable";
-import { startPositionHelper } from "./continuity-util";
 
 /**
  * Defines a gate turn continuity.
@@ -18,6 +17,7 @@ export default class ContGateTurn
 
   duration = 8;
 
+  // The map from every dot's ID to that dot's assigned center point.
   centerPoints: Map<number, [number, number]> = new Map<
     number,
     [number, number]
@@ -42,16 +42,17 @@ export default class ContGateTurn
     )} DEGREES ${rotation}`;
   }
 
-  addToFlow(flow: FlowBeat[], startDot: StuntSheetDot): void {
-    const [startx, starty]: [number, number] = startPositionHelper(
-      flow,
-      startDot
-    );
+  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot, id?: number): void {
+    const lastFlowBeat: FlowBeat = flow[flow.length - 1];
+    const startx: number = lastFlowBeat.x;
+    const starty: number = lastFlowBeat.y;
     let centerPoint: [number, number] | undefined = this.centerPoints.get(
-      startDot.id
+      id || -1
     );
     if (!centerPoint) {
-      centerPoint = [0, 0];
+      // Defaults to the dot's position.
+      // TODO: Give the user a notification when a dot isn't centered! #134
+      centerPoint = [startx, starty];
     }
     // Find the relative coordinates to the center
     const [dx, dy]: [number, number] = [
@@ -59,10 +60,10 @@ export default class ContGateTurn
       starty - centerPoint[1],
     ];
     if (dx !== 0 || dy !== 0) {
-      for (let beat = 1; beat <= this.duration; beat += 1) {
+      for (let beat = 0; beat < this.duration; beat += 1) {
         // Split theta up into duration equal parts and convert to radians
         const theta: number =
-          (((beat - 1) / this.duration) * this.angle * Math.PI) / 180;
+          ((beat / this.duration) * this.angle * Math.PI) / 180;
         // Rotation matrix transfomration here
         // Because y-axis is positive going down and angle is measured clockwise,
         // it is the same matrix transformation as a regular rotation.
@@ -85,9 +86,9 @@ export default class ContGateTurn
       }
     } else {
       // We still want the person on the center point to rotate the same way as everyone else
-      for (let beat = 1; beat <= this.duration; beat += 1) {
+      for (let beat = 0; beat < this.duration; beat += 1) {
         const theta: number =
-          (((beat - 1) / this.duration) * this.angle * Math.PI) / 180;
+          ((beat / this.duration) * this.angle * Math.PI) / 180;
         const direction: number =
           ((Math.sign(this.angle) > 0 ? 180 : 360) + (theta * 180) / Math.PI) %
           360;

@@ -36,7 +36,7 @@
           data-test="cont-etf-static--delete"
         />
       </p>
-      <!-- TODO: Proper centering tool -->
+      <!-- TODO: Proper centering tool #121 -->
       <p class="center">
         <b-button
           icon-left="crosshairs"
