@@ -6,7 +6,7 @@
 
     <section class="modal-card-body">
       <b-field class="file">
-        <b-upload v-model="file" @input="loadShow">
+        <b-upload v-model="file" accept=".shw, .shw4" @input="loadShow">
           <a class="button is-primary" data-test="load-modal--icon">
             <b-icon icon="upload" />
             <span>Click to load</span>
