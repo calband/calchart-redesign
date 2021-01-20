@@ -150,7 +150,7 @@ export default Vue.extend({
     },
 
     fileURL(): string {
-      const jsonData = JSON.stringify(this.$store.getters.getShow);
+      const jsonData = JSON.stringify(this.$store.state.show);
       const blob = new Blob([jsonData], { type: "text/plain;charset=utf-8;" });
       return URL.createObjectURL(blob);
     },

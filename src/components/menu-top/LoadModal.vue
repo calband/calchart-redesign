@@ -95,7 +95,7 @@ export default Vue.extend({
           }
         };
         reader.readAsText(this.file);
-      } else {
+      } else if (this.file.name.includes(".shw")) {
         reader.onload = (): void => {
           if (reader.result && reader.result instanceof ArrayBuffer) {
             try {
@@ -109,6 +109,8 @@ export default Vue.extend({
           }
         };
         reader.readAsArrayBuffer(this.file);
+      } else {
+        this.parseError = "Not a .shw or .shw4 file.";
       }
     },
     setShow(): void {
