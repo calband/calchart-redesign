@@ -24,7 +24,7 @@ import Dot from "./Dot.vue";
  * generated from the tool in use
  */
 export default Vue.extend({
-  name: "Grapgit sherDots",
+  name: "GrapherDots",
   components: {
     Dot,
   },
