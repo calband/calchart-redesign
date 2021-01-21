@@ -58,7 +58,7 @@ export default abstract class BaseTool {
     const stuntSheetDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
     return stuntSheetDots.findIndex((dot: StuntSheetDot): boolean => {
-      return x === dot.x && y === dot.y;
+      return x === dot.xAtBeat(GlobalStore.state.beat) && y === dot.yAtBeat(GlobalStore.state.beat);
     });
   }
 
