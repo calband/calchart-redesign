@@ -59,16 +59,7 @@ export default abstract class BaseTool {
     const stuntSheetDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
     return stuntSheetDots.find((dot: StuntSheetDot): boolean => {
-<<<<<<< HEAD
-<<<<<<< HEAD
       return x === dot.xAtBeat(beat) && y === dot.yAtBeat(beat);
-=======
-      // the beat - 1 is to account for the hup beat
-      return x === dot.xAtBeat(GlobalStore.state.beat - 1) && y === dot.yAtBeat(GlobalStore.state.beat - 1);
->>>>>>> flow beat off by one error
-=======
-      return x === dot.xAtBeat(beat) && y === dot.yAtBeat(beat);
->>>>>>> finds dot at beat
     });
   }
 
