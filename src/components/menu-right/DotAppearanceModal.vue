@@ -26,11 +26,11 @@
             >Backward-slashed</b-checkbox
           >
         </b-field>
-        <b-field label="Fill Color">
-          <b-input v-model="dotAppearance.fill"></b-input>
+        <b-field>
+          <input type="color" v-model="dotAppearance.fill" /> Fill Color
         </b-field>
-        <b-field label="Line Color">
-          <b-input v-model="dotAppearance.color"></b-input>
+        <b-field>
+          <input type="color" v-model="dotAppearance.color" /> Line Color
         </b-field>
       </div>
     </section>
