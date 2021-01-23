@@ -8,6 +8,7 @@ import StuntSheet from "@/models/StuntSheet";
 import Show from "@/models/Show";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import DotAppearance from '@/models/DotAppearance';
 
 describe("components/menu-right/MenuRight", () => {
   let menu: Wrapper<Vue>;
@@ -21,6 +22,7 @@ describe("components/menu-right/MenuRight", () => {
         [new ContInPlace()],
         [new ContETFDynamic(), new ContInPlace()],
       ],
+      dotAppearances: [new DotAppearance, new DotAppearance]
     }),
     new StuntSheet({ beats: 8, title: "b" }),
   ];

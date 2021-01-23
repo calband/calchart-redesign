@@ -8,6 +8,7 @@ import StuntSheet from "@/models/StuntSheet";
 import Show from "@/models/Show";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import DotAppearance from "@/models/DotAppearance"
 
 describe("components/menu-right/DotTypeEditor", () => {
   let editor: Wrapper<Vue>;
@@ -21,6 +22,7 @@ describe("components/menu-right/DotTypeEditor", () => {
         [new ContETFDynamic(), new ContInPlace()],
         [new ContInPlace()],
       ],
+      dotAppearances: [new DotAppearance, new DotAppearance],
     }),
     new StuntSheet({ beats: 8, title: "b" }),
   ];
@@ -77,5 +79,13 @@ describe("components/menu-right/DotTypeEditor", () => {
     expect(
       commitSpy.mock.calls[0][1].continuity instanceof ContETFDynamic
     ).toBe(true);
+  });
+
+  it("renders the dot appearance", async () => {
+    const appearance = editor.find(
+      '[data-test="menu-right-dot-0-preview"]'
+    );
+    expect(appearance.exists()).toBe(true);
+    expect(appearance.props("dotTypeIndex")).toBe(0);
   });
 });

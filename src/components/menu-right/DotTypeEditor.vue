@@ -2,12 +2,14 @@
   <div class="my-2">
     <b data-test="menu-right--dot-type">Dot Type {{ dotTypeIndex }}</b>
     <svg viewBox="-1 -1 2 2" 
-      class="menu-right-dot-appearance">
-    <Dot 
-      :key="`menu-right-dot-${dotTypeIndex}-preview`"
-      :dotTypeIndex="dotTypeIndex"
-      :labeled="false"
-    />
+      class="menu-right-dot-appearance"
+      @click="dotAppearanceModalActive = true">
+      <Dot 
+        :key="`menu-right-dot-${dotTypeIndex}-preview`"
+        :data-test="`menu-right-dot-${dotTypeIndex}-preview`"
+        :dotTypeIndex="dotTypeIndex"
+        :labeled="false"
+      />
     </svg>
     <ContEditorHelper
       v-for="(continuity, index) in dotType"
@@ -49,6 +51,14 @@
       </b-dropdown>
     </div>
     <hr />
+    <b-modal
+      :active.sync="dotAppearanceModalActive"
+      has-modal-card
+      trap-focus
+      data-test="menu-right-dot-appearance-modal"
+    >
+      <DotAppearanceModal :dotTypeIndex="dotTypeIndex"/>
+    </b-modal>
   </div>
 </template>
 
@@ -62,15 +72,20 @@ import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";
 import Dot from "@/components/grapher/Dot.vue";
+import DotAppearanceModal from "./DotAppearanceModal.vue"
 
 /**
  * View/Edit all continuiuties for a dot type
  */
 export default Vue.extend({
   name: "DotTypeEditor",
+  data: () => ({
+    dotAppearanceModalActive: false,
+  }),
   components: {
     ContEditorHelper,
     Dot,
+    DotAppearanceModal
   },
   props: {
     dotTypeIndex: {
