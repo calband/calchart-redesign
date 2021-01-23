@@ -2,7 +2,7 @@ import Serializable from "./util/Serializable";
 /**
  * Defines appearance of a dot
  *
- * @property filled 
+ * @property filled
  * @property fill
  * @property color
  * @property fwSlash

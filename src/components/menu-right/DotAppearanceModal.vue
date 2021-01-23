@@ -1,12 +1,12 @@
 <template>
   <div class="modal-card" data-test="dot-appearance-modal">
     <header class="modal-card-head">
-      <p class="modal-card-title">Dot type {{dotTypeIndex}} Appearance</p>
+      <p class="modal-card-title">Dot type {{ dotTypeIndex }} Appearance</p>
     </header>
 
     <section class="modal-card-body">
       <svg viewBox="-1 -1 2 2" class="column">
-        <Dot 
+        <Dot
           :key="`menu-right-dot-${dotTypeIndex}-preview`"
           :dotTypeIndex="dotTypeIndex"
           :labeled="false"
@@ -14,19 +14,23 @@
       </svg>
       <div class="column">
         <b-field>
-            <b-checkbox v-model="dotAppearance.filled">Filled</b-checkbox>
+          <b-checkbox v-model="dotAppearance.filled">Filled</b-checkbox>
         </b-field>
         <b-field>
-            <b-checkbox v-model="dotAppearance.fwSlash">Forward-slashed</b-checkbox>
+          <b-checkbox v-model="dotAppearance.fwSlash"
+            >Forward-slashed</b-checkbox
+          >
         </b-field>
         <b-field>
-            <b-checkbox v-model="dotAppearance.bwSlash">Backward-slashed</b-checkbox>
+          <b-checkbox v-model="dotAppearance.bwSlash"
+            >Backward-slashed</b-checkbox
+          >
         </b-field>
-        <b-field label="Fill Color" >
-            <b-input v-model="dotAppearance.fill"></b-input>
+        <b-field label="Fill Color">
+          <b-input v-model="dotAppearance.fill"></b-input>
         </b-field>
-        <b-field label="Line Color" >
-            <b-input v-model="dotAppearance.color"></b-input>
+        <b-field label="Line Color">
+          <b-input v-model="dotAppearance.color"></b-input>
         </b-field>
       </div>
     </section>
@@ -45,7 +49,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Dot from "@/components/grapher/Dot.vue"
+import Dot from "@/components/grapher/Dot.vue";
 import DotAppearance from "@/models/DotAppearance";
 
 /**
@@ -61,7 +65,9 @@ export default Vue.extend({
   },
   computed: {
     dotAppearance(): DotAppearance {
-      return this.$store.getters.getSelectedStuntSheet.dotAppearances[this.dotTypeIndex];
+      return this.$store.getters.getSelectedStuntSheet.dotAppearances[
+        this.dotTypeIndex
+      ];
     },
   },
 });
@@ -72,5 +78,4 @@ export default Vue.extend({
   float: left;
   width: 50%;
 }
-
 </style>

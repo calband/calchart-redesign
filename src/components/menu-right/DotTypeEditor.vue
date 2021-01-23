@@ -1,10 +1,12 @@
 <template>
   <div class="my-2">
     <b data-test="menu-right--dot-type">Dot Type {{ dotTypeIndex }}</b>
-    <svg viewBox="-1 -1 2 2" 
+    <svg
+      viewBox="-1 -1 2 2"
       class="menu-right-dot-appearance"
-      @click="dotAppearanceModalActive = true">
-      <Dot 
+      @click="dotAppearanceModalActive = true"
+    >
+      <Dot
         :key="`menu-right-dot-${dotTypeIndex}-preview`"
         :data-test="`menu-right-dot-${dotTypeIndex}-preview`"
         :dotTypeIndex="dotTypeIndex"
@@ -57,7 +59,7 @@
       trap-focus
       data-test="menu-right-dot-appearance-modal"
     >
-      <DotAppearanceModal :dotTypeIndex="dotTypeIndex"/>
+      <DotAppearanceModal :dotTypeIndex="dotTypeIndex" />
     </b-modal>
   </div>
 </template>
@@ -72,7 +74,7 @@ import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";
 import Dot from "@/components/grapher/Dot.vue";
-import DotAppearanceModal from "./DotAppearanceModal.vue"
+import DotAppearanceModal from "./DotAppearanceModal.vue";
 
 /**
  * View/Edit all continuiuties for a dot type
@@ -85,7 +87,7 @@ export default Vue.extend({
   components: {
     ContEditorHelper,
     Dot,
-    DotAppearanceModal
+    DotAppearanceModal,
   },
   props: {
     dotTypeIndex: {
@@ -135,4 +137,5 @@ export default Vue.extend({
   float: right;
   width: 10%;
   height: 10%;
-}</style>
+}
+</style>
