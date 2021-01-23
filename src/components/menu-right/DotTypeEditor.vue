@@ -1,6 +1,14 @@
 <template>
   <div class="my-2">
-    <p data-test="menu-right--dot-type">Dot Type {{ dotTypeIndex }}</p>
+    <b data-test="menu-right--dot-type">Dot Type {{ dotTypeIndex }}</b>
+    <svg viewBox="-1 -1 2 2" 
+      class="menu-right-dot-appearance">
+    <Dot 
+      :key="`menu-right-dot-${dotTypeIndex}-preview`"
+      :dotTypeIndex="dotTypeIndex"
+      :labeled="false"
+    />
+    </svg>
     <ContEditorHelper
       v-for="(continuity, index) in dotType"
       :key="`continuity--${dotTypeIndex}--${index}`"
@@ -53,6 +61,7 @@ import ContEven from "@/models/continuity/ContEven";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";
+import Dot from "@/components/grapher/Dot.vue";
 
 /**
  * View/Edit all continuiuties for a dot type
@@ -61,6 +70,7 @@ export default Vue.extend({
   name: "DotTypeEditor",
   components: {
     ContEditorHelper,
+    Dot,
   },
   props: {
     dotTypeIndex: {
@@ -104,4 +114,10 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.menu-right-dot-appearance {
+  vertical-align: middle;
+  float: right;
+  width: 10%;
+  height: 10%;
+}</style>
