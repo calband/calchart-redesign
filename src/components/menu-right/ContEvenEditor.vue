@@ -79,15 +79,10 @@ export default Vue.extend({
         return continuity.marchType;
       },
       set(marchType: MARCH_TYPES): void {
-        const continuity: ContEven = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.marchType = marchType;
-        this.$store.commit(Mutations.UPDATE_DOT_TYPE_CONTINUITY, {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_MARCH_STYLE, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity,
+          marchType: marchType,
         });
       },
     },
@@ -100,15 +95,10 @@ export default Vue.extend({
         return continuity.duration;
       },
       set(duration: number): void {
-        const continuity: ContEven = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.duration = duration;
-        this.$store.commit(Mutations.UPDATE_DOT_TYPE_CONTINUITY, {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_DURATION, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity,
+          duration: duration
         });
       },
     },

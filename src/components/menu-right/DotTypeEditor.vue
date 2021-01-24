@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import BaseCont from "@/models/continuity/BaseCont";
+import BaseCont, { CONT_IDS } from "@/models/continuity/BaseCont";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 import ContInPlace from "@/models/continuity/ContInPlace";
@@ -80,25 +80,25 @@ export default Vue.extend({
     addContInPlace() {
       this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContInPlace(),
+        contID: CONT_IDS.IN_PLACE,
       });
     },
     addContETFDynamic() {
       this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContETFDynamic(),
+        contID: CONT_IDS.ETF_DYNAMIC,
       });
     },
     addContETFStatic() {
       this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContETFStatic(),
+        contID: CONT_IDS.ETF_STATIC,
       });
     },
     addContEven() {
       this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContEven(),
+        contID: CONT_IDS.EVEN,
       });
     },
   },

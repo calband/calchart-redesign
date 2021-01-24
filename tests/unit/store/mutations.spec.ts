@@ -7,6 +7,7 @@ import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import ContEven from "@/models/continuity/ContEven";
 import DotAppearance from "@/models/DotAppearance";
 import { Mutations } from "@/store/mutations";
+import { CONT_IDS } from "@/models/continuity/BaseCont";
 
 describe("store/mutations", () => {
   let store: Store<CalChartState>;
@@ -61,7 +62,7 @@ describe("store/mutations", () => {
       expect(oldDotTypes[1][0] instanceof ContETFDynamic).toBe(true);
       store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: 1,
-        continuity: new ContEven(),
+        contID: CONT_IDS.EVEN,
       });
       const newDotTypes = store.state.show.stuntSheets[0].dotTypes;
       expect(newDotTypes[0]).toHaveLength(1);
@@ -94,10 +95,10 @@ describe("store/mutations", () => {
       expect(oldDotTypes[0][0].duration).toBe(0);
       expect(oldDotTypes[1]).toHaveLength(1);
       expect(oldDotTypes[1][0] instanceof ContETFDynamic).toBe(true);
-      store.commit(Mutations.UPDATE_DOT_TYPE_CONTINUITY, {
+      store.commit(Mutations.UPDATE_DOT_TYPE_DURATION, {
         dotTypeIndex: 0,
         continuityIndex: 0,
-        continuity: new ContInPlace({ duration: 8 }),
+        duration: 8,
       });
       const newDotTypes = store.state.show.stuntSheets[0].dotTypes;
       expect(newDotTypes[0]).toHaveLength(1);

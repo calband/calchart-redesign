@@ -57,7 +57,7 @@ describe("components/menu-right/ContETFDynamicEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectETFType.setValue(ETF_DYNAMIC_TYPES.NSEW);
       expect(commitSpy).toHaveBeenCalledWith(
-        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
+        Mutations.UPDATE_DOT_TYPE_ETF_TYPE,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.eightToFiveType).toBe(
@@ -75,7 +75,7 @@ describe("components/menu-right/ContETFDynamicEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
       expect(commitSpy).toHaveBeenCalledWith(
-        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
+        Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(

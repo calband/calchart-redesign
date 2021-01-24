@@ -5,7 +5,7 @@
         <b-tooltip :label="undoName" data-test="menu-bottom-undo--tooltip-undo">
           <b-button
             icon-left="undo"
-            data-test="`menu-bottom-undo-tool--undo"
+            data-test="menu-bottom-undo-tool--undo"
             @click="undo"
           />
         </b-tooltip>
@@ -14,14 +14,14 @@
         <b-button
           disabled
           icon-left="undo"
-          data-test="`menu-bottom-undo-tool--undo"
+          data-test="menu-bottom-undo-tool--undo"
         />
       </p>
       <p class="control" v-if="canRedo">
         <b-tooltip :label="redoName" data-test="menu-bottom-undo--tooltip-redo">
           <b-button
             icon-left="redo"
-            data-test="`menu-bottom-undo-tool--redo"
+            data-test="menu-bottom-undo-tool--redo"
             @click="redo"
           />
         </b-tooltip>
@@ -30,7 +30,7 @@
         <b-button
           disabled
           icon-left="redo"
-          data-test="`menu-bottom-undo-tool--redo"
+          data-test="menu-bottom-undo-tool--redo"
         />
       </p>
     </div>

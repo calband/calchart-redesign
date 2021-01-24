@@ -52,7 +52,7 @@ describe("components/menu-right/ContEvenEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.HS);
       expect(commitSpy).toHaveBeenCalledWith(
-        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
+        Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(

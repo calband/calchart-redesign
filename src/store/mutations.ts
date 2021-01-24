@@ -5,9 +5,13 @@ import BaseTool from "@/tools/BaseTool";
 import StuntSheet from "@/models/StuntSheet";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import { MutationTree } from "vuex";
-import BaseCont from "@/models/continuity/BaseCont";
+import BaseCont, { CONT_IDS } from "@/models/continuity/BaseCont";
 import ContInPlace from "@/models/continuity/ContInPlace";
+import ContETFDynamic, { ETF_DYNAMIC_TYPES } from "@/models/continuity/ContETFDynamic";
 import DotAppearance from "@/models/DotAppearance";
+import { ContFactory } from "@/models/continuity/ContFactory"
+import { MARCH_TYPES } from "@/models/util/constants";
+import ContETFStatic from "@/models/continuity/ContETFStatic";
 
 export enum Mutations {
   // Show mutations:
@@ -28,7 +32,11 @@ export enum Mutations {
   ADD_DOT_TYPE = "Add Marcher type",
   ADD_CONTINUITY = "Add Continuity",
   // Continuity mutations:
-  UPDATE_DOT_TYPE_CONTINUITY = "Update Marcher Continuity",
+  UPDATE_DOT_TYPE_MARCH_STYLE = "Update Marcher Step Style",
+  UPDATE_DOT_TYPE_DURATION = "Update Marcher Duration",
+  UPDATE_DOT_TYPE_ETF_TYPE = "Update Marcher Eight To Five Flow",
+  UPDATE_DOT_TYPE_ETF_DIRECTION = "Update Marcher Flow Direction",
+  UPDATE_DOT_TYPE_IN_PLACE_DIRECTION = "Update Marcher Standing Direction",
   DELETE_DOT_TYPE_CONTINUITY = "Remove Marcher Continuity",
 
   // View mutations:
@@ -71,7 +79,11 @@ export const UNDOABLE_ACTIONS = [
   Mutations.SET_STUNT_SHEET_BEATS,
   Mutations.ADD_DOT_TYPE,
   Mutations.ADD_CONTINUITY,
-  Mutations.UPDATE_DOT_TYPE_CONTINUITY,
+  Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
+  Mutations.UPDATE_DOT_TYPE_DURATION,
+  Mutations.UPDATE_DOT_TYPE_ETF_TYPE,
+  Mutations.UPDATE_DOT_TYPE_ETF_DIRECTION,
+  Mutations.UPDATE_DOT_TYPE_IN_PLACE_DIRECTION,
   Mutations.DELETE_DOT_TYPE_CONTINUITY,
 ];
 
@@ -158,31 +170,92 @@ export const mutations: MutationTree<CalChartState> = {
   },
   [Mutations.ADD_CONTINUITY](
     state,
-    { dotTypeIndex, continuity }: { dotTypeIndex: number; continuity: BaseCont }
+    { dotTypeIndex, contID }: { dotTypeIndex: number; contID: CONT_IDS }
   ): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.dotTypes[dotTypeIndex].push(continuity);
+    currentSS.dotTypes[dotTypeIndex].push(ContFactory(contID));
     state.show.generateFlows(state.selectedSS);
   },
 
   // Show -> StuntSheet -> BaseCont
-  [Mutations.UPDATE_DOT_TYPE_CONTINUITY](
+  [Mutations.UPDATE_DOT_TYPE_MARCH_STYLE](
     state,
     {
       dotTypeIndex,
       continuityIndex,
-      continuity,
-    }: { dotTypeIndex: number; continuityIndex: number; continuity: BaseCont }
+      marchType,
+    }: { dotTypeIndex: number; continuityIndex: number; marchType: MARCH_TYPES }
   ): void {
-    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+    const getContinuity = getters.getContinuity as (
       state: CalChartState
-    ) => StuntSheet;
-    const currentSS = getSelectedStuntSheet(state);
-    currentSS.dotTypes[dotTypeIndex][continuityIndex] = continuity;
-    state.show.generateFlows(state.selectedSS);
+    ) => (dotTypeIndex: number, continuityIndex: number) => BaseCont;
+    const continuity: BaseCont = getContinuity(state)(dotTypeIndex, continuityIndex)
+    continuity.marchType = marchType;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.UPDATE_DOT_TYPE_DURATION](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      duration,
+    }: { dotTypeIndex: number; continuityIndex: number; duration: number }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => BaseCont;
+    const continuity: BaseCont = getContinuity(state)(dotTypeIndex, continuityIndex)
+    continuity.duration = duration;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.UPDATE_DOT_TYPE_ETF_TYPE](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      etfType,
+    }: { dotTypeIndex: number; continuityIndex: number; etfType: ETF_DYNAMIC_TYPES }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => ContETFDynamic;
+    const continuity: ContETFDynamic = getContinuity(state)(dotTypeIndex, continuityIndex)
+    continuity.eightToFiveType = etfType;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.UPDATE_DOT_TYPE_ETF_DIRECTION](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      direction,
+    }: { dotTypeIndex: number; continuityIndex: number; direction: number }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => ContETFStatic;
+    const continuity: ContETFStatic = getContinuity(state)(dotTypeIndex, continuityIndex)
+    continuity.marchingDirection = direction;
+    continuity.facingDirection = direction;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.UPDATE_DOT_TYPE_IN_PLACE_DIRECTION](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      direction,
+    }: { dotTypeIndex: number; continuityIndex: number; direction: number }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => ContInPlace;
+    const continuity: ContInPlace = getContinuity(state)(dotTypeIndex, continuityIndex)
+    continuity.direction = direction;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
   },
   [Mutations.DELETE_DOT_TYPE_CONTINUITY](
     state,
@@ -314,3 +387,18 @@ export const mutations: MutationTree<CalChartState> = {
     state.show = state.initialShowState.getInitialState();
   },
 };
+
+
+function updateContinuity(
+  state: CalChartState,
+  dotTypeIndex: number,
+  continuityIndex: number,
+  continuity: BaseCont
+) {
+  const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+    state: CalChartState
+  ) => StuntSheet;
+  const currentSS = getSelectedStuntSheet(state);
+  currentSS.dotTypes[dotTypeIndex][continuityIndex] = continuity;
+  state.show.generateFlows(state.selectedSS);
+}

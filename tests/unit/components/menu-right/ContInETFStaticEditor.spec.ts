@@ -55,7 +55,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
       expect(commitSpy).toHaveBeenCalledWith(
-        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
+        Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
@@ -73,7 +73,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       durationInput.setValue("10");
       expect(commitSpy).toHaveBeenCalledWith(
-        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
+        Mutations.UPDATE_DOT_TYPE_DURATION,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.duration).toBe(10);
@@ -89,7 +89,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectDirection.setValue(`${DIRECTIONS.S}`);
       expect(commitSpy).toHaveBeenCalledWith(
-        Mutations.UPDATE_DOT_TYPE_CONTINUITY,
+        Mutations.UPDATE_DOT_TYPE_ETF_DIRECTION,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].continuity.marchingDirection).toBe(
