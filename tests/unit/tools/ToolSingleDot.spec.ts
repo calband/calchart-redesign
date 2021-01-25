@@ -3,6 +3,7 @@ import { GlobalStore } from "@/store";
 import BaseTool from "@/tools/BaseTool";
 import BaseMoveTool from "@/tools/BaseMoveTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
+import { Mutations } from "@/store/mutations";
 
 describe("tools/ToolSingleDot", () => {
   let tool: BaseTool;
@@ -28,7 +29,9 @@ describe("tools/ToolSingleDot", () => {
 
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
-      expect(GlobalStore.commit).toHaveBeenCalledWith("addDot", { x: 0, y: 2 });
+      expect(GlobalStore.commit).toHaveBeenCalledWith(Mutations.ADD_DOTS, [
+        { x: 0, y: 2 },
+      ]);
     });
 
     it("removes a dot if it exists in the spot", () => {
@@ -42,7 +45,9 @@ describe("tools/ToolSingleDot", () => {
 
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
-      expect(GlobalStore.commit).toHaveBeenCalledWith("removeDot", 0);
+      expect(GlobalStore.commit).toHaveBeenCalledWith(Mutations.REMOVE_DOTS, [
+        0,
+      ]);
     });
   });
 
@@ -56,7 +61,7 @@ describe("tools/ToolSingleDot", () => {
       expect(BaseTool.convertClientCoordinates).toHaveBeenCalled();
       expect(GlobalStore.commit).toHaveBeenCalledTimes(1);
       expect(GlobalStore.commit).toHaveBeenCalledWith(
-        "setGrapherToolDots",
+        Mutations.SET_GRAPHER_TOOL_DOTS,
         expect.anything()
       );
       const grapherToolDots: StuntSheetDot[] = (GlobalStore.commit as jest.Mock)

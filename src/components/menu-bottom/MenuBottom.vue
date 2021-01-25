@@ -27,6 +27,7 @@ import BaseTool, { ToolConstructor } from "@/tools/BaseTool";
 import ToolBoxSelect from "@/tools/ToolBoxSelect";
 import ToolLassoSelect from "@/tools/ToolLassoSelect";
 import ToolSingleDot from "@/tools/ToolSingleDot";
+import { Mutations } from "@/store/mutations";
 
 interface ToolData {
   label: string;
@@ -73,9 +74,9 @@ export default Vue.extend({
         toolIndex
       ].tool;
       const tool: BaseTool = new ToolConstructor();
-      this.$store.commit("setToolSelected", tool);
+      this.$store.commit(Mutations.SET_TOOL_SELECTED, tool);
       if (!tool.supportsSelection) {
-        this.$store.commit("clearSelectedDotIds");
+        this.$store.commit(Mutations.CLEAR_SELECTED_DOTS);
       }
     },
   },

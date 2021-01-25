@@ -23,6 +23,7 @@ import DotTypeEditor from "./DotTypeEditor.vue";
 import BaseCont from "@/models/continuity/BaseCont";
 import Vue from "vue";
 import StuntSheet from "@/models/StuntSheet";
+import { Mutations } from "@/store/mutations";
 
 export default Vue.extend({
   name: "MenuRight",
@@ -38,7 +39,7 @@ export default Vue.extend({
   },
   methods: {
     addDotType() {
-      this.$store.commit("addDotType");
+      this.$store.commit(Mutations.ADD_DOT_TYPE);
     },
   },
 });
