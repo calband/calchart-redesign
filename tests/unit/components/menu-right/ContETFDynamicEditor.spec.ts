@@ -60,9 +60,7 @@ describe("components/menu-right/ContETFDynamicEditor", () => {
         Mutations.UPDATE_DOT_TYPE_ETF_TYPE,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.eightToFiveType).toBe(
-        ETF_DYNAMIC_TYPES.NSEW
-      );
+      expect(commitSpy.mock.calls[0][1].etfType).toBe(ETF_DYNAMIC_TYPES.NSEW);
     });
 
     it("changing march type", () => {
@@ -78,7 +76,7 @@ describe("components/menu-right/ContETFDynamicEditor", () => {
         Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
+      expect(commitSpy.mock.calls[0][1].marchType).toBe(
         MARCH_TYPES.MINI_MILITARY
       );
     });

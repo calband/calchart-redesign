@@ -55,9 +55,7 @@ describe("components/menu-right/ContEvenEditor", () => {
         Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
-        MARCH_TYPES.HS
-      );
+      expect(commitSpy.mock.calls[0][1].marchType).toBe(MARCH_TYPES.HS);
     });
 
     it("can delete if more than one continuity exists for the dot type", async () => {

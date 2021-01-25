@@ -74,16 +74,22 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   }
 
   addDots(dots: Partial<StuntSheetDot>[] = []): void {
-    this.stuntSheetDots = this.stuntSheetDots.concat(dots.map(dot => new StuntSheetDot(dot)));
+    this.stuntSheetDots = this.stuntSheetDots.concat(
+      dots.map((dot) => new StuntSheetDot(dot))
+    );
   }
 
   removeDots(indices: number[]): void {
-    this.stuntSheetDots = this.stuntSheetDots.filter(dot => !indices.includes(dot.id));
+    this.stuntSheetDots = this.stuntSheetDots.filter(
+      (dot) => !indices.includes(dot.id)
+    );
   }
 
   moveDots(newPositions: [number, [number, number]][]): void {
     for (const newPosition of newPositions) {
-      const selectedDot = this.stuntSheetDots.find((dot) => dot.id === newPosition[0]);
+      const selectedDot = this.stuntSheetDots.find(
+        (dot) => dot.id === newPosition[0]
+      );
       if (selectedDot) {
         selectedDot.x = newPosition[1][0];
         selectedDot.y = newPosition[1][1];

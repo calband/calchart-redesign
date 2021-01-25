@@ -7,9 +7,11 @@ import StuntSheetDot from "@/models/StuntSheetDot";
 import { MutationTree } from "vuex";
 import BaseCont, { CONT_IDS } from "@/models/continuity/BaseCont";
 import ContInPlace from "@/models/continuity/ContInPlace";
-import ContETFDynamic, { ETF_DYNAMIC_TYPES } from "@/models/continuity/ContETFDynamic";
+import ContETFDynamic, {
+  ETF_DYNAMIC_TYPES,
+} from "@/models/continuity/ContETFDynamic";
 import DotAppearance from "@/models/DotAppearance";
-import { ContFactory } from "@/models/continuity/ContFactory"
+import { ContFactory } from "@/models/continuity/ContFactory";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 
@@ -192,7 +194,10 @@ export const mutations: MutationTree<CalChartState> = {
     const getContinuity = getters.getContinuity as (
       state: CalChartState
     ) => (dotTypeIndex: number, continuityIndex: number) => BaseCont;
-    const continuity: BaseCont = getContinuity(state)(dotTypeIndex, continuityIndex)
+    const continuity: BaseCont = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
     continuity.marchType = marchType;
     updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
   },
@@ -207,7 +212,10 @@ export const mutations: MutationTree<CalChartState> = {
     const getContinuity = getters.getContinuity as (
       state: CalChartState
     ) => (dotTypeIndex: number, continuityIndex: number) => BaseCont;
-    const continuity: BaseCont = getContinuity(state)(dotTypeIndex, continuityIndex)
+    const continuity: BaseCont = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
     continuity.duration = duration;
     updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
   },
@@ -217,12 +225,19 @@ export const mutations: MutationTree<CalChartState> = {
       dotTypeIndex,
       continuityIndex,
       etfType,
-    }: { dotTypeIndex: number; continuityIndex: number; etfType: ETF_DYNAMIC_TYPES }
+    }: {
+      dotTypeIndex: number;
+      continuityIndex: number;
+      etfType: ETF_DYNAMIC_TYPES;
+    }
   ): void {
     const getContinuity = getters.getContinuity as (
       state: CalChartState
     ) => (dotTypeIndex: number, continuityIndex: number) => ContETFDynamic;
-    const continuity: ContETFDynamic = getContinuity(state)(dotTypeIndex, continuityIndex)
+    const continuity: ContETFDynamic = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
     continuity.eightToFiveType = etfType;
     updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
   },
@@ -237,7 +252,10 @@ export const mutations: MutationTree<CalChartState> = {
     const getContinuity = getters.getContinuity as (
       state: CalChartState
     ) => (dotTypeIndex: number, continuityIndex: number) => ContETFStatic;
-    const continuity: ContETFStatic = getContinuity(state)(dotTypeIndex, continuityIndex)
+    const continuity: ContETFStatic = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
     continuity.marchingDirection = direction;
     continuity.facingDirection = direction;
     updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
@@ -253,7 +271,10 @@ export const mutations: MutationTree<CalChartState> = {
     const getContinuity = getters.getContinuity as (
       state: CalChartState
     ) => (dotTypeIndex: number, continuityIndex: number) => ContInPlace;
-    const continuity: ContInPlace = getContinuity(state)(dotTypeIndex, continuityIndex)
+    const continuity: ContInPlace = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
     continuity.direction = direction;
     updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
   },
@@ -387,7 +408,6 @@ export const mutations: MutationTree<CalChartState> = {
     state.show = state.initialShowState.getInitialState();
   },
 };
-
 
 function updateContinuity(
   state: CalChartState,

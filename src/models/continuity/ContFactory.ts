@@ -17,9 +17,7 @@ import ContStepTwo from "./ContStepTwo";
  *                     undefined, the marcher will face the direction they are
  *                     marching.
  */
-export const ContFactory = (
-  whichCont: CONT_IDS
-): BaseCont => {
+export const ContFactory = (whichCont: CONT_IDS): BaseCont => {
   switch (whichCont) {
     case CONT_IDS.IN_PLACE:
       return new ContInPlace();
@@ -38,4 +36,4 @@ export const ContFactory = (
     case CONT_IDS.STEP_TWO:
       return new ContStepTwo();
   }
-}
+};

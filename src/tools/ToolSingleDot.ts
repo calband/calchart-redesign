@@ -12,7 +12,7 @@ const ToolSingleDot: ToolConstructor = class ToolSingleDot extends BaseMoveTool 
     const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
     const existingDot = BaseTool.findDotAtEvent(event);
     if (existingDot) {
-      GlobalStore.commit(Mutations.REMOVE_DOTS, [ existingDot.id ]);
+      GlobalStore.commit(Mutations.REMOVE_DOTS, [existingDot.id]);
     } else {
       GlobalStore.commit(Mutations.ADD_DOTS, [{ x, y }]);
     }

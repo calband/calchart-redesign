@@ -21,7 +21,7 @@ describe("undo/continuity", () => {
   });
 
   it("After panning and zooming, adding a dot is still accurate", () => {
-    cy.get('[data-test="menu-bottom-tools-tools-tool--select-box-move').click();
+    cy.get('[data-test="menu-bottom-tools-tool--select-box-move').click();
 
     // eslint-disable-next-line cypress/require-data-selectors
     cy.get("#svg-pan-zoom-zoom-out").click().click();
@@ -30,7 +30,7 @@ describe("undo/continuity", () => {
     cy.mousemoveGrapher(24, 2);
     cy.mouseupGrapher(24, 2);
 
-    cy.get('[data-test="menu-bottom-tools-tools-tool--add-rm"]').click();
+    cy.get('[data-test="menu-bottom-tools-tool--add-rm"]').click();
 
     cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
 

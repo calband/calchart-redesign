@@ -34,7 +34,7 @@ describe("store/mutations", () => {
     });
     it("adds a new dot appereance to the end of the array", () => {
       expect(store.state.show.stuntSheets[0].dotAppearances).toHaveLength(2);
-      store.commit("addDotType");
+      store.commit(Mutations.ADD_DOT_TYPE);
       expect(store.state.show.stuntSheets[0].dotAppearances).toHaveLength(3);
     });
   });

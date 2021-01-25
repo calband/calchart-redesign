@@ -98,7 +98,7 @@ export default Vue.extend({
         this.$store.commit(Mutations.UPDATE_DOT_TYPE_DURATION, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          duration: duration
+          duration: duration,
         });
       },
     },

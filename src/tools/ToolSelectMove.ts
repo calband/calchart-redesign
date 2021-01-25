@@ -31,18 +31,14 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       // if we click on a selected dot, determine if we are toggling selection.
       if (GlobalStore.state.selectedDotIds.includes(existingDot.id)) {
         if (event.altKey) {
-          GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, [
-            existingDot.id,
-          ]);
+          GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, [existingDot.id]);
         }
       } else {
         if (!event.shiftKey) {
           GlobalStore.commit(Mutations.CLEAR_SELECTED_DOTS);
         }
         if (event.altKey) {
-          GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, [
-            existingDot.id,
-          ]);
+          GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, [existingDot.id]);
         } else {
           GlobalStore.commit(Mutations.ADD_SELECTED_DOTS, [existingDot.id]);
         }

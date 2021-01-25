@@ -58,7 +58,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
         Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
+      expect(commitSpy.mock.calls[0][1].marchType).toBe(
         MARCH_TYPES.MINI_MILITARY
       );
     });
@@ -76,7 +76,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
         Mutations.UPDATE_DOT_TYPE_DURATION,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.duration).toBe(10);
+      expect(commitSpy.mock.calls[0][1].duration).toBe(10);
     });
 
     it("changing direction", () => {
@@ -92,9 +92,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
         Mutations.UPDATE_DOT_TYPE_ETF_DIRECTION,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.marchingDirection).toBe(
-        DIRECTIONS.S
-      );
+      expect(commitSpy.mock.calls[0][1].direction).toBe(DIRECTIONS.S);
     });
 
     it("can delete if more than one continuity exists for the dot type", async () => {
