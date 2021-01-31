@@ -119,8 +119,10 @@ import { ParseCalChart } from "./ParseCalChart";
 
 export class ParseCalChart34 implements ParseCalChart {
   private numberDots = 0;
+  private defaultTitle = "";
 
-  ParseShow(inputBuffer: ArrayBuffer): Show {
+  ParseShow(defaultTitle: string, inputBuffer: ArrayBuffer): Show {
+    this.defaultTitle = defaultTitle;
     // we know the header for a CalChart3.5 show is 8 bytes.  Remove it.
     const buffer = new DataView(inputBuffer, 8, inputBuffer.byteLength - 8);
     const split = splitDataViewIntoChunks(buffer);
@@ -132,7 +134,7 @@ export class ParseCalChart34 implements ParseCalChart {
 
   ParseSHOW(block: DataView): Show {
     const show = new Show({
-      title: "",
+      title: this.defaultTitle,
       stuntSheets: [],
     });
     const split = splitDataViewIntoChunks(block);

@@ -42,9 +42,7 @@ describe("components/menu-top/FileModal", () => {
 
     cy.get('[data-test="menu-top--file"]').click();
 
-    cy.get('[data-test="menu-top--selected-show"]').contains(
-      "Ariana Grande Show"
-    );
+    cy.get('[data-test="menu-left--title"]').contains("Ariana Grande Show");
   });
 
   it("field changes shape upon adjusting hashes and middle of field", () => {

@@ -1,5 +1,6 @@
 <template>
   <div class="menu-left">
+    <b-field :label="`Show: ${title}`" data-test="menu-left--title" />
     <b-field
       :label="`Beat: ${beatString} / ${selectedSSBeats}`"
       data-test="menu-left--beat"
@@ -116,6 +117,9 @@ export default Vue.extend({
       const selectedSS = this.$store.getters
         .getSelectedStuntSheet as StuntSheet;
       return selectedSS.beats;
+    },
+    title(): string {
+      return this.$store.state.show.title;
     },
   },
   methods: {
