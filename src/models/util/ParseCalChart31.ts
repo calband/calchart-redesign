@@ -259,6 +259,7 @@ export class ParseCalChart31 implements ParseCalChart {
           x: calChart3To4ConvertX(readInt16(buffer, offset)),
           y: calChart3To4ConvertY(readInt16(buffer, offset + 2)),
           dotLabelIndex: index,
+          id: index,
         })
       );
       offset += 4;

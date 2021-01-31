@@ -28,7 +28,7 @@ export abstract class ToolSelectMove extends BaseMoveTool {
 
     if (existingDot) {
       // if we click on a selected dot, determine if we are toggling selection.
-      if (GlobalStore.state.selectedDotIds.includes(existingDot.id)) {
+      if (GlobalStore.getters.getSelectedDotIds.includes(existingDot.id)) {
         if (event.altKey) {
           GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, [existingDot.id]);
         }
@@ -66,7 +66,7 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       const currentSSDots: StuntSheetDot[] =
         GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
       const newPositions: [number, [number, number]][] = [];
-      GlobalStore.state.selectedDotIds.forEach((id: number) => {
+      GlobalStore.getters.getSelectedDotIds.forEach((id: number) => {
         const selectedDot = currentSSDots.find((dot) => dot.id === id);
         if (!selectedDot) {
           return;
@@ -88,7 +88,7 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       // Complete the selection by finding everything in the selection box.
       const stuntSheetDots: StuntSheetDot[] =
         GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
-      const beat = GlobalStore.state.beat;
+      const beat = GlobalStore.state.show.beat;
       const dotsInLasso = stuntSheetDots.filter((dot) =>
         InsideLasso(GlobalStore.state.selectionLasso, [
           dot.xAtBeat(beat),
@@ -130,7 +130,7 @@ export abstract class ToolSelectMove extends BaseMoveTool {
     const currentSSDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
     const grapherToolDots: StuntSheetDot[] = [];
-    GlobalStore.state.selectedDotIds.forEach((id: number) => {
+    GlobalStore.getters.getSelectedDotIds.forEach((id: number) => {
       const selectedDot = currentSSDots.find((dot) => dot.id === id);
       if (!selectedDot) {
         return;

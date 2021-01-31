@@ -58,7 +58,7 @@ export default abstract class BaseTool {
     const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
     const stuntSheetDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
-    const beat = GlobalStore.state.beat;
+    const beat = GlobalStore.getters.getBeat;
     return stuntSheetDots.find((dot: StuntSheetDot): boolean => {
       return x === dot.xAtBeat(beat) && y === dot.yAtBeat(beat);
     });

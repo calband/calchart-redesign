@@ -2,9 +2,9 @@ describe("components/menu-top/FileModal", () => {
   beforeEach(() => {
     cy.visit("/");
 
-    cy.get('[data-test="menu-top--file"]').click();
+    cy.get('[data-test="menu-top--edit"]').click();
 
-    cy.get('[data-test="menu-top--file-edit"]').click();
+    cy.get('[data-test="menu-top--edit-show-details"]').click();
 
     cy.get('[data-test="menu-top--file-modal"]').should("be.visible");
   });
