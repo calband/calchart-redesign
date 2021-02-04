@@ -54,10 +54,10 @@ export default abstract class BaseTool {
    * returns dot at mouse event, or undefined if nothing found
    **/
   static findDotAtEvent(event: MouseEvent): StuntSheetDot | undefined {
-    const beat = GlobalStore.state.beat;
     const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
     const stuntSheetDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
+    const beat = GlobalStore.state.beat;
     return stuntSheetDots.find((dot: StuntSheetDot): boolean => {
       return x === dot.xAtBeat(beat) && y === dot.yAtBeat(beat);
     });
