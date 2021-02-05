@@ -103,6 +103,7 @@ describe("components/grapher/Grapher.vue", () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseMove: jest.fn(),
+        supportsSelection: false,
       };
       store = generateStore({ toolSelected: mockTool });
       wrapper = mount(Grapher, {
