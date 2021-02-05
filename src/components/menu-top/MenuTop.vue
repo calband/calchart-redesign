@@ -15,6 +15,14 @@
           <hr class="navbar-divider" />
 
           <b-navbar-item
+            data-test="menu-top--save-show"
+            :href="fileURL"
+            :download="`${showTitle}.shw4`"
+          >
+            Export Show
+          </b-navbar-item>
+
+          <b-navbar-item
             data-test="menu-top--load-show"
             @click="loadModalActive = true"
           >
@@ -139,6 +147,12 @@ export default Vue.extend({
       set(enabled: boolean): void {
         this.$store.commit("setShowDotLabels", enabled);
       },
+    },
+
+    fileURL(): string {
+      const jsonData = JSON.stringify(this.$store.state.show);
+      const blob = new Blob([jsonData], { type: "text/plain;charset=utf-8;" });
+      return URL.createObjectURL(blob);
     },
   },
 });
