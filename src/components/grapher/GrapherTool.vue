@@ -11,8 +11,8 @@
     />
     <g v-if="showDotLabels">
       <text
-        v-for="dot in grapherToolDotLabels"
-        :key="`${dot[0].x}-${dot[0].y}-tool--dottext`"
+        v-for="(dot, index) in grapherToolDotLabels"
+        :key="`${index}-tool--dottext`"
         class="grapher-tool--dottext"
         :x="dot[0].x"
         :y="dot[0].y - 1"
