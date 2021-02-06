@@ -15,6 +15,7 @@ import MenuLeft from "./components/menu-left/MenuLeft.vue";
 import Grapher from "./components/grapher/Grapher.vue";
 import MenuRight from "./components/menu-right/MenuRight.vue";
 import MenuBottom from "./components/menu-bottom/MenuBottom.vue";
+import { HotKeyHandler } from "./store/hotkeys";
 
 export default Vue.extend({
   name: "App",
@@ -24,6 +25,18 @@ export default Vue.extend({
     Grapher,
     MenuRight,
     MenuBottom,
+  },
+  created() {
+    window.addEventListener("keydown", this.hotkey);
+  },
+  // make sure you remove the listener when the component is no longer visible
+  destroyed() {
+    window.removeEventListener("keydown", this.hotkey);
+  },
+  methods: {
+    hotkey(event: KeyboardEvent) {
+      HotKeyHandler(this.$store, event);
+    },
   },
 });
 </script>
