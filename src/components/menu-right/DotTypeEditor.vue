@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import BaseCont, { CONT_IDS } from "@/models/continuity/BaseCont";
+import { BaseCont, CONT_IDS } from "@/models/continuity/BaseCont";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";

@@ -5,13 +5,12 @@ import BaseTool from "@/tools/BaseTool";
 import StuntSheet from "@/models/StuntSheet";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import { MutationTree } from "vuex";
-import BaseCont, { CONT_IDS } from "@/models/continuity/BaseCont";
+import { BaseCont, CONT_IDS, ContFactory } from "@/models/continuity/BaseCont";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic, {
   ETF_DYNAMIC_TYPES,
 } from "@/models/continuity/ContETFDynamic";
 import DotAppearance from "@/models/DotAppearance";
-import { ContFactory } from "@/models/continuity/ContFactory";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 

@@ -1,5 +1,5 @@
 import StuntSheetDot from "./StuntSheetDot";
-import BaseCont from "./continuity/BaseCont";
+import { BaseCont } from "./continuity/BaseCont";
 import ContInPlace from "./continuity/ContInPlace";
 import Serializable from "./util/Serializable";
 import { loadContinuity } from "./continuity/load-continuity";

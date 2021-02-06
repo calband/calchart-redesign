@@ -1,7 +1,7 @@
 import Field from "./Field";
 import StuntSheet from "./StuntSheet";
 import StuntSheetDot from "./StuntSheetDot";
-import BaseCont from "./continuity/BaseCont";
+import { BaseCont } from "./continuity/BaseCont";
 import { FlowBeat, initializeFlow } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
 

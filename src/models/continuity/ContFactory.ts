@@ -1,5 +1,5 @@
 import ContEven from "./ContEven";
-import BaseCont, { CONT_IDS } from "./BaseCont";
+import { BaseCont, CONT_IDS } from "./BaseCont";
 import ContCounterMarch from "./ContCounterMarch";
 import ContInPlace from "./ContInPlace";
 import ContETFStatic from "./ContETFStatic";
@@ -11,11 +11,7 @@ import ContStepTwo from "./ContStepTwo";
 /**
  * Factory function for creating a new continuity
  *
- * @param offsetX    - How many steps to march. Positive is north, negative is
- *                     south.
- * @param direction? - To enforce a direction to face, set this parameter. If
- *                     undefined, the marcher will face the direction they are
- *                     marching.
+ * @param whichCont  - Which continuity to create.
  */
 export const ContFactory = (whichCont: CONT_IDS): BaseCont => {
   switch (whichCont) {

@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import DotTypeEditor from "./DotTypeEditor.vue";
-import BaseCont from "@/models/continuity/BaseCont";
+import { BaseCont } from "@/models/continuity/BaseCont";
 import Vue from "vue";
 import StuntSheet from "@/models/StuntSheet";
 import { Mutations } from "@/store/mutations";
