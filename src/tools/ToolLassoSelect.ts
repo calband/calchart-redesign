@@ -14,7 +14,7 @@ const ToolLassoSelect: ToolConstructor = class ToolLassoSelect extends ToolSelec
     }
     const arrayCopy = GlobalStore.state.selectionLasso;
     arrayCopy.push(point);
-    GlobalStore.commit(Mutations.SET_TOOL_SELECTED, arrayCopy);
+    GlobalStore.commit(Mutations.SET_SELECTION_LASSO, arrayCopy);
   }
 };
 
