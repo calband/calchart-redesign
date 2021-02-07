@@ -10,7 +10,6 @@ import ContFollowLeader from "./ContFollowLeader";
 import ContGateTurn from "./ContGateTurn";
 import ContStepTwo from "./ContStepTwo";
 
-
 /**
  * Defines a unique identifier for each continuity class so that it is possible
  * to deserialize from a JSON string.

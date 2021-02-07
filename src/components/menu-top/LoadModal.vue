@@ -50,7 +50,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { InitialLoadShwState, InitialLoadShw4State } from "@/models/InitialLoadShowState";
+import {
+  InitialLoadShwState,
+  InitialLoadShw4State,
+} from "@/models/InitialLoadShowState";
 import Show from "@/models/Show";
 import { Mutations } from "@/store/mutations";
 import InitialShowState from "@/models/InitialShowState";
