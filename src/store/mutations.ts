@@ -136,6 +136,7 @@ export const mutations: MutationTree<CalChartState> = {
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.addDots(jsons.map((json) => new StuntSheetDot(json)));
+    state.show.generateFlows(state.selectedSS);
   },
   [Mutations.MOVE_DOTS](
     state,
