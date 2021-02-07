@@ -8,8 +8,8 @@
       </template>
       <template slot="start">
         <b-navbar-dropdown label="File" data-test="menu-top--file">
-          <b-navbar-item data-test="menu-top--selected-show">
-            Selected: {{ showTitle }}
+          <b-navbar-item data-test="menu-top--new-show" @click="newShow">
+            New Show (ctrl-N)
           </b-navbar-item>
 
           <hr class="navbar-divider" />
@@ -91,6 +91,7 @@
 </template>
 
 <script lang="ts">
+import InitialShowState from "@/models/InitialShowState";
 import { Mutations } from "@/store/mutations";
 import Vue from "vue";
 import FileModal from "./FileModal.vue";
@@ -154,6 +155,11 @@ export default Vue.extend({
       const jsonData = JSON.stringify(this.$store.state.show);
       const blob = new Blob([jsonData], { type: "text/plain;charset=utf-8;" });
       return URL.createObjectURL(blob);
+    },
+  },
+  methods: {
+    newShow(): void {
+      this.$store.commit(Mutations.SET_SHOW, new InitialShowState());
     },
   },
 });

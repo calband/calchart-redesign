@@ -23,12 +23,9 @@ describe("components/menu-top/MenuTop", () => {
   });
 
   describe("file dropdown", () => {
-    it("shows the show title", () => {
-      const selectedShow = wrapper.find(
-        '[data-test="menu-top--selected-show"]'
-      );
-      expect(selectedShow.exists()).toBeTruthy();
-      expect(selectedShow.text()).toBe("Selected: Example Show");
+    it("new show", () => {
+      const newShow = wrapper.find('[data-test="menu-top--new-show"]');
+      expect(newShow.exists()).toBeTruthy();
     });
 
     it('sets fileModal to true upon clicking "Edit Show Details"', async () => {

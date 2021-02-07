@@ -11,6 +11,7 @@ export class InitialLoadShwState extends InitialShowState {
   metadataVersion: number = METADATA_VERSION;
 
   showData: ArrayBuffer | undefined;
+  fileName = "";
 
   constructor(json: Partial<InitialLoadShwState> = {}) {
     super();
@@ -23,7 +24,7 @@ export class InitialLoadShwState extends InitialShowState {
    */
   getInitialState(): Show {
     if (this.showData) {
-      return loadShowFromBuffer(this.showData);
+      return loadShowFromBuffer(this.fileName, this.showData);
     }
     return new Show();
   }
