@@ -50,16 +50,22 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { loadShowFromBuffer } from "@/models/util/LoadShow";
+import {
+  InitialLoadShwState,
+  InitialLoadShw4State,
+} from "@/models/InitialLoadShowState";
 import Show from "@/models/Show";
+import { Mutations } from "@/store/mutations";
+import InitialShowState from "@/models/InitialShowState";
 
 export default Vue.extend({
   name: "LoadModal",
   data: (): {
     file: File | null;
+    showLoadState: InitialShowState | null;
     showPreview: Show | null;
     parseError: string;
-  } => ({ file: null, showPreview: null, parseError: "" }),
+  } => ({ file: null, showLoadState: null, showPreview: null, parseError: "" }),
   computed: {
     numMarchers(): number {
       return this.showPreview && this.showPreview.stuntSheets.length > 0
@@ -83,10 +89,10 @@ export default Vue.extend({
         reader.onload = (): void => {
           if (reader.result) {
             try {
-              if (reader.result)
-                this.showPreview = new Show(
-                  JSON.parse(reader.result as string)
-                );
+              this.showLoadState = new InitialLoadShw4State({
+                showData: reader.result as string,
+              });
+              this.showPreview = this.showLoadState.getInitialState();
             } catch (e) {
               this.parseError = e;
             }
@@ -99,8 +105,10 @@ export default Vue.extend({
         reader.onload = (): void => {
           if (reader.result && reader.result instanceof ArrayBuffer) {
             try {
-              if (reader.result)
-                this.showPreview = loadShowFromBuffer(reader.result);
+              this.showLoadState = new InitialLoadShwState({
+                showData: reader.result,
+              });
+              this.showPreview = this.showLoadState.getInitialState();
             } catch (e) {
               this.parseError = e;
             }
@@ -117,7 +125,7 @@ export default Vue.extend({
       if (!this.showPreview) {
         return;
       }
-      this.$store.commit("setShow", this.showPreview);
+      this.$store.commit(Mutations.SET_SHOW, this.showLoadState);
     },
   },
 });

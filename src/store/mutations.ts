@@ -1,23 +1,102 @@
 import { CalChartState } from ".";
-import Show from "@/models/Show";
+import InitialShowState from "@/models/InitialShowState";
 import getters from "./getters";
 import BaseTool from "@/tools/BaseTool";
 import StuntSheet from "@/models/StuntSheet";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import { MutationTree } from "vuex";
-import BaseCont from "@/models/continuity/BaseCont";
+import { BaseCont, CONT_IDS, ContFactory } from "@/models/continuity/BaseCont";
 import ContInPlace from "@/models/continuity/ContInPlace";
+import ContETFDynamic, {
+  ETF_DYNAMIC_TYPES,
+} from "@/models/continuity/ContETFDynamic";
 import DotAppearance from "@/models/DotAppearance";
+import { MARCH_TYPES } from "@/models/util/constants";
+import ContETFStatic from "@/models/continuity/ContETFStatic";
 
-const mutations: MutationTree<CalChartState> = {
-  // Show
-  setShow(state, show: Show): void {
-    state.show = show;
+export enum Mutations {
+  // Show mutations:
+  SET_SHOW = "Set new Show",
+  SET_SHOW_TITLE = "Set Show title",
+  ADD_STUNT_SHEET = "Add Stunt Sheet",
+  DELETE_STUNT_SHEET = "Delete Stunt Sheet",
+  // Field mutations:
+  SET_FRONT_HASH_OFFSET_Y = "Set front hash offset",
+  SET_BACK_HASH_OFFSET_Y = "Set back has offset",
+  SET_MIDDLE_OF_FIELD = "Set middle of field",
+  // Stuntsheet mutations:
+  ADD_DOTS = "Add Marcher",
+  REMOVE_DOTS = "Remove Marcher",
+  MOVE_DOTS = "Move Marcher",
+  SET_STUNT_SHEET_TITLE = "Set Stunt Sheet title",
+  SET_STUNT_SHEET_BEATS = "Set Stund Sheet beats",
+  ADD_DOT_TYPE = "Add Marcher type",
+  ADD_CONTINUITY = "Add Continuity",
+  // Continuity mutations:
+  UPDATE_DOT_TYPE_MARCH_STYLE = "Update Marcher Step Style",
+  UPDATE_DOT_TYPE_DURATION = "Update Marcher Duration",
+  UPDATE_DOT_TYPE_ETF_TYPE = "Update Marcher Eight To Five Flow",
+  UPDATE_DOT_TYPE_ETF_DIRECTION = "Update Marcher Flow Direction",
+  UPDATE_DOT_TYPE_IN_PLACE_DIRECTION = "Update Marcher Standing Direction",
+  DELETE_DOT_TYPE_CONTINUITY = "Remove Marcher Continuity",
+
+  // View mutations:
+  SET_SELECTED_SS = "setSelectedSS",
+  SET_BEAT = "setBeat",
+  INCREMENT_BEAT = "incrementBeat",
+  DECREMENT_BEAT = "decrementBeat",
+  // Field view mutations:
+  SET_FOUR_STEP_GRID = "setFourStepGrid",
+  SET_YARDLINES = "setYardlines",
+  SET_YARDLINE_NUMBERS = "setYardlineNumbers",
+  SET_SHOW_DOT_LABELS = "setShowDotLabels",
+  // Tools
+  SET_GRAPHER_SVG_PAN_ZOOM = "setGrapherSvgPanZoom",
+  SET_INVERTED_CTM_MATRIX = "setInvertedCTMMatrix",
+  SET_TOOL_SELECTED = "setToolSelected",
+  SET_GRAPHER_TOOL_DOTS = "setGrapherToolDots",
+  // selection
+  CLEAR_SELECTED_DOTS = "clearSelectedDots",
+  ADD_SELECTED_DOTS = "addSelectedDots",
+  TOGGLE_SELECTED_DOTS = "toggleSelectedDots",
+  SET_SELECTION_LASSO = "setSelectionLasso",
+
+  UNDO = "undo",
+  REDO = "redo",
+  INITIAL_SHOW_STATE = "resetShowState",
+}
+
+export const UNDOABLE_ACTIONS = [
+  Mutations.SET_SHOW_TITLE,
+  Mutations.ADD_STUNT_SHEET,
+  Mutations.DELETE_STUNT_SHEET,
+  Mutations.SET_FRONT_HASH_OFFSET_Y,
+  Mutations.SET_BACK_HASH_OFFSET_Y,
+  Mutations.SET_MIDDLE_OF_FIELD,
+  Mutations.ADD_DOTS,
+  Mutations.REMOVE_DOTS,
+  Mutations.MOVE_DOTS,
+  Mutations.SET_STUNT_SHEET_TITLE,
+  Mutations.SET_STUNT_SHEET_BEATS,
+  Mutations.ADD_DOT_TYPE,
+  Mutations.ADD_CONTINUITY,
+  Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
+  Mutations.UPDATE_DOT_TYPE_DURATION,
+  Mutations.UPDATE_DOT_TYPE_ETF_TYPE,
+  Mutations.UPDATE_DOT_TYPE_ETF_DIRECTION,
+  Mutations.UPDATE_DOT_TYPE_IN_PLACE_DIRECTION,
+  Mutations.DELETE_DOT_TYPE_CONTINUITY,
+];
+
+export const mutations: MutationTree<CalChartState> = {
+  [Mutations.SET_SHOW](state, initialShowState: InitialShowState): void {
+    state.initialShowState = initialShowState;
+    state.show = state.initialShowState.getInitialState();
   },
-  setShowTitle(state, title: string): void {
+  [Mutations.SET_SHOW_TITLE](state, title: string): void {
     state.show.title = title;
   },
-  addStuntSheet(state): void {
+  [Mutations.ADD_STUNT_SHEET](state): void {
     state.show.stuntSheets.push(
       new StuntSheet({
         title: `Stuntsheet ${state.show.stuntSheets.length + 1}`,
@@ -26,63 +105,63 @@ const mutations: MutationTree<CalChartState> = {
     state.selectedSS = state.show.stuntSheets.length - 1;
     state.beat = 1;
   },
-  deleteStuntSheet(state): void {
+  [Mutations.DELETE_STUNT_SHEET](state): void {
     state.show.stuntSheets.splice(state.selectedSS, 1);
     state.selectedSS = Math.max(0, state.selectedSS - 1);
     state.beat = 1;
   },
 
   // Show -> Field
-  setFrontHashOffsetY(state, offsetY: number): void {
+  [Mutations.SET_FRONT_HASH_OFFSET_Y](state, offsetY: number): void {
     state.show.field.frontHashOffsetY = offsetY;
   },
-  setBackHashOffsetY(state, offsetY: number): void {
+  [Mutations.SET_BACK_HASH_OFFSET_Y](state, offsetY: number): void {
     state.show.field.backHashOffsetY = offsetY;
   },
-  setMiddleOfField(state, middle: number): void {
+  [Mutations.SET_MIDDLE_OF_FIELD](state, middle: number): void {
     state.show.field.middleOfField = middle;
   },
 
   // Show -> StuntSheet
-  removeDot(state, dotId: number): void {
+  [Mutations.REMOVE_DOTS](state, dotIndex: number[]): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.removeDot(dotId);
+    currentSS.removeDots(dotIndex);
   },
-  addDot(state, dot: Partial<StuntSheetDot>): void {
+  [Mutations.ADD_DOTS](state, jsons: Partial<StuntSheetDot>[]): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.addDot(dot);
+    currentSS.addDots(jsons.map((json) => new StuntSheetDot(json)));
   },
-  moveDot(
+  [Mutations.MOVE_DOTS](
     state,
-    { dotId, position }: { dotId: number; position: [number, number] }
+    newPositions: [number, [number, number]][]
   ): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.moveDot(dotId, position);
+    currentSS.moveDots(newPositions);
   },
-  setStuntSheetTitle(state, title: string): void {
+  [Mutations.SET_STUNT_SHEET_TITLE](state, title: string): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.title = title;
   },
-  setStuntSheetBeats(state, beats: number): void {
+  [Mutations.SET_STUNT_SHEET_BEATS](state, beats: number): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.beats = beats;
   },
-  addDotType(state): void {
+  [Mutations.ADD_DOT_TYPE](state): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
@@ -90,35 +169,115 @@ const mutations: MutationTree<CalChartState> = {
     currentSS.dotTypes.push([new ContInPlace()]);
     currentSS.dotAppearances.push(new DotAppearance());
   },
-  addContinuity(
+  [Mutations.ADD_CONTINUITY](
     state,
-    { dotTypeIndex, continuity }: { dotTypeIndex: number; continuity: BaseCont }
+    { dotTypeIndex, contID }: { dotTypeIndex: number; contID: CONT_IDS }
   ): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
-    currentSS.dotTypes[dotTypeIndex].push(continuity);
+    currentSS.dotTypes[dotTypeIndex].push(ContFactory(contID));
     state.show.generateFlows(state.selectedSS);
   },
 
   // Show -> StuntSheet -> BaseCont
-  updateDotTypeContinuity(
+  [Mutations.UPDATE_DOT_TYPE_MARCH_STYLE](
     state,
     {
       dotTypeIndex,
       continuityIndex,
-      continuity,
-    }: { dotTypeIndex: number; continuityIndex: number; continuity: BaseCont }
+      marchType,
+    }: { dotTypeIndex: number; continuityIndex: number; marchType: MARCH_TYPES }
   ): void {
-    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+    const getContinuity = getters.getContinuity as (
       state: CalChartState
-    ) => StuntSheet;
-    const currentSS = getSelectedStuntSheet(state);
-    currentSS.dotTypes[dotTypeIndex][continuityIndex] = continuity;
-    state.show.generateFlows(state.selectedSS);
+    ) => (dotTypeIndex: number, continuityIndex: number) => BaseCont;
+    const continuity: BaseCont = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
+    continuity.marchType = marchType;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
   },
-  deleteDotTypeContinuity(
+  [Mutations.UPDATE_DOT_TYPE_DURATION](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      duration,
+    }: { dotTypeIndex: number; continuityIndex: number; duration: number }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => BaseCont;
+    const continuity: BaseCont = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
+    continuity.duration = duration;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.UPDATE_DOT_TYPE_ETF_TYPE](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      etfType,
+    }: {
+      dotTypeIndex: number;
+      continuityIndex: number;
+      etfType: ETF_DYNAMIC_TYPES;
+    }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => ContETFDynamic;
+    const continuity: ContETFDynamic = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
+    continuity.eightToFiveType = etfType;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.UPDATE_DOT_TYPE_ETF_DIRECTION](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      direction,
+    }: { dotTypeIndex: number; continuityIndex: number; direction: number }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => ContETFStatic;
+    const continuity: ContETFStatic = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
+    continuity.marchingDirection = direction;
+    continuity.facingDirection = direction;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.UPDATE_DOT_TYPE_IN_PLACE_DIRECTION](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      direction,
+    }: { dotTypeIndex: number; continuityIndex: number; direction: number }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => ContInPlace;
+    const continuity: ContInPlace = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
+    continuity.direction = direction;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.DELETE_DOT_TYPE_CONTINUITY](
     state,
     {
       dotTypeIndex,
@@ -134,13 +293,13 @@ const mutations: MutationTree<CalChartState> = {
   },
 
   // Show controls
-  setSelectedSS(state, selectedSS: number): void {
+  [Mutations.SET_SELECTED_SS](state, selectedSS: number): void {
     state.selectedSS = selectedSS;
   },
-  setBeat(state, beat: number): void {
+  [Mutations.SET_BEAT](state, beat: number): void {
     state.beat = beat;
   },
-  incrementBeat(state): void {
+  [Mutations.INCREMENT_BEAT](state): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
       state: CalChartState
     ) => StuntSheet;
@@ -159,7 +318,7 @@ const mutations: MutationTree<CalChartState> = {
       state.beat += 1;
     }
   },
-  decrementBeat(state): void {
+  [Mutations.DECREMENT_BEAT](state): void {
     if (state.beat - 1 < 0) {
       if (state.selectedSS > 0) {
         // Go to previous stuntsheet's 2nd to last beat
@@ -179,44 +338,50 @@ const mutations: MutationTree<CalChartState> = {
   },
 
   // View Settings
-  setFourStepGrid(state, enabled: boolean): void {
+  [Mutations.SET_FOUR_STEP_GRID](state, enabled: boolean): void {
     state.fourStepGrid = enabled;
   },
-  setYardlines(state, enabled: boolean): void {
+  [Mutations.SET_YARDLINES](state, enabled: boolean): void {
     state.yardlines = enabled;
   },
-  setYardlineNumbers(state, enabled: boolean): void {
+  [Mutations.SET_YARDLINE_NUMBERS](state, enabled: boolean): void {
     state.yardlineNumbers = enabled;
   },
-  setShowDotLabels(state, enabled: boolean): void {
+  [Mutations.SET_SHOW_DOT_LABELS](state, enabled: boolean): void {
     state.showDotLabels = enabled;
   },
 
   // Tools
-  setGrapherSvgPanZoom(state, svgPanZoomInstance: SvgPanZoom.Instance): void {
+  [Mutations.SET_GRAPHER_SVG_PAN_ZOOM](
+    state,
+    svgPanZoomInstance: SvgPanZoom.Instance
+  ): void {
     state.grapherSvgPanZoom = svgPanZoomInstance;
   },
-  setInvertedCTMMatrix(state, matrix: DOMMatrix): void {
+  [Mutations.SET_INVERTED_CTM_MATRIX](state, matrix: DOMMatrix): void {
     state.invertedCTMMatrix = matrix;
   },
-  setToolSelected(state, toolSelected: BaseTool): void {
+  [Mutations.SET_TOOL_SELECTED](state, toolSelected: BaseTool): void {
     state.toolSelected = toolSelected;
     state.grapherToolDots = [];
   },
-  setGrapherToolDots(state, grapherToolDots: StuntSheetDot[]): void {
+  [Mutations.SET_GRAPHER_TOOL_DOTS](
+    state,
+    grapherToolDots: StuntSheetDot[]
+  ): void {
     state.grapherToolDots = grapherToolDots;
   },
 
   // selection
-  clearSelectedDotIds(state): void {
+  [Mutations.CLEAR_SELECTED_DOTS](state): void {
     state.selectedDotIds = [];
   },
-  addSelectedDotIds(state, dotIds: number[]): void {
+  [Mutations.ADD_SELECTED_DOTS](state, dotIds: number[]): void {
     dotIds.forEach((id) => {
       !state.selectedDotIds.includes(id) && state.selectedDotIds.push(id);
     });
   },
-  toggleSelectedDotIds(state, dotIds: number[]): void {
+  [Mutations.TOGGLE_SELECTED_DOTS](state, dotIds: number[]): void {
     // first remove all the items passed in.
     dotIds.forEach((id) => {
       const index = state.selectedDotIds.indexOf(id);
@@ -227,9 +392,32 @@ const mutations: MutationTree<CalChartState> = {
       }
     });
   },
-  setSelectionLasso(state, lasso: [number, number][]): void {
+  [Mutations.SET_SELECTION_LASSO](state, lasso: [number, number][]): void {
     state.selectionLasso = lasso;
+  },
+
+  // Undo system
+  [Mutations.UNDO](): void {
+    // intentionally empty as the Undo system is "sniffing" for this command.
+  },
+  [Mutations.REDO](): void {
+    // intentionally empty as the Undo system is "sniffing" for this command.
+  },
+  [Mutations.INITIAL_SHOW_STATE](state): void {
+    state.show = state.initialShowState.getInitialState();
   },
 };
 
-export default mutations;
+function updateContinuity(
+  state: CalChartState,
+  dotTypeIndex: number,
+  continuityIndex: number,
+  continuity: BaseCont
+) {
+  const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+    state: CalChartState
+  ) => StuntSheet;
+  const currentSS = getSelectedStuntSheet(state);
+  currentSS.dotTypes[dotTypeIndex][continuityIndex] = continuity;
+  state.show.generateFlows(state.selectedSS);
+}

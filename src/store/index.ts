@@ -1,11 +1,12 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
-import mutations from "./mutations";
+import { mutations } from "./mutations";
 import getters from "./getters";
 import Show from "@/models/Show";
 import Serializable from "@/models/util/Serializable";
 import BaseTool from "@/tools/BaseTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
+import InitialShowState from "@/models/InitialShowState";
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ Vue.use(Vuex);
  * Defines the global state for the application
  *
  * @property show              - The currently selected show data
+ * @property initialShowState  - Beginning spot for show
  * @property selectedSS        - Index of stuntsheet currently in view
  * @property beat              - The point in time the show is in
  * @property fourStepGrid      - View setting to toggle the grapher grid
@@ -23,6 +25,8 @@ Vue.use(Vuex);
  */
 export class CalChartState extends Serializable<CalChartState> {
   show: Show = new Show();
+
+  initialShowState: InitialShowState = new InitialShowState();
 
   selectedSS = 0;
 

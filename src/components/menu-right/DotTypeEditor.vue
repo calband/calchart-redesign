@@ -45,14 +45,11 @@
 </template>
 
 <script lang="ts">
-import BaseCont from "@/models/continuity/BaseCont";
-import ContETFDynamic from "@/models/continuity/ContETFDynamic";
-import ContETFStatic from "@/models/continuity/ContETFStatic";
-import ContInPlace from "@/models/continuity/ContInPlace";
-import ContEven from "@/models/continuity/ContEven";
+import { BaseCont, CONT_IDS } from "@/models/continuity/BaseCont";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";
+import { Mutations } from "@/store/mutations";
 
 /**
  * View/Edit all continuiuties for a dot type
@@ -77,27 +74,27 @@ export default Vue.extend({
   },
   methods: {
     addContInPlace() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContInPlace(),
+        contID: CONT_IDS.IN_PLACE,
       });
     },
     addContETFDynamic() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContETFDynamic(),
+        contID: CONT_IDS.ETF_DYNAMIC,
       });
     },
     addContETFStatic() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContETFStatic(),
+        contID: CONT_IDS.ETF_STATIC,
       });
     },
     addContEven() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContEven(),
+        contID: CONT_IDS.EVEN,
       });
     },
   },

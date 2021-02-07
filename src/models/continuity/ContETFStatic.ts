@@ -1,4 +1,4 @@
-import BaseCont, { CONT_IDS } from "./BaseCont";
+import { BaseCont, CONT_IDS } from "./BaseCont";
 import { DIRECTIONS, MARCH_TYPES } from "../util/constants";
 import { FlowBeat } from "../util/FlowBeat";
 import Serializable from "../util/Serializable";

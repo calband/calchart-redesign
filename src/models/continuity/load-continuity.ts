@@ -1,4 +1,4 @@
-import BaseCont, { CONT_IDS } from "./BaseCont";
+import { BaseCont, CONT_IDS } from "./BaseCont";
 import ContInPlace from "./ContInPlace";
 import ContETFDynamic from "./ContETFDynamic";
 import ContEven from "./ContEven";
