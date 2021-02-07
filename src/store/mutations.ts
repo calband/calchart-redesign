@@ -103,12 +103,12 @@ export const mutations: MutationTree<CalChartState> = {
       })
     );
     state.selectedSS = state.show.stuntSheets.length - 1;
-    state.beat = 1;
+    state.beat = 0;
   },
   [Mutations.DELETE_STUNT_SHEET](state): void {
     state.show.stuntSheets.splice(state.selectedSS, 1);
     state.selectedSS = Math.max(0, state.selectedSS - 1);
-    state.beat = 1;
+    state.beat = 0;
   },
 
   // Show -> Field
