@@ -39,12 +39,12 @@ function IsCalChart3(buffer: ArrayBuffer): ParseCalChart | null {
  * displayed to the user
  */
 export const loadShowFromBuffer = (
-  defaultTitle: string,
+  fileName: string,
   buffer: ArrayBuffer
 ): Show => {
-  let parser = IsCalChart3(buffer);
+  const parser = IsCalChart3(buffer);
   if (parser) {
-    return parser.ParseShow(defaultTitle, buffer);
+    return parser.ParseShow(fileName.replace(/\.[^/.]+$/, ""), buffer);
   }
   throw new Error("file is not a CalChart show file.");
 };

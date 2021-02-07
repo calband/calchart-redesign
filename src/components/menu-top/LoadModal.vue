@@ -103,10 +103,15 @@ export default Vue.extend({
         reader.readAsText(this.file);
       } else if (this.file.name.includes(".shw")) {
         reader.onload = (): void => {
-          if (reader.result && reader.result instanceof ArrayBuffer) {
+          if (
+            reader.result &&
+            this.file &&
+            reader.result instanceof ArrayBuffer
+          ) {
             try {
               this.showLoadState = new InitialLoadShwState({
                 showData: reader.result,
+                fileName: this.file.name,
               });
               this.showPreview = this.showLoadState.getInitialState();
             } catch (e) {

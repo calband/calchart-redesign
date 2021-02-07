@@ -168,7 +168,7 @@ describe("store/mutations", () => {
       store.commit(Mutations.INCREMENT_BEAT);
       expect(store.state.selectedSS).toBe(1);
       expect(store.state.beat).toBe(2);
-      store.commit("incrementBeat");
+      store.commit(Mutations.INITIAL_SHOW_STATE);
       expect(store.state.selectedSS).toBe(1);
       expect(store.state.beat).toBe(2);
     });

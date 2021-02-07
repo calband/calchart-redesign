@@ -9,7 +9,7 @@
       <template slot="start">
         <b-navbar-dropdown label="File" data-test="menu-top--file">
           <b-navbar-item data-test="menu-top--new-show" @click="newShow">
-            New Show
+            New Show (ctrl-N)
           </b-navbar-item>
 
           <hr class="navbar-divider" />
