@@ -88,8 +88,9 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       // Complete the selection by finding everything in the selection box.
       const stuntSheetDots: StuntSheetDot[] =
         GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
+      const beat = GlobalStore.state.beat;
       const dotsInLasso = stuntSheetDots.filter((dot) =>
-        InsideLasso(GlobalStore.state.selectionLasso, [dot.x, dot.y])
+        InsideLasso(GlobalStore.state.selectionLasso, [dot.xAtBeat(beat), dot.yAtBeat(beat)])
       );
       const dotIdsInLasso = dotsInLasso.map((dot) => dot.id);
       if (event.altKey) {
