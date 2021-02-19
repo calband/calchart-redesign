@@ -11,11 +11,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - run: npm ci
       - run: npm run lint:ci
       - run: npm run test:unit
       - run: npm run test:e2e:ci
       - name: Upload e2e videos
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v2
         with:
           path: tests/e2e/videos/**/*.mp4
