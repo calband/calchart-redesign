@@ -2,6 +2,8 @@ describe("App.vue", () => {
   it("Menus and grapher exists", () => {
     cy.visit("/");
 
+    cy.get('[data-test="app"]').find(".doesnotexist");
+
     cy.get('[data-test="app"]').find(".grapher");
 
     cy.get('[data-test="app"]').find(".menu-top");
