@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="mt-5">
+    <h2>Dot Type Editor</h2>
     <DotTypeEditor
       v-for="(dotType, index) in dotTypes"
       :key="`dotType--${index}`"
@@ -25,7 +26,7 @@ import StuntSheet from "@/models/StuntSheet";
 import { Mutations } from "@/store/mutations";
 
 export default Vue.extend({
-  name: "DotTypeTab",
+  name: "DotTypeEditorWrapper",
   components: {
     DotTypeEditor,
   },
@@ -43,3 +44,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped lang="scss">
+h2 {
+  font-weight: bold;
+}
+</style>

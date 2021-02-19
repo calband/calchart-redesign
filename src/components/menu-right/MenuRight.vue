@@ -1,26 +1,21 @@
 <template>
   <div class="menu-right">
-    <b-tabs position="is-centered">
-      <b-tab-item label="Dot Types" value="dotType">
-        <DotTypeTab />
-      </b-tab-item>
-      <b-tab-item label="Dots" value="dot">
-        <DotTab />
-      </b-tab-item>
-    </b-tabs>
+    <SelectedDotEditor />
+    <hr />
+    <DotTypeEditorWrapper />
   </div>
 </template>
 
 <script lang="ts">
-import DotTypeTab from "./DotTypeTab.vue";
-import DotTab from "./DotTab.vue";
+import SelectedDotEditor from "./SelectedDotEditor.vue";
+import DotTypeEditorWrapper from "./DotTypeEditorWrapper.vue";
 import Vue from "vue";
 
 export default Vue.extend({
   name: "MenuRight",
   components: {
-    DotTypeTab,
-    DotTab,
+    SelectedDotEditor,
+    DotTypeEditorWrapper,
   },
 });
 </script>

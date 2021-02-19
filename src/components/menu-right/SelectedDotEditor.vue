@@ -1,22 +1,32 @@
 <template>
-  <div v-if="dotsWithLabels.length">
-    <h2 v-if="dotsWithLabels.length > 1">Multiple Selected Dots</h2>
-    <h2 v-if="dotsWithLabels.length === 1">Selected Dot: {{ label }}</h2>
-    <b-field label="Dot Type">
-      <b-select size="is-small" v-model="dotTypeIndex">
-        <option
-          v-for="dotType in dotTypesOptions"
-          :key="dotType"
-          :value="dotType"
-        >
-          Dot type {{ dotType }}
-        </option>
-        <option value="" disabled>Multiple</option>
-      </b-select>
-    </b-field>
-  </div>
-  <div v-else>
-    <h2>No dots selected!</h2>
+  <div class="mb-5 wrapper">
+    <h2>Selected Dot Editor</h2>
+    <template v-if="dotsWithLabels.length">
+      <h3 v-if="dotsWithLabels.length > 1" data-test="selected-dot--selection">
+        Multiple Selected Dots
+      </h3>
+      <h3
+        v-if="dotsWithLabels.length === 1"
+        data-test="selected-dot--selection"
+      >
+        Selected Dot: {{ label }}
+      </h3>
+      <b-field label="Dot Type">
+        <b-select size="is-small" v-model="dotTypeIndex">
+          <option
+            v-for="dotType in dotTypesOptions"
+            :key="dotType"
+            :value="dotType"
+          >
+            Dot type {{ dotType }}
+          </option>
+          <option value="" disabled>Multiple</option>
+        </b-select>
+      </b-field>
+    </template>
+    <template v-else>
+      <h3 data-test="selected-dot--selection">No dots selected!</h3>
+    </template>
   </div>
 </template>
 
@@ -28,7 +38,7 @@ import { Mutations } from "@/store/mutations";
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "DotTab",
+  name: "SelectedDotEditor",
   computed: {
     dotsWithLabels(): [string, StuntSheetDot][] {
       const { selectedDotIds, show, selectedSS } = this.$store
@@ -69,3 +79,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped lang="scss">
+h2 {
+  font-weight: bold;
+}
+</style>
