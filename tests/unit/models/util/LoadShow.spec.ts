@@ -5,7 +5,7 @@ describe("models/util/LoadShow", () => {
   describe("Testing loadShowFromBuffer", () => {
     it("loading empty data", () => {
       expect(() => {
-        loadShowFromBuffer(new ArrayBuffer(8));
+        loadShowFromBuffer("", new ArrayBuffer(8));
       }).toThrow("file is not a CalChart show file.");
     });
 
@@ -15,7 +15,7 @@ describe("models/util/LoadShow", () => {
       const dataArray = Uint8Array.from(atob(base64String), (c) =>
         c.charCodeAt(0)
       );
-      const show = loadShowFromBuffer(dataArray.buffer);
+      const show = loadShowFromBuffer("", dataArray.buffer);
       expect(show).not.toBeNull();
       expect(show instanceof Show).toBeTruthy();
       expect(show.dotLabels.length).toBe(1);

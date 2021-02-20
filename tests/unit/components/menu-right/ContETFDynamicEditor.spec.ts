@@ -10,6 +10,7 @@ import ContETFDynamic, {
   ETF_DYNAMIC_TYPES,
 } from "@/models/continuity/ContETFDynamic";
 import { MARCH_TYPES } from "@/models/util/constants";
+import { Mutations } from "@/store/mutations";
 
 describe("components/menu-right/ContETFDynamicEditor", () => {
   let editor: Wrapper<Vue>;
@@ -56,12 +57,10 @@ describe("components/menu-right/ContETFDynamicEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectETFType.setValue(ETF_DYNAMIC_TYPES.NSEW);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_ETF_TYPE,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.eightToFiveType).toBe(
-        ETF_DYNAMIC_TYPES.NSEW
-      );
+      expect(commitSpy.mock.calls[0][1].etfType).toBe(ETF_DYNAMIC_TYPES.NSEW);
     });
 
     it("changing march type", () => {
@@ -74,10 +73,10 @@ describe("components/menu-right/ContETFDynamicEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
+      expect(commitSpy.mock.calls[0][1].marchType).toBe(
         MARCH_TYPES.MINI_MILITARY
       );
     });
@@ -90,10 +89,13 @@ describe("components/menu-right/ContETFDynamicEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       deleteButton.trigger("click");
       await editor.vm.$nextTick();
-      expect(commitSpy).toHaveBeenCalledWith("deleteDotTypeContinuity", {
-        dotTypeIndex: 0,
-        continuityIndex: 0,
-      });
+      expect(commitSpy).toHaveBeenCalledWith(
+        Mutations.DELETE_DOT_TYPE_CONTINUITY,
+        {
+          dotTypeIndex: 0,
+          continuityIndex: 0,
+        }
+      );
     });
   });
 

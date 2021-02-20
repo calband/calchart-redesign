@@ -99,7 +99,7 @@ import { ParseCalChart } from "./ParseCalChart";
 export class ParseCalChart31 implements ParseCalChart {
   private numberDots = 0;
 
-  ParseShow(inputBuffer: ArrayBuffer): Show {
+  ParseShow(defaultTitle: string, inputBuffer: ArrayBuffer): Show {
     // we know the header for a CalChart3.1 show is 8 bytes.  Remove it.
     const buffer = new DataView(inputBuffer, 0, inputBuffer.byteLength);
     // CalChart3.1 is more complicated a format so we parse the blocks inline.
@@ -110,7 +110,7 @@ export class ParseCalChart31 implements ParseCalChart {
     offset += 4;
 
     const show = new Show({
-      title: "",
+      title: defaultTitle,
       stuntSheets: [],
     });
 

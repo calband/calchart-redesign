@@ -48,6 +48,7 @@ import ContETFDynamic, {
 } from "@/models/continuity/ContETFDynamic";
 import { MARCH_TYPES } from "@/models/util/constants";
 import StuntSheet from "@/models/StuntSheet";
+import { Mutations } from "@/store/mutations";
 
 /**
  * View/Edit an Eight to Five Static continuity
@@ -80,15 +81,10 @@ export default Vue.extend({
         return continuity.eightToFiveType;
       },
       set(etfType: ETF_DYNAMIC_TYPES): void {
-        const continuity: ContETFDynamic = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.eightToFiveType = etfType;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_ETF_TYPE, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity,
+          etfType: etfType,
         });
       },
     },
@@ -101,15 +97,10 @@ export default Vue.extend({
         return continuity.marchType;
       },
       set(marchType: MARCH_TYPES): void {
-        const continuity: ContETFDynamic = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.marchType = marchType;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_MARCH_STYLE, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity: continuity,
+          marchType: marchType,
         });
       },
     },
@@ -121,7 +112,7 @@ export default Vue.extend({
   },
   methods: {
     deleteContinuity() {
-      this.$store.commit("deleteDotTypeContinuity", {
+      this.$store.commit(Mutations.DELETE_DOT_TYPE_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuityIndex: this.continuityIndex,
       });

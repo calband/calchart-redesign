@@ -53,6 +53,7 @@ import Vue from "vue";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
 import StuntSheet from "@/models/StuntSheet";
+import { Mutations } from "@/store/mutations";
 
 /**
  * View/Edit an ETF-Static continuity
@@ -95,15 +96,10 @@ export default Vue.extend({
         return continuity.marchType;
       },
       set(marchType: MARCH_TYPES): void {
-        const continuity: ContETFStatic = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.marchType = marchType;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_MARCH_STYLE, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity,
+          marchType: marchType,
         });
       },
     },
@@ -116,16 +112,10 @@ export default Vue.extend({
         return continuity.marchingDirection;
       },
       set(direction: number): void {
-        const continuity: ContETFStatic = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.marchingDirection = direction;
-        continuity.facingDirection = direction;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_ETF_DIRECTION, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity: continuity,
+          direction: direction,
         });
       },
     },
@@ -138,15 +128,10 @@ export default Vue.extend({
         return continuity.duration;
       },
       set(duration: number): void {
-        const continuity: ContETFStatic = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.duration = duration;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_DURATION, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity,
+          duration: duration,
         });
       },
     },
@@ -158,7 +143,7 @@ export default Vue.extend({
   },
   methods: {
     deleteContinuity() {
-      this.$store.commit("deleteDotTypeContinuity", {
+      this.$store.commit(Mutations.DELETE_DOT_TYPE_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuityIndex: this.continuityIndex,
       });

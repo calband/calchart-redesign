@@ -1,5 +1,6 @@
 <template>
   <div class="menu-left">
+    <b-field :label="`Show: ${title}`" data-test="menu-left--title" />
     <b-field
       :label="`Beat: ${beatString} / ${selectedSSBeats}`"
       data-test="menu-left--beat"
@@ -71,6 +72,7 @@
 </template>
 
 <script lang="ts">
+import { Mutations } from "@/store/mutations";
 import Vue from "vue";
 import StuntSheet from "../../models/StuntSheet";
 import StuntSheetModal from "./StuntSheetModal.vue";
@@ -91,7 +93,7 @@ export default Vue.extend({
         return this.$store.state.beat;
       },
       set(beat: number): void {
-        this.$store.commit("setBeat", beat);
+        this.$store.commit(Mutations.SET_BEAT, beat);
       },
     },
     beatString(): string {
@@ -107,8 +109,8 @@ export default Vue.extend({
         return this.$store.state.selectedSS;
       },
       set(selectedSS: number): void {
-        this.$store.commit("setSelectedSS", selectedSS);
-        this.$store.commit("setBeat", 0);
+        this.$store.commit(Mutations.SET_SELECTED_SS, selectedSS);
+        this.$store.commit(Mutations.SET_BEAT, 0);
       },
     },
     selectedSSBeats(): number {
@@ -116,16 +118,19 @@ export default Vue.extend({
         .getSelectedStuntSheet as StuntSheet;
       return selectedSS.beats;
     },
+    title(): string {
+      return this.$store.state.show.title;
+    },
   },
   methods: {
     addStuntSheet(): void {
-      this.$store.commit("addStuntSheet");
+      this.$store.commit(Mutations.ADD_STUNT_SHEET);
     },
     incrementBeat(): void {
-      this.$store.commit("incrementBeat");
+      this.$store.commit(Mutations.INCREMENT_BEAT);
     },
     decrementBeat(): void {
-      this.$store.commit("decrementBeat");
+      this.$store.commit(Mutations.DECREMENT_BEAT);
     },
   },
 });

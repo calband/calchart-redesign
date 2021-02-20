@@ -8,6 +8,7 @@ import Show from "@/models/Show";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import { Mutations } from "@/store/mutations";
 
 describe("components/menu-right/ContInPlaceEditor", () => {
   let editor: Wrapper<Vue>;
@@ -54,10 +55,10 @@ describe("components/menu-right/ContInPlaceEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
+      expect(commitSpy.mock.calls[0][1].marchType).toBe(
         MARCH_TYPES.MINI_MILITARY
       );
     });
@@ -72,10 +73,10 @@ describe("components/menu-right/ContInPlaceEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       durationInput.setValue("8");
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_DURATION,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.duration).toBe(8);
+      expect(commitSpy.mock.calls[0][1].duration).toBe(8);
     });
 
     it("changing direction", () => {
@@ -88,12 +89,10 @@ describe("components/menu-right/ContInPlaceEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectDirection.setValue(`${DIRECTIONS.S}`);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_IN_PLACE_DIRECTION,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.direction).toBe(
-        DIRECTIONS.S
-      );
+      expect(commitSpy.mock.calls[0][1].direction).toBe(DIRECTIONS.S);
     });
 
     it("can delete if more than one continuity exists for the dot type", async () => {
@@ -102,10 +101,13 @@ describe("components/menu-right/ContInPlaceEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       deleteButton.trigger("click");
       await editor.vm.$nextTick();
-      expect(commitSpy).toHaveBeenCalledWith("deleteDotTypeContinuity", {
-        dotTypeIndex: 0,
-        continuityIndex: 1,
-      });
+      expect(commitSpy).toHaveBeenCalledWith(
+        Mutations.DELETE_DOT_TYPE_CONTINUITY,
+        {
+          dotTypeIndex: 0,
+          continuityIndex: 1,
+        }
+      );
     });
   });
 
