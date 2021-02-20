@@ -129,6 +129,57 @@ describe("tools/ToolSingleDot", () => {
     );
   });
 
+  it("moving a dot should move it and keep it selected", () => {
+    cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
+    cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 1);
+    cy.get('[data-test="grapher-dots--dot"]')
+      .should("have.length", 1)
+      .should("have.attr", "transform", "translate(12, 8)");
+    cy.get('[data-test="grapher-dots--dot"][data-test-selected="true"]').should(
+      "have.length",
+      0
+    );
+
+    cy.get('[data-test="menu-bottom-tool--select-box-move').click();
+
+    cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 1);
+    cy.get('[data-test="grapher-dots--dot"][data-test-selected="true"]').should(
+      "have.length",
+      1
+    );
+
+    cy.mousedownGrapher(12, 8);
+    cy.mousemoveGrapher(10, 10);
+
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 1);
+    cy.get('[data-test="grapher-dots--dot"]')
+      .should("have.length", 1)
+      .should("have.attr", "transform", "translate(12, 8)");
+    cy.get('[data-test="grapher-dots--dot"][data-test-selected="true"]').should(
+      "have.length",
+      1
+    );
+    cy.get('[data-test="grapher-tool--dot"]')
+      .should("have.length", 1)
+      .should("have.attr", "cx", "10")
+      .should("have.attr", "cy", "10");
+
+    cy.mouseupGrapher(10, 10);
+
+    cy.get('[data-test="grapher-tool--dot"]').should("have.length", 0);
+    cy.get('[data-test="grapher-dots--dot"]').should("have.length", 1);
+    cy.get('[data-test="grapher-dots--dot"]')
+      .should("have.length", 1)
+      .should("have.attr", "transform", "translate(10, 10)");
+    cy.get('[data-test="grapher-dots--dot"][data-test-selected="true"]').should(
+      "have.length",
+      1
+    );
+  });
   it("clicking between box and lasso should not clear out selection", () => {
     cy.get('[data-test="grapher-dots--dot"]').should("not.exist");
 
