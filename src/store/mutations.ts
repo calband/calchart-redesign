@@ -28,6 +28,7 @@ export enum Mutations {
   ADD_DOTS = "Add Marcher",
   REMOVE_DOTS = "Remove Marcher",
   MOVE_DOTS = "Move Marcher",
+  UPDATE_SELECTED_DOTS_DOT_TYPE = "Update Selected Dots' Dot Type",
   SET_STUNT_SHEET_TITLE = "Set Stunt Sheet title",
   SET_STUNT_SHEET_BEATS = "Set Stund Sheet beats",
   ADD_DOT_TYPE = "Add Marcher type",
@@ -76,6 +77,7 @@ export const UNDOABLE_ACTIONS = [
   Mutations.ADD_DOTS,
   Mutations.REMOVE_DOTS,
   Mutations.MOVE_DOTS,
+  Mutations.UPDATE_SELECTED_DOTS_DOT_TYPE,
   Mutations.SET_STUNT_SHEET_TITLE,
   Mutations.SET_STUNT_SHEET_BEATS,
   Mutations.ADD_DOT_TYPE,
@@ -148,6 +150,22 @@ export const mutations: MutationTree<CalChartState> = {
     const currentSS = getSelectedStuntSheet(state);
     currentSS.moveDots(newPositions);
     state.show.generateFlows(state.selectedSS);
+  },
+  [Mutations.UPDATE_SELECTED_DOTS_DOT_TYPE](state, dotTypeIndex: number): void {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    const { selectedDotIds } = state;
+    if (selectedDotIds.length) {
+      selectedDotIds.forEach((dotId) => {
+        const dot = currentSS.stuntSheetDots.find((dot) => dot.id === dotId);
+        if (dot) {
+          dot.dotTypeIndex = dotTypeIndex;
+        }
+      });
+      state.show.generateFlows(state.selectedSS);
+    }
   },
   [Mutations.SET_STUNT_SHEET_TITLE](state, title: string): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
