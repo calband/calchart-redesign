@@ -1,6 +1,18 @@
 <template>
   <div class="my-2">
-    <p data-test="menu-right--dot-type">Dot Type {{ dotTypeIndex }}</p>
+    <b data-test="menu-right--dot-type">Dot Type {{ dotTypeIndex }}</b>
+    <svg
+      viewBox="-1 -1 2 2"
+      class="menu-right-dot-appearance"
+      @click="dotAppearanceModalActive = true"
+    >
+      <Dot
+        :key="`menu-right-dot-${dotTypeIndex}-preview`"
+        :data-test="`menu-right-dot-${dotTypeIndex}-preview`"
+        :dotTypeIndex="dotTypeIndex"
+        :labeled="false"
+      />
+    </svg>
     <ContEditorHelper
       v-for="(continuity, index) in dotType"
       :key="`continuity--${dotTypeIndex}--${index}`"
@@ -41,6 +53,14 @@
       </b-dropdown>
     </div>
     <hr />
+    <b-modal
+      :active.sync="dotAppearanceModalActive"
+      has-modal-card
+      trap-focus
+      data-test="menu-right-dot-appearance-modal"
+    >
+      <DotAppearanceModal :dotTypeIndex="dotTypeIndex" />
+    </b-modal>
   </div>
 </template>
 
@@ -49,6 +69,8 @@ import { BaseCont, CONT_IDS } from "@/models/continuity/BaseCont";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
 import ContEditorHelper from "./ContEditorHelper.vue";
+import Dot from "@/components/grapher/Dot.vue";
+import DotAppearanceModal from "./DotAppearanceModal.vue";
 import { Mutations } from "@/store/mutations";
 
 /**
@@ -56,8 +78,13 @@ import { Mutations } from "@/store/mutations";
  */
 export default Vue.extend({
   name: "DotTypeEditor",
+  data: () => ({
+    dotAppearanceModalActive: false,
+  }),
   components: {
     ContEditorHelper,
+    Dot,
+    DotAppearanceModal,
   },
   props: {
     dotTypeIndex: {
@@ -101,4 +128,11 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.menu-right-dot-appearance {
+  vertical-align: middle;
+  float: right;
+  width: 10%;
+  height: 10%;
+}
+</style>
