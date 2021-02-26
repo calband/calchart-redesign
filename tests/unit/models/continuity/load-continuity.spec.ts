@@ -2,7 +2,7 @@ import ContInPlace from "@/models/continuity/ContInPlace";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import ContEven from "@/models/continuity/ContEven";
-import BaseCont, { CONT_IDS } from "@/models/continuity/BaseCont";
+import { BaseCont, CONT_IDS } from "@/models/continuity/BaseCont";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 import ContFollowLeader from "@/models/continuity/ContFollowLeader";
 import ContCounterMarch from "@/models/continuity/ContCounterMarch";

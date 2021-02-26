@@ -1,45 +1,21 @@
 <template>
   <div class="menu-right">
-    <p class="label">Dot Type Editor</p>
-    <DotTypeEditor
-      v-for="(dotType, index) in dotTypes"
-      :key="`dotType--${index}`"
-      :dotTypeIndex="index"
-    />
-    <b-button
-      type="is-text"
-      size="is-small"
-      expanded
-      @click="addDotType"
-      data-se="menu-right--add-dot-type"
-    >
-      Add Dot Type
-    </b-button>
+    <SelectedDotEditor />
+    <hr />
+    <DotTypeEditorWrapper />
   </div>
 </template>
 
 <script lang="ts">
-import DotTypeEditor from "./DotTypeEditor.vue";
-import BaseCont from "@/models/continuity/BaseCont";
+import SelectedDotEditor from "./SelectedDotEditor.vue";
+import DotTypeEditorWrapper from "./DotTypeEditorWrapper.vue";
 import Vue from "vue";
-import StuntSheet from "@/models/StuntSheet";
 
 export default Vue.extend({
   name: "MenuRight",
   components: {
-    DotTypeEditor,
-  },
-  computed: {
-    dotTypes(): BaseCont[][] {
-      const selectedSS = this.$store.getters
-        .getSelectedStuntSheet as StuntSheet;
-      return selectedSS.dotTypes;
-    },
-  },
-  methods: {
-    addDotType() {
-      this.$store.commit("addDotType");
-    },
+    SelectedDotEditor,
+    DotTypeEditorWrapper,
   },
 });
 </script>
@@ -47,6 +23,12 @@ export default Vue.extend({
 <style scoped lang="scss">
 .menu-right {
   grid-area: menu-right;
+}
+</style>
+
+<style lang="scss">
+// Not scoped since we are modifying buefy styling
+.menu-right .b-tabs .tab-content {
   padding: 4px;
 }
 </style>

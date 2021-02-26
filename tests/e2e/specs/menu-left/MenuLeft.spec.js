@@ -49,6 +49,7 @@ describe("components/menu-left/MenuLeft", () => {
     // Add new stuntsheet
     cy.get('[data-test="menu-left--add-ss"]').click();
 
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "Hup! / 16");
     cy.get('[data-test="menu-left--ss"]')
       .should("have.length", 2)
       .eq(1)
@@ -121,5 +122,32 @@ describe("components/menu-left/MenuLeft", () => {
     cy.get('[data-test="grapher-dots--dot"]')
       .should("have.length", 1)
       .should("have.attr", "transform", "translate(8, 8)");
+  });
+
+  it("Creating and deleting a stunt sheet", () => {
+    cy.visit("/");
+
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "Hup! / 16");
+    // Add new stuntsheet
+    cy.get('[data-test="menu-left--add-ss"]').click();
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "Hup! / 16");
+    cy.get('[data-test="menu-left--ss"]')
+      .should("have.length", 2)
+      .eq(1)
+      .should("have.class", "is-active");
+
+    // Edit the second stuntsheet to have title "Script YOLO" and 4 beats
+    cy.get('[data-test="menu-left--ss"]')
+      .eq(1)
+      .find(".stuntsheet-edit")
+      .should("be.visible")
+      .click();
+
+    cy.get('[data-test="menu-left--ss-modal"]').should("be.visible");
+
+    cy.get('[data-test="ss-modal--delete"]').click();
+
+    // Check that the stuntsheet title and beats have been updated
+    cy.get('[data-test="menu-left--beat"]').should("include.text", "Hup! / 16");
   });
 });

@@ -9,5 +9,5 @@ import Show from "../Show";
  * @returns The parsed show
  */
 export interface ParseCalChart {
-  ParseShow(buffer: ArrayBuffer): Show;
+  ParseShow(defaultTitle: string, buffer: ArrayBuffer): Show;
 }

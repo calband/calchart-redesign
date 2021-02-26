@@ -1,7 +1,7 @@
 import { CalChartState } from ".";
 import StuntSheet from "@/models/StuntSheet";
 import { GetterTree } from "vuex";
-import BaseCont from "@/models/continuity/BaseCont";
+import { BaseCont } from "@/models/continuity/BaseCont";
 
 const getters: GetterTree<CalChartState, CalChartState> = {
   // Show

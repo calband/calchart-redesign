@@ -197,11 +197,24 @@ describe("tools/ToolBoxSelect", () => {
       expect(GlobalStore.state.grapherToolDots).toEqual([]);
       expect(GlobalStore.state.selectedDotIds).toEqual([0, 1, 2]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
-      expect(stuntSheet.stuntSheetDots).toEqual([
-        new StuntSheetDot({ x: 6, y: 6, dotTypeIndex: 0, id: 0 }),
-        new StuntSheetDot({ x: 8, y: 6, dotTypeIndex: 0, id: 1 }),
-        new StuntSheetDot({ x: 6, y: 8, dotTypeIndex: 0, id: 2 }),
-      ]);
+      expect(stuntSheet.stuntSheetDots[0]).toMatchObject({
+        x: 6,
+        y: 6,
+        dotTypeIndex: 0,
+        id: 0,
+      });
+      expect(stuntSheet.stuntSheetDots[1]).toMatchObject({
+        x: 8,
+        y: 6,
+        dotTypeIndex: 0,
+        id: 1,
+      });
+      expect(stuntSheet.stuntSheetDots[2]).toMatchObject({
+        x: 6,
+        y: 8,
+        dotTypeIndex: 0,
+        id: 2,
+      });
     });
   });
 });

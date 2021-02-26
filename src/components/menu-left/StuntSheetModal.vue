@@ -40,6 +40,7 @@
 </template>
 
 <script lang="ts">
+import { Mutations } from "@/store/mutations";
 import Vue from "vue";
 
 /**
@@ -54,7 +55,7 @@ export default Vue.extend({
         return stuntSheet.title;
       },
       set(title: string): void {
-        this.$store.commit("setStuntSheetTitle", title);
+        this.$store.commit(Mutations.SET_STUNT_SHEET_TITLE, title);
       },
     },
 
@@ -64,7 +65,7 @@ export default Vue.extend({
         return stuntSheet.beats;
       },
       set(beats: number): void {
-        this.$store.commit("setStuntSheetBeats", beats);
+        this.$store.commit(Mutations.SET_STUNT_SHEET_BEATS, beats);
       },
     },
 
@@ -74,7 +75,7 @@ export default Vue.extend({
   },
   methods: {
     deleteSS(): void {
-      this.$store.commit("deleteStuntSheet");
+      this.$store.commit(Mutations.DELETE_STUNT_SHEET);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (this.$parent as any).close();
     },

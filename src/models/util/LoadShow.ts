@@ -4,13 +4,6 @@ import { ParseCalChart } from "./ParseCalChart";
 import { ParseCalChart31 } from "./ParseCalChart31";
 import { ParseCalChart34 } from "./ParseCalChart34";
 
-// Importing calchart4 is not yet supported
-/* eslint-disable @typescript-eslint/no-unused-vars */
-function IsCalChart4(buffer: ArrayBuffer): ParseCalChart | null {
-  return null;
-}
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
 function IsCalChart3(buffer: ArrayBuffer): ParseCalChart | null {
   const view = new DataView(buffer, 0, 8);
   // CalChart3 starts with INGLGUxy, where xy is used to determine the version
@@ -45,14 +38,13 @@ function IsCalChart3(buffer: ArrayBuffer): ParseCalChart | null {
  * @returns Returns either a new [Show] or will throw an error that can be
  * displayed to the user
  */
-export const loadShowFromBuffer = (buffer: ArrayBuffer): Show => {
-  let parser = IsCalChart4(buffer);
+export const loadShowFromBuffer = (
+  fileName: string,
+  buffer: ArrayBuffer
+): Show => {
+  const parser = IsCalChart3(buffer);
   if (parser) {
-    return parser.ParseShow(buffer);
-  }
-  parser = IsCalChart3(buffer);
-  if (parser) {
-    return parser.ParseShow(buffer);
+    return parser.ParseShow(fileName.replace(/\.[^/.]+$/, ""), buffer);
   }
   throw new Error("file is not a CalChart show file.");
 };

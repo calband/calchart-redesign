@@ -9,12 +9,15 @@ describe("models/util/ParseCalChart34", () => {
       const dataArray = Uint8Array.from(atob(base64String), (c) =>
         c.charCodeAt(0)
       );
-      const show = new ParseCalChart34().ParseShow(dataArray.buffer);
+      const show = new ParseCalChart34().ParseShow(
+        "simple show name",
+        dataArray.buffer
+      );
       expect(show).not.toBeNull();
       expect(show instanceof Show).toBeTruthy();
       expect(show.dotLabels.length).toBe(1);
       expect(show.dotLabels).toStrictEqual(["A0"]);
-      expect(show.title).toStrictEqual("");
+      expect(show.title).toStrictEqual("simple show name");
       expect(show.stuntSheets.length).toBe(2);
       expect(show.stuntSheets[0].title).toBe("1");
       expect(show.stuntSheets[1].title).toBe("sheet2");
