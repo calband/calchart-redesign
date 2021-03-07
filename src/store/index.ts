@@ -7,6 +7,7 @@ import Serializable from "@/models/util/Serializable";
 import BaseTool from "@/tools/BaseTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import InitialShowState from "@/models/InitialShowState";
+import Warning, {WarningType} from "@/models/util/warning";
 
 Vue.use(Vuex);
 
@@ -53,6 +54,8 @@ export class CalChartState extends Serializable<CalChartState> {
   showSelectionLasso = true;
 
   selectionLasso: [number, number][] = [];
+
+  warnings: Warning[] = [new Warning({name: "bad", description:"ok", warningType:WarningType.ERROR})];
 
   constructor(json: Partial<CalChartState> = {}) {
     super();
