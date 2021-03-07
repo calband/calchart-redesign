@@ -18,6 +18,9 @@ export default class Warning extends Serializable<Warning> {
     if (json.name === undefined) {
       json.name = "Empty Warning";
     }
+    if (json.warningType === undefined) {
+      json.warningType = WarningType.WARNING;
+    }
     this.fromJson(json);
   }
 }

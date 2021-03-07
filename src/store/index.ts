@@ -55,14 +55,6 @@ export class CalChartState extends Serializable<CalChartState> {
 
   selectionLasso: [number, number][] = [];
 
-  warnings: Warning[] = [
-    new Warning({
-      name: "bad",
-      description: "ok",
-      warningType: WarningType.ERROR,
-    }),
-  ];
-
   constructor(json: Partial<CalChartState> = {}) {
     super();
     this.fromJson(json);

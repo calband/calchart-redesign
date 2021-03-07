@@ -4,6 +4,7 @@ import ContInPlace from "./continuity/ContInPlace";
 import Serializable from "./util/Serializable";
 import { loadContinuity } from "./continuity/load-continuity";
 import DotAppearance from "./DotAppearance";
+import Warning, { WarningType } from './util/warning';
 
 // Global ID counter for the next stuntsheet
 let NEXT_SS_ID = 0;
@@ -40,6 +41,8 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   dotId = 1;
 
   nextSSId: number | null = null;
+
+  warnings: Warning[] = [];
 
   constructor(json: Partial<StuntSheet> = {}) {
     super();
@@ -95,5 +98,54 @@ export default class StuntSheet extends Serializable<StuntSheet> {
         selectedDot.y = newPosition[1][1];
       }
     }
+  }
+
+  /**
+   * Calculates warnings associated with this stunt sheet
+   */
+  calculateWarnings() {
+    this.warnings = []
+
+    // Ensure no dots are too close
+    this.stuntSheetDots.forEach(dot1 => {
+      this.stuntSheetDots.forEach(dot2 => {
+        if (dot1.id !== dot2.id) {
+          const dx = Math.abs(dot1.x - dot2.x);
+          const dy = Math.abs(dot1.y - dot2.y);
+          if (dx === 0 && dy === 0) {
+            this.warnings.push(new Warning({
+              name: "Dots Overlapping",
+              description: `Dots ${dot1.id} and ${dot2.id} are overlapping`,
+              warningType: WarningType.ERROR,
+            }))
+          } else if (dx < 1 && dy < 1) {
+            this.warnings.push(new Warning({
+              name: "Dots too close",
+              description: `Dots ${dot1.id} and ${dot2.id} are less than 1 step away from eachother`
+            }))
+          }
+        }
+      });
+    });
+
+    // Ensure that each dot type has at least one dot
+    for (let i = 0; i < this.dotTypes.length; i++) {
+      if (!this.stuntSheetDots.some((dot: StuntSheetDot) => dot.dotTypeIndex == i)) {
+        this.warnings.push(new Warning({
+          name: "Dot Type Has No Dots",
+          description: `Dot Type ${i + 1} Has No Dots`
+        }))
+      }
+    }
+  }
+
+  /** 
+   * Recursively updates warnings
+   */
+  recurseWarnings() {
+    this.calculateWarnings();
+    this.stuntSheetDots.forEach(element => {
+      element.calculateWarnings();
+    });
   }
 }
