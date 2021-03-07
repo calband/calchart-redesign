@@ -15,6 +15,9 @@
         />
       </b-tooltip>
     </div>
+    <div class="warnings">
+      Warnings here
+    </div>
   </div>
 </template>
 
@@ -86,5 +89,8 @@ export default Vue.extend({
 <style scoped lang="scss">
 .menu-bottom {
   grid-area: menu-bottom;
+}
+.buttons {
+  height: 36px;
 }
 </style>
