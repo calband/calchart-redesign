@@ -6,6 +6,8 @@ import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import ContEven from "@/models/continuity/ContEven";
 import DotAppearance from "@/models/DotAppearance";
+import { Mutations } from "@/store/mutations";
+import { CONT_IDS } from "@/models/continuity/BaseCont";
 
 describe("store/mutations", () => {
   let store: Store<CalChartState>;
@@ -27,12 +29,12 @@ describe("store/mutations", () => {
 
     it("adds a new dot type to the end of the array", () => {
       expect(store.state.show.stuntSheets[0].dotTypes).toHaveLength(2);
-      store.commit("addDotType");
+      store.commit(Mutations.ADD_DOT_TYPE);
       expect(store.state.show.stuntSheets[0].dotTypes).toHaveLength(3);
     });
     it("adds a new dot appereance to the end of the array", () => {
       expect(store.state.show.stuntSheets[0].dotAppearances).toHaveLength(2);
-      store.commit("addDotType");
+      store.commit(Mutations.ADD_DOT_TYPE);
       expect(store.state.show.stuntSheets[0].dotAppearances).toHaveLength(3);
     });
   });
@@ -58,9 +60,9 @@ describe("store/mutations", () => {
       expect(oldDotTypes[0][0] instanceof ContInPlace).toBe(true);
       expect(oldDotTypes[1]).toHaveLength(1);
       expect(oldDotTypes[1][0] instanceof ContETFDynamic).toBe(true);
-      store.commit("addContinuity", {
+      store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: 1,
-        continuity: new ContEven(),
+        contID: CONT_IDS.EVEN,
       });
       const newDotTypes = store.state.show.stuntSheets[0].dotTypes;
       expect(newDotTypes[0]).toHaveLength(1);
@@ -93,10 +95,10 @@ describe("store/mutations", () => {
       expect(oldDotTypes[0][0].duration).toBe(0);
       expect(oldDotTypes[1]).toHaveLength(1);
       expect(oldDotTypes[1][0] instanceof ContETFDynamic).toBe(true);
-      store.commit("updateDotTypeContinuity", {
+      store.commit(Mutations.UPDATE_DOT_TYPE_DURATION, {
         dotTypeIndex: 0,
         continuityIndex: 0,
-        continuity: new ContInPlace({ duration: 8 }),
+        duration: 8,
       });
       const newDotTypes = store.state.show.stuntSheets[0].dotTypes;
       expect(newDotTypes[0]).toHaveLength(1);
@@ -127,7 +129,7 @@ describe("store/mutations", () => {
       expect(oldDotTypes[0]).toHaveLength(2);
       expect(oldDotTypes[0][0] instanceof ContInPlace).toBe(true);
       expect(oldDotTypes[0][1] instanceof ContETFDynamic).toBe(true);
-      store.commit("deleteDotTypeContinuity", {
+      store.commit(Mutations.DELETE_DOT_TYPE_CONTINUITY, {
         dotTypeIndex: 0,
         continuityIndex: 0,
       });
@@ -151,22 +153,22 @@ describe("store/mutations", () => {
     });
 
     it("increments selectedSS at the end of stuntsheet", () => {
-      store.commit("incrementBeat");
+      store.commit(Mutations.INCREMENT_BEAT);
       expect(store.state.selectedSS).toBe(1);
       expect(store.state.beat).toBe(0);
     });
 
     it("increments beat in the middle of a stuntsheet", () => {
-      store.commit("incrementBeat");
+      store.commit(Mutations.INCREMENT_BEAT);
       expect(store.state.selectedSS).toBe(1);
       expect(store.state.beat).toBe(1);
     });
 
     it("does nothing at end of show", () => {
-      store.commit("incrementBeat");
+      store.commit(Mutations.INCREMENT_BEAT);
       expect(store.state.selectedSS).toBe(1);
       expect(store.state.beat).toBe(2);
-      store.commit("incrementBeat");
+      store.commit(Mutations.INITIAL_SHOW_STATE);
       expect(store.state.selectedSS).toBe(1);
       expect(store.state.beat).toBe(2);
     });
@@ -186,19 +188,19 @@ describe("store/mutations", () => {
     });
 
     it("decrements selectedSS at the beginning of stuntsheet", () => {
-      store.commit("decrementBeat");
+      store.commit(Mutations.DECREMENT_BEAT);
       expect(store.state.selectedSS).toBe(0);
       expect(store.state.beat).toBe(1);
     });
 
     it("decrements beat in the middle of a stuntsheet", () => {
-      store.commit("decrementBeat");
+      store.commit(Mutations.DECREMENT_BEAT);
       expect(store.state.selectedSS).toBe(0);
       expect(store.state.beat).toBe(0);
     });
 
     it("does nothing at beginning of show", () => {
-      store.commit("decrementBeat");
+      store.commit(Mutations.DECREMENT_BEAT);
       expect(store.state.selectedSS).toBe(0);
       expect(store.state.beat).toBe(0);
     });

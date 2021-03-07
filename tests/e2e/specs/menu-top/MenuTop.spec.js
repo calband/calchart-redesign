@@ -26,7 +26,7 @@ describe("components/menu-top/MenuTop", () => {
     });
 
     it("shows selected show title", () => {
-      cy.get('[data-test="menu-top--selected-show"]').contains("Example Show");
+      cy.get('[data-test="menu-left--title"]').contains("Example Show");
     });
 
     it('clicking "Edit Show Details" opens show modal', () => {

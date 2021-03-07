@@ -8,6 +8,9 @@ import StuntSheet from "@/models/StuntSheet";
 import Show from "@/models/Show";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import DotAppearance from "@/models/DotAppearance";
+import { Mutations } from "@/store/mutations";
+import { CONT_IDS } from "@/models/continuity/BaseCont";
 
 describe("components/menu-right/DotTypeEditor", () => {
   let editor: Wrapper<Vue>;
@@ -21,6 +24,7 @@ describe("components/menu-right/DotTypeEditor", () => {
         [new ContETFDynamic(), new ContInPlace()],
         [new ContInPlace()],
       ],
+      dotAppearances: [new DotAppearance(), new DotAppearance()],
     }),
     new StuntSheet({ beats: 8, title: "b" }),
   ];
@@ -59,10 +63,11 @@ describe("components/menu-right/DotTypeEditor", () => {
     expect(commitSpy).not.toHaveBeenCalled();
     addInPlaceBtn.trigger("click");
     await editor.vm.$nextTick();
-    expect(commitSpy).toHaveBeenCalledWith("addContinuity", expect.anything());
-    expect(commitSpy.mock.calls[0][1].continuity instanceof ContInPlace).toBe(
-      true
+    expect(commitSpy).toHaveBeenCalledWith(
+      Mutations.ADD_CONTINUITY,
+      expect.anything()
     );
+    expect(commitSpy.mock.calls[0][1].contID).toBe(CONT_IDS.IN_PLACE);
   });
 
   it("add eight to five dynamic continuity", async () => {
@@ -73,9 +78,16 @@ describe("components/menu-right/DotTypeEditor", () => {
     expect(commitSpy).not.toHaveBeenCalled();
     addETFDynamicBtn.trigger("click");
     await editor.vm.$nextTick();
-    expect(commitSpy).toHaveBeenCalledWith("addContinuity", expect.anything());
-    expect(
-      commitSpy.mock.calls[0][1].continuity instanceof ContETFDynamic
-    ).toBe(true);
+    expect(commitSpy).toHaveBeenCalledWith(
+      Mutations.ADD_CONTINUITY,
+      expect.anything()
+    );
+    expect(commitSpy.mock.calls[0][1].contID).toBe(CONT_IDS.ETF_DYNAMIC);
+  });
+
+  it("renders the dot appearance", async () => {
+    const appearance = editor.find('[data-test="menu-right-dot-0-preview"]');
+    expect(appearance.exists()).toBe(true);
+    expect(appearance.props("dotTypeIndex")).toBe(0);
   });
 });

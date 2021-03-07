@@ -3,6 +3,7 @@ import BaseMoveTool from "./BaseMoveTool";
 import { GlobalStore } from "@/store";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import { InsideLasso } from "@/models/util/Lasso";
+import { Mutations } from "@/store/mutations";
 
 /**
  * Enables Selection and Moving.
@@ -29,16 +30,16 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       // if we click on a selected dot, determine if we are toggling selection.
       if (GlobalStore.state.selectedDotIds.includes(existingDot.id)) {
         if (event.altKey) {
-          GlobalStore.commit("toggleSelectedDotIds", [existingDot.id]);
+          GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, [existingDot.id]);
         }
       } else {
         if (!event.shiftKey) {
-          GlobalStore.commit("clearSelectedDotIds");
+          GlobalStore.commit(Mutations.CLEAR_SELECTED_DOTS);
         }
         if (event.altKey) {
-          GlobalStore.commit("toggleSelectedDotIds", [existingDot.id]);
+          GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, [existingDot.id]);
         } else {
-          GlobalStore.commit("addSelectedDotIds", [existingDot.id]);
+          GlobalStore.commit(Mutations.ADD_SELECTED_DOTS, [existingDot.id]);
         }
       }
       this.moveToolStart = [x, y];
@@ -46,9 +47,9 @@ export abstract class ToolSelectMove extends BaseMoveTool {
     } else {
       // if we hvae not clicked on a dot, start a new selection.
       if (!event.shiftKey) {
-        GlobalStore.commit("clearSelectedDotIds");
+        GlobalStore.commit(Mutations.CLEAR_SELECTED_DOTS);
       }
-      GlobalStore.commit("setSelectionLasso", [[x, y]]);
+      GlobalStore.commit(Mutations.SET_SELECTION_LASSO, [[x, y]]);
       this.selectionLassoStart = [x, y];
     }
   }
@@ -64,6 +65,7 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       ];
       const currentSSDots: StuntSheetDot[] =
         GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
+      const newPositions: [number, [number, number]][] = [];
       GlobalStore.state.selectedDotIds.forEach((id: number) => {
         const selectedDot = currentSSDots.find((dot) => dot.id === id);
         if (!selectedDot) {
@@ -73,13 +75,11 @@ export abstract class ToolSelectMove extends BaseMoveTool {
           selectedDot.x + deltaX,
           selectedDot.y + deltaY,
         ]);
-        GlobalStore.commit("moveDot", {
-          dotId: selectedDot.id,
-          position: [roundedX, roundedY],
-        });
+        newPositions.push([id, [roundedX, roundedY]]);
       });
+      GlobalStore.commit(Mutations.MOVE_DOTS, newPositions);
       // Set the ToolDots to be empty to indicate we're not moving anymore.
-      GlobalStore.commit("setGrapherToolDots", []);
+      GlobalStore.commit(Mutations.SET_GRAPHER_TOOL_DOTS, []);
       // null out moveToolStart to incidcate we're not moving anymore.
       this.moveToolStart = null;
       return;
@@ -88,17 +88,21 @@ export abstract class ToolSelectMove extends BaseMoveTool {
       // Complete the selection by finding everything in the selection box.
       const stuntSheetDots: StuntSheetDot[] =
         GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
+      const beat = GlobalStore.state.beat;
       const dotsInLasso = stuntSheetDots.filter((dot) =>
-        InsideLasso(GlobalStore.state.selectionLasso, [dot.x, dot.y])
+        InsideLasso(GlobalStore.state.selectionLasso, [
+          dot.xAtBeat(beat),
+          dot.yAtBeat(beat),
+        ])
       );
       const dotIdsInLasso = dotsInLasso.map((dot) => dot.id);
       if (event.altKey) {
-        GlobalStore.commit("toggleSelectedDotIds", dotIdsInLasso);
+        GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, dotIdsInLasso);
       } else {
-        GlobalStore.commit("addSelectedDotIds", dotIdsInLasso);
+        GlobalStore.commit(Mutations.ADD_SELECTED_DOTS, dotIdsInLasso);
       }
       // we are done selecting, so clear out the box
-      GlobalStore.commit("setSelectionLasso", []);
+      GlobalStore.commit(Mutations.SET_SELECTION_LASSO, []);
       this.selectionLassoStart = null;
     }
   }
@@ -143,7 +147,7 @@ export abstract class ToolSelectMove extends BaseMoveTool {
         })
       );
     });
-    GlobalStore.commit("setGrapherToolDots", grapherToolDots);
+    GlobalStore.commit(Mutations.SET_GRAPHER_TOOL_DOTS, grapherToolDots);
   }
 
   // override this function change the selection lasso.

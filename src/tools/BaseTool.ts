@@ -1,5 +1,6 @@
 import { GlobalStore } from "@/store";
 import StuntSheetDot from "@/models/StuntSheetDot";
+import { Mutations } from "@/store/mutations";
 
 /**
  * Defines the functionality of a tool to be used in the Bottom Menu.
@@ -57,8 +58,9 @@ export default abstract class BaseTool {
     const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
     const stuntSheetDots: StuntSheetDot[] =
       GlobalStore.getters.getSelectedStuntSheet.stuntSheetDots;
+    const beat = GlobalStore.state.beat;
     return stuntSheetDots.find((dot: StuntSheetDot): boolean => {
-      return x === dot.x && y === dot.y;
+      return x === dot.xAtBeat(beat) && y === dot.yAtBeat(beat);
     });
   }
 
@@ -77,7 +79,7 @@ export default abstract class BaseTool {
     if (!ctm) {
       throw new Error("Unable to retrieve wrapper CTM");
     }
-    GlobalStore.commit("setInvertedCTMMatrix", ctm.inverse());
+    GlobalStore.commit(Mutations.SET_INVERTED_CTM_MATRIX, ctm.inverse());
   }
 
   abstract onMouseDown(event: MouseEvent): void;

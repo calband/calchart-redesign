@@ -1,5 +1,5 @@
 import StuntSheetDot from "./StuntSheetDot";
-import BaseCont from "./continuity/BaseCont";
+import { BaseCont } from "./continuity/BaseCont";
 import ContInPlace from "./continuity/ContInPlace";
 import Serializable from "./util/Serializable";
 import { loadContinuity } from "./continuity/load-continuity";
@@ -73,22 +73,27 @@ export default class StuntSheet extends Serializable<StuntSheet> {
     this.fromJson(json);
   }
 
-  addDot(dot: Partial<StuntSheetDot> = {}): void {
-    this.stuntSheetDots.push(new StuntSheetDot(dot));
+  addDots(dots: Partial<StuntSheetDot>[] = []): void {
+    this.stuntSheetDots = this.stuntSheetDots.concat(
+      dots.map((dot) => new StuntSheetDot(dot))
+    );
   }
 
-  removeDot(dotId: number): void {
-    const dotIndex = this.stuntSheetDots.findIndex((dot) => dot.id === dotId);
-    if (dotIndex !== -1) {
-      this.stuntSheetDots.splice(dotIndex, 1);
-    }
+  removeDots(indices: number[]): void {
+    this.stuntSheetDots = this.stuntSheetDots.filter(
+      (dot) => !indices.includes(dot.id)
+    );
   }
 
-  moveDot(dotId: number, position: [number, number]): void {
-    const selectedDot = this.stuntSheetDots.find((dot) => dot.id === dotId);
-    if (selectedDot) {
-      selectedDot.x = position[0];
-      selectedDot.y = position[1];
+  moveDots(newPositions: [number, [number, number]][]): void {
+    for (const newPosition of newPositions) {
+      const selectedDot = this.stuntSheetDots.find(
+        (dot) => dot.id === newPosition[0]
+      );
+      if (selectedDot) {
+        selectedDot.x = newPosition[1][0];
+        selectedDot.y = newPosition[1][1];
+      }
     }
   }
 }

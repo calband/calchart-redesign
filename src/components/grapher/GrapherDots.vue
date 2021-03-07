@@ -1,14 +1,14 @@
 <template>
   <g class="grapher-dots--dots-container">
     <Dot
-      v-for="(dot, index) in stuntSheetDots"
+      v-for="[label, dot] in dotsWithLabels"
       :key="`${dot.id}-dots--dot`"
       class="grapher-dots--dot"
       data-test="grapher-dots--dot"
       :data-test-selected="selectedDotIds.includes(dot.id)"
       :transform="`translate(${dot.xAtBeat(beat)}, ${dot.yAtBeat(beat)})`"
       :dotTypeIndex="dot.dotTypeIndex"
-      :label="indexedDotLabels[index]"
+      :label="label"
       :labeled="showDotLabels"
       :selected="selectedDotIds.includes(dot.id)"
     />
@@ -19,6 +19,7 @@
 import Vue from "vue";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import Dot from "./Dot.vue";
+import Show from "@/models/Show";
 
 /**
  * Renders the field, the dots of the current stunt sheet, and pending dots
@@ -33,22 +34,12 @@ export default Vue.extend({
     showDotLabels(): boolean {
       return this.$store.state.showDotLabels;
     },
-    stuntSheetDots(): StuntSheetDot[] {
-      return this.$store.getters.getSelectedStuntSheet.stuntSheetDots;
-    },
     selectedDotIds(): number[] {
       return this.$store.state.selectedDotIds;
     },
-    indexedDotLabels(): string[] {
-      const dotLabels = this.$store.getters.getDotLabels;
-      const dots: StuntSheetDot[] = this.$store.getters.getSelectedStuntSheet
-        .stuntSheetDots;
-      return dots.map((dot, index) => {
-        return dot.dotLabelIndex !== null &&
-          dot.dotLabelIndex < dotLabels.length
-          ? dotLabels[dot.dotLabelIndex]
-          : index.toString();
-      });
+    dotsWithLabels(): [string, StuntSheetDot][] {
+      const show: Show = this.$store.state.show;
+      return show.dotsWithLabelsForSS(this.$store.state.selectedSS);
     },
     beat: {
       get(): number {

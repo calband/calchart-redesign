@@ -1,7 +1,7 @@
 import Field from "./Field";
 import StuntSheet from "./StuntSheet";
 import StuntSheetDot from "./StuntSheetDot";
-import BaseCont from "./continuity/BaseCont";
+import { BaseCont } from "./continuity/BaseCont";
 import { FlowBeat, initializeFlow } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
 
@@ -85,5 +85,26 @@ export default class Show extends Serializable<Show> {
     });
 
     startSS.nextSSId = endSS ? endSS.id : null;
+  }
+
+  /**
+   * Generate an array of labels for each dot in a stuntsheet. If dot labels do
+   * not exist, use the dot's id surrounded by brackets. The brackets indicate
+   * to the user that the dot needs to be assigned a label.
+   */
+  dotsWithLabelsForSS(stuntSheetIndex: number): [string, StuntSheetDot][] {
+    if (stuntSheetIndex < 0 || stuntSheetIndex >= this.stuntSheets.length) {
+      throw new Error(
+        `Cannot generate dot labels for stuntsheet index ${stuntSheetIndex}`
+      );
+    }
+    const stuntSheet = this.stuntSheets[stuntSheetIndex];
+    return stuntSheet.stuntSheetDots.map((dot) => {
+      const label =
+        dot.dotLabelIndex !== null && dot.dotLabelIndex < this.dotLabels.length
+          ? this.dotLabels[dot.dotLabelIndex]
+          : `[${dot.id}]`;
+      return [label, dot];
+    });
   }
 }

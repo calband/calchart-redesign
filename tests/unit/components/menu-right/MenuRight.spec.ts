@@ -8,6 +8,8 @@ import StuntSheet from "@/models/StuntSheet";
 import Show from "@/models/Show";
 import ContInPlace from "@/models/continuity/ContInPlace";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
+import DotAppearance from "@/models/DotAppearance";
+import { Mutations } from "@/store/mutations";
 
 describe("components/menu-right/MenuRight", () => {
   let menu: Wrapper<Vue>;
@@ -21,6 +23,7 @@ describe("components/menu-right/MenuRight", () => {
         [new ContInPlace()],
         [new ContETFDynamic(), new ContInPlace()],
       ],
+      dotAppearances: [new DotAppearance(), new DotAppearance()],
     }),
     new StuntSheet({ beats: 8, title: "b" }),
   ];
@@ -54,6 +57,6 @@ describe("components/menu-right/MenuRight", () => {
     expect(commitSpy).not.toHaveBeenCalled();
     addBtn.trigger("click");
     await menu.vm.$nextTick();
-    expect(commitSpy).toHaveBeenCalledWith("addDotType");
+    expect(commitSpy).toHaveBeenCalledWith(Mutations.ADD_DOT_TYPE);
   });
 });
