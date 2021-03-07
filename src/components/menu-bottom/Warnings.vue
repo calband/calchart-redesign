@@ -1,11 +1,13 @@
 <template>
-  <div class="warnings" >
+  <div class="warnings">
     <ul>
-      <li
-        v-for="warning in warnings"
-        v-bind:key="warning.name"
-      >
-        <span style="font-weight:bold" :style="`color: ${color(warning.warningType)}`"> <b-icon icon="alert" size="is-small" /> {{ warning.name }} </span>: {{ warning.description }}
+      <li v-for="warning in warnings" v-bind:key="warning.name">
+        <span
+          style="font-weight: bold"
+          :style="`color: ${color(warning.warningType)}`"
+        >
+          <b-icon icon="alert" size="is-small" /> {{ warning.name }} </span
+        >: {{ warning.description }}
       </li>
     </ul>
   </div>
@@ -17,8 +19,7 @@ import Warning, { WarningType } from "@/models/util/warning";
 
 export default Vue.extend({
   name: "Warnings",
-  components: {
-  },
+  components: {},
   computed: {
     warnings(): Warning[] {
       return this.$store.state.warnings;
@@ -34,13 +35,12 @@ export default Vue.extend({
           return "grey";
         }
       }
-    }
+    },
   },
 });
 </script>
 
 <style scoped lang="scss">
-
 bl {
   list-style-position: inside;
 }

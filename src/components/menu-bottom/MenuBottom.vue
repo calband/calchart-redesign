@@ -29,7 +29,7 @@ import ToolBoxSelect from "@/tools/ToolBoxSelect";
 import ToolLassoSelect from "@/tools/ToolLassoSelect";
 import ToolSingleDot from "@/tools/ToolSingleDot";
 import { Mutations } from "@/store/mutations";
-import Warnings from "./Warnings.vue"
+import Warnings from "./Warnings.vue";
 
 interface ToolData {
   label: string;
@@ -41,7 +41,7 @@ interface ToolData {
 export default Vue.extend({
   name: "MenuBottom",
   components: {
-    Warnings
+    Warnings,
   },
   data: (): {
     toolDataList: ToolData[];

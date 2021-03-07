@@ -1,4 +1,4 @@
-import Serializable from './Serializable'
+import Serializable from "./Serializable";
 
 export enum WarningType {
   WARNING = "warning",
@@ -9,14 +9,14 @@ export enum WarningType {
  * Defines a warning
  */
 export default class Warning extends Serializable<Warning> {
-  name: string = "";
-  description: string = "";
+  name = "";
+  description = "";
   warningType: WarningType = WarningType.WARNING;
-  
+
   constructor(json: Partial<Warning> = {}) {
     super();
     if (json.name === undefined) {
-      json.name = "Empty Warning"
+      json.name = "Empty Warning";
     }
     this.fromJson(json);
   }
