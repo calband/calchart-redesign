@@ -135,10 +135,10 @@ export default Vue.extend({
       });
     },
     addContGateTurn() {
-      this.$store.commit("addContinuity", {
+      this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
-        continuity: new ContGateTurn(),
-      });
+        contID: CONT_IDS.GATE_TURN,
+      });;
     },
   },
 });

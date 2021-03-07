@@ -53,6 +53,7 @@ import Vue from "vue";
 import ContGateTurn from "@/models/continuity/ContGateTurn";
 import { MARCH_TYPES } from "@/models/util/constants";
 import StuntSheet from "@/models/StuntSheet";
+import { Mutations } from "@/store/mutations";
 
 /**
  * View/Edit an ETF-Static continuity
@@ -87,15 +88,10 @@ export default Vue.extend({
         return continuity.marchType;
       },
       set(marchType: MARCH_TYPES): void {
-        const continuity: ContGateTurn = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.marchType = marchType;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_MARCH_STYLE, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity,
+          marchType: marchType,
         });
       },
     },
@@ -128,16 +124,11 @@ export default Vue.extend({
         );
         return continuity.duration;
       },
-      set(duration: number): void {
-        const continuity: ContGateTurn = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.duration = duration;
-        this.$store.commit("updateDotTypeContinuity", {
+      set(direction: number): void {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_IN_PLACE_DIRECTION, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity,
+          direction: direction,
         });
       },
     },
