@@ -47,6 +47,12 @@
               size="is-small"
               @click.native="stuntSheetModalActive = true"
             />
+            <b-icon
+              class="is-pulled-right"
+              icon="alert"
+              size="is-small"
+              v-if="stuntSheet.warnings.length !== 0"
+            />
           </template>
         </b-menu-item>
       </b-menu-list>

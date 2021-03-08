@@ -15,7 +15,6 @@
         />
       </b-tooltip>
     </div>
-    <Warnings />
   </div>
 </template>
 
@@ -29,7 +28,6 @@ import ToolBoxSelect from "@/tools/ToolBoxSelect";
 import ToolLassoSelect from "@/tools/ToolLassoSelect";
 import ToolSingleDot from "@/tools/ToolSingleDot";
 import { Mutations } from "@/store/mutations";
-import Warnings from "./Warnings.vue";
 
 interface ToolData {
   label: string;
@@ -41,7 +39,6 @@ interface ToolData {
 export default Vue.extend({
   name: "MenuBottom",
   components: {
-    Warnings,
   },
   data: (): {
     toolDataList: ToolData[];
@@ -92,6 +89,7 @@ export default Vue.extend({
 .menu-bottom {
   grid-area: menu-bottom;
 }
+
 .buttons {
   height: 36px;
 }

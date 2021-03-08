@@ -103,12 +103,13 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   /**
    * Calculates warnings associated with this stunt sheet
    */
-  calculateWarnings() {
+  calculateWarnings(ss: number) {
     this.warnings = []
 
     // Ensure no dots are too close
     this.stuntSheetDots.forEach(dot1 => {
       this.stuntSheetDots.forEach(dot2 => {
+        // Spooky O(n^2)...
         if (dot1.id !== dot2.id) {
           const dx = Math.abs(dot1.x - dot2.x);
           const dy = Math.abs(dot1.y - dot2.y);
@@ -117,11 +118,15 @@ export default class StuntSheet extends Serializable<StuntSheet> {
               name: "Dots Overlapping",
               description: `Dots ${dot1.id} and ${dot2.id} are overlapping`,
               warningType: WarningType.ERROR,
+              stuntSheet: ss,
+              dots: [dot1.id, dot2.id],
             }))
           } else if (dx < 1 && dy < 1) {
             this.warnings.push(new Warning({
               name: "Dots too close",
-              description: `Dots ${dot1.id} and ${dot2.id} are less than 1 step away from eachother`
+              description: `Dots ${dot1.id} and ${dot2.id} are less than 1 step away from eachother`,
+              stuntSheet: ss,
+              dots: [dot1.id, dot2.id],
             }))
           }
         }
@@ -133,7 +138,8 @@ export default class StuntSheet extends Serializable<StuntSheet> {
       if (!this.stuntSheetDots.some((dot: StuntSheetDot) => dot.dotTypeIndex == i)) {
         this.warnings.push(new Warning({
           name: "Dot Type Has No Dots",
-          description: `Dot Type ${i + 1} Has No Dots`
+          description: `Dot Type ${i + 1} Has No Dots`,
+          stuntSheet: ss,
         }))
       }
     }
@@ -142,10 +148,10 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   /** 
    * Recursively updates warnings
    */
-  recurseWarnings() {
-    this.calculateWarnings();
-    this.stuntSheetDots.forEach(element => {
-      element.calculateWarnings();
+  recurseWarnings(ss: number) {
+    this.calculateWarnings(ss);
+    this.stuntSheetDots.forEach((element, id) => {
+      element.calculateWarnings(ss, id);
     });
   }
 }

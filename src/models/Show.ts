@@ -138,9 +138,11 @@ export default class Show extends Serializable<Show> {
         if (prev !== this.stuntSheets[i].stuntSheetDots.length) {
           this.warnings.push(new Warning({
             name: "Stuntsheet Dot Count",
-            description: `Stuntsheet ${i} has a different number of dots than the previous stuntsheet. (${this.stuntSheets[i].stuntSheetDots.length} vs ${prev})`
+            description: `Stuntsheet ${i} has a different number of dots than the previous stuntsheet (${this.stuntSheets[i].stuntSheetDots.length} vs ${prev})`,
+            stuntSheet: i,
           }))
         }
+        prev = this.stuntSheets[i].stuntSheetDots.length;
       }
     }
   }
@@ -150,8 +152,8 @@ export default class Show extends Serializable<Show> {
    */
   recurseWarnings() {
     this.calculateWarnings();
-    this.stuntSheets.forEach(element => {
-      element.calculateWarnings();
+    this.stuntSheets.forEach((element, ss) => {
+      element.calculateWarnings(ss);
     });
   }
 }

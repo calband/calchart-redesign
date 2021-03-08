@@ -24,13 +24,15 @@
       >
     </b-dropdown>
     <ul>
-      <li v-for="warning in warnings" v-bind:key="warning.name">
-        <span
-          style="font-weight: bold"
-          :style="`color: ${color(warning.warningType)}`"
-        >
-          <b-icon icon="alert" size="is-small" /> {{ warning.name }} </span
-        >: {{ warning.description }}
+      <li v-for="warning in warnings" v-bind:key="`${warning.name}-${warning.stuntSheet}-${warning.dots}`" @click="goTo(warning)">
+        <b-tooltip :label="getLocation(warning)">
+          <span
+            style="font-weight: bold"
+            :style="`color: ${color(warning.warningType)}`"
+          >
+            <b-icon icon="alert" size="is-small" /> {{ warning.name }} </span
+          >: {{ warning.description }}
+        </b-tooltip>
       </li>
     </ul>
   </div>
@@ -42,6 +44,7 @@ import Warning, { WarningType } from "@/models/util/warning";
 import Show from "@/models/Show";
 import StuntSheet from "@/models/StuntSheet";
 import { GlobalStore } from "@/store";
+import { Mutations } from "@/store/mutations";
 
 export default Vue.extend({
   name: "Warnings",
@@ -80,6 +83,15 @@ export default Vue.extend({
     },
   },
   methods: {
+    getLocation(warning: Warning): string {
+      if (warning.stuntSheet !== null) {
+        if (warning.dots.length !== 0) {
+          return `SS ${warning.stuntSheet} Dots ${warning.dots.join(", ")}`
+        }
+        return `SS ${warning.stuntSheet}`
+      }
+      return ""
+    },
     color(type: WarningType): string {
       switch (type) {
         case WarningType.ERROR: {
@@ -90,6 +102,14 @@ export default Vue.extend({
         }
       }
     },
+    goTo(warning: Warning) {
+      if (warning.stuntSheet !== null) {
+        GlobalStore.commit(Mutations.SET_SELECTED_SS, warning.stuntSheet);
+        if (warning.dots.length !== 0) {
+          GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, warning.dots);
+        }
+      }
+    },
   },
 });
 </script>
@@ -97,5 +117,10 @@ export default Vue.extend({
 <style scoped lang="scss">
 bl {
   list-style-position: inside;
+}
+
+.warnings {
+  overflow-y: scroll;
+  grid-area: warnings;
 }
 </style>

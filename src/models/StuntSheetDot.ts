@@ -67,7 +67,7 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
   /**
    * calculates warnings for this dot
    */
-  calculateWarnings() {
+  calculateWarnings(id: number, ss: number) {
     this.warnings = []
     // Ensure that the flowbeats don't have steps too large
     if (this.cachedFlow === null || this.cachedFlow.length === 0) {
@@ -75,6 +75,8 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
         name: "Dot Flow Empty",
         description: `Dot ${this.id} does not have a flow`,
         warningType: WarningType.ERROR,
+        stuntSheet: ss,
+        dots: [id],
       }))
     } else {
       let prev: FlowBeat = this.cachedFlow[1];
@@ -85,6 +87,8 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
           this.warnings.push(new Warning({
             name: "Step Too Big",
             description: `Dot ${this.id} moves too far on step ${i}`,
+            stuntSheet: ss,
+            dots: [id],
           }));
         }
       }

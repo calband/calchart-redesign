@@ -136,7 +136,7 @@ export const mutations: MutationTree<CalChartState> = {
     const currentSS = getSelectedStuntSheet(state);
     currentSS.removeDots(dotIndex);
     state.show.calculateWarnings();
-    currentSS.recurseWarnings();
+    currentSS.recurseWarnings(state.selectedSS);
   },
   [Mutations.ADD_DOTS](state, jsons: Partial<StuntSheetDot>[]): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
@@ -146,7 +146,7 @@ export const mutations: MutationTree<CalChartState> = {
     currentSS.addDots(jsons.map((json) => new StuntSheetDot(json)));
     state.show.generateFlows(state.selectedSS);
     state.show.calculateWarnings();
-    currentSS.recurseWarnings();
+    currentSS.recurseWarnings(state.selectedSS);
   },
   [Mutations.MOVE_DOTS](
     state,
@@ -158,7 +158,7 @@ export const mutations: MutationTree<CalChartState> = {
     const currentSS = getSelectedStuntSheet(state);
     currentSS.moveDots(newPositions);
     state.show.generateFlows(state.selectedSS);
-    currentSS.recurseWarnings();
+    currentSS.recurseWarnings(state.selectedSS);
   },
   [Mutations.UPDATE_SELECTED_DOTS_DOT_TYPE](state, dotTypeIndex: number): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
@@ -171,11 +171,11 @@ export const mutations: MutationTree<CalChartState> = {
         const dot = currentSS.stuntSheetDots.find((dot) => dot.id === dotId);
         if (dot) {
           dot.dotTypeIndex = dotTypeIndex;
-          dot.calculateWarnings();
+          dot.calculateWarnings(state.selectedSS, dotId);
         }
       });
     }
-    currentSS.recurseWarnings();
+    currentSS.recurseWarnings(state.selectedSS);
   },
   [Mutations.SET_STUNT_SHEET_TITLE](state, title: string): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
@@ -183,7 +183,7 @@ export const mutations: MutationTree<CalChartState> = {
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.title = title;
-    currentSS.calculateWarnings();
+    currentSS.calculateWarnings(state.selectedSS);
   },
   [Mutations.SET_STUNT_SHEET_BEATS](state, beats: number): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
@@ -191,7 +191,7 @@ export const mutations: MutationTree<CalChartState> = {
     ) => StuntSheet;
     const currentSS = getSelectedStuntSheet(state);
     currentSS.beats = beats;
-    currentSS.calculateWarnings();
+    currentSS.calculateWarnings(state.selectedSS);
   },
   [Mutations.ADD_DOT_TYPE](state): void {
     const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
@@ -200,7 +200,7 @@ export const mutations: MutationTree<CalChartState> = {
     const currentSS = getSelectedStuntSheet(state);
     currentSS.dotTypes.push([new ContInPlace()]);
     currentSS.dotAppearances.push(new DotAppearance());
-    currentSS.recurseWarnings();
+    currentSS.recurseWarnings(state.selectedSS);
   },
   [Mutations.ADD_CONTINUITY](
     state,
@@ -212,7 +212,7 @@ export const mutations: MutationTree<CalChartState> = {
     const currentSS = getSelectedStuntSheet(state);
     currentSS.dotTypes[dotTypeIndex].push(ContFactory(contID));
     state.show.generateFlows(state.selectedSS);
-    currentSS.recurseWarnings();
+    currentSS.recurseWarnings(state.selectedSS);
   },
 
   // Show -> StuntSheet -> BaseCont
@@ -324,7 +324,7 @@ export const mutations: MutationTree<CalChartState> = {
     const currentSS = getSelectedStuntSheet(state);
     currentSS.dotTypes[dotTypeIndex].splice(continuityIndex, 1);
     state.show.generateFlows(state.selectedSS);
-    currentSS.recurseWarnings();
+    currentSS.recurseWarnings(state.selectedSS);
   },
 
   // Show controls
@@ -455,5 +455,5 @@ function updateContinuity(
   const currentSS = getSelectedStuntSheet(state);
   currentSS.dotTypes[dotTypeIndex][continuityIndex] = continuity;
   state.show.generateFlows(state.selectedSS);
-  currentSS.recurseWarnings();
+  currentSS.recurseWarnings(state.selectedSS);
 }
