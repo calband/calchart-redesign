@@ -4,7 +4,7 @@ import StuntSheetDot from "./StuntSheetDot";
 import { BaseCont } from "./continuity/BaseCont";
 import { FlowBeat, initializeFlow } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
-import Warning, {WarningType} from './util/warning';
+import Warning, { WarningType } from "./util/warning";
 
 // Increment upon making show metadata changes that break previous versions.
 const METADATA_VERSION = 1;
@@ -110,47 +110,57 @@ export default class Show extends Serializable<Show> {
       return [label, dot];
     });
   }
-  
+
   /**
    * Calculates any warnings associated with the show
    */
-  calculateWarnings() {
-    this.warnings = []
+  calculateWarnings(): void {
+    this.warnings = [];
     // There should be a title
     if (this.title === "") {
-      this.warnings.push(new Warning({
-        name: "No Title", 
-        description: "There isn't a title",
-      }))
+      this.warnings.push(
+        new Warning({
+          name: "No Title",
+          description: "There isn't a title",
+        })
+      );
     }
 
     // Must be at least one StuntSheet
     if (this.stuntSheets.length === 0) {
-      this.warnings.push(new Warning({
-        name: "No Stuntsheets", 
-        description: "There are no stuntsheets in the show",
-        warningType: WarningType.ERROR,
-      }))
+      this.warnings.push(
+        new Warning({
+          name: "No Stuntsheets",
+          description: "There are no stuntsheets in the show",
+          warningType: WarningType.ERROR,
+        })
+      );
     } else {
       // There should be the same number of dots in each stunt sheet
-      var prev: number = this.stuntSheets[0].stuntSheetDots.length;
+      let prev: number = this.stuntSheets[0].stuntSheetDots.length;
       for (let i = 1; i < this.stuntSheets.length; i++) {
         if (prev !== this.stuntSheets[i].stuntSheetDots.length) {
-          this.warnings.push(new Warning({
-            name: "Stuntsheet Dot Count",
-            description: `Stuntsheet ${i} has a different number of dots than the previous stuntsheet (${this.stuntSheets[i].stuntSheetDots.length} vs ${prev})`,
-            stuntSheet: i,
-          }))
+          this.warnings.push(
+            new Warning({
+              name: "Stuntsheet Dot Count",
+              description: `Stuntsheet ${
+                i + 1
+              } has a different number of dots than the previous stuntsheet (${
+                this.stuntSheets[i].stuntSheetDots.length
+              } vs ${prev})`,
+              stuntSheet: i,
+            })
+          );
         }
         prev = this.stuntSheets[i].stuntSheetDots.length;
       }
     }
   }
 
-  /** 
+  /**
    * Recursively updates warnings
    */
-  recurseWarnings() {
+  recurseWarnings(): void {
     this.calculateWarnings();
     this.stuntSheets.forEach((element, ss) => {
       element.calculateWarnings(ss);

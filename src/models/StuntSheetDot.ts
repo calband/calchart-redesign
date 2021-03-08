@@ -1,6 +1,6 @@
 import { FlowBeat } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
-import Warning, { WarningType } from './util/warning';
+import Warning, { WarningType } from "./util/warning";
 
 // Global ID counter for the next dot
 let NEXT_DOT_ID = 0;
@@ -67,29 +67,33 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
   /**
    * calculates warnings for this dot
    */
-  calculateWarnings(id: number, ss: number) {
-    this.warnings = []
+  calculateWarnings(id: number, ss: number): void {
+    this.warnings = [];
     // Ensure that the flowbeats don't have steps too large
     if (this.cachedFlow === null || this.cachedFlow.length === 0) {
-      this.warnings.push(new Warning({
-        name: "Dot Flow Empty",
-        description: `Dot ${this.id} does not have a flow`,
-        warningType: WarningType.ERROR,
-        stuntSheet: ss,
-        dots: [id],
-      }))
+      this.warnings.push(
+        new Warning({
+          name: "Dot Flow Empty",
+          description: `Dot ${this.id} does not have a flow`,
+          warningType: WarningType.ERROR,
+          stuntSheet: ss,
+          dots: [id],
+        })
+      );
     } else {
-      let prev: FlowBeat = this.cachedFlow[1];
+      const prev: FlowBeat = this.cachedFlow[1];
       for (let i = 1; i < this.cachedFlow.length; i++) {
-        let dy = Math.abs(prev.y - this.cachedFlow[i].y)
-        let dx = Math.abs(prev.x - this.cachedFlow[i].x)
+        const dy = Math.abs(prev.y - this.cachedFlow[i].y);
+        const dx = Math.abs(prev.x - this.cachedFlow[i].x);
         if (dy > 2 || dx > 2) {
-          this.warnings.push(new Warning({
-            name: "Step Too Big",
-            description: `Dot ${this.id} moves too far on step ${i}`,
-            stuntSheet: ss,
-            dots: [id],
-          }));
+          this.warnings.push(
+            new Warning({
+              name: "Step Too Big",
+              description: `Dot ${this.id} moves too far on step ${i}`,
+              stuntSheet: ss,
+              dots: [id],
+            })
+          );
         }
       }
     }

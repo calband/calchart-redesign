@@ -38,8 +38,7 @@ interface ToolData {
 
 export default Vue.extend({
   name: "MenuBottom",
-  components: {
-  },
+  components: {},
   data: (): {
     toolDataList: ToolData[];
     toolSelectedIndex: number;

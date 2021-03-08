@@ -49,9 +49,10 @@
             />
             <b-icon
               class="is-pulled-right"
+              data-test="menu-left--ss--warning-icon"
               icon="alert"
               size="is-small"
-              v-if="stuntSheet.warnings.length !== 0"
+              v-if="isWarning(index)"
             />
           </template>
         </b-menu-item>
@@ -78,6 +79,7 @@
 </template>
 
 <script lang="ts">
+import Warning from "@/models/util/warning";
 import { Mutations } from "@/store/mutations";
 import Vue from "vue";
 import StuntSheet from "../../models/StuntSheet";
@@ -129,6 +131,17 @@ export default Vue.extend({
     },
   },
   methods: {
+    isWarning(index: number): boolean {
+      if (
+        this.$store.state.show.stuntSheets[index].warnings.length !== 0 ||
+        this.$store.state.show.warnings.some((warning: Warning) => {
+          return warning.stuntSheet === index;
+        })
+      ) {
+        return true;
+      }
+      return false;
+    },
     addStuntSheet(): void {
       this.$store.commit(Mutations.ADD_STUNT_SHEET);
     },

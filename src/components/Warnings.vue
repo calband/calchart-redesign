@@ -10,21 +10,23 @@
         icon-right="menu-down"
         data-test="warnings-filter"
       >
-        filter: {{filter}}
+        filter: {{ filter }}
       </b-button>
-      <b-dropdown-item
-        @click="filter='all'"
-        data-test="warnings-filter-none"
+      <b-dropdown-item @click="filter = 'all'" data-test="warnings-filter-none"
         >All</b-dropdown-item
       >
       <b-dropdown-item
-        @click="filter='current'"
+        @click="filter = 'current'"
         data-test="menu-right--add-etf-dynamic"
         >Current SS</b-dropdown-item
       >
     </b-dropdown>
     <ul>
-      <li v-for="warning in warnings" v-bind:key="`${warning.name}-${warning.stuntSheet}-${warning.dots}`" @click="goTo(warning)">
+      <li
+        v-for="warning in warnings"
+        v-bind:key="`${warning.name}-${warning.stuntSheet}-${warning.dots}`"
+        @click="goTo(warning)"
+      >
         <b-tooltip :label="getLocation(warning)">
           <span
             style="font-weight: bold"
@@ -49,10 +51,10 @@ import { Mutations } from "@/store/mutations";
 export default Vue.extend({
   name: "Warnings",
   components: {},
-  data: function() {
+  data: function () {
     return {
-      filter: "all"
-    }
+      filter: "all",
+    };
   },
   computed: {
     warnings(): Warning[] {
@@ -62,19 +64,19 @@ export default Vue.extend({
           // Get the current stuntsheet's warnings
           const sheet: StuntSheet = GlobalStore.getters.getSelectedStuntSheet;
           warnings.push(...sheet.warnings);
-          sheet.stuntSheetDots.forEach(dot => {
-            warnings.push(...dot.warnings)
+          sheet.stuntSheetDots.forEach((dot) => {
+            warnings.push(...dot.warnings);
           });
-          return warnings
+          return warnings;
         }
         default: {
           // Get the whole show's warnings
           const show: Show = this.$store.state.show;
           warnings.push(...show.warnings);
-          show.stuntSheets.forEach(sheet => {
+          show.stuntSheets.forEach((sheet) => {
             warnings.push(...sheet.warnings);
-            sheet.stuntSheetDots.forEach(dot => {
-              warnings.push(...dot.warnings)
+            sheet.stuntSheetDots.forEach((dot) => {
+              warnings.push(...dot.warnings);
             });
           });
           return warnings;
@@ -86,11 +88,11 @@ export default Vue.extend({
     getLocation(warning: Warning): string {
       if (warning.stuntSheet !== null) {
         if (warning.dots.length !== 0) {
-          return `SS ${warning.stuntSheet} Dots ${warning.dots.join(", ")}`
+          return `SS ${warning.stuntSheet + 1} Dots ${warning.dots.join(", ")}`;
         }
-        return `SS ${warning.stuntSheet}`
+        return `SS ${warning.stuntSheet + 1}`;
       }
-      return ""
+      return "";
     },
     color(type: WarningType): string {
       switch (type) {

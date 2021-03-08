@@ -7,7 +7,6 @@ import Serializable from "@/models/util/Serializable";
 import BaseTool from "@/tools/BaseTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
 import InitialShowState from "@/models/InitialShowState";
-import Warning, { WarningType } from "@/models/util/warning";
 
 Vue.use(Vuex);
 

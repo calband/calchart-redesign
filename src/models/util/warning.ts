@@ -12,7 +12,7 @@ export default class Warning extends Serializable<Warning> {
   name = "";
   description = "";
   warningType: WarningType = WarningType.WARNING;
-  dots: number[] = []
+  dots: number[] = [];
   stuntSheet: number | null = null;
 
   constructor(json: Partial<Warning> = {}) {
