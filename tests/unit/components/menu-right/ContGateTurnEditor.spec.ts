@@ -8,7 +8,7 @@ import Show from "@/models/Show";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic.ts";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContGateTurn from "@/models/continuity/ContGateTurn";
-import { Mutations } from '@/store/mutations';
+import { Mutations } from "@/store/mutations";
 
 describe("components/menu-right/ContETFStaticEditor", () => {
   let editor: Wrapper<Vue>;
@@ -55,7 +55,7 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
       expect(commitSpy).toHaveBeenCalledWith(
-        Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,  
+        Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,
         expect.anything()
       );
       expect(commitSpy.mock.calls[0][1].marchType).toBe(
@@ -102,9 +102,10 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).toHaveBeenCalledWith(
         Mutations.DELETE_DOT_TYPE_CONTINUITY,
         {
-        dotTypeIndex: 0,
-        continuityIndex: 1,
-      });
+          dotTypeIndex: 0,
+          continuityIndex: 1,
+        }
+      );
     });
   });
 

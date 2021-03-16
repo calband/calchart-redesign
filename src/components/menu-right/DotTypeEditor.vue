@@ -70,11 +70,6 @@
 </template>
 
 <script lang="ts">
-import ContETFDynamic from "@/models/continuity/ContETFDynamic";
-import ContETFStatic from "@/models/continuity/ContETFStatic";
-import ContInPlace from "@/models/continuity/ContInPlace";
-import ContEven from "@/models/continuity/ContEven";
-import ContGateTurn from "@/models/continuity/ContGateTurn";
 import { BaseCont, CONT_IDS } from "@/models/continuity/BaseCont";
 import StuntSheet from "@/models/StuntSheet";
 import Vue from "vue";
@@ -138,7 +133,7 @@ export default Vue.extend({
       this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         contID: CONT_IDS.GATE_TURN,
-      });;
+      });
     },
   },
 });

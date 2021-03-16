@@ -13,7 +13,7 @@ import ContETFDynamic, {
 import DotAppearance from "@/models/DotAppearance";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
-import ContGateTurn from '@/models/continuity/ContGateTurn';
+import ContGateTurn from "@/models/continuity/ContGateTurn";
 
 export enum Mutations {
   // Show mutations:

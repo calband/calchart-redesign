@@ -135,9 +135,7 @@ export default Vue.extend({
   },
   methods: {
     deleteContinuity() {
-      this.$store.commit(
-        Mutations.DELETE_DOT_TYPE_CONTINUITY, 
-        {
+      this.$store.commit(Mutations.DELETE_DOT_TYPE_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         continuityIndex: this.continuityIndex,
       });
