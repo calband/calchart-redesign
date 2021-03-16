@@ -47,6 +47,11 @@
           data-test="menu-right--add-etf-static"
           >Eight to Five Static</b-dropdown-item
         >
+        <b-dropdown-item
+          @click="addContGateTurn"
+          data-test="menu-right--add-gate-turn"
+          >Gate Turn</b-dropdown-item
+        >
         <b-dropdown-item @click="addContEven" data-test="menu-right--add-even"
           >Even</b-dropdown-item
         >
@@ -122,6 +127,12 @@ export default Vue.extend({
       this.$store.commit(Mutations.ADD_CONTINUITY, {
         dotTypeIndex: this.dotTypeIndex,
         contID: CONT_IDS.EVEN,
+      });
+    },
+    addContGateTurn() {
+      this.$store.commit(Mutations.ADD_CONTINUITY, {
+        dotTypeIndex: this.dotTypeIndex,
+        contID: CONT_IDS.GATE_TURN,
       });
     },
   },

@@ -62,7 +62,7 @@ export interface BaseCont {
    * @param flow     - The flow to concat
    * @param endDot   - The dot in the next stuntsheet
    */
-  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot): void;
+  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot, id?: number): void;
 }
 
 /**
