@@ -44,7 +44,6 @@
 import Vue from "vue";
 import Warning, { WarningType } from "@/models/util/warning";
 import Show from "@/models/Show";
-import StuntSheet from "@/models/StuntSheet";
 import { GlobalStore } from "@/store";
 import { Mutations } from "@/store/mutations";
 
@@ -59,29 +58,20 @@ export default Vue.extend({
   computed: {
     warnings(): Warning[] {
       const warnings: Warning[] = [];
-      switch (this.filter) {
-        case "current": {
-          // Get the current stuntsheet's warnings
-          const sheet: StuntSheet = GlobalStore.getters.getSelectedStuntSheet;
-          warnings.push(...sheet.warnings);
-          sheet.stuntSheetDots.forEach((dot) => {
-            warnings.push(...dot.warnings);
-          });
-          return warnings;
-        }
-        default: {
-          // Get the whole show's warnings
-          const show: Show = this.$store.state.show;
-          warnings.push(...show.warnings);
-          show.stuntSheets.forEach((sheet) => {
-            warnings.push(...sheet.warnings);
-            sheet.stuntSheetDots.forEach((dot) => {
-              warnings.push(...dot.warnings);
-            });
-          });
-          return warnings;
-        }
+      const show: Show = this.$store.state.show;
+      warnings.push(...show.warnings);
+      show.stuntSheets.forEach((sheet) => {
+        warnings.push(...sheet.warnings);
+        sheet.stuntSheetDots.forEach((dot) => {
+          warnings.push(...dot.warnings);
+        });
+      });
+      if (this.filter === "current") {
+        return warnings.filter((warning: Warning) => {
+          return warning.stuntSheet === this.$store.state.selectedSS;
+        });
       }
+      return warnings;
     },
   },
   methods: {

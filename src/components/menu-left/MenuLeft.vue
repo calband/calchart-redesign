@@ -40,19 +40,18 @@
           @click="selectedSS = index"
         >
           <template slot="label">
+            <b-icon
+              data-test="menu-left--ss--warning-icon"
+              icon="alert"
+              size="is-small"
+              :style="`visibility: ${isWarning(index) ? 'visible' : 'hidden'}`"
+            />
             {{ `${index + 1}) ${stuntSheet.title}` }}
             <b-icon
               class="stuntsheet-edit is-pulled-right"
               icon="pencil"
               size="is-small"
               @click.native="stuntSheetModalActive = true"
-            />
-            <b-icon
-              class="is-pulled-right"
-              data-test="menu-left--ss--warning-icon"
-              icon="alert"
-              size="is-small"
-              v-if="isWarning(index)"
             />
           </template>
         </b-menu-item>
