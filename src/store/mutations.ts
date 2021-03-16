@@ -13,6 +13,7 @@ import ContETFDynamic, {
 import DotAppearance from "@/models/DotAppearance";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
+import ContGateTurn from '@/models/continuity/ContGateTurn';
 
 export enum Mutations {
   // Show mutations:
@@ -40,6 +41,7 @@ export enum Mutations {
   UPDATE_DOT_TYPE_ETF_DIRECTION = "Update Marcher Flow Direction",
   UPDATE_DOT_TYPE_IN_PLACE_DIRECTION = "Update Marcher Standing Direction",
   DELETE_DOT_TYPE_CONTINUITY = "Remove Marcher Continuity",
+  UPDATE_DOT_TYPE_ANGLE = "Update Marcher Angle",
 
   // View mutations:
   SET_SELECTED_SS = "setSelectedSS",
@@ -88,6 +90,7 @@ export const UNDOABLE_ACTIONS = [
   Mutations.UPDATE_DOT_TYPE_ETF_DIRECTION,
   Mutations.UPDATE_DOT_TYPE_IN_PLACE_DIRECTION,
   Mutations.DELETE_DOT_TYPE_CONTINUITY,
+  Mutations.UPDATE_DOT_TYPE_ANGLE,
 ];
 
 export const mutations: MutationTree<CalChartState> = {
@@ -295,6 +298,24 @@ export const mutations: MutationTree<CalChartState> = {
       continuityIndex
     );
     continuity.direction = direction;
+    updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
+  },
+  [Mutations.UPDATE_DOT_TYPE_ANGLE](
+    state,
+    {
+      dotTypeIndex,
+      continuityIndex,
+      angle,
+    }: { dotTypeIndex: number; continuityIndex: number; angle: number }
+  ): void {
+    const getContinuity = getters.getContinuity as (
+      state: CalChartState
+    ) => (dotTypeIndex: number, continuityIndex: number) => ContGateTurn;
+    const continuity: ContGateTurn = getContinuity(state)(
+      dotTypeIndex,
+      continuityIndex
+    );
+    continuity.angle = angle;
     updateContinuity(state, dotTypeIndex, continuityIndex, continuity);
   },
   [Mutations.DELETE_DOT_TYPE_CONTINUITY](

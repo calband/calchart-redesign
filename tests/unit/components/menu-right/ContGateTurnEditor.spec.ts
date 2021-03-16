@@ -8,6 +8,7 @@ import Show from "@/models/Show";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic.ts";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContGateTurn from "@/models/continuity/ContGateTurn";
+import { Mutations } from '@/store/mutations';
 
 describe("components/menu-right/ContETFStaticEditor", () => {
   let editor: Wrapper<Vue>;
@@ -54,10 +55,10 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_MARCH_STYLE,  
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.marchType).toBe(
+      expect(commitSpy.mock.calls[0][1].marchType).toBe(
         MARCH_TYPES.MINI_MILITARY
       );
     });
@@ -72,10 +73,10 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       durationInput.setValue("10");
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_DURATION,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.duration).toBe(10);
+      expect(commitSpy.mock.calls[0][1].duration).toBe(10);
     });
 
     it("changing angle", () => {
@@ -86,10 +87,10 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       selectAngle.setValue(`90`);
       expect(commitSpy).toHaveBeenCalledWith(
-        "updateDotTypeContinuity",
+        Mutations.UPDATE_DOT_TYPE_ANGLE,
         expect.anything()
       );
-      expect(commitSpy.mock.calls[0][1].continuity.angle).toBe(90);
+      expect(commitSpy.mock.calls[0][1].angle).toBe(90);
     });
 
     it("can delete if more than one continuity exists for the dot type", async () => {
@@ -98,7 +99,9 @@ describe("components/menu-right/ContETFStaticEditor", () => {
       expect(commitSpy).not.toHaveBeenCalled();
       deleteButton.trigger("click");
       await editor.vm.$nextTick();
-      expect(commitSpy).toHaveBeenCalledWith("deleteDotTypeContinuity", {
+      expect(commitSpy).toHaveBeenCalledWith(
+        Mutations.DELETE_DOT_TYPE_CONTINUITY,
+        {
         dotTypeIndex: 0,
         continuityIndex: 1,
       });

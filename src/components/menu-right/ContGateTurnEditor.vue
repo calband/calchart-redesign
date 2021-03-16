@@ -104,15 +104,10 @@ export default Vue.extend({
         return continuity.angle;
       },
       set(angle: number): void {
-        const continuity: ContGateTurn = this.$store.getters.getContinuity(
-          this.dotTypeIndex,
-          this.continuityIndex
-        );
-        continuity.angle = angle;
-        this.$store.commit("updateDotTypeContinuity", {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_ANGLE, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          continuity: continuity,
+          angle: angle,
         });
       },
     },
@@ -124,11 +119,11 @@ export default Vue.extend({
         );
         return continuity.duration;
       },
-      set(direction: number): void {
-        this.$store.commit(Mutations.UPDATE_DOT_TYPE_IN_PLACE_DIRECTION, {
+      set(duration: number): void {
+        this.$store.commit(Mutations.UPDATE_DOT_TYPE_DURATION, {
           dotTypeIndex: this.dotTypeIndex,
           continuityIndex: this.continuityIndex,
-          direction: direction,
+          duration: duration,
         });
       },
     },
@@ -140,7 +135,9 @@ export default Vue.extend({
   },
   methods: {
     deleteContinuity() {
-      this.$store.commit("deleteDotTypeContinuity", {
+      this.$store.commit(
+        Mutations.DELETE_DOT_TYPE_CONTINUITY, 
+        {
         dotTypeIndex: this.dotTypeIndex,
         continuityIndex: this.continuityIndex,
       });
