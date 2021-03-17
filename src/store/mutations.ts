@@ -174,6 +174,7 @@ export const mutations: MutationTree<CalChartState> = {
           dot.calculateWarnings(state.selectedSS, dotId);
         }
       });
+      state.show.generateFlows(state.selectedSS);
     }
     currentSS.recurseWarnings(state.selectedSS);
   },

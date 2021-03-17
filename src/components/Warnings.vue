@@ -68,7 +68,10 @@ export default Vue.extend({
       });
       if (this.filter === "current") {
         return warnings.filter((warning: Warning) => {
-          return warning.stuntSheet === this.$store.state.selectedSS;
+          const currentSS: number = this.$store.state.selectedSS;
+          return warning.stuntSheets.some((ss: number) => {
+            return ss === currentSS;
+          });
         });
       }
       return warnings;
@@ -76,11 +79,13 @@ export default Vue.extend({
   },
   methods: {
     getLocation(warning: Warning): string {
-      if (warning.stuntSheet !== null) {
+      if (warning.stuntSheets !== undefined && warning.stuntSheets.length > 1) {
         if (warning.dots.length !== 0) {
-          return `SS ${warning.stuntSheet + 1} Dots ${warning.dots.join(", ")}`;
+          return `SS ${warning.stuntSheets[0] + 1} Dots ${warning.dots.join(
+            ", "
+          )}`;
         }
-        return `SS ${warning.stuntSheet + 1}`;
+        return `SS ${warning.stuntSheets[0] + 1}`;
       }
       return "";
     },
@@ -95,8 +100,8 @@ export default Vue.extend({
       }
     },
     goTo(warning: Warning) {
-      if (warning.stuntSheet !== null) {
-        GlobalStore.commit(Mutations.SET_SELECTED_SS, warning.stuntSheet);
+      if (warning.stuntSheets !== undefined && warning.stuntSheets.length > 1) {
+        GlobalStore.commit(Mutations.SET_SELECTED_SS, warning.stuntSheets[0]);
         if (warning.dots.length !== 0) {
           GlobalStore.commit(Mutations.TOGGLE_SELECTED_DOTS, warning.dots);
         }

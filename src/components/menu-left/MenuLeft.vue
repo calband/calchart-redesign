@@ -134,7 +134,9 @@ export default Vue.extend({
       if (
         this.$store.state.show.stuntSheets[index].warnings.length !== 0 ||
         this.$store.state.show.warnings.some((warning: Warning) => {
-          return warning.stuntSheet === index;
+          return warning.stuntSheets.some((ss: number) => {
+            return ss === index;
+          });
         })
       ) {
         return true;

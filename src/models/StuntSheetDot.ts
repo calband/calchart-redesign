@@ -76,12 +76,12 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
           name: "Dot Flow Empty",
           description: `Dot ${this.id} does not have a flow`,
           warningType: WarningType.ERROR,
-          stuntSheet: ss,
+          stuntSheets: [ss],
           dots: [id],
         })
       );
     } else {
-      const prev: FlowBeat = this.cachedFlow[1];
+      const prev: FlowBeat = this.cachedFlow[0];
       for (let i = 1; i < this.cachedFlow.length; i++) {
         const dy = Math.abs(prev.y - this.cachedFlow[i].y);
         const dx = Math.abs(prev.x - this.cachedFlow[i].x);
@@ -90,7 +90,7 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
             new Warning({
               name: "Step Too Big",
               description: `Dot ${this.id} moves too far on step ${i}`,
-              stuntSheet: ss,
+              stuntSheets: [ss],
               dots: [id],
             })
           );

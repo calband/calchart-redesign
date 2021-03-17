@@ -119,7 +119,7 @@ export default class StuntSheet extends Serializable<StuntSheet> {
                 name: "Dots Overlapping",
                 description: `Dots ${dot1.id} and ${dot2.id} are overlapping`,
                 warningType: WarningType.ERROR,
-                stuntSheet: ss,
+                stuntSheets: [ss],
                 dots: [dot1.id, dot2.id],
               })
             );
@@ -128,7 +128,7 @@ export default class StuntSheet extends Serializable<StuntSheet> {
               new Warning({
                 name: "Dots too close",
                 description: `Dots ${dot1.id} and ${dot2.id} are less than 1 step away from eachother`,
-                stuntSheet: ss,
+                stuntSheets: [ss],
                 dots: [dot1.id, dot2.id],
               })
             );
@@ -148,7 +148,7 @@ export default class StuntSheet extends Serializable<StuntSheet> {
           new Warning({
             name: "Dot Type Has No Dots",
             description: `Dot Type ${i + 1} Has No Dots`,
-            stuntSheet: ss,
+            stuntSheets: [ss],
           })
         );
       }

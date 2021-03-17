@@ -148,7 +148,7 @@ export default class Show extends Serializable<Show> {
               } has a different number of dots than the previous stuntsheet (${
                 this.stuntSheets[i].stuntSheetDots.length
               } vs ${prev})`,
-              stuntSheet: i,
+              stuntSheets: [i, i - 1],
             })
           );
         }
