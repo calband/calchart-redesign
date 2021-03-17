@@ -17,7 +17,7 @@
       >
       <b-dropdown-item
         @click="filter = 'current'"
-        data-test="menu-right--add-etf-dynamic"
+        data-test="warnings-filter-current"
         >Current SS</b-dropdown-item
       >
     </b-dropdown>
