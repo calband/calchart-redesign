@@ -114,7 +114,7 @@ export default class Show extends Serializable<Show> {
   /**
    * Calculates any warnings associated with the show
    */
-  calculateWarnings(): void {
+  calculateWarningsShallow(): void {
     this.warnings = [];
     // There should be a title
     if (this.title === "") {
@@ -160,10 +160,10 @@ export default class Show extends Serializable<Show> {
   /**
    * Recursively updates warnings
    */
-  recurseWarnings(): void {
-    this.calculateWarnings();
+  calculateWarningsDeep(): void {
+    this.calculateWarningsShallow();
     this.stuntSheets.forEach((element, ss) => {
-      element.calculateWarnings(ss);
+      element.calculateWarningsDeep(ss);
     });
   }
 }

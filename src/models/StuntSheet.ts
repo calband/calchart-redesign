@@ -103,7 +103,7 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   /**
    * Calculates warnings associated with this stunt sheet
    */
-  calculateWarnings(ss: number): void {
+  calculateWarningsShallow(ss: number): void {
     this.warnings = [];
 
     // Ensure no dots are too close
@@ -158,10 +158,10 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   /**
    * Recursively updates warnings
    */
-  recurseWarnings(ss: number): void {
-    this.calculateWarnings(ss);
+  calculateWarningsDeep(ss: number): void {
+    this.calculateWarningsShallow(ss);
     this.stuntSheetDots.forEach((element, id) => {
-      element.calculateWarnings(ss, id);
+      element.calculateWarningsShallow(ss, id);
     });
   }
 }

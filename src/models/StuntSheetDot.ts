@@ -67,7 +67,7 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
   /**
    * calculates warnings for this dot
    */
-  calculateWarnings(id: number, ss: number): void {
+  calculateWarningsShallow(id: number, ss: number): void {
     this.warnings = [];
     // Ensure that the flowbeats don't have steps too large
     if (this.cachedFlow === null || this.cachedFlow.length === 0) {
