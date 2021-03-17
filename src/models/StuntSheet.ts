@@ -126,7 +126,7 @@ export default class StuntSheet extends Serializable<StuntSheet> {
           } else if (dx < 1 && dy < 1) {
             this.warnings.push(
               new Warning({
-                name: "Dots too close",
+                name: "Dots Too Close",
                 description: `Dots ${dot1.id} and ${dot2.id} are less than 1 step away from eachother`,
                 stuntSheets: [ss],
                 dots: [dot1.id, dot2.id],
