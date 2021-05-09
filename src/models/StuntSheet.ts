@@ -105,37 +105,28 @@ export default class StuntSheet extends Serializable<StuntSheet> {
    */
   calculateIssuesShallow(ss: number): void {
     this.issues = [];
-
     // Ensure no dots are too close
-    this.stuntSheetDots.forEach((dot1) => {
-      this.stuntSheetDots.forEach((dot2) => {
-        // Spooky O(n^2)...
-        if (dot1.id !== dot2.id) {
-          const dx = Math.abs(dot1.x - dot2.x);
-          const dy = Math.abs(dot1.y - dot2.y);
-          if (dx === 0 && dy === 0) {
-            this.issues.push(
-              new Issue({
-                name: "Dots Overlapping",
-                description: `Dots ${dot1.id} and ${dot2.id} are overlapping`,
-                issueType: IssueType.ERROR,
-                stuntSheets: [ss],
-                dots: [dot1.id, dot2.id],
-              })
-            );
-          } else if (dx < 1 && dy < 1) {
-            this.issues.push(
-              new Issue({
-                name: "Dots Too Close",
-                description: `Dots ${dot1.id} and ${dot2.id} are less than 1 step away from eachother`,
-                stuntSheets: [ss],
-                dots: [dot1.id, dot2.id],
-              })
-            );
-          }
-        }
-      });
-    });
+    // proximity map maps from an "x,y" coordinate of a dot to all the ddots that are near it
+    let proximity_map: Map<string, number[]> = new Map<string, number[]>();
+    this.stuntSheetDots.forEach((dot) => {
+      let key: string = [Math.round(dot.x), Math.round(dot.y)].join(",")
+      let entry: number[] = proximity_map.get(key) || []
+      entry.push(dot.id)
+      proximity_map.set(key, entry)
+    })
+    for (let [location, dots] of proximity_map){
+      if (dots.length > 1) {
+        this.issues.push(
+            new Issue({
+              name: "Dots too close",
+              description: `Dots ${dots.join(", ")} are overlapping`,
+              issueType: IssueType.ERROR,
+              stuntSheets: [ss],
+              dots: dots,
+            })
+          );
+      }
+    }
 
     // Ensure that each dot type has at least one dot
     for (let i = 0; i < this.dotTypes.length; i++) {

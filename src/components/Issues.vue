@@ -100,7 +100,6 @@ export default Vue.extend({
       }
     },
     goTo(issue: Issue) {
-      debugger;
       if (issue.stuntSheets !== undefined && issue.stuntSheets.length >= 1) {
         GlobalStore.commit(Mutations.SET_SELECTED_SS, issue.stuntSheets[0]);
         if (issue.dots.length !== 0) {
