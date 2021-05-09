@@ -1,27 +1,27 @@
 import Serializable from "./Serializable";
 
-export enum WarningType {
+export enum IssueType {
   WARNING = "warning",
   ERROR = "error",
 }
 
 /**
- * Defines a warning
+ * Defines an issue
  */
-export default class Warning extends Serializable<Warning> {
+export default class Issue extends Serializable<Issue> {
   name = "";
   description = "";
-  warningType: WarningType = WarningType.WARNING;
+  issueType: IssueType = IssueType.WARNING;
   dots: number[] = [];
   stuntSheets: number[] = [];
 
-  constructor(json: Partial<Warning> = {}) {
+  constructor(json: Partial<Issue> = {}) {
     super();
     if (json.name === undefined) {
-      json.name = "Empty Warning";
+      json.name = "Empty Issue";
     }
-    if (json.warningType === undefined) {
-      json.warningType = WarningType.WARNING;
+    if (json.issueType === undefined) {
+      json.issueType = IssueType.WARNING;
     }
     if (json.stuntSheets === undefined) {
       json.stuntSheets = [];

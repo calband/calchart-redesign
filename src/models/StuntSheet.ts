@@ -4,7 +4,7 @@ import ContInPlace from "./continuity/ContInPlace";
 import Serializable from "./util/Serializable";
 import { loadContinuity } from "./continuity/load-continuity";
 import DotAppearance from "./DotAppearance";
-import Warning, { WarningType } from "./util/warning";
+import Issue, { IssueType } from "./util/issue";
 
 // Global ID counter for the next stuntsheet
 let NEXT_SS_ID = 0;
@@ -42,7 +42,7 @@ export default class StuntSheet extends Serializable<StuntSheet> {
 
   nextSSId: number | null = null;
 
-  warnings: Warning[] = [];
+  issues: Issue[] = [];
 
   constructor(json: Partial<StuntSheet> = {}) {
     super();
@@ -101,10 +101,10 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   }
 
   /**
-   * Calculates warnings associated with this stunt sheet
+   * Calculates issues associated with this stunt sheet
    */
-  calculateWarningsShallow(ss: number): void {
-    this.warnings = [];
+  calculateIssuesShallow(ss: number): void {
+    this.issues = [];
 
     // Ensure no dots are too close
     this.stuntSheetDots.forEach((dot1) => {
@@ -114,18 +114,18 @@ export default class StuntSheet extends Serializable<StuntSheet> {
           const dx = Math.abs(dot1.x - dot2.x);
           const dy = Math.abs(dot1.y - dot2.y);
           if (dx === 0 && dy === 0) {
-            this.warnings.push(
-              new Warning({
+            this.issues.push(
+              new Issue({
                 name: "Dots Overlapping",
                 description: `Dots ${dot1.id} and ${dot2.id} are overlapping`,
-                warningType: WarningType.ERROR,
+                issueType: IssueType.ERROR,
                 stuntSheets: [ss],
                 dots: [dot1.id, dot2.id],
               })
             );
           } else if (dx < 1 && dy < 1) {
-            this.warnings.push(
-              new Warning({
+            this.issues.push(
+              new Issue({
                 name: "Dots Too Close",
                 description: `Dots ${dot1.id} and ${dot2.id} are less than 1 step away from eachother`,
                 stuntSheets: [ss],
@@ -144,8 +144,8 @@ export default class StuntSheet extends Serializable<StuntSheet> {
           (dot: StuntSheetDot) => dot.dotTypeIndex === i
         )
       ) {
-        this.warnings.push(
-          new Warning({
+        this.issues.push(
+          new Issue({
             name: "Dot Type Has No Dots",
             description: `Dot Type ${i + 1} Has No Dots`,
             stuntSheets: [ss],
@@ -156,12 +156,12 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   }
 
   /**
-   * Recursively updates warnings
+   * Recursively updates issues
    */
-  calculateWarningsDeep(ss: number): void {
-    this.calculateWarningsShallow(ss);
+  calculateIssuesDeep(ss: number): void {
+    this.calculateIssuesShallow(ss);
     this.stuntSheetDots.forEach((element, id) => {
-      element.calculateWarningsShallow(ss, id);
+      element.calculateIssuesShallow(ss, id);
     });
   }
 }

@@ -4,7 +4,7 @@ import StuntSheetDot from "./StuntSheetDot";
 import { BaseCont } from "./continuity/BaseCont";
 import { FlowBeat, initializeFlow } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
-import Warning, { WarningType } from "./util/warning";
+import Issue, { IssueType } from "./util/issue";
 
 // Increment upon making show metadata changes that break previous versions.
 const METADATA_VERSION = 1;
@@ -31,7 +31,7 @@ export default class Show extends Serializable<Show> {
 
   stuntSheets: StuntSheet[] = [new StuntSheet({ title: "Stuntsheet 1" })];
 
-  warnings: Warning[] = [];
+  issues: Issue[] = [];
 
   constructor(showJson: Partial<Show> = {}) {
     super();
@@ -112,14 +112,14 @@ export default class Show extends Serializable<Show> {
   }
 
   /**
-   * Calculates any warnings associated with the show
+   * Calculates any issues associated with the show
    */
-  calculateWarningsShallow(): void {
-    this.warnings = [];
+  calculateIssuesShallow(): void {
+    this.issues = [];
     // There should be a title
     if (this.title === "") {
-      this.warnings.push(
-        new Warning({
+      this.issues.push(
+        new Issue({
           name: "No Title",
           description: "There isn't a title",
         })
@@ -128,11 +128,11 @@ export default class Show extends Serializable<Show> {
 
     // Must be at least one StuntSheet
     if (this.stuntSheets.length === 0) {
-      this.warnings.push(
-        new Warning({
+      this.issues.push(
+        new Issue({
           name: "No Stuntsheets",
           description: "There are no stuntsheets in the show",
-          warningType: WarningType.ERROR,
+          issueType: IssueType.ERROR,
         })
       );
     } else {
@@ -140,8 +140,8 @@ export default class Show extends Serializable<Show> {
       let prev: number = this.stuntSheets[0].stuntSheetDots.length;
       for (let i = 1; i < this.stuntSheets.length; i++) {
         if (prev !== this.stuntSheets[i].stuntSheetDots.length) {
-          this.warnings.push(
-            new Warning({
+          this.issues.push(
+            new Issue({
               name: "Stuntsheet Dot Count",
               description: `Stuntsheet ${
                 i + 1
@@ -158,12 +158,12 @@ export default class Show extends Serializable<Show> {
   }
 
   /**
-   * Recursively updates warnings
+   * Recursively updates issues
    */
-  calculateWarningsDeep(): void {
-    this.calculateWarningsShallow();
+  calculateIssuesDeep(): void {
+    this.calculateIssuesShallow();
     this.stuntSheets.forEach((element, ss) => {
-      element.calculateWarningsDeep(ss);
+      element.calculateIssuesDeep(ss);
     });
   }
 }

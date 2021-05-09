@@ -41,10 +41,10 @@
         >
           <template slot="label">
             <b-icon
-              data-test="menu-left--ss--warning-icon"
+              data-test="menu-left--ss--issue-icon"
               icon="alert"
               size="is-small"
-              :style="`visibility: ${isWarning(index) ? 'visible' : 'hidden'}`"
+              :style="`visibility: ${isIssue(index) ? 'visible' : 'hidden'}`"
             />
             {{ `${index + 1}) ${stuntSheet.title}` }}
             <b-icon
@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import Warning from "@/models/util/warning";
+import Issue from "@/models/util/issue";
 import { Mutations } from "@/store/mutations";
 import Vue from "vue";
 import StuntSheet from "../../models/StuntSheet";
@@ -130,11 +130,11 @@ export default Vue.extend({
     },
   },
   methods: {
-    isWarning(index: number): boolean {
+    isIssue(index: number): boolean {
       if (
-        this.$store.state.show.stuntSheets[index].warnings.length !== 0 ||
-        this.$store.state.show.warnings.some((warning: Warning) => {
-          return warning.stuntSheets.some((ss: number) => {
+        this.$store.state.show.stuntSheets[index].issues.length !== 0 ||
+        this.$store.state.show.issues.some((issue: Issue) => {
+          return issue.stuntSheets.some((ss: number) => {
             return ss === index;
           });
         })

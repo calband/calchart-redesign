@@ -3,7 +3,7 @@ import StuntSheetDot from "@/models/StuntSheetDot";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 
 describe("models/StuntSheet", () => {
-  describe("calculateWarningsShallow", () => {
+  describe("calculateIssuesShallow", () => {
     let ss: StuntSheet;
 
     it("warns if no dots", () => {
@@ -16,17 +16,17 @@ describe("models/StuntSheet", () => {
       ss = new StuntSheet({
         dotTypes: [[new ContETFStatic()]],
       });
-      ss.calculateWarningsShallow(0);
-      expect(ss.warnings).toHaveLength(1);
-      expect(ss.warnings[0].name).toEqual("Dot Type Has No Dots");
+      ss.calculateIssuesShallow(0);
+      expect(ss.issues).toHaveLength(1);
+      expect(ss.issues[0].name).toEqual("Dot Type Has No Dots");
     });
 
-    it("doesn't create any unneeded warnings", () => {
+    it("doesn't create any unneeded issues", () => {
       ss = new StuntSheet({
         stuntSheetDots: [new StuntSheetDot()],
       });
-      ss.calculateWarningsShallow(0);
-      expect(ss.warnings).toHaveLength(0);
+      ss.calculateIssuesShallow(0);
+      expect(ss.issues).toHaveLength(0);
     });
 
     it("warns if dots are too close", () => {
@@ -41,10 +41,10 @@ describe("models/StuntSheet", () => {
       ss = new StuntSheet({
         stuntSheetDots: [dot1, dot2],
       });
-      ss.calculateWarningsShallow(0);
-      expect(ss.warnings).toHaveLength(2);
-      expect(ss.warnings[0].name).toEqual("Dots Too Close");
-      expect(ss.warnings[1].name).toEqual("Dots Too Close");
+      ss.calculateIssuesShallow(0);
+      expect(ss.issues).toHaveLength(2);
+      expect(ss.issues[0].name).toEqual("Dots Too Close");
+      expect(ss.issues[1].name).toEqual("Dots Too Close");
     });
 
     it("warns if overlapping dots", () => {
@@ -59,14 +59,14 @@ describe("models/StuntSheet", () => {
       ss = new StuntSheet({
         stuntSheetDots: [dot1, dot2],
       });
-      ss.calculateWarningsShallow(0);
-      expect(ss.warnings).toHaveLength(2);
-      expect(ss.warnings[0].name).toEqual("Dots Overlapping");
-      expect(ss.warnings[1].name).toEqual("Dots Overlapping");
+      ss.calculateIssuesShallow(0);
+      expect(ss.issues).toHaveLength(2);
+      expect(ss.issues[0].name).toEqual("Dots Overlapping");
+      expect(ss.issues[1].name).toEqual("Dots Overlapping");
     });
   });
 
-  describe("calculateWarningsDeep", () => {
+  describe("calculateIssuesDeep", () => {
     let ss: StuntSheet;
 
     afterEach(() => {
@@ -75,8 +75,8 @@ describe("models/StuntSheet", () => {
 
     it("calculates shallowly", () => {
       ss = new StuntSheet();
-      const spy = jest.spyOn(ss, "calculateWarningsShallow");
-      ss.calculateWarningsDeep(0);
+      const spy = jest.spyOn(ss, "calculateIssuesShallow");
+      ss.calculateIssuesDeep(0);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
@@ -84,8 +84,8 @@ describe("models/StuntSheet", () => {
       ss = new StuntSheet({
         stuntSheetDots: [new StuntSheetDot()],
       });
-      const spy = jest.spyOn(ss.stuntSheetDots[0], "calculateWarningsShallow");
-      ss.calculateWarningsDeep(1);
+      const spy = jest.spyOn(ss.stuntSheetDots[0], "calculateIssuesShallow");
+      ss.calculateIssuesDeep(1);
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });

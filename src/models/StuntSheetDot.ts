@@ -1,6 +1,6 @@
 import { FlowBeat } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
-import Warning, { WarningType } from "./util/warning";
+import Issue, { IssueType } from "./util/issue";
 
 // Global ID counter for the next dot
 let NEXT_DOT_ID = 0;
@@ -38,7 +38,7 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
 
   cachedFlow: FlowBeat[] | null = null;
 
-  warnings: Warning[] = [];
+  issues: Issue[] = [];
 
   constructor(dotJson: Partial<StuntSheetDot> = {}) {
     super();
@@ -65,17 +65,17 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
   }
 
   /**
-   * calculates warnings for this dot
+   * calculates issues for this dot
    */
-  calculateWarningsShallow(id: number, ss: number): void {
-    this.warnings = [];
+  calculateIssuesShallow(id: number, ss: number): void {
+    this.issues = [];
     // Ensure that the flowbeats don't have steps too large
     if (this.cachedFlow === null || this.cachedFlow.length === 0) {
-      this.warnings.push(
-        new Warning({
+      this.issues.push(
+        new Issue({
           name: "Dot Flow Empty",
           description: `Dot ${this.id} does not have a flow`,
-          warningType: WarningType.ERROR,
+          issueType: IssueType.ERROR,
           stuntSheets: [ss],
           dots: [id],
         })
@@ -86,8 +86,8 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
         const dy = Math.abs(prev.y - this.cachedFlow[i].y);
         const dx = Math.abs(prev.x - this.cachedFlow[i].x);
         if (dy > 2 || dx > 2) {
-          this.warnings.push(
-            new Warning({
+          this.issues.push(
+            new Issue({
               name: "Step Too Big",
               description: `Dot ${this.id} moves too far on step ${i}`,
               stuntSheets: [ss],

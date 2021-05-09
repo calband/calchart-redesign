@@ -49,31 +49,31 @@ describe("models/Show", () => {
     });
   });
 
-  describe("calculateWarningsShallow", () => {
+  describe("calculateIssuesShallow", () => {
     let show: Show;
 
-    it("doesn't create any unneeded warnings", () => {
+    it("doesn't create any unneeded issues", () => {
       show = new Show();
-      show.calculateWarningsShallow();
-      expect(show.warnings).toHaveLength(0);
+      show.calculateIssuesShallow();
+      expect(show.issues).toHaveLength(0);
     });
 
     it("warns if no stuntSheets", () => {
       show = new Show({
         stuntSheets: [],
       });
-      show.calculateWarningsShallow();
-      expect(show.warnings).toHaveLength(1);
-      expect(show.warnings[0].name).toEqual("No Stuntsheets");
+      show.calculateIssuesShallow();
+      expect(show.issues).toHaveLength(1);
+      expect(show.issues[0].name).toEqual("No Stuntsheets");
     });
 
     it("warns if no title", () => {
       show = new Show({
         title: "",
       });
-      show.calculateWarningsShallow();
-      expect(show.warnings).toHaveLength(1);
-      expect(show.warnings[0].name).toEqual("No Title");
+      show.calculateIssuesShallow();
+      expect(show.issues).toHaveLength(1);
+      expect(show.issues[0].name).toEqual("No Title");
     });
 
     it("warns if uneven dot counts", () => {
@@ -95,13 +95,13 @@ describe("models/Show", () => {
       show = new Show({
         stuntSheets: [SS1, SS2],
       });
-      show.calculateWarningsShallow();
-      expect(show.warnings).toHaveLength(1);
-      expect(show.warnings[0].name).toEqual("Stuntsheet Dot Count");
+      show.calculateIssuesShallow();
+      expect(show.issues).toHaveLength(1);
+      expect(show.issues[0].name).toEqual("Stuntsheet Dot Count");
     });
   });
 
-  describe("calculateWarningsDeep", () => {
+  describe("calculateIssuesDeep", () => {
     let show: Show;
 
     afterEach(() => {
@@ -110,8 +110,8 @@ describe("models/Show", () => {
 
     it("calculates shallowly", () => {
       show = new Show({});
-      const spy = jest.spyOn(show, "calculateWarningsShallow");
-      show.calculateWarningsDeep();
+      const spy = jest.spyOn(show, "calculateIssuesShallow");
+      show.calculateIssuesDeep();
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
@@ -119,8 +119,8 @@ describe("models/Show", () => {
       show = new Show({
         stuntSheets: [new StuntSheet()],
       });
-      const spy = jest.spyOn(show.stuntSheets[0], "calculateWarningsDeep");
-      show.calculateWarningsDeep();
+      const spy = jest.spyOn(show.stuntSheets[0], "calculateIssuesDeep");
+      show.calculateIssuesDeep();
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
