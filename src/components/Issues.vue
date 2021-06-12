@@ -81,9 +81,7 @@ export default Vue.extend({
     getLocation(issue: Issue): string {
       if (issue.stuntSheets !== undefined && issue.stuntSheets.length > 1) {
         if (issue.dots.length !== 0) {
-          return `SS ${issue.stuntSheets[0] + 1} Dots ${issue.dots.join(
-            ", "
-          )}`;
+          return `SS ${issue.stuntSheets[0] + 1} Dots ${issue.dots.join(", ")}`;
         }
         return `SS ${issue.stuntSheets[0] + 1}`;
       }
@@ -103,7 +101,7 @@ export default Vue.extend({
       if (issue.stuntSheets !== undefined && issue.stuntSheets.length >= 1) {
         GlobalStore.commit(Mutations.SET_SELECTED_SS, issue.stuntSheets[0]);
         if (issue.dots.length !== 0) {
-          GlobalStore.commit(Mutations.CLEAR_SELECTED_DOTS)
+          GlobalStore.commit(Mutations.CLEAR_SELECTED_DOTS);
           GlobalStore.commit(Mutations.ADD_SELECTED_DOTS, issue.dots);
         }
       }

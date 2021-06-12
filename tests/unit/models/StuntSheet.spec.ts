@@ -42,27 +42,8 @@ describe("models/StuntSheet", () => {
         stuntSheetDots: [dot1, dot2],
       });
       ss.calculateIssuesShallow(0);
-      expect(ss.issues).toHaveLength(2);
+      expect(ss.issues).toHaveLength(1);
       expect(ss.issues[0].name).toEqual("Dots Too Close");
-      expect(ss.issues[1].name).toEqual("Dots Too Close");
-    });
-
-    it("warns if overlapping dots", () => {
-      const dot1: StuntSheetDot = new StuntSheetDot({
-        x: 50,
-        y: 50,
-      });
-      const dot2: StuntSheetDot = new StuntSheetDot({
-        x: 50,
-        y: 50,
-      });
-      ss = new StuntSheet({
-        stuntSheetDots: [dot1, dot2],
-      });
-      ss.calculateIssuesShallow(0);
-      expect(ss.issues).toHaveLength(2);
-      expect(ss.issues[0].name).toEqual("Dots Overlapping");
-      expect(ss.issues[1].name).toEqual("Dots Overlapping");
     });
   });
 

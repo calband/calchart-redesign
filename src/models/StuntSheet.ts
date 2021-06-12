@@ -107,24 +107,26 @@ export default class StuntSheet extends Serializable<StuntSheet> {
     this.issues = [];
     // Ensure no dots are too close
     // proximity map maps from an "x,y" coordinate of a dot to all the ddots that are near it
-    let proximity_map: Map<string, number[]> = new Map<string, number[]>();
+    const proximityMap: Map<string, number[]> = new Map<string, number[]>();
     this.stuntSheetDots.forEach((dot) => {
-      let key: string = [Math.round(dot.x), Math.round(dot.y)].join(",")
-      let entry: number[] = proximity_map.get(key) || []
-      entry.push(dot.id)
-      proximity_map.set(key, entry)
-    })
-    for (let [location, dots] of proximity_map){
+      const key: string = [Math.round(dot.x), Math.round(dot.y)].join(",");
+      const entry: number[] = proximityMap.get(key) || [];
+      entry.push(dot.id);
+      proximityMap.set(key, entry);
+    });
+    for (const [location, dots] of proximityMap) {
       if (dots.length > 1) {
         this.issues.push(
-            new Issue({
-              name: "Dots too close",
-              description: `Dots ${dots.join(", ")} are overlapping`,
-              issueType: IssueType.ERROR,
-              stuntSheets: [ss],
-              dots: dots,
-            })
-          );
+          new Issue({
+            name: "Dots Too Close",
+            description: `Dots ${dots.join(", ")} are overlapping at [${
+              location[0]
+            }, ${location[1]}]`,
+            issueType: IssueType.ERROR,
+            stuntSheets: [ss],
+            dots: dots,
+          })
+        );
       }
     }
 
