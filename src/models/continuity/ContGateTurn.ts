@@ -7,8 +7,8 @@ import Serializable from "../util/Serializable";
 /**
  * Defines a gate turn continuity.
  *
- * @property centerPoints - [x, y] values for the center of each gate turn
- * group
+ * @property centerPoint - The center of the gate turn
+ * @property angle - the total angle of the gate turn
  */
 export default class ContGateTurn
   extends Serializable<ContGateTurn>
@@ -17,7 +17,13 @@ export default class ContGateTurn
 
   duration = 8;
 
-  centerPoints: [number, number][] = [];
+  // The map from every dot's ID to that dot's assigned center point.
+  centerPoints: Map<number, [number, number]> = new Map<
+    number,
+    [number, number]
+  >();
+
+  angle = 180;
 
   humanReadableText = "";
 
@@ -30,13 +36,70 @@ export default class ContGateTurn
 
   getHumanReadableText(): string {
     if (this.humanReadableText !== "") return this.humanReadableText;
-    // TODO: Implement
-    return "";
+    const rotation: string = Math.sign(this.angle) === 1 ? "CW" : "CCW";
+    return `GT${this.marchType} ${this.duration} COUNTS ${Math.abs(
+      this.angle
+    )} DEGREES ${rotation}`;
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot): void {
-    // TODO: Implement
+  addToFlow(flow: FlowBeat[], endDot?: StuntSheetDot, id?: number): void {
+    const lastFlowBeat: FlowBeat = flow[flow.length - 1];
+    const startx: number = lastFlowBeat.x;
+    const starty: number = lastFlowBeat.y;
+    let centerPoint: [number, number] | undefined = this.centerPoints.get(
+      id || -1
+    );
+    if (!centerPoint) {
+      // Defaults to the dot's position.
+      // TODO: Give the user a notification when a dot isn't centered! #134
+      centerPoint = [startx, starty];
+    }
+    // Find the relative coordinates to the center
+    const [dx, dy]: [number, number] = [
+      startx - centerPoint[0],
+      starty - centerPoint[1],
+    ];
+    if (dx !== 0 || dy !== 0) {
+      for (let beat = 0; beat < this.duration; beat += 1) {
+        // Split theta up into duration equal parts and convert to radians
+        const theta: number =
+          ((beat / this.duration) * this.angle * Math.PI) / 180;
+        // Rotation matrix transfomration here
+        // Because y-axis is positive going down and angle is measured clockwise,
+        // it is the same matrix transformation as a regular rotation.
+        const x: number = dx * Math.cos(theta) - dy * Math.sin(theta);
+        const y: number = dx * Math.sin(theta) + dy * Math.cos(theta);
+        // Direction is a phase shift on the negative rotation
+        // Phase change depends on the sign of the angle, wither 180 or 360
+        const direction: number =
+          ((Math.sign(this.angle) > 0 ? 180 : 360) -
+            (Math.atan2(-y, x) * 180) / Math.PI) %
+          360;
+
+        const flowBeat: FlowBeat = {
+          x: x + centerPoint[0],
+          y: y + centerPoint[1],
+          marchType: this.marchType,
+          direction: direction,
+        };
+        flow.push(flowBeat);
+      }
+    } else {
+      // We still want the person on the center point to rotate the same way as everyone else
+      for (let beat = 0; beat < this.duration; beat += 1) {
+        const theta: number =
+          ((beat / this.duration) * this.angle * Math.PI) / 180;
+        const direction: number =
+          ((Math.sign(this.angle) > 0 ? 180 : 360) + (theta * 180) / Math.PI) %
+          360;
+        const flowBeat: FlowBeat = {
+          x: centerPoint[0],
+          y: centerPoint[1],
+          marchType: this.marchType,
+          direction: direction,
+        };
+        flow.push(flowBeat);
+      }
+    }
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 }

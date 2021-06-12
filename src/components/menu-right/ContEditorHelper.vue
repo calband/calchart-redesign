@@ -19,6 +19,11 @@
     :continuityIndex="continuityIndex"
     :dotTypeIndex="dotTypeIndex"
   />
+  <ContGateTurnEditor
+    v-else-if="isGate"
+    :continuityIndex="continuityIndex"
+    :dotTypeIndex="dotTypeIndex"
+  />
 </template>
 
 <script lang="ts">
@@ -31,6 +36,8 @@ import ContETFStatic from "@/models/continuity/ContETFStatic";
 import ContETFStaticEditor from "./ContETFStaticEditor.vue";
 import ContEven from "@/models/continuity/ContEven";
 import ContEvenEditor from "./ContEvenEditor.vue";
+import ContGateTurn from "@/models/continuity/ContGateTurn";
+import ContGateTurnEditor from "./ContGateTurnEditor.vue";
 
 /**
  * View/Edit a specific continuity
@@ -42,6 +49,7 @@ export default Vue.extend({
     ContETFDynamicEditor,
     ContETFStaticEditor,
     ContEvenEditor,
+    ContGateTurnEditor,
   },
   props: {
     continuityIndex: {
@@ -81,6 +89,13 @@ export default Vue.extend({
         this.continuityIndex
       );
       return continuity instanceof ContEven;
+    },
+    isGate() {
+      const continuity = this.$store.getters.getContinuity(
+        this.dotTypeIndex,
+        this.continuityIndex
+      );
+      return continuity instanceof ContGateTurn;
     },
   },
 });

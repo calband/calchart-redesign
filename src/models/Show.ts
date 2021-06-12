@@ -81,7 +81,7 @@ export default class Show extends Serializable<Show> {
       const continuities: BaseCont[] = startSS.dotTypes[startDot.dotTypeIndex];
 
       continuities.forEach((continuity: BaseCont): void => {
-        continuity.addToFlow(flow, endDot);
+        continuity.addToFlow(flow, endDot, startDot.id);
       });
 
       startDot.cachedFlow = flow;
