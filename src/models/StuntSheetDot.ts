@@ -1,5 +1,6 @@
 import { FlowBeat } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
+import Issue, { IssueType } from "./util/issue";
 
 // Global ID counter for the next dot
 let NEXT_DOT_ID = 0;
@@ -37,6 +38,8 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
 
   cachedFlow: FlowBeat[] | null = null;
 
+  issues: Issue[] = [];
+
   constructor(dotJson: Partial<StuntSheetDot> = {}) {
     super();
 
@@ -59,5 +62,40 @@ export default class StuntSheetDot extends Serializable<StuntSheetDot> {
     return this.cachedFlow && this.cachedFlow.length > 0 && beat >= 0
       ? this.cachedFlow[Math.min(beat, this.cachedFlow.length - 1)].y
       : this.y;
+  }
+
+  /**
+   * calculates issues for this dot
+   */
+  calculateIssuesShallow(id: number, ss: number): void {
+    this.issues = [];
+    // Ensure that the flowbeats don't have steps too large
+    if (this.cachedFlow === null || this.cachedFlow.length === 0) {
+      this.issues.push(
+        new Issue({
+          name: "Dot Flow Empty",
+          description: `Dot ${this.id} does not have a flow`,
+          issueType: IssueType.ERROR,
+          stuntSheets: [ss],
+          dots: [id],
+        })
+      );
+    } else {
+      const prev: FlowBeat = this.cachedFlow[0];
+      for (let i = 1; i < this.cachedFlow.length; i++) {
+        const dy = Math.abs(prev.y - this.cachedFlow[i].y);
+        const dx = Math.abs(prev.x - this.cachedFlow[i].x);
+        if (dy > 2 || dx > 2) {
+          this.issues.push(
+            new Issue({
+              name: "Step Too Big",
+              description: `Dot ${this.id} moves too far on step ${i}`,
+              stuntSheets: [ss],
+              dots: [id],
+            })
+          );
+        }
+      }
+    }
   }
 }
