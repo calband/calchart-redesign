@@ -131,12 +131,14 @@ export default Vue.extend({
   },
   methods: {
     isIssue(index: number): boolean {
-      return this.$store.state.show.stuntSheets[index].issues.length !== 0 ||
+      return (
+        this.$store.state.show.stuntSheets[index].issues.length !== 0 ||
         this.$store.state.show.issues.some((issue: Issue) => {
           return issue.stuntSheets.some((ss: number) => {
             return ss === index;
           });
         })
+      );
     },
     addStuntSheet(): void {
       this.$store.commit(Mutations.ADD_STUNT_SHEET);
