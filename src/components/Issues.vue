@@ -79,7 +79,7 @@ export default Vue.extend({
   },
   methods: {
     getLocation(issue: Issue): string {
-      if (issue.stuntSheets !== undefined && issue.stuntSheets.length > 1) {
+      if (issue.stuntSheets !== undefined && issue.stuntSheets.length >= 1) {
         if (issue.dots.length !== 0) {
           return `SS ${issue.stuntSheets[0] + 1} Dots ${issue.dots.join(", ")}`;
         }
