@@ -64,7 +64,7 @@ export default Vue.extend({
     ],
     toolSelectedIndex: 0, // Assume that 0 is the pan/zoom tool
   }),
-  mounted() {
+  mounted() { // change
     this.setTool(this.$data.toolSelectedIndex);
   },
   methods: {
