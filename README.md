@@ -6,6 +6,10 @@ See this [Figma link](https://www.figma.com/file/XIkyioLzRlGlpmNiEu47glkQ/Calcha
 
 Project bootstrapped from [Vue CLI](https://cli.vuejs.org/).
 
+## On-boarding
+
+See [this onboarding page](https://www.notion.so/CalChart-Developer-Onboarding-e691b40cdcdf498ea0afa4d491e8a290) for getting started on development.
+
 ## Project setup
 
 ```
