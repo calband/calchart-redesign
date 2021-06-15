@@ -4,6 +4,7 @@ import StuntSheetDot from "./StuntSheetDot";
 import { BaseCont } from "./continuity/BaseCont";
 import { FlowBeat, initializeFlow } from "./util/FlowBeat";
 import Serializable from "./util/Serializable";
+import Issue, { IssueType } from "./util/issue";
 
 // Increment upon making show metadata changes that break previous versions.
 const METADATA_VERSION = 1;
@@ -29,6 +30,8 @@ export default class Show extends Serializable<Show> {
   field: Field = new Field();
 
   stuntSheets: StuntSheet[] = [new StuntSheet({ title: "Stuntsheet 1" })];
+
+  issues: Issue[] = [];
 
   constructor(showJson: Partial<Show> = {}) {
     super();
@@ -105,6 +108,62 @@ export default class Show extends Serializable<Show> {
           ? this.dotLabels[dot.dotLabelIndex]
           : `[${dot.id}]`;
       return [label, dot];
+    });
+  }
+
+  /**
+   * Calculates any issues associated with the show
+   */
+  calculateIssuesShallow(): void {
+    this.issues = [];
+    // There should be a title
+    if (this.title === "") {
+      this.issues.push(
+        new Issue({
+          name: "No Title",
+          description: "There isn't a title",
+        })
+      );
+    }
+
+    // Must be at least one StuntSheet
+    if (this.stuntSheets.length === 0) {
+      this.issues.push(
+        new Issue({
+          name: "No Stuntsheets",
+          description: "There are no stuntsheets in the show",
+          issueType: IssueType.ERROR,
+        })
+      );
+    } else {
+      // There should be the same number of dots in each stunt sheet
+      let prev: number = this.stuntSheets[0].stuntSheetDots.length;
+      for (let i = 1; i < this.stuntSheets.length; i++) {
+        if (prev !== this.stuntSheets[i].stuntSheetDots.length) {
+          this.issues.push(
+            new Issue({
+              name: "Stuntsheet Dot Count",
+              description: `Stuntsheet ${
+                i + 1
+              } has a different number of dots than the previous stuntsheet (${
+                this.stuntSheets[i].stuntSheetDots.length
+              } vs ${prev})`,
+              stuntSheets: [i, i - 1],
+            })
+          );
+        }
+        prev = this.stuntSheets[i].stuntSheetDots.length;
+      }
+    }
+  }
+
+  /**
+   * Recursively updates issues
+   */
+  calculateIssuesDeep(): void {
+    this.calculateIssuesShallow();
+    this.stuntSheets.forEach((element, ss) => {
+      element.calculateIssuesDeep(ss);
     });
   }
 }

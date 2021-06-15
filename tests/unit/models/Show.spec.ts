@@ -48,4 +48,80 @@ describe("models/Show", () => {
       expect(mockAddToFlow).toHaveBeenCalledTimes(4);
     });
   });
+
+  describe("calculateIssuesShallow", () => {
+    let show: Show;
+
+    it("doesn't create any unneeded issues", () => {
+      show = new Show();
+      show.calculateIssuesShallow();
+      expect(show.issues).toHaveLength(0);
+    });
+
+    it("warns if no stuntSheets", () => {
+      show = new Show({
+        stuntSheets: [],
+      });
+      show.calculateIssuesShallow();
+      expect(show.issues).toHaveLength(1);
+      expect(show.issues[0].name).toEqual("No Stuntsheets");
+    });
+
+    it("warns if no title", () => {
+      show = new Show({
+        title: "",
+      });
+      show.calculateIssuesShallow();
+      expect(show.issues).toHaveLength(1);
+      expect(show.issues[0].name).toEqual("No Title");
+    });
+
+    it("warns if uneven dot counts", () => {
+      const SS1: StuntSheet = new StuntSheet({
+        stuntSheetDots: [
+          new StuntSheetDot({ dotTypeIndex: 0 }),
+          new StuntSheetDot({ dotTypeIndex: 0 }),
+          new StuntSheetDot({ dotTypeIndex: 1 }),
+        ],
+        dotTypes: [[new ContInPlace()], [new ContInPlace(), new ContInPlace()]],
+      });
+      const SS2: StuntSheet = new StuntSheet({
+        stuntSheetDots: [
+          new StuntSheetDot({ dotTypeIndex: 0 }),
+          new StuntSheetDot({ dotTypeIndex: 0 }),
+        ],
+        dotTypes: [[new ContInPlace()], [new ContInPlace(), new ContInPlace()]],
+      });
+      show = new Show({
+        stuntSheets: [SS1, SS2],
+      });
+      show.calculateIssuesShallow();
+      expect(show.issues).toHaveLength(1);
+      expect(show.issues[0].name).toEqual("Stuntsheet Dot Count");
+    });
+  });
+
+  describe("calculateIssuesDeep", () => {
+    let show: Show;
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it("calculates shallowly", () => {
+      show = new Show({});
+      const spy = jest.spyOn(show, "calculateIssuesShallow");
+      show.calculateIssuesDeep();
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it("recurses to StuntSheets", () => {
+      show = new Show({
+        stuntSheets: [new StuntSheet()],
+      });
+      const spy = jest.spyOn(show.stuntSheets[0], "calculateIssuesDeep");
+      show.calculateIssuesDeep();
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+  });
 });

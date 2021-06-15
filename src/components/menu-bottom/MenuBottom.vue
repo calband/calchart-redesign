@@ -87,4 +87,8 @@ export default Vue.extend({
 .menu-bottom {
   grid-area: menu-bottom;
 }
+
+.buttons {
+  height: 36px;
+}
 </style>

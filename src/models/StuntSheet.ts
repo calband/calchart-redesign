@@ -4,6 +4,7 @@ import ContInPlace from "./continuity/ContInPlace";
 import Serializable from "./util/Serializable";
 import { loadContinuity } from "./continuity/load-continuity";
 import DotAppearance from "./DotAppearance";
+import Issue, { IssueType } from "./util/issue";
 
 // Global ID counter for the next stuntsheet
 let NEXT_SS_ID = 0;
@@ -40,6 +41,8 @@ export default class StuntSheet extends Serializable<StuntSheet> {
   dotId = 1;
 
   nextSSId: number | null = null;
+
+  issues: Issue[] = [];
 
   constructor(json: Partial<StuntSheet> = {}) {
     super();
@@ -95,5 +98,63 @@ export default class StuntSheet extends Serializable<StuntSheet> {
         selectedDot.y = newPosition[1][1];
       }
     }
+  }
+
+  /**
+   * Calculates issues associated with this stunt sheet
+   */
+  calculateIssuesShallow(ss: number): void {
+    this.issues = [];
+    // Ensure no dots are too close
+    // proximity map maps from an "x,y" coordinate of a dot to all the ddots that are near it
+    const proximityMap: Map<string, number[]> = new Map<string, number[]>();
+    this.stuntSheetDots.forEach((dot) => {
+      const key: string = [Math.round(dot.x), Math.round(dot.y)].join(",");
+      const entry: number[] = proximityMap.get(key) || [];
+      entry.push(dot.id);
+      proximityMap.set(key, entry);
+    });
+    for (const [location, dots] of proximityMap) {
+      if (dots.length > 1) {
+        this.issues.push(
+          new Issue({
+            name: "Dots Too Close",
+            description: `Dots ${dots.join(", ")} are overlapping at [${
+              location[0]
+            }, ${location[1]}]`,
+            issueType: IssueType.ERROR,
+            stuntSheets: [ss],
+            dots: dots,
+          })
+        );
+      }
+    }
+
+    // Ensure that each dot type has at least one dot
+    for (let i = 0; i < this.dotTypes.length; i++) {
+      if (
+        !this.stuntSheetDots.some(
+          (dot: StuntSheetDot) => dot.dotTypeIndex === i
+        )
+      ) {
+        this.issues.push(
+          new Issue({
+            name: "Dot Type Has No Dots",
+            description: `Dot Type ${i + 1} Has No Dots`,
+            stuntSheets: [ss],
+          })
+        );
+      }
+    }
+  }
+
+  /**
+   * Recursively updates issues
+   */
+  calculateIssuesDeep(ss: number): void {
+    this.calculateIssuesShallow(ss);
+    this.stuntSheetDots.forEach((element, id) => {
+      element.calculateIssuesShallow(ss, id);
+    });
   }
 }

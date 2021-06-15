@@ -5,6 +5,7 @@
     <Grapher />
     <MenuBottom />
     <MenuRight />
+    <Issues />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import MenuLeft from "./components/menu-left/MenuLeft.vue";
 import Grapher from "./components/grapher/Grapher.vue";
 import MenuRight from "./components/menu-right/MenuRight.vue";
 import MenuBottom from "./components/menu-bottom/MenuBottom.vue";
+import Issues from "./components/Issues.vue";
 import { HotKeyHandler } from "./store/hotkeys";
 
 export default Vue.extend({
@@ -25,6 +27,7 @@ export default Vue.extend({
     Grapher,
     MenuRight,
     MenuBottom,
+    Issues,
   },
   created() {
     window.addEventListener("keydown", this.hotkey);
@@ -59,13 +62,13 @@ body,
 }
 
 #app {
-  overflow: hidden;
   display: grid;
   grid-template-columns: 200px auto 275px;
-  grid-template-rows: $navbar-height auto 36px; // See Bulma for navbar-height
+  grid-template-rows: $navbar-height auto 36px 175px; // See Bulma for navbar-height
   grid-template-areas:
     "menu-top menu-top menu-top"
     "menu-left grapher menu-right"
-    "menu-left menu-bottom menu-right";
+    "menu-left menu-bottom menu-right"
+    "menu-left issues menu-right";
 }
 </style>

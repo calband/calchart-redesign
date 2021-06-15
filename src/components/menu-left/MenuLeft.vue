@@ -40,6 +40,12 @@
           @click="selectedSS = index"
         >
           <template slot="label">
+            <b-icon
+              data-test="menu-left--ss--issue-icon"
+              icon="alert"
+              size="is-small"
+              :style="`visibility: ${isIssue(index) ? 'visible' : 'hidden'}`"
+            />
             {{ `${index + 1}) ${stuntSheet.title}` }}
             <b-icon
               class="stuntsheet-edit is-pulled-right"
@@ -72,6 +78,7 @@
 </template>
 
 <script lang="ts">
+import Issue from "@/models/util/issue";
 import { Mutations } from "@/store/mutations";
 import Vue from "vue";
 import StuntSheet from "../../models/StuntSheet";
@@ -123,6 +130,16 @@ export default Vue.extend({
     },
   },
   methods: {
+    isIssue(index: number): boolean {
+      return (
+        this.$store.state.show.stuntSheets[index].issues.length !== 0 ||
+        this.$store.state.show.issues.some((issue: Issue) => {
+          return issue.stuntSheets.some((ss: number) => {
+            return ss === index;
+          });
+        })
+      );
+    },
     addStuntSheet(): void {
       this.$store.commit(Mutations.ADD_STUNT_SHEET);
     },
