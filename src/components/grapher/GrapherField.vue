@@ -1,6 +1,6 @@
 <template>
   <g class="grapher-field" data-test="grapher-field">
-    <rect
+    <rect v-if="showField"
       class="grapher-field--rect"
       :width="fieldWidth"
       :height="fieldHeight"
@@ -113,6 +113,9 @@ export default Vue.extend({
     },
     yardlineNumbers(): boolean {
       return this.$store.state.yardlineNumbers;
+    },
+    showField(): boolean {
+      return this.$store.state.showField;
     },
     fieldWidth(): number {
       // Account for endzones + area between yard lines

@@ -53,6 +53,7 @@ export enum Mutations {
   SET_YARDLINES = "setYardlines",
   SET_YARDLINE_NUMBERS = "setYardlineNumbers",
   SET_SHOW_DOT_LABELS = "setShowDotLabels",
+  SET_SHOW_FIELD = "setShowField",
   // Tools
   SET_GRAPHER_SVG_PAN_ZOOM = "setGrapherSvgPanZoom",
   SET_INVERTED_CTM_MATRIX = "setInvertedCTMMatrix",
@@ -390,6 +391,9 @@ export const mutations: MutationTree<CalChartState> = {
   },
   [Mutations.SET_SHOW_DOT_LABELS](state, enabled: boolean): void {
     state.showDotLabels = enabled;
+  },
+  [Mutations.SET_SHOW_FIELD](state, enabled: boolean): void {
+    state.showField = enabled;
   },
 
   // Tools

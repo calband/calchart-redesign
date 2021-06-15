@@ -18,6 +18,7 @@ Vue.use(Vuex);
  * @property selectedSS        - Index of stuntsheet currently in view
  * @property beat              - The point in time the show is in
  * @property fourStepGrid      - View setting to toggle the grapher grid
+ * @property showField         - View setting to toggle the (green) field
  * @property grapherSvgPanZoom - Initialized upon mounting Grapher
  * @property invertedCTMMatrix - Used to calculate clientX/Y to SVG X/Y
  * @property toolSelected      - See BaseTool
@@ -39,6 +40,8 @@ export class CalChartState extends Serializable<CalChartState> {
   yardlineNumbers = true;
 
   showDotLabels = true;
+
+  showField = true;
 
   grapherSvgPanZoom?: SvgPanZoom.Instance;
 

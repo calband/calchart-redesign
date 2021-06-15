@@ -67,6 +67,14 @@
               Show Dot Labels
             </b-checkbox>
           </b-navbar-item>
+          <b-navbar-item>
+            <b-checkbox
+              v-model="showField"
+              data-test="menu-top--view-show-field"
+            >
+              Show Field
+            </b-checkbox>
+          </b-navbar-item>
         </b-navbar-dropdown>
       </template>
     </b-navbar>
@@ -149,6 +157,15 @@ export default Vue.extend({
       set(enabled: boolean): void {
         this.$store.commit(Mutations.SET_SHOW_DOT_LABELS, enabled);
       },
+    },
+
+    showField: {
+      get(): boolean {
+        return this.$store.state.showField;
+      },
+      set(enabled: boolean): void {
+        this.$store.commit(Mutations.SET_SHOW_FIELD, enabled)
+      }
     },
 
     fileURL(): string {
