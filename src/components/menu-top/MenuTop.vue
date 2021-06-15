@@ -164,8 +164,8 @@ export default Vue.extend({
         return this.$store.state.showField;
       },
       set(enabled: boolean): void {
-        this.$store.commit(Mutations.SET_SHOW_FIELD, enabled)
-      }
+        this.$store.commit(Mutations.SET_SHOW_FIELD, enabled);
+      },
     },
 
     fileURL(): string {

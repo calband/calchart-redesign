@@ -87,9 +87,7 @@ describe("components/menu-top/MenuTop", () => {
 
   it("show field checkbox", () => {
     expect(store.state.showField).toBeTruthy();
-    const showField = wrapper.find(
-      '[data-test="menu-top--view-show-field"]'
-    );
+    const showField = wrapper.find('[data-test="menu-top--view-show-field"]');
     expect(showField.exists()).toBeTruthy();
     showField.trigger("click");
     expect(store.state.showField).toBeFalsy();

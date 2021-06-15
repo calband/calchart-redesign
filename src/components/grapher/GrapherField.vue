@@ -1,6 +1,7 @@
 <template>
   <g class="grapher-field" data-test="grapher-field">
-    <rect v-if="showField"
+    <rect
+      v-if="showField"
       class="grapher-field--rect"
       :width="fieldWidth"
       :height="fieldHeight"
