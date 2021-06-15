@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
+import { VIEW_MODES } from "./constants";
 import { mutations } from "./mutations";
 import getters from "./getters";
 import Show from "@/models/Show";
@@ -17,6 +18,7 @@ Vue.use(Vuex);
  * @property initialShowState  - Beginning spot for show
  * @property selectedSS        - Index of stuntsheet currently in view
  * @property beat              - The point in time the show is in
+ * @property viewMode          - Defines the possible UI interactions
  * @property fourStepGrid      - View setting to toggle the grapher grid
  * @property grapherSvgPanZoom - Initialized upon mounting Grapher
  * @property invertedCTMMatrix - Used to calculate clientX/Y to SVG X/Y
@@ -31,6 +33,8 @@ export class CalChartState extends Serializable<CalChartState> {
   selectedSS = 0;
 
   beat = 0;
+
+  viewMode: VIEW_MODES = VIEW_MODES.STUNTSHEET;
 
   fourStepGrid = true;
 

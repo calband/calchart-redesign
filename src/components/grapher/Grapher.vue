@@ -10,6 +10,7 @@
       <!-- Note:Inside svg, 1px = 1 eight-to-five step -->
       <g class="grapher--wrapper" data-test="grapher--wrapper">
         <GrapherField />
+        <GrapherFlow />
         <GrapherDots />
         <GrapherTool />
       </g>
@@ -20,6 +21,7 @@
 <script lang="ts">
 import Vue from "vue";
 import GrapherField from "./GrapherField.vue";
+import GrapherFlow from "./GrapherFlow.vue";
 import GrapherDots from "./GrapherDots.vue";
 import GrapherTool from "./GrapherTool.vue";
 import svgPanZoom from "svg-pan-zoom";
@@ -33,6 +35,7 @@ export default Vue.extend({
   name: "Grapher",
   components: {
     GrapherField,
+    GrapherFlow,
     GrapherDots,
     GrapherTool,
   },

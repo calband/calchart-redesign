@@ -48,22 +48,41 @@ import Vue from "vue";
 import StuntSheet from "@/models/StuntSheet";
 import DotAppearance from "@/models/DotAppearance";
 
+const nextSSDotAppearance = new DotAppearance({
+  filled: true,
+  fill: "purple",
+  color: "purple",
+});
+
+const nextSSUnconnectedDotAppearance = new DotAppearance({
+  ...nextSSDotAppearance,
+  fill: "deeppink",
+  color: "deeppink",
+});
+
 /**
  * Renders a single dot
  */
 export default Vue.extend({
   name: "Dot",
   props: {
+    isNextSS: Boolean,
     dotTypeIndex: Number,
     label: String,
     labeled: Boolean,
     selected: Boolean,
+    isConnected: Boolean,
   },
   computed: {
     radius(): number {
-      return 0.7;
+      return this.$props.isNextSS ? 0.5 : 0.7;
     },
     dotAppearance(): DotAppearance {
+      if (this.$props.isNextSS) {
+        return this.$props.isConnected
+          ? nextSSDotAppearance
+          : nextSSUnconnectedDotAppearance;
+      }
       const currentSS: StuntSheet = this.$store.getters.getSelectedStuntSheet;
       return currentSS.dotAppearances[this.dotTypeIndex];
     },
