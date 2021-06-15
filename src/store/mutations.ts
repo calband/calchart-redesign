@@ -14,6 +14,7 @@ import DotAppearance from "@/models/DotAppearance";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContETFStatic from "@/models/continuity/ContETFStatic";
 import ContGateTurn from "@/models/continuity/ContGateTurn";
+import { VIEW_MODES } from "./constants";
 
 export enum Mutations {
   // Show mutations:
@@ -34,6 +35,8 @@ export enum Mutations {
   SET_STUNT_SHEET_BEATS = "Set Stund Sheet beats",
   ADD_DOT_TYPE = "Add Marcher type",
   ADD_CONTINUITY = "Add Continuity",
+  // StuntSheetDot mutations:
+  SET_DOT_NEXT_DOT_ID = "setDotNextDotId",
   // Continuity mutations:
   UPDATE_DOT_TYPE_MARCH_STYLE = "Update Marcher Step Style",
   UPDATE_DOT_TYPE_DURATION = "Update Marcher Duration",
@@ -44,6 +47,7 @@ export enum Mutations {
   UPDATE_DOT_TYPE_ANGLE = "Update Marcher Angle",
 
   // View mutations:
+  SET_VIEW_MODE = "setViewMode",
   SET_SELECTED_SS = "setSelectedSS",
   SET_BEAT = "setBeat",
   INCREMENT_BEAT = "incrementBeat",
@@ -217,6 +221,22 @@ export const mutations: MutationTree<CalChartState> = {
     currentSS.dotTypes[dotTypeIndex].push(ContFactory(contID));
     state.show.generateFlows(state.selectedSS);
     currentSS.calculateIssuesDeep(state.selectedSS);
+  },
+
+  // Show -> StuntSheet -> StuntSheetDot
+  [Mutations.SET_DOT_NEXT_DOT_ID](
+    state,
+    { dotId, nextDotId }: { dotId: number; nextDotId: number | null }
+  ) {
+    const getSelectedStuntSheet = getters.getSelectedStuntSheet as (
+      state: CalChartState
+    ) => StuntSheet;
+    const currentSS = getSelectedStuntSheet(state);
+    const currentDot = currentSS.stuntSheetDots.find((dot) => dot.id === dotId);
+    if (currentDot) {
+      currentDot.nextDotId = nextDotId;
+      state.show.generateFlows(state.selectedSS);
+    }
   },
 
   // Show -> StuntSheet -> BaseCont
@@ -395,6 +415,9 @@ export const mutations: MutationTree<CalChartState> = {
   },
 
   // View Settings
+  [Mutations.SET_VIEW_MODE](state, viewMode: VIEW_MODES): void {
+    state.viewMode = viewMode;
+  },
   [Mutations.SET_FOUR_STEP_GRID](state, enabled: boolean): void {
     state.fourStepGrid = enabled;
   },

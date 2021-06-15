@@ -39,7 +39,7 @@ describe("components/menu-bottom/MenuBottom", () => {
 
     it("renders the correct amount of tools", () => {
       expect(menu.findAll('[data-test="menu-bottom--tooltip"]')).toHaveLength(
-        3
+        4
       );
     });
 

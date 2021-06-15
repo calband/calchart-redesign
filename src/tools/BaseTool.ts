@@ -65,6 +65,23 @@ export default abstract class BaseTool {
   }
 
   /**
+   * returns dot from the next stunt sheet at mouse event, or undefined if nothing found
+   **/
+  static findNextSSDotAtEvent(event: MouseEvent): StuntSheetDot | undefined {
+    const [x, y] = BaseTool.convertClientCoordinatesRounded(event);
+    const { show, selectedSS } = GlobalStore.state;
+    const nextSelectedSS = selectedSS + 1;
+    if (nextSelectedSS >= show.stuntSheets.length) {
+      return;
+    }
+    const stuntSheetDots: StuntSheetDot[] =
+      show.stuntSheets[nextSelectedSS].stuntSheetDots;
+    return stuntSheetDots.find((dot: StuntSheetDot): boolean => {
+      return x === dot.xAtBeat(0) && y === dot.yAtBeat(0);
+    });
+  }
+
+  /**
    * Convert clientX/Y to the X/Y coordinates on the SVG rectangle.
    **/
   static updateInvertedCTMMatrix(): void {

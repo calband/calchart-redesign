@@ -1,5 +1,7 @@
 <template>
   <div class="menu-right">
+    <ViewModeForm />
+    <hr />
     <SelectedDotEditor />
     <hr />
     <DotTypeEditorWrapper />
@@ -7,6 +9,7 @@
 </template>
 
 <script lang="ts">
+import ViewModeForm from "./ViewModeForm.vue";
 import SelectedDotEditor from "./SelectedDotEditor.vue";
 import DotTypeEditorWrapper from "./DotTypeEditorWrapper.vue";
 import Vue from "vue";
@@ -14,6 +17,7 @@ import Vue from "vue";
 export default Vue.extend({
   name: "MenuRight",
   components: {
+    ViewModeForm,
     SelectedDotEditor,
     DotTypeEditorWrapper,
   },
