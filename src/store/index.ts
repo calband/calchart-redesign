@@ -40,6 +40,8 @@ export class CalChartState extends Serializable<CalChartState> {
 
   showDotLabels = true;
 
+  gridSize = 2;
+
   grapherSvgPanZoom?: SvgPanZoom.Instance;
 
   invertedCTMMatrix?: DOMMatrix;
