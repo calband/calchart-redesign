@@ -87,25 +87,19 @@ describe("components/menu-top/MenuTop", () => {
 
   describe("grid dropdown", () => {
     it("one step grid", () => {
-      const oneStep = wrapper.find(
-        '[data-test="menu-top--grid-one"]'
-      );
+      const oneStep = wrapper.find('[data-test="menu-top--grid-one"]');
       oneStep.trigger("click");
       expect(store.state.gridSize).toEqual(1);
     });
 
     it("two step grid", () => {
-      const twoStep = wrapper.find(
-        '[data-test="menu-top--grid-two"]'
-      );
+      const twoStep = wrapper.find('[data-test="menu-top--grid-two"]');
       twoStep.trigger("click");
       expect(store.state.gridSize).toEqual(2);
     });
 
     it("four step grid", () => {
-      const fourStep = wrapper.find(
-        '[data-test="menu-top--grid-four"]'
-      );
+      const fourStep = wrapper.find('[data-test="menu-top--grid-four"]');
       fourStep.trigger("click");
       expect(store.state.gridSize).toEqual(4);
     });

@@ -74,19 +74,19 @@
             data-test="menu-top--grid-one"
             @click="changeStepGrid(1)"
           >
-          One Step
+            One Step
           </b-navbar-item>
           <b-navbar-item
             data-test="menu-top--grid-two"
             @click="changeStepGrid(2)"
           >
-          Two Step
+            Two Step
           </b-navbar-item>
           <b-navbar-item
             data-test="menu-top--grid-four"
             @click="changeStepGrid(4)"
           >
-          Four Step
+            Four Step
           </b-navbar-item>
         </b-navbar-dropdown>
       </template>

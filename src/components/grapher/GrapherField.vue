@@ -124,13 +124,25 @@ export default Vue.extend({
         this.$store.getters.getFrontHashOffsetY
       );
     },
+    // fourStepGridOffsetsX(): number[] {
+    //   const offset: number = this.$store.state.yardlines ? 8 : 4;
+    //   const retVal: number[] = [4, 8, this.fieldWidth - 8, this.fieldWidth - 4];
+    //   for (
+    //     let offsetX = 12;
+    //     offsetX <= this.fieldWidth - 12;
+    //     offsetX += offset
+    //   ) {
+    //     retVal.push(offsetX);
+    //   }
+    //   return retVal;
+    // },
     fourStepGridOffsetsX(): number[] {
-      const offset: number = this.$store.state.yardlines ? 8 : 4;
-      const retVal: number[] = [4, 8, this.fieldWidth - 8, this.fieldWidth - 4];
+      const retVal: number[] = [];
+      const gridSize: number = this.$store.state.gridSize;
       for (
-        let offsetX = 12;
-        offsetX <= this.fieldWidth - 12;
-        offsetX += offset
+        let offsetX = gridSize * 2;
+        offsetX < this.fieldWidth;
+        offsetX += gridSize * 2
       ) {
         retVal.push(offsetX);
       }
@@ -138,7 +150,12 @@ export default Vue.extend({
     },
     fourStepGridOffsetsY(): number[] {
       const retVal: number[] = [];
-      for (let offsetY = 4; offsetY < this.fieldHeight; offsetY += 4) {
+      const gridSize: number = this.$store.state.gridSize;
+      for (
+        let offsetY = gridSize * 2;
+        offsetY < this.fieldHeight;
+        offsetY += gridSize * 2
+      ) {
         retVal.push(offsetY);
       }
       return retVal;
