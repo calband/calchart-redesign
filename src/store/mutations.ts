@@ -103,10 +103,13 @@ export const mutations: MutationTree<CalChartState> = {
     state.show.title = title;
     state.show.calculateIssuesShallow();
   },
-  [Mutations.ADD_STUNT_SHEET](state): void {
+  [Mutations.ADD_STUNT_SHEET](state, prevSS: number): void {
     state.show.stuntSheets.push(
       new StuntSheet({
         title: `Stuntsheet ${state.show.stuntSheets.length + 1}`,
+        stuntSheetDots: state.show.stuntSheets[prevSS].stuntSheetDots,
+        dotTypes: state.show.stuntSheets[prevSS].dotTypes,
+        dotAppearances: state.show.stuntSheets[prevSS].dotAppearances,
       })
     );
     state.selectedSS = state.show.stuntSheets.length - 1;

@@ -141,7 +141,7 @@ export default Vue.extend({
       );
     },
     addStuntSheet(): void {
-      this.$store.commit(Mutations.ADD_STUNT_SHEET);
+      this.$store.commit(Mutations.ADD_STUNT_SHEET, this.selectedSS);
     },
     incrementBeat(): void {
       this.$store.commit(Mutations.INCREMENT_BEAT);
