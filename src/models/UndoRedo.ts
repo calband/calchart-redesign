@@ -7,118 +7,122 @@ import Show from "./Show";
 // Increment upon making show metadata changes that break previous versions.
 const METADATA_VERSION = 1;
 
-// The UndoRedo holds snapshots of the show over time.
-//
-// States are held as pairs of the show, and the action that happened to get
-// to that show.  This is useful for displaying that information to the user
-// so they know what the undo/do action will do.
-//
-// shapshots
-// ----------------------------------------------------------
-// | state0, "action" | state1, "action" | state2, "action" |
-// ----------------------------------------------------------
-//                            ^
-// currentSnapshot == 1 ------+
-//
-// When a new undoable commit occurs, UndoRedo will snapshot the current state
-// and append it to the end if there is room.  Otherwise, we shift the entire
-// undo state by one to make room.
-//
-// if a new undoable commit happens when you are in the middle of an undo stack
-// (for instance, you've undo a move and then do another move), we remove all
-// the items after the current snapshot and start appending from there.
-//
-//
-// here is a diagram of what we expect to occur with a series of commits, undo, redo actions.
-//
-// snapshots
-// --------------------
-// | initialState, "" |
-// --------------------
-// currentSnapshot == 0
-// Undoable should be 0, redoable should be 0
-//
-// commit
-// Set currentShapshot forward by 1.  preserve [0, currentSnapshot+1).  Append new state.
-// snapshots.
-// ---------------------------------------
-// | initialState, "" | state0, "action" |
-// ---------------------------------------
-// currentSnapshot == 1
-// undoable should be 1, redoable should be 0
-//
-// undo:
-// Set currentSnapshot back by 1.  restore state at currentSnapshot.
-// snapshots
-// ---------------------------------------
-// | initialState, "" | state0, "action" |
-// ---------------------------------------
-// currentSnapshot == 0
-// undoable should be 0, redoable should be 1
-//
-// undo:
-// Should be no-op
-// snapshots
-// ---------------------------------------
-// | initialState, "" | state0, "action" |
-// ---------------------------------------
-// currentSnapshot == 0
-// undoable should be 0, redoable should be 1
-//
-// redo:
-// Set currentSnapshot forward by 1.  restore state at currentSnapshot.
-// snapshots
-// ---------------------------------------
-// | initialState, "" | state0, "action" |
-// ---------------------------------------
-// currentSnapshot == 1
-// undoable should be 1, redoable should be 0
-//
-// redo:
-// Should be no-op
-// snapshots
-// ---------------------------------------
-// | initialState, "" | state0, "action" |
-// ---------------------------------------
-// currentSnapshot == 1
-// undoable should be 1, redoable should be 0
-//
-// commit
-// Set currentShapshot forward by 1.  preserve [0, currentSnapshot+1).  Append new state.
-// snapshots
-// ----------------------------------------------------------
-// | initialState, "" | state0, "action" | state1, "action" |
-// ----------------------------------------------------------
-// currentSnapshot == 2
-// undoable should be 1, redoable should be 0
-//
-// undo:
-// restore state at currentSnapshot.  Set currentSnapshot back by 1
-// snapshots
-// ----------------------------------------------------------
-// | initialState, "" | state0, "action" | state1, "action" |
-// ----------------------------------------------------------
-// currentSnapshot == 1
-// undoable should be 1, redoable should be 1
-//
-// commit
-// Set currentShapshot forward by 1.  preserve [0, currentSnapshot+1).  Append new state.
-// snapshots
-// ----------------------------------------------------------
-// | initialState, "" | state0, "action" | state2, "action" |
-// ----------------------------------------------------------
-// currentSnapshot == 2
-// undoable should be 1, redoable should be 0
-//
-// assume limit of 3
-// commit
-// rotate snapshots by 1 left.  override new state at currentShapshot-1.
-// snapshots
-// ----------------------------------------------------------
-// | state0, "action" | state2, "action" | state3, "action" |
-// ----------------------------------------------------------
-// currentSnapshot == 2
-// undoable should be 1, redoable should be 0
+/**
+ *  The UndoRedo holds snapshots of the show over time.
+ *
+ * States are held as pairs of the show, and the action that happened to get
+ * to that show.  This is useful for displaying that information to the user
+ * so they know what the undo/do action will do.
+ *
+ * shapshots
+ * ----------------------------------------------------------
+ * | state0, "action" | state1, "action" | state2, "action" |
+ * ----------------------------------------------------------
+ *                            ^
+ * currentSnapshot == 1 ------+
+ *
+ * When a new undoable commit occurs, UndoRedo will snapshot the current state
+ * and append it to the end if there is room.  Otherwise, we shift the entire
+ * undo state by one to make room.
+ *
+ * if a new undoable commit happens when you are in the middle of an undo stack
+ * (for instance, you've undo a move and then do another move), we remove all
+ * the items after the current snapshot and start appending from there.
+ *
+ *
+ * here is a diagram of what we expect to occur with a series of commits, undo, redo actions.
+ *
+ * snapshots
+ * --------------------
+ * | initialState, "" |
+ * --------------------
+ * currentSnapshot == 0
+ * Undoable should be 0, redoable should be 0
+ *
+ * commit
+ * Set currentShapshot forward by 1.  preserve [0, currentSnapshot+1).  Append new state.
+ * snapshots.
+ * ---------------------------------------
+ * | initialState, "" | state0, "action" |
+ * ---------------------------------------
+ * currentSnapshot == 1
+ * undoable should be 1, redoable should be 0
+ *
+ * undo:
+ * Set currentSnapshot back by 1.  restore state at currentSnapshot.
+ * snapshots
+ * ---------------------------------------
+ * | initialState, "" | state0, "action" |
+ * ---------------------------------------
+ * currentSnapshot == 0
+ * undoable should be 0, redoable should be 1
+ *
+ * undo:
+ * Should be no-op
+ * snapshots
+ * ---------------------------------------
+ * | initialState, "" | state0, "action" |
+ * ---------------------------------------
+ * currentSnapshot == 0
+ * undoable should be 0, redoable should be 1
+ *
+ * redo:
+ * Set currentSnapshot forward by 1.  restore state at currentSnapshot.
+ * snapshots
+ * ---------------------------------------
+ * | initialState, "" | state0, "action" |
+ * ---------------------------------------
+ * currentSnapshot == 1
+ * undoable should be 1, redoable should be 0
+ *
+ * redo:
+ * Should be no-op
+ * snapshots
+ * ---------------------------------------
+ * | initialState, "" | state0, "action" |
+ * ---------------------------------------
+ * currentSnapshot == 1
+ * undoable should be 1, redoable should be 0
+ *
+ * commit
+ * Set currentShapshot forward by 1.  preserve [0, currentSnapshot+1).  Append new state.
+ * snapshots
+ * ----------------------------------------------------------
+ * | initialState, "" | state0, "action" | state1, "action" |
+ * ----------------------------------------------------------
+ * currentSnapshot == 2
+ * undoable should be 1, redoable should be 0
+ *
+ * undo:
+ * restore state at currentSnapshot.  Set currentSnapshot back by 1
+ * snapshots
+ * ----------------------------------------------------------
+ * | initialState, "" | state0, "action" | state1, "action" |
+ * ----------------------------------------------------------
+ * currentSnapshot == 1
+ * undoable should be 1, redoable should be 1
+ *
+ * commit
+ * Set currentShapshot forward by 1.  preserve [0, currentSnapshot+1).  Append new state.
+ * snapshots
+ * ----------------------------------------------------------
+ * | initialState, "" | state0, "action" | state2, "action" |
+ * ----------------------------------------------------------
+ * currentSnapshot == 2
+ * undoable should be 1, redoable should be 0
+ *
+ * assume limit of 3
+ * commit
+ * rotate snapshots by 1 left.  override new state at currentShapshot-1.
+ * snapshots
+ * ----------------------------------------------------------
+ * | state0, "action" | state2, "action" | state3, "action" |
+ * ----------------------------------------------------------
+ * currentSnapshot == 2
+ * undoable should be 1, redoable should be 0
+ *
+ * Inspiration for the undo system from https://vuejsdevelopers.com/2017/11/13/vue-js-vuex-undo-redo/
+ */
 
 export class UndoRedo extends Serializable<UndoRedo> {
   metadataVersion: number = METADATA_VERSION;
@@ -160,7 +164,7 @@ export class UndoRedo extends Serializable<UndoRedo> {
 
   createPlugin() {
     return (store: Store<CalChartState>): void => {
-      this.stateSnapshots = [[JSON.stringify(store.state.show), ""]];
+      this.reinitializeUndoRedo(store.state.show);
       // called when the store is initialized
       // State could be useful in the future.
       store.subscribe((
@@ -168,10 +172,7 @@ export class UndoRedo extends Serializable<UndoRedo> {
       ) => {
         if (UNDOABLE_ACTIONS.includes(mutation.type as Mutations)) {
           if (this.stateSnapshots.length === this.maxSnapshots) {
-            this.stateSnapshots = this.stateSnapshots.slice(
-              1,
-              this.stateSnapshots.length
-            );
+            this.stateSnapshots.shift();
           } else {
             this.currentShapshot = this.currentShapshot + 1;
             this.stateSnapshots = this.stateSnapshots.slice(
