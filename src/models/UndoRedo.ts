@@ -171,7 +171,7 @@ export class UndoRedo extends Serializable<UndoRedo> {
         mutation: MutationPayload /*, state: CalChartState */
       ) => {
         if (UNDOABLE_ACTIONS.includes(mutation.type as Mutations)) {
-          if (this.stateSnapshots.length === this.maxSnapshots) {
+          if (this.currentShapshot + 1 === this.maxSnapshots) {
             this.stateSnapshots.shift();
           } else {
             this.currentShapshot = this.currentShapshot + 1;
