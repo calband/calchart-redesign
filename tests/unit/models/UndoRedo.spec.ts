@@ -1,7 +1,7 @@
 import { createLocalVue } from "@vue/test-utils";
 import Vue, { VueConstructor } from "vue";
-import Vuex, { Store } from "vuex";
-import { CalChartState, generateStore } from "@/store";
+import Vuex from "vuex";
+import { generateStore } from "@/store";
 import { Mutations } from "@/store/mutations";
 
 describe("models/UndoRedo", () => {
