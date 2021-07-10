@@ -140,9 +140,9 @@ export default Vue.extend({
       const retVal: number[] = [];
       const gridSize: number = this.$store.state.gridSize;
       for (
-        let offsetX = gridSize * 2;
+        let offsetX = gridSize;
         offsetX < this.fieldWidth;
-        offsetX += gridSize * 2
+        offsetX += gridSize
       ) {
         retVal.push(offsetX);
       }
@@ -152,9 +152,9 @@ export default Vue.extend({
       const retVal: number[] = [];
       const gridSize: number = this.$store.state.gridSize;
       for (
-        let offsetY = gridSize * 2;
+        let offsetY = gridSize;
         offsetY < this.fieldHeight;
-        offsetY += gridSize * 2
+        offsetY += gridSize
       ) {
         retVal.push(offsetY);
       }

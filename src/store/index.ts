@@ -34,7 +34,7 @@ export class CalChartState extends Serializable<CalChartState> {
 
   showDotLabels = true;
 
-  gridSize = 2;
+  gridSize = 4;
 
   grapherSvgPanZoom?: SvgPanZoom.Instance;
 
