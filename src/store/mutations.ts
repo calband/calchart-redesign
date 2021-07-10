@@ -50,6 +50,8 @@ export enum Mutations {
   SET_BEAT = "setBeat",
   INCREMENT_BEAT = "incrementBeat",
   DECREMENT_BEAT = "decrementBeat",
+  // Grid mutations:
+  SET_GRID_SIZE = "setGridSize",
   // Field view mutations:
   SET_FOUR_STEP_GRID = "setFourStepGrid",
   SET_YARDLINES = "setYardlines",
@@ -411,6 +413,12 @@ export const mutations: MutationTree<CalChartState> = {
   },
   [Mutations.SET_SHOW_DOT_LABELS](state, enabled: boolean): void {
     state.showDotLabels = enabled;
+  },
+
+  // Grid Size
+
+  [Mutations.SET_GRID_SIZE](state, size: number): void {
+    state.gridSize = size;
   },
 
   // Tools

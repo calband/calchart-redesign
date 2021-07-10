@@ -78,6 +78,27 @@
             </b-checkbox>
           </b-navbar-item>
         </b-navbar-dropdown>
+
+        <b-navbar-dropdown label="Grid" data-test="menu-top--grid">
+          <b-navbar-item
+            data-test="menu-top--grid-one"
+            @click="changeStepGrid(1)"
+          >
+            One Step
+          </b-navbar-item>
+          <b-navbar-item
+            data-test="menu-top--grid-two"
+            @click="changeStepGrid(2)"
+          >
+            Two Step
+          </b-navbar-item>
+          <b-navbar-item
+            data-test="menu-top--grid-four"
+            @click="changeStepGrid(4)"
+          >
+            Four Step
+          </b-navbar-item>
+        </b-navbar-dropdown>
       </template>
     </b-navbar>
 
@@ -182,6 +203,10 @@ export default Vue.extend({
     },
     newShow(): void {
       this.$store.commit(Mutations.SET_NEW_SHOW, new InitialShowState());
+    },
+
+    changeStepGrid(size: number): void {
+      this.$store.commit(Mutations.SET_GRID_SIZE, size);
     },
   },
 });

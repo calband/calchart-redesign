@@ -57,13 +57,35 @@ describe("components/grapher/GrapherField.vue", () => {
       expect(rect.attributes("height")).toBe("24");
     });
 
-    it("four step grid: generates 6 vert lines and 5 horiz lines", () => {
+    it("four step grid: generates appropriate amount of vert and horiz grid lines", async () => {
+      store.commit(Mutations.SET_GRID_SIZE, 2);
+      await wrapper.vm.$nextTick();
       expect(
         wrapper.findAll('[data-test="grapher-field--grid-vertical"]')
-      ).toHaveLength(6);
+      ).toHaveLength(7);
       expect(
         wrapper.findAll('[data-test="grapher-field--grid-horizontal"]')
       ).toHaveLength(5);
+
+      store.commit(Mutations.SET_GRID_SIZE, 1);
+      await wrapper.vm.$nextTick();
+
+      expect(
+        wrapper.findAll('[data-test="grapher-field--grid-vertical"]')
+      ).toHaveLength(15);
+      expect(
+        wrapper.findAll('[data-test="grapher-field--grid-horizontal"]')
+      ).toHaveLength(11);
+
+      store.commit(Mutations.SET_GRID_SIZE, 4);
+      await wrapper.vm.$nextTick();
+
+      expect(
+        wrapper.findAll('[data-test="grapher-field--grid-vertical"]')
+      ).toHaveLength(3);
+      expect(
+        wrapper.findAll('[data-test="grapher-field--grid-horizontal"]')
+      ).toHaveLength(2);
     });
 
     it("generates no field numbers", () => {
@@ -93,6 +115,7 @@ describe("components/grapher/GrapherField.vue", () => {
       ).toBeFalsy();
 
       store.commit(Mutations.SET_FOUR_STEP_GRID, true);
+      store.commit(Mutations.SET_GRID_SIZE, 2);
       await wrapper.vm.$nextTick();
 
       expect(
@@ -149,13 +172,36 @@ describe("components/grapher/GrapherField.vue", () => {
       ).toBe("84");
     });
 
-    it("four step grid: generates 26 vert lines and 20 horiz lines", () => {
+    it("four step grid: generates 47/95/23 vert lines and 20/41/10 horiz lines", async () => {
+      store.commit(Mutations.SET_GRID_SIZE, 2);
+      await wrapper.vm.$nextTick();
+
       expect(
         wrapper.findAll('[data-test="grapher-field--grid-vertical"]')
-      ).toHaveLength(26);
+      ).toHaveLength(47);
       expect(
         wrapper.findAll('[data-test="grapher-field--grid-horizontal"]')
       ).toHaveLength(20);
+
+      store.commit(Mutations.SET_GRID_SIZE, 1);
+      await wrapper.vm.$nextTick();
+
+      expect(
+        wrapper.findAll('[data-test="grapher-field--grid-vertical"]')
+      ).toHaveLength(95);
+      expect(
+        wrapper.findAll('[data-test="grapher-field--grid-horizontal"]')
+      ).toHaveLength(41);
+
+      store.commit(Mutations.SET_GRID_SIZE, 4);
+      await wrapper.vm.$nextTick();
+
+      expect(
+        wrapper.findAll('[data-test="grapher-field--grid-vertical"]')
+      ).toHaveLength(23);
+      expect(
+        wrapper.findAll('[data-test="grapher-field--grid-horizontal"]')
+      ).toHaveLength(10);
     });
 
     it("generates 18 field numbers", () => {
@@ -194,6 +240,7 @@ describe("components/grapher/GrapherField.vue", () => {
       ).toBeFalsy();
 
       store.commit(Mutations.SET_FOUR_STEP_GRID, true);
+      store.commit(Mutations.SET_GRID_SIZE, 2);
       await wrapper.vm.$nextTick();
 
       expect(

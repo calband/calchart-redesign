@@ -18,8 +18,10 @@ export default abstract class BaseTool {
    */
   static roundCoordinateToGrid(coordinate: [number, number]): [number, number] {
     return [
-      Math.round(coordinate[0] / 2) * 2,
-      Math.round(coordinate[1] / 2) * 2,
+      Math.round(coordinate[0] / GlobalStore.state.gridSize) *
+        GlobalStore.state.gridSize,
+      Math.round(coordinate[1] / GlobalStore.state.gridSize) *
+        GlobalStore.state.gridSize,
     ];
   }
 
