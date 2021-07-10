@@ -16,6 +16,7 @@ Vue.use(Vuex);
  * @property show              - The currently selected show data
  * @property undoRedo          - The undoRedo state
  * @property fourStepGrid      - View setting to toggle the grapher grid
+ * @property showField         - View setting to toggle the (green) field
  * @property grapherSvgPanZoom - Initialized upon mounting Grapher
  * @property invertedCTMMatrix - Used to calculate clientX/Y to SVG X/Y
  * @property toolSelected      - See BaseTool
@@ -33,6 +34,8 @@ export class CalChartState extends Serializable<CalChartState> {
   yardlineNumbers = true;
 
   showDotLabels = true;
+
+  showField = true;
 
   grapherSvgPanZoom?: SvgPanZoom.Instance;
 
