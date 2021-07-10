@@ -1,16 +1,16 @@
 <template>
-  <div class="menu-bottom">
+  <div class="menu-bottom-tools">
     <div class="buttons">
       <b-tooltip
         v-for="(toolData, index) in toolDataList"
         :key="`${toolData.icon}-toolData`"
         :label="toolData.label"
-        data-test="menu-bottom--tooltip"
+        data-test="menu-bottom-tools--tooltip"
       >
         <b-button
           :type="toolSelectedIndex === index ? 'is-primary' : 'is-light'"
           :icon-left="toolData.icon"
-          :data-test="`menu-bottom-tool--${toolData['data-test']}`"
+          :data-test="`menu-bottom-tools-tool--${toolData['data-test']}`"
           @click="setTool(index)"
         />
       </b-tooltip>
@@ -37,7 +37,7 @@ interface ToolData {
 }
 
 export default Vue.extend({
-  name: "MenuBottom",
+  name: "MenuBottomTools",
   data: (): {
     toolDataList: ToolData[];
     toolSelectedIndex: number;
@@ -70,6 +70,7 @@ export default Vue.extend({
   methods: {
     setTool(toolIndex: number): void {
       this.$data.toolSelectedIndex = toolIndex;
+      console.log("which tool ", toolIndex);
       const ToolConstructor: ToolConstructor = this.$data.toolDataList[
         toolIndex
       ].tool;
@@ -84,11 +85,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.menu-bottom {
-  grid-area: menu-bottom;
+.menu-bottom-tools {
+  grid-area: menu-bottom-tools;
 }
 
 .buttons {
-  height: 36px;
+  height: 24px;
 }
 </style>

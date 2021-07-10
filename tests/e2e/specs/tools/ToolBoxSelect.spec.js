@@ -1,7 +1,7 @@
 describe("tools/ToolBoxSelect", () => {
   beforeEach(() => {
     cy.visit("/")
-      .get('[data-test="menu-bottom-tool--select-box-move"]')
+      .get('[data-test="menu-bottom-tools-tool--select-box-move"]')
       .click();
   });
 
@@ -47,7 +47,7 @@ describe("tools/ToolBoxSelect", () => {
   });
   it("make sure selection works", () => {
     // Create 2 dots at 12, 8 and 12, 6.
-    cy.get('[data-test="menu-bottom-tool--add-rm"]').click();
+    cy.get('[data-test="menu-bottom-tools-tool--add-rm"]').click();
     cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
     cy.mousedownGrapher(12, 6).mouseupGrapher(12, 6);
     cy.get('[data-test="grapher-dots--dot"]').should("have.length", 2);
@@ -63,7 +63,7 @@ describe("tools/ToolBoxSelect", () => {
     );
 
     // Select dot at 12, 8
-    cy.get('[data-test="menu-bottom-tool--select-box-move"]').click();
+    cy.get('[data-test="menu-bottom-tools-tool--select-box-move"]').click();
     cy.mousedownGrapher(12, 8).mouseupGrapher(12, 8);
     cy.get('[data-test="grapher-dots--dot"][data-test-selected="true"]').should(
       "have.length",
