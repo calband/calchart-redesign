@@ -7,8 +7,8 @@ describe("components/menu-top/MenuTop", () => {
     cy.get('[data-test="menu-top--file"]')
       .find('[data-test="menu-top--load-show"]')
       .should("not.be.visible");
-    cy.get('[data-test="menu-top--file"]')
-      .find('[data-test="menu-top--file-edit"]')
+    cy.get('[data-test="menu-top--edit"]')
+      .find('[data-test="menu-top--edit-show-details"]')
       .should("not.be.visible");
     cy.get('[data-test="menu-top--view"]')
       .find('[data-test="menu-top--view-grid"]')
@@ -21,20 +21,13 @@ describe("components/menu-top/MenuTop", () => {
     });
 
     it("dropdown is visible upon clicking", () => {
+      cy.get('[data-test="menu-top--new-show"]').should("be.visible");
       cy.get('[data-test="menu-top--load-show"]').should("be.visible");
-      cy.get('[data-test="menu-top--file-edit"]').should("be.visible");
+      cy.get('[data-test="menu-top--save-show"]').should("be.visible");
     });
 
     it("shows selected show title", () => {
       cy.get('[data-test="menu-left--title"]').contains("Example Show");
-    });
-
-    it('clicking "Edit Show Details" opens show modal', () => {
-      cy.get('[data-test="menu-top--file-modal"]').should("not.be.visible");
-
-      cy.get('[data-test="menu-top--file-edit"]').click();
-
-      cy.get('[data-test="menu-top--file-modal"]').should("be.visible");
     });
 
     it('clicking "Load Show Details" opens load modal', () => {
@@ -43,6 +36,26 @@ describe("components/menu-top/MenuTop", () => {
       cy.get('[data-test="menu-top--load-show"]').click();
 
       cy.get('[data-test="menu-top--load-modal"]').should("be.visible");
+    });
+  });
+
+  describe("edit dropdown", () => {
+    beforeEach(() => {
+      cy.get('[data-test="menu-top--edit"]').click();
+    });
+
+    it("dropdown is visible upon clicking", () => {
+      cy.get('[data-test="menu-top--edit-undo"]').should("be.visible");
+      cy.get('[data-test="menu-top--edit-redo"]').should("be.visible");
+      cy.get('[data-test="menu-top--edit-show-details"]').should("be.visible");
+    });
+
+    it('clicking "Edit Show Details" opens show modal', () => {
+      cy.get('[data-test="menu-top--file-modal"]').should("not.be.visible");
+
+      cy.get('[data-test="menu-top--edit-show-details"]').click();
+
+      cy.get('[data-test="menu-top--file-modal"]').should("be.visible");
     });
   });
 

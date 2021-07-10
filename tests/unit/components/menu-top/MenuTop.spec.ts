@@ -33,10 +33,12 @@ describe("components/menu-top/MenuTop", () => {
         wrapper.find('[data-test="menu-top--file-modal"]').props("active")
       ).toBe(false);
       expect(
-        wrapper.find('[data-test="menu-top--file-edit"]').exists()
+        wrapper.find('[data-test="menu-top--edit-show-details"]').exists()
       ).toBeTruthy();
 
-      wrapper.find('[data-test="menu-top--file-edit"]').trigger("click");
+      wrapper
+        .find('[data-test="menu-top--edit-show-details"]')
+        .trigger("click");
       await wrapper.vm.$nextTick();
 
       expect(

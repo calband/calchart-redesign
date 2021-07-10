@@ -97,23 +97,23 @@ export default Vue.extend({
   computed: {
     beat: {
       get(): number {
-        return this.$store.state.beat;
+        return this.$store.getters.getBeat;
       },
       set(beat: number): void {
         this.$store.commit(Mutations.SET_BEAT, beat);
       },
     },
     beatString(): string {
-      return this.$store.state.beat === 0
+      return this.$store.getters.getBeat === 0
         ? "Hup!"
-        : this.$store.state.beat.toString();
+        : this.$store.getters.getBeat.toString();
     },
     stuntSheets(): StuntSheet[] {
       return this.$store.state.show.stuntSheets;
     },
     selectedSS: {
       get(): number {
-        return this.$store.state.selectedSS;
+        return this.$store.getters.getSelectedStuntIndex;
       },
       set(selectedSS: number): void {
         this.$store.commit(Mutations.SET_SELECTED_SS, selectedSS);

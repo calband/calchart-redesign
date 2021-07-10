@@ -16,7 +16,9 @@ describe("components/menu-left/MenuLeft", () => {
     new StuntSheet({ beats: 8, title: "b" }),
     new StuntSheet({ beats: 12, title: "c" }),
   ];
-  const show = new Show({ stuntSheets });
+  const show = new Show({
+    stuntSheets,
+  });
 
   beforeEach(() => {
     // Mock out store and mount
@@ -79,7 +81,7 @@ describe("components/menu-left/MenuLeft", () => {
       const stuntSheet = stuntSheets[index];
       const menuItem = menu.findAll('[data-test="menu-left--ss"]').at(index);
       expect(menuItem.text()).toContain(`${index + 1}) ${stuntSheet.title}`);
-      expect(menuItem.classes("is-active")).toBe(index === 0);
+      expect(menuItem.classes("is-active")).toBe(false);
 
       commitSpy.mockClear();
       menuItem.trigger("click");

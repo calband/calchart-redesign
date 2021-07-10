@@ -68,7 +68,7 @@ export default Vue.extend({
       });
       if (this.filter === "current") {
         return issues.filter((issue: Issue) => {
-          const currentSS: number = this.$store.state.selectedSS;
+          const currentSS: number = this.$store.getters.getSelectedStuntIndex;
           return issue.stuntSheets.some((ss: number) => {
             return ss === currentSS;
           });

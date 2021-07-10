@@ -59,7 +59,7 @@ describe("components/menu-left/StuntSheetModal", () => {
       new StuntSheet({ title: "a" }),
       new StuntSheet({ title: "b" }),
     ];
-    store.state.selectedSS = 0;
+    store.state.show.selectedSS = 0;
     const parentCloseMock = jest.fn();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (wrapper.vm.$parent as any).close = parentCloseMock;
