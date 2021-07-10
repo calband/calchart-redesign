@@ -3,7 +3,8 @@
     <MenuTop />
     <MenuLeft />
     <Grapher />
-    <MenuBottom />
+    <MenuBottomTools />
+    <MenuBottomUndo />
     <MenuRight />
     <Issues />
   </div>
@@ -15,7 +16,8 @@ import MenuTop from "./components/menu-top/MenuTop.vue";
 import MenuLeft from "./components/menu-left/MenuLeft.vue";
 import Grapher from "./components/grapher/Grapher.vue";
 import MenuRight from "./components/menu-right/MenuRight.vue";
-import MenuBottom from "./components/menu-bottom/MenuBottom.vue";
+import MenuBottomTools from "./components/menu-bottom/MenuBottomTools.vue";
+import MenuBottomUndo from "./components/menu-bottom/MenuBottomUndo.vue";
 import Issues from "./components/Issues.vue";
 import { HotKeyHandler } from "./store/hotkeys";
 
@@ -26,7 +28,8 @@ export default Vue.extend({
     MenuLeft,
     Grapher,
     MenuRight,
-    MenuBottom,
+    MenuBottomTools,
+    MenuBottomUndo,
     Issues,
   },
   created() {
@@ -64,11 +67,12 @@ body,
 #app {
   display: grid;
   grid-template-columns: 200px auto 275px;
-  grid-template-rows: $navbar-height auto 36px 175px; // See Bulma for navbar-height
+  grid-template-rows: $navbar-height auto 40px 40px 120px; // See Bulma for navbar-height
   grid-template-areas:
     "menu-top menu-top menu-top"
     "menu-left grapher menu-right"
-    "menu-left menu-bottom menu-right"
+    "menu-left menu-bottom-tools menu-right"
+    "menu-left menu-bottom-undo menu-right"
     "menu-left issues menu-right";
 }
 </style>

@@ -10,6 +10,8 @@ describe("App.vue", () => {
 
     cy.get('[data-test="app"]').find(".menu-right");
 
-    cy.get('[data-test="app"]').find(".menu-bottom");
+    cy.get('[data-test="app"]').find(".menu-bottom-tools");
+
+    cy.get('[data-test="app"]').find(".menu-bottom-undo");
   });
 });

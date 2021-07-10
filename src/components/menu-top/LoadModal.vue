@@ -130,7 +130,7 @@ export default Vue.extend({
       if (!this.showPreview) {
         return;
       }
-      this.$store.commit(Mutations.SET_SHOW, this.showLoadState);
+      this.$store.commit(Mutations.SET_NEW_SHOW, this.showLoadState);
     },
   },
 });

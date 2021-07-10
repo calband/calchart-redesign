@@ -22,8 +22,8 @@ describe("store/mutations", () => {
               dotAppearances: [new DotAppearance(), new DotAppearance()],
             }),
           ],
+          selectedSS: 0,
         }),
-        selectedSS: 0,
       });
     });
 
@@ -49,8 +49,8 @@ describe("store/mutations", () => {
             }),
             new StuntSheet(),
           ],
+          selectedSS: 0,
         }),
-        selectedSS: 0,
       });
     });
 
@@ -83,8 +83,8 @@ describe("store/mutations", () => {
             }),
             new StuntSheet(),
           ],
+          selectedSS: 0,
         }),
-        selectedSS: 0,
       });
     });
 
@@ -119,8 +119,8 @@ describe("store/mutations", () => {
             }),
             new StuntSheet(),
           ],
+          selectedSS: 0,
         }),
-        selectedSS: 0,
       });
     });
 
@@ -146,31 +146,30 @@ describe("store/mutations", () => {
         new StuntSheet({ beats: 2 }),
       ];
       store = generateStore({
-        show: new Show({ stuntSheets }),
-        selectedSS: 0,
-        beat: 1,
+        show: new Show({
+          stuntSheets,
+          selectedSS: 0,
+          beat: 1,
+        }),
       });
     });
 
     it("increments selectedSS at the end of stuntsheet", () => {
       store.commit(Mutations.INCREMENT_BEAT);
-      expect(store.state.selectedSS).toBe(1);
-      expect(store.state.beat).toBe(0);
+      expect(store.state.show.selectedSS).toBe(1);
+      expect(store.getters.getBeat).toBe(0);
     });
 
     it("increments beat in the middle of a stuntsheet", () => {
       store.commit(Mutations.INCREMENT_BEAT);
-      expect(store.state.selectedSS).toBe(1);
-      expect(store.state.beat).toBe(1);
+      expect(store.state.show.selectedSS).toBe(1);
+      expect(store.getters.getBeat).toBe(1);
     });
 
     it("does nothing at end of show", () => {
       store.commit(Mutations.INCREMENT_BEAT);
-      expect(store.state.selectedSS).toBe(1);
-      expect(store.state.beat).toBe(2);
-      store.commit(Mutations.INITIAL_SHOW_STATE);
-      expect(store.state.selectedSS).toBe(1);
-      expect(store.state.beat).toBe(2);
+      expect(store.state.show.selectedSS).toBe(1);
+      expect(store.getters.getBeat).toBe(2);
     });
   });
 
@@ -181,28 +180,30 @@ describe("store/mutations", () => {
         new StuntSheet({ beats: 2 }),
       ];
       store = generateStore({
-        show: new Show({ stuntSheets }),
-        selectedSS: 1,
-        beat: 0,
+        show: new Show({
+          stuntSheets,
+          selectedSS: 1,
+          beat: 0,
+        }),
       });
     });
 
     it("decrements selectedSS at the beginning of stuntsheet", () => {
       store.commit(Mutations.DECREMENT_BEAT);
-      expect(store.state.selectedSS).toBe(0);
-      expect(store.state.beat).toBe(1);
+      expect(store.state.show.selectedSS).toBe(0);
+      expect(store.getters.getBeat).toBe(1);
     });
 
     it("decrements beat in the middle of a stuntsheet", () => {
       store.commit(Mutations.DECREMENT_BEAT);
-      expect(store.state.selectedSS).toBe(0);
-      expect(store.state.beat).toBe(0);
+      expect(store.state.show.selectedSS).toBe(0);
+      expect(store.getters.getBeat).toBe(0);
     });
 
     it("does nothing at beginning of show", () => {
       store.commit(Mutations.DECREMENT_BEAT);
-      expect(store.state.selectedSS).toBe(0);
-      expect(store.state.beat).toBe(0);
+      expect(store.state.show.selectedSS).toBe(0);
+      expect(store.getters.getBeat).toBe(0);
     });
   });
 });

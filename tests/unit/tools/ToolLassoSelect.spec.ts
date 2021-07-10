@@ -19,12 +19,12 @@ describe("tools/ToolBoxSelect", () => {
 
   describe("Selecting with a lasso", () => {
     it("Click where nothing is", () => {
-      expect(GlobalStore.state.selectedDotIds).toEqual([]);
+      expect(GlobalStore.getters.getSelectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
 
       tool.onMouseDown(new MouseEvent("mousedown", { clientX: 0, clientY: 0 }));
 
-      expect(GlobalStore.state.selectedDotIds).toEqual([]);
+      expect(GlobalStore.getters.getSelectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([[0, 0]]);
 
       tool.onMouseMove(new MouseEvent("mousemove", { clientX: 3, clientY: 1 }));
@@ -36,7 +36,7 @@ describe("tools/ToolBoxSelect", () => {
 
       tool.onMouseUp(new MouseEvent("mouseup", { clientX: 3, clientY: 1 }));
 
-      expect(GlobalStore.state.selectedDotIds).toEqual([]);
+      expect(GlobalStore.getters.getSelectedDotIds).toEqual([]);
       expect(GlobalStore.state.selectionLasso).toEqual([]);
     });
   });

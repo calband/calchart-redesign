@@ -6,17 +6,15 @@ import Show from "@/models/Show";
 import Serializable from "@/models/util/Serializable";
 import BaseTool from "@/tools/BaseTool";
 import StuntSheetDot from "@/models/StuntSheetDot";
-import InitialShowState from "@/models/InitialShowState";
+import { UndoRedo } from "@/models/UndoRedo";
 
 Vue.use(Vuex);
 
 /**
- * Defines the global state for the application
+ * Defines the global state for the application.
  *
  * @property show              - The currently selected show data
- * @property initialShowState  - Beginning spot for show
- * @property selectedSS        - Index of stuntsheet currently in view
- * @property beat              - The point in time the show is in
+ * @property undoRedo          - The undoRedo state
  * @property fourStepGrid      - View setting to toggle the grapher grid
  * @property showField         - View setting to toggle the (green) field
  * @property grapherSvgPanZoom - Initialized upon mounting Grapher
@@ -27,11 +25,7 @@ Vue.use(Vuex);
 export class CalChartState extends Serializable<CalChartState> {
   show: Show = new Show();
 
-  initialShowState: InitialShowState = new InitialShowState();
-
-  selectedSS = 0;
-
-  beat = 0;
+  undoRedo: UndoRedo = new UndoRedo();
 
   fourStepGrid = true;
 
@@ -46,8 +40,6 @@ export class CalChartState extends Serializable<CalChartState> {
   grapherSvgPanZoom?: SvgPanZoom.Instance;
 
   invertedCTMMatrix?: DOMMatrix;
-
-  selectedDotIds: number[] = [];
 
   toolSelected?: BaseTool;
 
@@ -65,11 +57,14 @@ export class CalChartState extends Serializable<CalChartState> {
 
 export const generateStore = (
   json: Partial<CalChartState> = {}
-): Store<CalChartState> =>
-  new Vuex.Store({
-    state: new CalChartState(json),
+): Store<CalChartState> => {
+  const show = new CalChartState(json);
+  return new Vuex.Store({
+    state: show,
     mutations,
     getters,
+    plugins: [show.undoRedo.createPlugin()],
   });
+};
 
 export const GlobalStore = generateStore();
