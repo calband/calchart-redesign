@@ -9,7 +9,7 @@
       <template slot="start">
         <b-navbar-dropdown label="File" data-test="menu-top--file">
           <b-navbar-item data-test="menu-top--new-show" @click="newShow">
-            New Show (ctrl-N)
+            New Show
           </b-navbar-item>
 
           <hr class="navbar-divider" />
@@ -26,14 +26,24 @@
             data-test="menu-top--load-show"
             @click="loadModalActive = true"
           >
-            Load Show
+            Open
+          </b-navbar-item>
+        </b-navbar-dropdown>
+
+        <b-navbar-dropdown label="Edit" data-test="menu-top--edit">
+          <b-navbar-item data-test="menu-top--edit-undo" @click="undo">
+            Undo {{ undoName }} (⌘ Z)
           </b-navbar-item>
 
+          <b-navbar-item data-test="menu-top--edit-redo" @click="redo">
+            Redo {{ redoName }} (shift ⌘ Z)
+          </b-navbar-item>
+          <hr class="navbar-divider" />
           <b-navbar-item
-            data-test="menu-top--file-edit"
+            data-test="menu-top--edit-show-details"
             @click="fileModalActive = true"
           >
-            Edit Show Details
+            Show Details
           </b-navbar-item>
         </b-navbar-dropdown>
 
@@ -177,10 +187,22 @@ export default Vue.extend({
       const blob = new Blob([jsonData], { type: "text/plain;charset=utf-8;" });
       return URL.createObjectURL(blob);
     },
+    undoName(): string {
+      return this.$store.getters.getUndoName;
+    },
+    redoName(): string {
+      return this.$store.getters.getRedoName;
+    },
   },
   methods: {
+    undo(): void {
+      this.$store.commit(Mutations.UNDO);
+    },
+    redo(): void {
+      this.$store.commit(Mutations.REDO);
+    },
     newShow(): void {
-      this.$store.commit(Mutations.SET_SHOW, new InitialShowState());
+      this.$store.commit(Mutations.SET_NEW_SHOW, new InitialShowState());
     },
 
     changeStepGrid(size: number): void {

@@ -1,6 +1,6 @@
 describe("continuity/interactions", () => {
   beforeEach(() => {
-    cy.visit("/").get('[data-test="menu-bottom-tool--add-rm"]').click();
+    cy.visit("/").get('[data-test="menu-bottom-tools-tool--add-rm"]').click();
   });
 
   it("add dot, set cont, should move", () => {

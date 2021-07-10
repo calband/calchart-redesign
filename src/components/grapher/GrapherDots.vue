@@ -35,15 +35,17 @@ export default Vue.extend({
       return this.$store.state.showDotLabels;
     },
     selectedDotIds(): number[] {
-      return this.$store.state.selectedDotIds;
+      return this.$store.getters.getSelectedDotIds;
     },
     dotsWithLabels(): [string, StuntSheetDot][] {
       const show: Show = this.$store.state.show;
-      return show.dotsWithLabelsForSS(this.$store.state.selectedSS);
+      return show.dotsWithLabelsForSS(
+        this.$store.getters.getSelectedStuntIndex
+      );
     },
     beat: {
       get(): number {
-        return this.$store.state.beat;
+        return this.$store.getters.getBeat;
       },
     },
   },

@@ -11,6 +11,7 @@ const METADATA_VERSION = 1;
 
 /**
  * Defines all metadata to edit, render, and animate a Calchart show.
+ * These would be items we would want to be saved and restored, or undoable.
  *
  * @property metadataVersion - Upon loading the show, determines what
  *                             migrations are needed to make the show
@@ -19,6 +20,9 @@ const METADATA_VERSION = 1;
  * @property dotLabels       - A list of names used for each dot
  * @property field           - Defines the sizing of the field
  * @property stuntSheets     - The set of all StuntSheet objects
+ * @property selectedSS      - The currently selected Stunt Sheet
+ * @property beat            - The point in time the show is in
+ * @property selectedDotIds  - which dotIDs are selected
  */
 export default class Show extends Serializable<Show> {
   metadataVersion: number = METADATA_VERSION;
@@ -30,6 +34,12 @@ export default class Show extends Serializable<Show> {
   field: Field = new Field();
 
   stuntSheets: StuntSheet[] = [new StuntSheet({ title: "Stuntsheet 1" })];
+
+  selectedSS = 0;
+
+  beat = 0;
+
+  selectedDotIds: number[] = [];
 
   issues: Issue[] = [];
 

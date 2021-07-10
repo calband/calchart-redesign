@@ -1,7 +1,6 @@
 import { CalChartState } from ".";
 import { Store } from "vuex";
 import { Mutations } from "./mutations";
-import InitialShowState from "@/models/InitialShowState";
 
 export const HotKeyHandler = (
   store: Store<CalChartState>,
@@ -13,7 +12,10 @@ export const HotKeyHandler = (
   if (event.key === "ArrowRight") {
     store.commit(Mutations.INCREMENT_BEAT);
   }
-  if (event.key === "n" && event.ctrlKey) {
-    store.commit(Mutations.SET_SHOW, new InitialShowState());
+  if (event.key === "z" && event.metaKey && !event.shiftKey) {
+    store.commit(Mutations.UNDO);
+  }
+  if (event.key === "z" && event.metaKey && event.shiftKey) {
+    store.commit(Mutations.REDO);
   }
 };

@@ -41,8 +41,8 @@ export default Vue.extend({
   name: "SelectedDotEditor",
   computed: {
     dotsWithLabels(): [string, StuntSheetDot][] {
-      const { selectedDotIds, show, selectedSS } = this.$store
-        .state as CalChartState;
+      const { show } = this.$store.state as CalChartState;
+      const { selectedDotIds, selectedSS } = show;
       const dotsWithLabels = show.dotsWithLabelsForSS(selectedSS);
       return dotsWithLabels.filter(([, dot]) =>
         selectedDotIds.includes(dot.id)
