@@ -12,7 +12,8 @@ import Serializable from "../util/Serializable";
  */
 export default class ContGateTurn
   extends Serializable<ContGateTurn>
-  implements BaseCont {
+  implements BaseCont
+{
   readonly continuityId: CONT_IDS = CONT_IDS.GATE_TURN;
 
   duration = 8;

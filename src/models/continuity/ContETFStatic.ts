@@ -14,7 +14,8 @@ import Serializable from "../util/Serializable";
  */
 export default class ContETFStatic
   extends Serializable<ContETFStatic>
-  implements BaseCont {
+  implements BaseCont
+{
   readonly continuityId: CONT_IDS = CONT_IDS.ETF_STATIC;
 
   duration = 8;

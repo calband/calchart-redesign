@@ -5,7 +5,7 @@ import Vuex, { Store } from "vuex";
 import ContETFStaticEditor from "@/components/menu-right/ContETFStaticEditor.vue";
 import StuntSheet from "@/models/StuntSheet";
 import Show from "@/models/Show";
-import ContETFStatic from "@/models/continuity/ContETFStatic.ts";
+import ContETFStatic from "@/models/continuity/ContETFStatic";
 import { DIRECTIONS, MARCH_TYPES } from "@/models/util/constants";
 import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import { Mutations } from "@/store/mutations";
@@ -50,7 +50,8 @@ describe("components/menu-right/ContETFStaticEditor", () => {
         '[data-test="cont-etf-static--march-type"]'
       );
       expect(selectMarchType.exists()).toBe(true);
-      const selectMarchTypeElement = selectMarchType.element as HTMLSelectElement;
+      const selectMarchTypeElement =
+        selectMarchType.element as HTMLSelectElement;
       expect(selectMarchTypeElement.value).toBe(MARCH_TYPES.HS);
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
@@ -84,7 +85,8 @@ describe("components/menu-right/ContETFStaticEditor", () => {
         '[data-test="cont-etf-static--marching-direction"]'
       );
       expect(selectDirection.exists()).toBe(true);
-      const selectDirectionElement = selectDirection.element as HTMLSelectElement;
+      const selectDirectionElement =
+        selectDirection.element as HTMLSelectElement;
       expect(selectDirectionElement.value).toBe(`${DIRECTIONS.E}`);
       expect(commitSpy).not.toHaveBeenCalled();
       selectDirection.setValue(`${DIRECTIONS.S}`);

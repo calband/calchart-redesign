@@ -167,45 +167,45 @@ export class UndoRedo extends Serializable<UndoRedo> {
       this.reinitializeUndoRedo(store.state.show);
       // called when the store is initialized
       // State could be useful in the future.
-      store.subscribe((
-        mutation: MutationPayload /*, state: CalChartState */
-      ) => {
-        if (UNDOABLE_ACTIONS.includes(mutation.type as Mutations)) {
-          if (this.currentShapshot + 1 === this.maxSnapshots) {
-            this.stateSnapshots.shift();
-          } else {
-            this.currentShapshot = this.currentShapshot + 1;
-            this.stateSnapshots = this.stateSnapshots.slice(
-              0,
-              this.currentShapshot
+      store.subscribe(
+        (mutation: MutationPayload /*, state: CalChartState */) => {
+          if (UNDOABLE_ACTIONS.includes(mutation.type as Mutations)) {
+            if (this.currentShapshot + 1 === this.maxSnapshots) {
+              this.stateSnapshots.shift();
+            } else {
+              this.currentShapshot = this.currentShapshot + 1;
+              this.stateSnapshots = this.stateSnapshots.slice(
+                0,
+                this.currentShapshot
+              );
+            }
+            this.stateSnapshots.push([
+              JSON.stringify(store.state.show),
+              mutation.type,
+            ]);
+          }
+          if (mutation.type === Mutations.UNDO) {
+            if (!this.canUndo()) {
+              return;
+            }
+            this.currentShapshot = this.currentShapshot - 1;
+            store.commit(
+              Mutations.SET_SHOW,
+              new Show(JSON.parse(this.stateSnapshots[this.currentShapshot][0]))
             );
           }
-          this.stateSnapshots.push([
-            JSON.stringify(store.state.show),
-            mutation.type,
-          ]);
-        }
-        if (mutation.type === Mutations.UNDO) {
-          if (!this.canUndo()) {
-            return;
+          if (mutation.type === Mutations.REDO) {
+            if (!this.canRedo()) {
+              return;
+            }
+            this.currentShapshot = this.currentShapshot + 1;
+            store.commit(
+              Mutations.SET_SHOW,
+              new Show(JSON.parse(this.stateSnapshots[this.currentShapshot][0]))
+            );
           }
-          this.currentShapshot = this.currentShapshot - 1;
-          store.commit(
-            Mutations.SET_SHOW,
-            new Show(JSON.parse(this.stateSnapshots[this.currentShapshot][0]))
-          );
         }
-        if (mutation.type === Mutations.REDO) {
-          if (!this.canRedo()) {
-            return;
-          }
-          this.currentShapshot = this.currentShapshot + 1;
-          store.commit(
-            Mutations.SET_SHOW,
-            new Show(JSON.parse(this.stateSnapshots[this.currentShapshot][0]))
-          );
-        }
-      });
+      );
     };
   }
 }

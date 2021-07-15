@@ -23,13 +23,12 @@ const getters: GetterTree<CalChartState, CalChartState> = {
   getSelectedStuntIndex: (state): number => state.show.selectedSS,
   getSelectedStuntSheet: (state): StuntSheet =>
     state.show.stuntSheets[state.show.selectedSS],
-  getContinuity: (state) => (
-    dotTypeIndex: number,
-    continuityIndex: number
-  ): BaseCont =>
-    state.show.stuntSheets[state.show.selectedSS].dotTypes[dotTypeIndex][
-      continuityIndex
-    ],
+  getContinuity:
+    (state) =>
+    (dotTypeIndex: number, continuityIndex: number): BaseCont =>
+      state.show.stuntSheets[state.show.selectedSS].dotTypes[dotTypeIndex][
+        continuityIndex
+      ],
 
   // Undo
   getCanUndo: (state): boolean => state.undoRedo.canUndo(),

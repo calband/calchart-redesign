@@ -71,9 +71,8 @@ export default Vue.extend({
     setTool(toolIndex: number): void {
       this.$data.toolSelectedIndex = toolIndex;
       console.log("which tool ", toolIndex);
-      const ToolConstructor: ToolConstructor = this.$data.toolDataList[
-        toolIndex
-      ].tool;
+      const ToolConstructor: ToolConstructor =
+        this.$data.toolDataList[toolIndex].tool;
       const tool: BaseTool = new ToolConstructor();
       this.$store.commit(Mutations.SET_TOOL_SELECTED, tool);
       if (!tool.supportsSelection) {

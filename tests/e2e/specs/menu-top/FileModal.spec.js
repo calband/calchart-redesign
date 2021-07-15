@@ -46,9 +46,13 @@ describe("components/menu-top/FileModal", () => {
   });
 
   it("field changes shape upon adjusting hashes and middle of field", () => {
-    cy.get('[data-test="file-modal--front-hash-offset-y"]').clear().type("8");
+    cy.get('[data-test="file-modal--front-hash-offset-y"]').type(
+      "{selectall}8"
+    );
 
-    cy.get('[data-test="file-modal--back-hash-offset-y"]').clear().type("16");
+    cy.get('[data-test="file-modal--back-hash-offset-y"]').type(
+      "{selectall}16"
+    );
 
     cy.get('[data-test="file-modal--middle-of-field"]').clear();
 
