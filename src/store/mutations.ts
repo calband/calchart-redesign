@@ -95,7 +95,7 @@ export const UNDOABLE_ACTIONS = [
 ];
 
 export const mutations: MutationTree<CalChartState> = {
-  [Mutations.SET_SHOW](state, initialShowState: InitialShowState): void {
+  [Mutations.SET_NEW_SHOW](state, initialShowState: InitialShowState): void {
     state.show = initialShowState.getInitialState();
     state.show.calculateIssuesDeep();
     state.undoRedo.reinitializeUndoRedo(state.show);
