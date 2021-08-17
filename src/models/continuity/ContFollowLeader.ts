@@ -11,7 +11,8 @@ import Serializable from "../util/Serializable";
  */
 export default class ContFollowLeader
   extends Serializable<ContFollowLeader>
-  implements BaseCont {
+  implements BaseCont
+{
   readonly continuityId: CONT_IDS = CONT_IDS.FOLLOW_LEADER;
 
   duration = 8;

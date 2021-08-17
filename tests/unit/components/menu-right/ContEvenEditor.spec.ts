@@ -47,7 +47,8 @@ describe("components/menu-right/ContEvenEditor", () => {
         '[data-test="cont-even--march-type"]'
       );
       expect(selectMarchType.exists()).toBe(true);
-      const selectMarchTypeElement = selectMarchType.element as HTMLSelectElement;
+      const selectMarchTypeElement =
+        selectMarchType.element as HTMLSelectElement;
       expect(selectMarchTypeElement.value).toBe(MARCH_TYPES.MINI_MILITARY);
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.HS);

@@ -13,7 +13,8 @@ import Serializable from "../util/Serializable";
  */
 export default class ContEven
   extends Serializable<ContEven>
-  implements BaseCont {
+  implements BaseCont
+{
   readonly continuityId: CONT_IDS = CONT_IDS.EVEN;
 
   duration = 8;

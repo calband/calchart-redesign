@@ -26,7 +26,8 @@ describe("components/menu-top/FileModal", () => {
       '[data-test="file-modal--front-hash-offset-y"]'
     );
     expect(frontHashOffsetY.exists()).toBeTruthy();
-    const frontHashOffsetYElement = frontHashOffsetY.element as HTMLInputElement;
+    const frontHashOffsetYElement =
+      frontHashOffsetY.element as HTMLInputElement;
     expect(frontHashOffsetYElement.value).toBe("32");
     expect(store.getters.getFrontHashOffsetY).toEqual(32);
     frontHashOffsetY.setValue(28);

@@ -13,7 +13,8 @@ import Serializable from "../util/Serializable";
  */
 export default class ContInPlace
   extends Serializable<ContInPlace>
-  implements BaseCont {
+  implements BaseCont
+{
   readonly continuityId: CONT_IDS = CONT_IDS.IN_PLACE;
 
   duration = 0;
