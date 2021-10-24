@@ -104,5 +104,13 @@ describe("components/menu-top/MenuTop", () => {
 
       cy.get('[data-test="grapher-field--yard-number"]').should("not.exist");
     });
+
+    it("can toggle show field", () => {
+      cy.get('[data-test="grapher-field--rect"]').should("be.visible");
+
+      cy.get('[data-test="menu-top--view-show-field"]').click();
+
+      cy.get('[data-test="grapher-field--rect"]').should("not.exist");
+    });
   });
 });
