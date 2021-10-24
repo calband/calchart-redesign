@@ -45,13 +45,13 @@ export default Vue.extend({
     toolDataList: [
       {
         label: "Drag Box to select, shift to add, shift+alt/option to toggle",
-        icon: "hand-right",
+        icon: "select",
         tool: ToolBoxSelect,
         "data-test": "select-box-move",
       },
       {
         label: "Lasso to select, shift to add, shift+alt/option to toggle",
-        icon: "pencil",
+        icon: "lasso",
         tool: ToolLassoSelect,
         "data-test": "select-lasso-move",
       },
