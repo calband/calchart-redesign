@@ -16,7 +16,8 @@ import Serializable from "../util/Serializable";
  */
 export default class ContStepTwo
   extends Serializable<ContStepTwo>
-  implements BaseCont {
+  implements BaseCont
+{
   readonly continuityId: CONT_IDS = CONT_IDS.STEP_TWO;
 
   duration = 8;

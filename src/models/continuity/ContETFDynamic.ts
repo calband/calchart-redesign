@@ -24,7 +24,8 @@ export enum ETF_DYNAMIC_TYPES {
  */
 export default class ContETFDynamic
   extends Serializable<ContETFDynamic>
-  implements BaseCont {
+  implements BaseCont
+{
   readonly continuityId: CONT_IDS = CONT_IDS.ETF_DYNAMIC;
 
   duration = 0;

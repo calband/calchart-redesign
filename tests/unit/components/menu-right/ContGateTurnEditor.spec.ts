@@ -5,7 +5,7 @@ import Vuex, { Store } from "vuex";
 import ContGateTurnEditor from "@/components/menu-right/ContGateTurnEditor.vue";
 import StuntSheet from "@/models/StuntSheet";
 import Show from "@/models/Show";
-import ContETFDynamic from "@/models/continuity/ContETFDynamic.ts";
+import ContETFDynamic from "@/models/continuity/ContETFDynamic";
 import { MARCH_TYPES } from "@/models/util/constants";
 import ContGateTurn from "@/models/continuity/ContGateTurn";
 import { Mutations } from "@/store/mutations";
@@ -50,7 +50,8 @@ describe("components/menu-right/ContETFStaticEditor", () => {
         '[data-test="cont-gate-turn--march-type"]'
       );
       expect(selectMarchType.exists()).toBe(true);
-      const selectMarchTypeElement = selectMarchType.element as HTMLSelectElement;
+      const selectMarchTypeElement =
+        selectMarchType.element as HTMLSelectElement;
       expect(selectMarchTypeElement.value).toBe(MARCH_TYPES.HS);
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);

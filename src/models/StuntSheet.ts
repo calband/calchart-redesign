@@ -60,11 +60,9 @@ export default class StuntSheet extends Serializable<StuntSheet> {
     }
     if (json.dotTypes !== undefined) {
       json.dotTypes = json.dotTypes.map((dotType: BaseCont[]): BaseCont[] => {
-        return dotType.map(
-          (continuity: BaseCont): BaseCont => {
-            return loadContinuity(continuity);
-          }
-        );
+        return dotType.map((continuity: BaseCont): BaseCont => {
+          return loadContinuity(continuity);
+        });
       });
     }
     if (json.dotAppearances !== undefined) {

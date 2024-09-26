@@ -9,7 +9,8 @@ import Serializable from "../util/Serializable";
  */
 export default class ContCounterMarch
   extends Serializable<ContCounterMarch>
-  implements BaseCont {
+  implements BaseCont
+{
   readonly continuityId: CONT_IDS = CONT_IDS.COUNTER_MARCH;
 
   duration = 0;

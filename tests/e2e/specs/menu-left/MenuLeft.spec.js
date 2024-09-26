@@ -20,8 +20,7 @@ describe("components/menu-left/MenuLeft", () => {
 
     cy.get('[data-test="ss-modal--beats"]')
       .should("have.value", "16")
-      .clear()
-      .type("2");
+      .type("{selectall}2");
 
     cy.get('[data-test="ss-modal--close"]').click();
 
@@ -71,8 +70,7 @@ describe("components/menu-left/MenuLeft", () => {
 
     cy.get('[data-test="ss-modal--beats"]')
       .should("have.value", "16")
-      .clear()
-      .type("4");
+      .type("{selectall}4");
 
     cy.get('[data-test="ss-modal--close"]').click();
 

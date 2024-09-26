@@ -68,7 +68,8 @@ describe("components/menu-right/ContETFDynamicEditor", () => {
         '[data-test="cont-etf-dynamic--march-type"]'
       );
       expect(selectMarchType.exists()).toBe(true);
-      const selectMarchTypeElement = selectMarchType.element as HTMLSelectElement;
+      const selectMarchTypeElement =
+        selectMarchType.element as HTMLSelectElement;
       expect(selectMarchTypeElement.value).toBe(MARCH_TYPES.HS);
       expect(commitSpy).not.toHaveBeenCalled();
       selectMarchType.setValue(MARCH_TYPES.MINI_MILITARY);
